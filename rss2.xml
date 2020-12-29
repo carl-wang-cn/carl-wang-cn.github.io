@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0"
+  xmlns:atom="http://www.w3.org/2005/Atom"
+  xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>carl的修行</title>
+    <link>https://carl-wang-cn.github.io/</link>
+    
+    <image>
+      <url>https://carl-wang-cn.github.io/icon.png</url>
+      <title>carl的修行</title>
+      <link>https://carl-wang-cn.github.io/</link>
+    </image>
+    
+    <atom:link href="https://carl-wang-cn.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
+    
+    <description>金融程序员</description>
+    <pubDate>Tue, 29 Dec 2020 06:42:38 GMT</pubDate>
+    <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>ssh终端证书方式登录远程linux系统</title>
+      <link>https://carl-wang-cn.github.io/2020/12/28/ssh-without-passwd/</link>
+      <guid>https://carl-wang-cn.github.io/2020/12/28/ssh-without-passwd/</guid>
+      <pubDate>Mon, 28 Dec 2020 01:02:49 GMT</pubDate>
+      
+      <description>&lt;h3 id=&quot;为什么选择证书登陆？&quot;&gt;&lt;a href=&quot;#为什么选择证书登陆？&quot; class=&quot;headerlink&quot; title=&quot;为什么选择证书登陆？&quot;&gt;&lt;/a&gt;为什么选择证书登陆？&lt;/h3&gt;&lt;p&gt;Mac下原生及主流的ssh终端工具大多不具备保存ssh登陆密码的功能, 通过证书登陆的方式，就可以实现原生终端工具Terminal或第三方明星终端iTerm免密码登录远程系统，并且比单纯的密码验证登陆方式提高了安全性。&lt;/p&gt;</description>
+      
+      
+      
+      
+      <category domain="https://carl-wang-cn.github.io/categories/%E6%8A%80%E6%9C%AF/">技术</category>
+      
+      
+      
+      <comments>https://carl-wang-cn.github.io/2020/12/28/ssh-without-passwd/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>RSA-数字签名与加密</title>
+      <link>https://carl-wang-cn.github.io/2020/12/27/RSA/</link>
+      <guid>https://carl-wang-cn.github.io/2020/12/27/RSA/</guid>
+      <pubDate>Sun, 27 Dec 2020 09:02:49 GMT</pubDate>
+      
+      <description>&lt;h3 id=&quot;1-公钥私钥（标准条目）&quot;&gt;&lt;a href=&quot;#1-公钥私钥（标准条目）&quot; class=&quot;headerlink&quot; title=&quot;1. 公钥私钥（标准条目）&quot;&gt;&lt;/a&gt;1. 公钥私钥（标准条目）&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;公钥和私钥成对出现&lt;/li&gt;
+&lt;li&gt;公开的密钥叫公钥，只有自己知道的叫私钥&lt;/li&gt;
+&lt;li&gt;用公钥加密的数据只有对应的私钥可以解密&lt;/li&gt;
+&lt;li&gt;用私钥加密的数据只有对应的公钥可以解密&lt;/li&gt;
+&lt;li&gt;如果可以用公钥解密，则必然是对应的私钥加的密&lt;/li&gt;
+&lt;li&gt;如果可以用私钥解密，则必然是对应的公钥加的密&lt;/li&gt;
+&lt;/ol&gt;</description>
+      
+      
+      
+      
+      <category domain="https://carl-wang-cn.github.io/categories/%E6%8A%80%E6%9C%AF/">技术</category>
+      
+      
+      
+      <comments>https://carl-wang-cn.github.io/2020/12/27/RSA/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>我的MySQL速查手册</title>
+      <link>https://carl-wang-cn.github.io/2020/12/27/mysql-manual/</link>
+      <guid>https://carl-wang-cn.github.io/2020/12/27/mysql-manual/</guid>
+      <pubDate>Sun, 27 Dec 2020 08:02:49 GMT</pubDate>
+      
+      <description>&lt;h5 id=&quot;查看已存在的数据库&quot;&gt;&lt;a href=&quot;#查看已存在的数据库&quot; class=&quot;headerlink&quot; title=&quot;查看已存在的数据库&quot;&gt;&lt;/a&gt;查看已存在的数据库&lt;/h5&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;MariaDB [carltest]&amp;gt; show databases;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;+-------------------------+&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;| Database                |&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;+-------------------------+&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;| carltest                |&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;| &lt;span class=&quot;built_in&quot;&gt;test&lt;/span&gt;                    |&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;| test2                   |&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;| test3                   |&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;| test_insert             |&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;+-------------------------+&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5 rows &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;built_in&quot;&gt;set&lt;/span&gt; (0.00 sec)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;MariaDB [carltest]&amp;gt; show databases like &lt;span class=&quot;string&quot;&gt;&amp;#x27;carl%&amp;#x27;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;+------------------+&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;| Database (carl%) |&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;+------------------+&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;| carltest         |&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;+------------------+&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;1 row &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;built_in&quot;&gt;set&lt;/span&gt; (0.00 sec)&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;</description>
+      
+      
+      
+      
+      <category domain="https://carl-wang-cn.github.io/categories/%E6%8A%80%E6%9C%AF/">技术</category>
+      
+      
+      
+      <comments>https://carl-wang-cn.github.io/2020/12/27/mysql-manual/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>proto buffer MergeFrom的坑</title>
+      <link>https://carl-wang-cn.github.io/2020/03/17/2020-03-17-donot-use-pb-mergefrom/</link>
+      <guid>https://carl-wang-cn.github.io/2020/03/17/2020-03-17-donot-use-pb-mergefrom/</guid>
+      <pubDate>Tue, 17 Mar 2020 07:06:33 GMT</pubDate>
+      
+      <description>&lt;p&gt;pb好用, 性能虽然比不上二进制, 不过也比json在大多数情况下还是好很多. 尤其是字段的向前向后兼容, 这一点应该也是大多数同学选用pb的原因. 然后终于&lt;strong&gt;掉进坑&lt;/strong&gt;了, 严重得影响了一次线上服务.&lt;br&gt;整理测试程序的时候发现, python的官方指南压根就没提MergeFrom这个接口, 看起来是专门用来坑c++的兄弟的啊&lt;/p&gt;</description>
+      
+      
+      
+      
+      <category domain="https://carl-wang-cn.github.io/categories/%E6%8A%80%E6%9C%AF/">技术</category>
+      
+      
+      
+      <comments>https://carl-wang-cn.github.io/2020/03/17/2020-03-17-donot-use-pb-mergefrom/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>记录一次因为redis aof rewrite重写导致的运维事故</title>
+      <link>https://carl-wang-cn.github.io/2020/03/17/2020-03-17-redis-aof-disaster/</link>
+      <guid>https://carl-wang-cn.github.io/2020/03/17/2020-03-17-redis-aof-disaster/</guid>
+      <pubDate>Tue, 17 Mar 2020 07:02:49 GMT</pubDate>
+      
+      <description>&lt;h2 id=&quot;事情起因&quot;&gt;&lt;a href=&quot;#事情起因&quot; class=&quot;headerlink&quot; title=&quot;事情起因&quot;&gt;&lt;/a&gt;事情起因&lt;/h2&gt;&lt;p&gt;redis master 所在物理机A, 物理内存16G, aof rewrite 被触发时, aof文件已达12G, redis的默认配置触发了后台的rewrite进程, 内存占用达到了50%, 已严重影响到redis的正常访问. 而此时距离美股交易开盘只剩1小时.&lt;/p&gt;</description>
+      
+      
+      
+      
+      <category domain="https://carl-wang-cn.github.io/categories/%E6%8A%80%E6%9C%AF/">技术</category>
+      
+      
+      
+      <comments>https://carl-wang-cn.github.io/2020/03/17/2020-03-17-redis-aof-disaster/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>python的finally语句中使用return要慎重!!!</title>
+      <link>https://carl-wang-cn.github.io/2020/02/13/2020-02-13-python-finally-hole/</link>
+      <guid>https://carl-wang-cn.github.io/2020/02/13/2020-02-13-python-finally-hole/</guid>
+      <pubDate>Thu, 13 Feb 2020 11:20:12 GMT</pubDate>
+      
+      <description>&lt;p&gt;前两天, 同事踩了一个坑, python代码的一个接口抛了异常, 但是返回值是0. 这里记录一下.&lt;/p&gt;
+&lt;p&gt;代码大概是这样的.&lt;/p&gt;</description>
+      
+      
+      
+      
+      <category domain="https://carl-wang-cn.github.io/categories/%E6%8A%80%E6%9C%AF/">技术</category>
+      
+      
+      <category domain="https://carl-wang-cn.github.io/tags/python/">python</category>
+      
+      
+      <comments>https://carl-wang-cn.github.io/2020/02/13/2020-02-13-python-finally-hole/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>多进程通信-消息队列</title>
+      <link>https://carl-wang-cn.github.io/2020/02/08/2020-02-07-ipc-posix-msg-queue/</link>
+      <guid>https://carl-wang-cn.github.io/2020/02/08/2020-02-07-ipc-posix-msg-queue/</guid>
+      <pubDate>Sat, 08 Feb 2020 12:51:02 GMT</pubDate>
+      
+      <description>&lt;h3 id=&quot;基本特性&quot;&gt;&lt;a href=&quot;#基本特性&quot; class=&quot;headerlink&quot; title=&quot;基本特性&quot;&gt;&lt;/a&gt;基本特性&lt;/h3&gt;&lt;hr&gt;
+&lt;ol&gt;
+&lt;li&gt;在某个进程往一个队列写入消息之前, 并不需要另外某个进程在该队列上等待消息的到达. 这个与管道和FIFO是相反的, 对后两者来说, 除非读出者已存在, 否则先有写入者是没有意义的.&lt;/li&gt;
+&lt;li&gt;消息队列具有随内核的持续性.一个进程可以往某个队列写入一些消息, 然后终止, 再让另外一个进程在以后某个时刻读出这些消息&lt;/li&gt;
+&lt;li&gt;队列属性&lt;/li&gt;
+&lt;/ol&gt;</description>
+      
+      
+      
+      
+      <category domain="https://carl-wang-cn.github.io/categories/%E6%8A%80%E6%9C%AF/">技术</category>
+      
+      
+      <category domain="https://carl-wang-cn.github.io/tags/ipc/">ipc</category>
+      
+      <category domain="https://carl-wang-cn.github.io/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B/">多进程</category>
+      
+      
+      <comments>https://carl-wang-cn.github.io/2020/02/08/2020-02-07-ipc-posix-msg-queue/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>进程间通信-管道</title>
+      <link>https://carl-wang-cn.github.io/2020/02/07/2020-02-07-ipc-pipe/</link>
+      <guid>https://carl-wang-cn.github.io/2020/02/07/2020-02-07-ipc-pipe/</guid>
+      <pubDate>Fri, 07 Feb 2020 15:29:22 GMT</pubDate>
+      
+      <description>&lt;h3 id=&quot;pipe匿名管道&quot;&gt;&lt;a href=&quot;#pipe匿名管道&quot; class=&quot;headerlink&quot; title=&quot;pipe匿名管道&quot;&gt;&lt;/a&gt;pipe匿名管道&lt;/h3&gt;&lt;p&gt;匿名管道由于没有名字, 因此只能由有亲缘关系的进程使用&lt;/p&gt;
+&lt;figure class=&quot;highlight cpp&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;#&lt;span class=&quot;meta-keyword&quot;&gt;include&lt;/span&gt; &lt;span class=&quot;meta-string&quot;&gt;&amp;lt;unistd.h&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;pipe&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; fd[&lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;])&lt;/span&gt;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;返回: 成功返回&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;, 出错返回&lt;span class=&quot;number&quot;&gt;-1&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;该函数返回两个文件描述符: fd[&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;]和fd[&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;], 前者打开来读, 后者打开来写.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;</description>
+      
+      
+      
+      
+      <category domain="https://carl-wang-cn.github.io/categories/%E6%8A%80%E6%9C%AF/">技术</category>
+      
+      
+      <category domain="https://carl-wang-cn.github.io/tags/ipc/">ipc</category>
+      
+      <category domain="https://carl-wang-cn.github.io/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B/">多进程</category>
+      
+      
+      <comments>https://carl-wang-cn.github.io/2020/02/07/2020-02-07-ipc-pipe/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>多进程通信-互斥锁和条件变量</title>
+      <link>https://carl-wang-cn.github.io/2020/02/07/2020-02-07-mutex-cond/</link>
+      <guid>https://carl-wang-cn.github.io/2020/02/07/2020-02-07-mutex-cond/</guid>
+      <pubDate>Fri, 07 Feb 2020 01:43:06 GMT</pubDate>
+      
+      <description>&lt;h2 id=&quot;互斥锁&quot;&gt;&lt;a href=&quot;#互斥锁&quot; class=&quot;headerlink&quot; title=&quot;互斥锁&quot;&gt;&lt;/a&gt;互斥锁&lt;/h2&gt;&lt;p&gt;互斥锁和条件变量总是可用来同步一个进程内的各个线程。但是如果一个互斥锁或条件变量是&lt;br&gt;存放在多个进程间共享的某个内存区内，那么它还可以被用来同步这几个进程。&lt;/p&gt;
+&lt;p&gt;互斥锁指代相互排斥，用于保护临界区，以保证任何时刻&lt;strong&gt;只有一个线程/进程&lt;/strong&gt;在执行&lt;br&gt;其中的代码。保护一个临界区的代码的通常轮廓大体如下：&lt;/p&gt;</description>
+      
+      
+      
+      
+      <category domain="https://carl-wang-cn.github.io/categories/%E6%8A%80%E6%9C%AF/">技术</category>
+      
+      
+      <category domain="https://carl-wang-cn.github.io/tags/ipc/">ipc</category>
+      
+      <category domain="https://carl-wang-cn.github.io/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B/">多进程</category>
+      
+      
+      <comments>https://carl-wang-cn.github.io/2020/02/07/2020-02-07-mutex-cond/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>进程间通信-共享内存</title>
+      <link>https://carl-wang-cn.github.io/2020/02/05/2020-02-05-mmap/</link>
+      <guid>https://carl-wang-cn.github.io/2020/02/05/2020-02-05-mmap/</guid>
+      <pubDate>Wed, 05 Feb 2020 15:28:44 GMT</pubDate>
+      
+      <description>&lt;p&gt;共享内存区是IPC形式中&lt;strong&gt;最快&lt;/strong&gt;的. 一旦这样的内存区映射到共享它的进程的地址&lt;br&gt;空间, 这些进程间数据的传递就不再涉及内核. 然而往该共享内存区存放信息或从&lt;br&gt;中取走信息的进程间通常需要某种形式的同步.&lt;/p&gt;</description>
+      
+      
+      
+      
+      <category domain="https://carl-wang-cn.github.io/categories/%E6%8A%80%E6%9C%AF/">技术</category>
+      
+      
+      <category domain="https://carl-wang-cn.github.io/tags/ipc/">ipc</category>
+      
+      <category domain="https://carl-wang-cn.github.io/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B/">多进程</category>
+      
+      
+      <comments>https://carl-wang-cn.github.io/2020/02/05/2020-02-05-mmap/#disqus_thread</comments>
+      
+    </item>
+    
+  </channel>
+</rss>
