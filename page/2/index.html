@@ -21,7 +21,7 @@
 
 <script class="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"carl-wang-cn.github.io","root":"/","images":"/images","scheme":"Gemini","version":"8.1.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+    var CONFIG = {"hostname":"carl-wang-cn.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.1.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 <meta name="description" content="金融程序员">
 <meta property="og:type" content="website">
@@ -150,6 +150,16 @@
     <a href="/archives" rel="section"><i class="archive fa-fw"></i>Archives</a>
 
   </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Commonweal 404</a>
+
+  </li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
         </a>
@@ -245,9 +255,6 @@
       </span>
       <span class="links-of-author-item">
         <a href="mailto:zhongzheng.wang1986@gmail.com" title="E-Mail → mailto:zhongzheng.wang1986@gmail.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i>E-Mail</a>
-      </span>
-      <span class="links-of-author-item">
-        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="rss fa-fw"></i>RSS</a>
       </span>
   </div>
 
@@ -356,6 +363,11 @@
 </ul>
 <p><strong>信号量的值是随内核持续的</strong></p>
           <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/02/04/2020-02-04-ipc-posix-sem/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
           <!--/noindex-->
         
       
@@ -438,6 +450,11 @@
     <div class="post-body" itemprop="articleBody">
           <p>读写锁是作为pthread_rwlock_t数据类型的变量在内存中分配的。当读写锁是在单个进程内的各个线程间共享时，这些变量可以在那个进程内；<br>当读写锁是在共享某个内存区的进程间共享时，这些变量应该在该共享内存区中。</p>
           <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/02/04/2020-02-04-ipc-read-write-lock/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
           <!--/noindex-->
         
       
@@ -521,6 +538,11 @@
           <p>这是读写锁的一种扩展类型，可用于有亲缘关系或<strong>无亲缘关系</strong>的<strong>进程</strong>之间共享某个文件的读写。这些锁用于不同进程间的上锁，而不是用于同一进程中不同线程间的上锁。 </p>
 <p>fcntl记录上锁，可以指定文件中待上锁和解锁部分的字节范围。<br>Posix记录上锁定义了一个特殊的字节范围来指定整个文件，它的起始偏移为0，长度也为0.</p>
           <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/02/01/2020-02-01-ipc-fcntl/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
           <!--/noindex-->
         
       
@@ -603,6 +625,11 @@
     <div class="post-body" itemprop="articleBody">
           <h3 id="为什么选择证书登陆？"><a href="#为什么选择证书登陆？" class="headerlink" title="为什么选择证书登陆？"></a>为什么选择证书登陆？</h3><p>Mac下原生及主流的ssh终端工具大多不具备保存ssh登陆密码的功能, 通过证书登陆的方式，就可以实现原生终端工具Terminal或第三方明星终端iTerm免密码登录远程系统，并且比单纯的密码验证登陆方式提高了安全性。</p>
           <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/02/01/2020-02-01-ssh-remote-linux/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
           <!--/noindex-->
         
       
@@ -696,6 +723,11 @@
 </li>
 </ol>
           <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/01/29/2020-01-29-write-good-email/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
           <!--/noindex-->
         
       
@@ -784,6 +816,11 @@
 <li>Code review 可以被用来确认自己的设计和实现是清楚和简单的。</li>
 </ol>
           <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/01/29/2020-01-28-code-review/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
           <!--/noindex-->
         
       
@@ -866,6 +903,11 @@
     <div class="post-body" itemprop="articleBody">
           <h4 id="3种启用gdb的方法"><a href="#3种启用gdb的方法" class="headerlink" title="3种启用gdb的方法"></a>3种启用gdb的方法</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1.gdb &lt;program&gt;</span><br><span class="line">2.gdb &lt;program&gt; core</span><br><span class="line">3.gdb &lt;program&gt; &lt;PID&gt;</span><br></pre></td></tr></table></figure>
           <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/01/29/2020-01-28-gdb-use/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
           <!--/noindex-->
         
       
@@ -952,6 +994,11 @@
 <li>【IDL/RPC】支持IDL（接口描述语言）和RPC，减少网络协议相关的重复工作，协议有比较好的扩展性；远程调用友好且高效。要开发语言无关，因为你用c开发，不表示其他团队也用c调用你的接口，所以IDL要能生成常见语言的RPC。</li>
 </ol>
           <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/01/27/2020-01-27-best-dev-framework/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
           <!--/noindex-->
         
       
@@ -1123,6 +1170,11 @@
 <p>awk有3个不同版本: awk, nawk和gawk, 未作特别说明, 一般指gawk, gawk是AWK的GNU版本.</p>
 <p>awk其名称得自于它的创始人Alfred Aho, Peter Weinberger和Brian Kernighan姓氏的首个字母. 实际上 AWK 的确拥有自己的语言: AWK 程序设计语言, 三位创建者已将它正式定义为”样式扫描和处理语言”. 它允许您创建简短的程序, 这些程序读取输入文件, 为数据排序, 处理数据, 对输入执行计算以及生成报表, 还有无数其他的功能.</p>
           <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/01/16/2020-01-16-awk/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
           <!--/noindex-->
         
       
@@ -1188,8 +1240,9 @@
   </footer>
 
   
+  <script size="300" alpha="0.6" zIndex="-1" src="//cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
 
   
 
