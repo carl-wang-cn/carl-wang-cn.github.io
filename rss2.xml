@@ -19,25 +19,6 @@
     <generator>http://hexo.io/</generator>
     
     <item>
-      <title>ssh终端证书方式登录远程linux系统</title>
-      <link>https://carl-wang-cn.github.io/2020/12/28/ssh-without-passwd/</link>
-      <guid>https://carl-wang-cn.github.io/2020/12/28/ssh-without-passwd/</guid>
-      <pubDate>Mon, 28 Dec 2020 01:02:49 GMT</pubDate>
-      
-      <description>&lt;h3 id=&quot;为什么选择证书登陆？&quot;&gt;&lt;a href=&quot;#为什么选择证书登陆？&quot; class=&quot;headerlink&quot; title=&quot;为什么选择证书登陆？&quot;&gt;&lt;/a&gt;为什么选择证书登陆？&lt;/h3&gt;&lt;p&gt;Mac下原生及主流的ssh终端工具大多不具备保存ssh登陆密码的功能, 通过证书登陆的方式，就可以实现原生终端工具Terminal或第三方明星终端iTerm免密码登录远程系统，并且比单纯的密码验证登陆方式提高了安全性。&lt;/p&gt;</description>
-      
-      
-      
-      
-      <category domain="https://carl-wang-cn.github.io/categories/%E6%8A%80%E6%9C%AF/">技术</category>
-      
-      
-      
-      <comments>https://carl-wang-cn.github.io/2020/12/28/ssh-without-passwd/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
       <title>RSA-数字签名与加密</title>
       <link>https://carl-wang-cn.github.io/2020/12/27/RSA/</link>
       <guid>https://carl-wang-cn.github.io/2020/12/27/RSA/</guid>
@@ -238,6 +219,34 @@
       
       
       <comments>https://carl-wang-cn.github.io/2020/02/05/2020-02-05-mmap/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>进程间通信-Posix信号量</title>
+      <link>https://carl-wang-cn.github.io/2020/02/04/2020-02-04-ipc-posix-sem/</link>
+      <guid>https://carl-wang-cn.github.io/2020/02/04/2020-02-04-ipc-posix-sem/</guid>
+      <pubDate>Tue, 04 Feb 2020 00:27:10 GMT</pubDate>
+      
+      <description>&lt;h5 id=&quot;信号量是一种用于提供不同进程间或一个给定进程的不同线程间同步手段的原语。&quot;&gt;&lt;a href=&quot;#信号量是一种用于提供不同进程间或一个给定进程的不同线程间同步手段的原语。&quot; class=&quot;headerlink&quot; title=&quot;信号量是一种用于提供不同进程间或一个给定进程的不同线程间同步手段的原语。&quot;&gt;&lt;/a&gt;信号量是一种用于提供不同进程间或一个给定进程的不同线程间同步手段的原语。&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;Posix有名信号量： 使用Posix IPC名字标识，可用于进程或线程间的同步。&lt;/li&gt;
+&lt;li&gt;Posix基于内存的信号量： 存放在共享内存中，可用于进程或线程间的同步。&lt;/li&gt;
+&lt;li&gt;System V信号量： 在内核中维护，可用于进程或线程间的同步。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;信号量的值是随内核持续的&lt;/strong&gt;&lt;/p&gt;</description>
+      
+      
+      
+      
+      <category domain="https://carl-wang-cn.github.io/categories/%E6%8A%80%E6%9C%AF/">技术</category>
+      
+      
+      <category domain="https://carl-wang-cn.github.io/tags/ipc/">ipc</category>
+      
+      <category domain="https://carl-wang-cn.github.io/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B/">多进程</category>
+      
+      
+      <comments>https://carl-wang-cn.github.io/2020/02/04/2020-02-04-ipc-posix-sem/#disqus_thread</comments>
       
     </item>
     
