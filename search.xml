@@ -1929,4 +1929,31 @@
         <category>技术</category>
       </categories>
   </entry>
+  <entry>
+    <title>ssh终端证书方式登录远程linux系统</title>
+    <url>/2020/12/28/ssh-without-passwd/</url>
+    <content><![CDATA[<h3 id="为什么选择证书登陆？"><a href="#为什么选择证书登陆？" class="headerlink" title="为什么选择证书登陆？"></a>为什么选择证书登陆？</h3><p>Mac下原生及主流的ssh终端工具大多不具备保存ssh登陆密码的功能, 通过证书登陆的方式，就可以实现原生终端工具Terminal或第三方明星终端iTerm免密码登录远程系统，并且比单纯的密码验证登陆方式提高了安全性。</p>
+<a id="more"></a>
+
+<h3 id="配置过程（以下操作都在终端命令行下运行）"><a href="#配置过程（以下操作都在终端命令行下运行）" class="headerlink" title="配置过程（以下操作都在终端命令行下运行）"></a>配置过程（以下操作都在终端命令行下运行）</h3><ol>
+<li><p>进入系统的ssh证书目录 cd ~/.ssh/</p>
+</li>
+<li><p>建立证书文件 ssh-keygen -t rsa 提示输入，直接回车即可。</p>
+</li>
+<li><p>输入 ls 命令查看当前目录会发现新生成的一对秘钥文件分别是：</p>
+<p> 公钥：id_rsa.pub</p>
+<p> 私钥：id_rsa</p>
+</li>
+<li><p>登陆到远程服务器，进入.ssh目录 cd ~/.ssh</p>
+<p> 将上面生成的公钥文件的内容copy进 authorized_keys 文件中</p>
+</li>
+<li><p>在Mac终端下执行登陆命令 ssh username@server</p>
+<p> 即可免密码登录到远程服务器</p>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+  </entry>
 </search>

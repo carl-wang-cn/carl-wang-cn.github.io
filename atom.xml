@@ -6,7 +6,7 @@
   <link href="https://carl-wang-cn.github.io/atom.xml" rel="self"/>
   
   <link href="https://carl-wang-cn.github.io/"/>
-  <updated>2021-01-01T09:12:17.691Z</updated>
+  <updated>2021-01-04T00:46:19.011Z</updated>
   <id>https://carl-wang-cn.github.io/</id>
   
   <author>
@@ -15,6 +15,23 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>ssh终端证书方式登录远程linux系统</title>
+    <link href="https://carl-wang-cn.github.io/2020/12/28/ssh-without-passwd/"/>
+    <id>https://carl-wang-cn.github.io/2020/12/28/ssh-without-passwd/</id>
+    <published>2020-12-28T01:02:49.000Z</published>
+    <updated>2021-01-04T00:46:19.011Z</updated>
+    
+    
+    <summary type="html">&lt;h3 id=&quot;为什么选择证书登陆？&quot;&gt;&lt;a href=&quot;#为什么选择证书登陆？&quot; class=&quot;headerlink&quot; title=&quot;为什么选择证书登陆？&quot;&gt;&lt;/a&gt;为什么选择证书登陆？&lt;/h3&gt;&lt;p&gt;Mac下原生及主流的ssh终端工具大多不具备保存ssh登陆密码的功能, 通过证书登陆的方式，就可以实现原生终端工具Terminal或第三方明星终端iTerm免密码登录远程系统，并且比单纯的密码验证登陆方式提高了安全性。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="技术" scheme="https://carl-wang-cn.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>RSA-数字签名与加密</title>
@@ -190,32 +207,6 @@
     
     
     <summary type="html">&lt;p&gt;共享内存区是IPC形式中&lt;strong&gt;最快&lt;/strong&gt;的. 一旦这样的内存区映射到共享它的进程的地址&lt;br&gt;空间, 这些进程间数据的传递就不再涉及内核. 然而往该共享内存区存放信息或从&lt;br&gt;中取走信息的进程间通常需要某种形式的同步.&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="技术" scheme="https://carl-wang-cn.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-    
-    <category term="ipc" scheme="https://carl-wang-cn.github.io/tags/ipc/"/>
-    
-    <category term="多进程" scheme="https://carl-wang-cn.github.io/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>进程间通信-Posix信号量</title>
-    <link href="https://carl-wang-cn.github.io/2020/02/04/2020-02-04-ipc-posix-sem/"/>
-    <id>https://carl-wang-cn.github.io/2020/02/04/2020-02-04-ipc-posix-sem/</id>
-    <published>2020-02-04T00:27:10.000Z</published>
-    <updated>2020-12-30T10:23:58.982Z</updated>
-    
-    
-    <summary type="html">&lt;h5 id=&quot;信号量是一种用于提供不同进程间或一个给定进程的不同线程间同步手段的原语。&quot;&gt;&lt;a href=&quot;#信号量是一种用于提供不同进程间或一个给定进程的不同线程间同步手段的原语。&quot; class=&quot;headerlink&quot; title=&quot;信号量是一种用于提供不同进程间或一个给定进程的不同线程间同步手段的原语。&quot;&gt;&lt;/a&gt;信号量是一种用于提供不同进程间或一个给定进程的不同线程间同步手段的原语。&lt;/h5&gt;&lt;ul&gt;
-&lt;li&gt;Posix有名信号量： 使用Posix IPC名字标识，可用于进程或线程间的同步。&lt;/li&gt;
-&lt;li&gt;Posix基于内存的信号量： 存放在共享内存中，可用于进程或线程间的同步。&lt;/li&gt;
-&lt;li&gt;System V信号量： 在内核中维护，可用于进程或线程间的同步。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;信号量的值是随内核持续的&lt;/strong&gt;&lt;/p&gt;</summary>
     
     
     
