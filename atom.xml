@@ -6,7 +6,7 @@
   <link href="https://carl-wang-cn.github.io/atom.xml" rel="self"/>
   
   <link href="https://carl-wang-cn.github.io/"/>
-  <updated>2021-01-04T00:46:19.011Z</updated>
+  <updated>2021-01-08T06:03:18.395Z</updated>
   <id>https://carl-wang-cn.github.io/</id>
   
   <author>
@@ -15,6 +15,25 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>crontab示例</title>
+    <link href="https://carl-wang-cn.github.io/2021/01/08/crontab-examples/"/>
+    <id>https://carl-wang-cn.github.io/2021/01/08/crontab-examples/</id>
+    <published>2021-01-08T06:01:53.000Z</published>
+    <updated>2021-01-08T06:03:18.395Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;crontab -e 编辑该用户的crontab， 不存在时新建&lt;br&gt;crontab -l 列出该用户的crontab&lt;br&gt;crontab -r 删除该用户的crontab&lt;br&gt;crontab -u&lt;uid&gt; 指定要设定crontab的用户名称&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="技术" scheme="https://carl-wang-cn.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+    
+    <category term="crontab" scheme="https://carl-wang-cn.github.io/tags/crontab/"/>
+    
+  </entry>
   
   <entry>
     <title>ssh终端证书方式登录远程linux系统</title>
@@ -186,27 +205,6 @@
     
     <summary type="html">&lt;h2 id=&quot;互斥锁&quot;&gt;&lt;a href=&quot;#互斥锁&quot; class=&quot;headerlink&quot; title=&quot;互斥锁&quot;&gt;&lt;/a&gt;互斥锁&lt;/h2&gt;&lt;p&gt;互斥锁和条件变量总是可用来同步一个进程内的各个线程。但是如果一个互斥锁或条件变量是&lt;br&gt;存放在多个进程间共享的某个内存区内，那么它还可以被用来同步这几个进程。&lt;/p&gt;
 &lt;p&gt;互斥锁指代相互排斥，用于保护临界区，以保证任何时刻&lt;strong&gt;只有一个线程/进程&lt;/strong&gt;在执行&lt;br&gt;其中的代码。保护一个临界区的代码的通常轮廓大体如下：&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="技术" scheme="https://carl-wang-cn.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-    
-    <category term="ipc" scheme="https://carl-wang-cn.github.io/tags/ipc/"/>
-    
-    <category term="多进程" scheme="https://carl-wang-cn.github.io/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>进程间通信-共享内存</title>
-    <link href="https://carl-wang-cn.github.io/2020/02/05/2020-02-05-mmap/"/>
-    <id>https://carl-wang-cn.github.io/2020/02/05/2020-02-05-mmap/</id>
-    <published>2020-02-05T15:28:44.000Z</published>
-    <updated>2020-12-29T06:42:38.131Z</updated>
-    
-    
-    <summary type="html">&lt;p&gt;共享内存区是IPC形式中&lt;strong&gt;最快&lt;/strong&gt;的. 一旦这样的内存区映射到共享它的进程的地址&lt;br&gt;空间, 这些进程间数据的传递就不再涉及内核. 然而往该共享内存区存放信息或从&lt;br&gt;中取走信息的进程间通常需要某种形式的同步.&lt;/p&gt;</summary>
     
     
     

@@ -1956,4 +1956,18 @@
         <category>技术</category>
       </categories>
   </entry>
+  <entry>
+    <title>crontab示例</title>
+    <url>/2021/01/08/crontab-examples/</url>
+    <content><![CDATA[<p>crontab -e 编辑该用户的crontab， 不存在时新建<br>crontab -l 列出该用户的crontab<br>crontab -r 删除该用户的crontab<br>crontab -u<uid> 指定要设定crontab的用户名称</p>
+<a id="more"></a>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">30 08 10 06 *     /path/to/script      <span class="comment"># 在6月10日上午8：30运行该脚本。 *表示一周的任何一天</span></span><br><span class="line">00 11,16 * * *    /path/to/script      <span class="comment"># 每天于11:00 16:00 各执行一次。</span></span><br><span class="line">00 09-18 * * *    /path/to/script      <span class="comment"># 每天9-18点的整点 各执行一次。</span></span><br><span class="line">00 09-18 * * 1-5  /path/to/script      <span class="comment"># 只在周一到周五的9-18点的整点各执行一次</span></span><br><span class="line">* * * * *         /path/to/script      <span class="comment"># 每分钟执行一次</span></span><br><span class="line">*/5 * * * *       /path/to/script      <span class="comment"># 每5分钟执行一次</span></span><br><span class="line">0-10/2 * * * *    /path/to/script      <span class="comment"># 在前10分钟的每2分钟</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>crontab</tag>
+      </tags>
+  </entry>
 </search>

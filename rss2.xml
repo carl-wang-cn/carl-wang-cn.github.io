@@ -15,8 +15,29 @@
     <atom:link href="https://carl-wang-cn.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>金融程序员</description>
-    <pubDate>Mon, 04 Jan 2021 00:46:19 GMT</pubDate>
+    <pubDate>Fri, 08 Jan 2021 06:03:18 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>crontab示例</title>
+      <link>https://carl-wang-cn.github.io/2021/01/08/crontab-examples/</link>
+      <guid>https://carl-wang-cn.github.io/2021/01/08/crontab-examples/</guid>
+      <pubDate>Fri, 08 Jan 2021 06:01:53 GMT</pubDate>
+      
+      <description>&lt;p&gt;crontab -e 编辑该用户的crontab， 不存在时新建&lt;br&gt;crontab -l 列出该用户的crontab&lt;br&gt;crontab -r 删除该用户的crontab&lt;br&gt;crontab -u&lt;uid&gt; 指定要设定crontab的用户名称&lt;/p&gt;</description>
+      
+      
+      
+      
+      <category domain="https://carl-wang-cn.github.io/categories/%E6%8A%80%E6%9C%AF/">技术</category>
+      
+      
+      <category domain="https://carl-wang-cn.github.io/tags/crontab/">crontab</category>
+      
+      
+      <comments>https://carl-wang-cn.github.io/2021/01/08/crontab-examples/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>ssh终端证书方式登录远程linux系统</title>
@@ -215,29 +236,6 @@
       
       
       <comments>https://carl-wang-cn.github.io/2020/02/07/2020-02-07-mutex-cond/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>进程间通信-共享内存</title>
-      <link>https://carl-wang-cn.github.io/2020/02/05/2020-02-05-mmap/</link>
-      <guid>https://carl-wang-cn.github.io/2020/02/05/2020-02-05-mmap/</guid>
-      <pubDate>Wed, 05 Feb 2020 15:28:44 GMT</pubDate>
-      
-      <description>&lt;p&gt;共享内存区是IPC形式中&lt;strong&gt;最快&lt;/strong&gt;的. 一旦这样的内存区映射到共享它的进程的地址&lt;br&gt;空间, 这些进程间数据的传递就不再涉及内核. 然而往该共享内存区存放信息或从&lt;br&gt;中取走信息的进程间通常需要某种形式的同步.&lt;/p&gt;</description>
-      
-      
-      
-      
-      <category domain="https://carl-wang-cn.github.io/categories/%E6%8A%80%E6%9C%AF/">技术</category>
-      
-      
-      <category domain="https://carl-wang-cn.github.io/tags/ipc/">ipc</category>
-      
-      <category domain="https://carl-wang-cn.github.io/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B/">多进程</category>
-      
-      
-      <comments>https://carl-wang-cn.github.io/2020/02/05/2020-02-05-mmap/#disqus_thread</comments>
       
     </item>
     
