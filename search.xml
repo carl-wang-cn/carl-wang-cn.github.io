@@ -1,25 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>从运营事故中成长</title>
-    <url>/2020/01/16/2020-01-16-accident_learn/</url>
-    <content><![CDATA[<h3 id="发布环节"><a href="#发布环节" class="headerlink" title="发布环节"></a>发布环节</h3><p>在经过一段时间的积累后, 会形成一套完善的发布流程, 此时, 在发布前能让自己提高的空间会越来越有限</p>
-<h3 id="发生运营事故后要怎么做"><a href="#发生运营事故后要怎么做" class="headerlink" title="发生运营事故后要怎么做"></a>发生运营事故后要怎么做</h3><ol>
-<li>不是单纯地处理完问题就完事, 然后就阿弥托福以后不会再发生.</li>
-<li>将每次运营事故都当成一次宝贵的学习机会, 仔细检讨为什么会发生该事故, 是什么问题导致的, 从根本上找出原因, 并找到解决方案, 不要再次发生类似的错误.</li>
-<li>事故报告的改进措施, 不能简单的从思想层面去检讨, 下一顿决心就完事了, 事故报告也不是写完发给大家看一眼, 就完事了. 改进措施是必须要能够转化为工作量的实在的事情, 可以是1个周, 一个月, 一个季度, 但是一定要能够量化, 要能够实施, 并且认真地执行完成</li>
-<li>要经常翻看以往的运营事故报告, 从前人的事故中成长, 这样才能避免不同的人去犯类似的错误.</li>
-</ol>
-]]></content>
-      <categories>
-        <category>意识</category>
-      </categories>
-      <tags>
-        <tag>运营事故</tag>
-        <tag>通识</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>awk怎么写?</title>
     <url>/2020/01/16/2020-01-16-awk/</url>
     <content><![CDATA[<p>本篇文章主要是参考左耳朵耗子前辈的博文整理而来, 作为自己学习备忘之用.</p>
@@ -100,6 +81,25 @@
       <tags>
         <tag>awk</tag>
         <tag>通用技巧</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>从运营事故中成长</title>
+    <url>/2020/01/16/2020-01-16-accident_learn/</url>
+    <content><![CDATA[<h3 id="发布环节"><a href="#发布环节" class="headerlink" title="发布环节"></a>发布环节</h3><p>在经过一段时间的积累后, 会形成一套完善的发布流程, 此时, 在发布前能让自己提高的空间会越来越有限</p>
+<h3 id="发生运营事故后要怎么做"><a href="#发生运营事故后要怎么做" class="headerlink" title="发生运营事故后要怎么做"></a>发生运营事故后要怎么做</h3><ol>
+<li>不是单纯地处理完问题就完事, 然后就阿弥托福以后不会再发生.</li>
+<li>将每次运营事故都当成一次宝贵的学习机会, 仔细检讨为什么会发生该事故, 是什么问题导致的, 从根本上找出原因, 并找到解决方案, 不要再次发生类似的错误.</li>
+<li>事故报告的改进措施, 不能简单的从思想层面去检讨, 下一顿决心就完事了, 事故报告也不是写完发给大家看一眼, 就完事了. 改进措施是必须要能够转化为工作量的实在的事情, 可以是1个周, 一个月, 一个季度, 但是一定要能够量化, 要能够实施, 并且认真地执行完成</li>
+<li>要经常翻看以往的运营事故报告, 从前人的事故中成长, 这样才能避免不同的人去犯类似的错误.</li>
+</ol>
+]]></content>
+      <categories>
+        <category>意识</category>
+      </categories>
+      <tags>
+        <tag>运营事故</tag>
+        <tag>通识</tag>
       </tags>
   </entry>
   <entry>
@@ -257,6 +257,42 @@
       </tags>
   </entry>
   <entry>
+    <title>grep命令使用技巧</title>
+    <url>/2020/01/16/2020-01-16-grep/</url>
+    <content><![CDATA[<p>grep [选项] pattern [文件名]</p>
+<p>命令中的选项为：</p>
+<ul>
+<li>-? 同时显示匹配行上下的？行，如：<code>grep -2 pattern filename</code> 同时显示匹配行的上下2行。</li>
+<li>-A ? 显示匹配行和后面的?行, 如: <code>grep -A 2 pattern filename</code></li>
+<li>-B ? 显示匹配行和前面的?行</li>
+<li>-b，–byte-offset 打印匹配行前面打印该行所在的块号码。</li>
+<li>-c,–count 只打印匹配的行数，不显示匹配的内容。</li>
+<li>-f File，–file=File 从文件中提取模板。空文件中包含0个模板，所以什么都不匹配。</li>
+<li>-h，–no-filename 当搜索多个文件时，不显示匹配文件名前缀。</li>
+<li>-i，–ignore-case 忽略大小写差别。</li>
+<li>-q，–quiet 取消显示，只返回退出状态。0则表示找到了匹配的行。</li>
+<li>-l，–files-with-matches 打印匹配模板的文件清单。</li>
+<li>-L，–files-without-match 打印不匹配模板的文件清单。</li>
+<li>-n，–line-number 在匹配的行前面打印行号。</li>
+<li>-s，–silent 不显示关于不存在或者无法读取文件的错误信息。</li>
+<li>-v，–revert-match 反检索，只显示不匹配的行。</li>
+<li>-w，–word-regexp 如果被&lt;和&gt;引用，就把表达式做为一个单词搜索。</li>
+<li>-V，–version 显示软件版本信息。</li>
+</ul>
+<a id="more"></a>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -l | grep <span class="string">&#x27;^a&#x27;</span> 通过管道过滤ls -l输出的内容，只显示以a开头的行。</span><br><span class="line">grep <span class="string">&#x27;test&#x27;</span> d* 显示所有以d开头的文件中包含<span class="built_in">test</span>的行。</span><br><span class="line">grep <span class="string">&#x27;test&#x27;</span> aa bb cc 显示在aa，bb，cc文件中匹配<span class="built_in">test</span>的行。</span><br><span class="line">grep <span class="string">&#x27;[a-z]&#x27;</span> aa 显示所有包含每个字符串至少有5个连续小写字符的字符串的行。</span><br><span class="line">grep <span class="string">&#x27;w(es)t.*&#x27;</span> aa 如果west被匹配，则es就被存储到内存中，并标记为1，然后搜索任意个字符(.*)，这些字符后面紧跟着另外一个es()，找到就显示该行。如果用egrep或grep -E，就不用<span class="string">&quot;&quot;</span>号进行转义，直接写成<span class="string">&#x27;w(es)t.*&#x27;</span>就可以了。</span><br><span class="line">grep -i pattern files ：不区分大小写地搜索。默认情况区分大小写</span><br><span class="line">grep -l pattern files ：只列出匹配的文件名，</span><br><span class="line">grep -L pattern files ：列出不匹配的文件名，</span><br><span class="line">grep -w pattern files ：只匹配整个单词，而不是字符串的一部分(如匹配‘magic’，而不是‘magical’)，</span><br><span class="line">grep -C number pattern files ：匹配的上下文分别显示[number]行，</span><br><span class="line">grep pattern1 | pattern2 files ：显示匹配 pattern1 或 pattern2 的行，</span><br><span class="line">grep pattern1 files | grep pattern2 ：显示既匹配 pattern1 又匹配 pattern2 的行。</span><br></pre></td></tr></table></figure>
+<p>pattern为所要匹配的字符串，可使用下列模式</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">. 匹配任意一个字符</span><br><span class="line">* 匹配0 个或多个*前的字符</span><br><span class="line">^ 匹配行开头</span><br><span class="line">$ 匹配行结尾</span><br><span class="line">[] 匹配[ ]中的任意一个字符，[]中可用 - 表示范围，</span><br><span class="line">例如[a-z]表示字母a 至z 中的任意一个</span><br><span class="line">\ 转意字符</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>通用技巧</tag>
+        <tag>grep</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>find命令使用技巧</title>
     <url>/2020/01/16/2020-01-16-find/</url>
     <content><![CDATA[<p><code>find &lt; path &gt; &lt; expression &gt; &lt; cmd &gt;</code></p>
@@ -313,42 +349,6 @@
       <tags>
         <tag>通用技巧</tag>
         <tag>find</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>grep命令使用技巧</title>
-    <url>/2020/01/16/2020-01-16-grep/</url>
-    <content><![CDATA[<p>grep [选项] pattern [文件名]</p>
-<p>命令中的选项为：</p>
-<ul>
-<li>-? 同时显示匹配行上下的？行，如：<code>grep -2 pattern filename</code> 同时显示匹配行的上下2行。</li>
-<li>-A ? 显示匹配行和后面的?行, 如: <code>grep -A 2 pattern filename</code></li>
-<li>-B ? 显示匹配行和前面的?行</li>
-<li>-b，–byte-offset 打印匹配行前面打印该行所在的块号码。</li>
-<li>-c,–count 只打印匹配的行数，不显示匹配的内容。</li>
-<li>-f File，–file=File 从文件中提取模板。空文件中包含0个模板，所以什么都不匹配。</li>
-<li>-h，–no-filename 当搜索多个文件时，不显示匹配文件名前缀。</li>
-<li>-i，–ignore-case 忽略大小写差别。</li>
-<li>-q，–quiet 取消显示，只返回退出状态。0则表示找到了匹配的行。</li>
-<li>-l，–files-with-matches 打印匹配模板的文件清单。</li>
-<li>-L，–files-without-match 打印不匹配模板的文件清单。</li>
-<li>-n，–line-number 在匹配的行前面打印行号。</li>
-<li>-s，–silent 不显示关于不存在或者无法读取文件的错误信息。</li>
-<li>-v，–revert-match 反检索，只显示不匹配的行。</li>
-<li>-w，–word-regexp 如果被&lt;和&gt;引用，就把表达式做为一个单词搜索。</li>
-<li>-V，–version 显示软件版本信息。</li>
-</ul>
-<a id="more"></a>
-
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -l | grep <span class="string">&#x27;^a&#x27;</span> 通过管道过滤ls -l输出的内容，只显示以a开头的行。</span><br><span class="line">grep <span class="string">&#x27;test&#x27;</span> d* 显示所有以d开头的文件中包含<span class="built_in">test</span>的行。</span><br><span class="line">grep <span class="string">&#x27;test&#x27;</span> aa bb cc 显示在aa，bb，cc文件中匹配<span class="built_in">test</span>的行。</span><br><span class="line">grep <span class="string">&#x27;[a-z]&#x27;</span> aa 显示所有包含每个字符串至少有5个连续小写字符的字符串的行。</span><br><span class="line">grep <span class="string">&#x27;w(es)t.*&#x27;</span> aa 如果west被匹配，则es就被存储到内存中，并标记为1，然后搜索任意个字符(.*)，这些字符后面紧跟着另外一个es()，找到就显示该行。如果用egrep或grep -E，就不用<span class="string">&quot;&quot;</span>号进行转义，直接写成<span class="string">&#x27;w(es)t.*&#x27;</span>就可以了。</span><br><span class="line">grep -i pattern files ：不区分大小写地搜索。默认情况区分大小写</span><br><span class="line">grep -l pattern files ：只列出匹配的文件名，</span><br><span class="line">grep -L pattern files ：列出不匹配的文件名，</span><br><span class="line">grep -w pattern files ：只匹配整个单词，而不是字符串的一部分(如匹配‘magic’，而不是‘magical’)，</span><br><span class="line">grep -C number pattern files ：匹配的上下文分别显示[number]行，</span><br><span class="line">grep pattern1 | pattern2 files ：显示匹配 pattern1 或 pattern2 的行，</span><br><span class="line">grep pattern1 files | grep pattern2 ：显示既匹配 pattern1 又匹配 pattern2 的行。</span><br></pre></td></tr></table></figure>
-<p>pattern为所要匹配的字符串，可使用下列模式</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">. 匹配任意一个字符</span><br><span class="line">* 匹配0 个或多个*前的字符</span><br><span class="line">^ 匹配行开头</span><br><span class="line">$ 匹配行结尾</span><br><span class="line">[] 匹配[ ]中的任意一个字符，[]中可用 - 表示范围，</span><br><span class="line">例如[a-z]表示字母a 至z 中的任意一个</span><br><span class="line">\ 转意字符</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>通用技巧</tag>
-        <tag>grep</tag>
       </tags>
   </entry>
   <entry>
@@ -456,33 +456,6 @@
       <tags>
         <tag>通用技巧</tag>
         <tag>xargs</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>理想的开发框架</title>
-    <url>/2020/01/27/2020-01-27-best-dev-framework/</url>
-    <content><![CDATA[<p>以下内容, 由富途CTO ppchen总结</p>
-<ol>
-<li>【同步编码异步执行】兼顾运行效率和编码效率，希望代码写起来是同步和顺序的，而执行的时候是异步的</li>
-<li>【IDL/RPC】支持IDL（接口描述语言）和RPC，减少网络协议相关的重复工作，协议有比较好的扩展性；远程调用友好且高效。要开发语言无关，因为你用c开发，不表示其他团队也用c调用你的接口，所以IDL要能生成常见语言的RPC。</li>
-</ol>
-<a id="more"></a>
-
-<ol start="3">
-<li>【LB】对服务间的调用选路进行统一的管理，对单机故障和网络波动等常见情况有自动容错，我们就简称load balance(LB)吧</li>
-<li>存储组件化服务化，这个其实和开发框架关系不太紧密，这里提一下，强调存储应该有统一的组件且由专业的团队运维，就像公有云一样</li>
-<li>【过载保护】框架必须有成熟自带的过载保护机制，不需要业务开发人员关注或者关注很少</li>
-<li>【基础的监控和告警】RPC调用、机器的cpu/网络活动、任务并发度、时延、进程监控和秒起等基础信息，要有上报、统计和告警，不需要业务开发人员关注。在团队分工上，应该有专门的团队对框架进行运维，关注基础的监控和告警，业务开发人员将业务逻辑以.so等动态库形式提交到框架云端，业务开发人员关注业务逻辑告警</li>
-<li>【完整的业务流转呈现】统一日志，在一个地方能够清晰的呈现某次业务处理过程的流转详细情况：经过了哪些模块间调用，调用参数是怎样的，每个模块处理的重要分支和结果是怎样的，最好图形化呈现。支持染色和不同的日志详细级别</li>
-<li>【中央总控】整个系统的配置和文档，例如每个模块有哪些机器，分布在哪些机房、容量冗余情况、模块间调用关系、访问控制的配置动态管理甚至电子流，都希望能统一在一个地方web化的管理起来，并且与运营的系统是直接联系直接生效的，即避免文档记录是怎样怎样，而运营的系统实际情况是不一样。随便点开一个模块，就知道它的设备列表、分布、进程工作情况、调用了哪些模块、需要进行哪些接口权限申请，一目了然，人员更替无需交接，因为所有信息都在中央总控网站可见，且不会是过时的。</li>
-<li>【云调度】容量的自动调度。例如要进行某个运营活动需要大量的扩容，只需要把设备放进去，就能自动的扩缩容。当某个城市机房故障，能够自动调度容量到其他城市</li>
-</ol>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>架构</tag>
       </tags>
   </entry>
   <entry>
@@ -667,6 +640,33 @@
       </categories>
       <tags>
         <tag>code-review</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>理想的开发框架</title>
+    <url>/2020/01/27/2020-01-27-best-dev-framework/</url>
+    <content><![CDATA[<p>以下内容, 由富途CTO ppchen总结</p>
+<ol>
+<li>【同步编码异步执行】兼顾运行效率和编码效率，希望代码写起来是同步和顺序的，而执行的时候是异步的</li>
+<li>【IDL/RPC】支持IDL（接口描述语言）和RPC，减少网络协议相关的重复工作，协议有比较好的扩展性；远程调用友好且高效。要开发语言无关，因为你用c开发，不表示其他团队也用c调用你的接口，所以IDL要能生成常见语言的RPC。</li>
+</ol>
+<a id="more"></a>
+
+<ol start="3">
+<li>【LB】对服务间的调用选路进行统一的管理，对单机故障和网络波动等常见情况有自动容错，我们就简称load balance(LB)吧</li>
+<li>存储组件化服务化，这个其实和开发框架关系不太紧密，这里提一下，强调存储应该有统一的组件且由专业的团队运维，就像公有云一样</li>
+<li>【过载保护】框架必须有成熟自带的过载保护机制，不需要业务开发人员关注或者关注很少</li>
+<li>【基础的监控和告警】RPC调用、机器的cpu/网络活动、任务并发度、时延、进程监控和秒起等基础信息，要有上报、统计和告警，不需要业务开发人员关注。在团队分工上，应该有专门的团队对框架进行运维，关注基础的监控和告警，业务开发人员将业务逻辑以.so等动态库形式提交到框架云端，业务开发人员关注业务逻辑告警</li>
+<li>【完整的业务流转呈现】统一日志，在一个地方能够清晰的呈现某次业务处理过程的流转详细情况：经过了哪些模块间调用，调用参数是怎样的，每个模块处理的重要分支和结果是怎样的，最好图形化呈现。支持染色和不同的日志详细级别</li>
+<li>【中央总控】整个系统的配置和文档，例如每个模块有哪些机器，分布在哪些机房、容量冗余情况、模块间调用关系、访问控制的配置动态管理甚至电子流，都希望能统一在一个地方web化的管理起来，并且与运营的系统是直接联系直接生效的，即避免文档记录是怎样怎样，而运营的系统实际情况是不一样。随便点开一个模块，就知道它的设备列表、分布、进程工作情况、调用了哪些模块、需要进行哪些接口权限申请，一目了然，人员更替无需交接，因为所有信息都在中央总控网站可见，且不会是过时的。</li>
+<li>【云调度】容量的自动调度。例如要进行某个运营活动需要大量的扩容，只需要把设备放进去，就能自动的扩缩容。当某个城市机房故障，能够自动调度容量到其他城市</li>
+</ol>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>架构</tag>
       </tags>
   </entry>
   <entry>
