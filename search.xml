@@ -103,101 +103,6 @@
       </tags>
   </entry>
   <entry>
-    <title>grep命令使用技巧</title>
-    <url>/2020/01/16/2020-01-16-grep/</url>
-    <content><![CDATA[<p>grep [选项] pattern [文件名]</p>
-<p>命令中的选项为：</p>
-<ul>
-<li>-? 同时显示匹配行上下的？行，如：<code>grep -2 pattern filename</code> 同时显示匹配行的上下2行。</li>
-<li>-A ? 显示匹配行和后面的?行, 如: <code>grep -A 2 pattern filename</code></li>
-<li>-B ? 显示匹配行和前面的?行</li>
-<li>-b，–byte-offset 打印匹配行前面打印该行所在的块号码。</li>
-<li>-c,–count 只打印匹配的行数，不显示匹配的内容。</li>
-<li>-f File，–file=File 从文件中提取模板。空文件中包含0个模板，所以什么都不匹配。</li>
-<li>-h，–no-filename 当搜索多个文件时，不显示匹配文件名前缀。</li>
-<li>-i，–ignore-case 忽略大小写差别。</li>
-<li>-q，–quiet 取消显示，只返回退出状态。0则表示找到了匹配的行。</li>
-<li>-l，–files-with-matches 打印匹配模板的文件清单。</li>
-<li>-L，–files-without-match 打印不匹配模板的文件清单。</li>
-<li>-n，–line-number 在匹配的行前面打印行号。</li>
-<li>-s，–silent 不显示关于不存在或者无法读取文件的错误信息。</li>
-<li>-v，–revert-match 反检索，只显示不匹配的行。</li>
-<li>-w，–word-regexp 如果被&lt;和&gt;引用，就把表达式做为一个单词搜索。</li>
-<li>-V，–version 显示软件版本信息。</li>
-</ul>
-<a id="more"></a>
-
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -l | grep <span class="string">&#x27;^a&#x27;</span> 通过管道过滤ls -l输出的内容，只显示以a开头的行。</span><br><span class="line">grep <span class="string">&#x27;test&#x27;</span> d* 显示所有以d开头的文件中包含<span class="built_in">test</span>的行。</span><br><span class="line">grep <span class="string">&#x27;test&#x27;</span> aa bb cc 显示在aa，bb，cc文件中匹配<span class="built_in">test</span>的行。</span><br><span class="line">grep <span class="string">&#x27;[a-z]&#x27;</span> aa 显示所有包含每个字符串至少有5个连续小写字符的字符串的行。</span><br><span class="line">grep <span class="string">&#x27;w(es)t.*&#x27;</span> aa 如果west被匹配，则es就被存储到内存中，并标记为1，然后搜索任意个字符(.*)，这些字符后面紧跟着另外一个es()，找到就显示该行。如果用egrep或grep -E，就不用<span class="string">&quot;&quot;</span>号进行转义，直接写成<span class="string">&#x27;w(es)t.*&#x27;</span>就可以了。</span><br><span class="line">grep -i pattern files ：不区分大小写地搜索。默认情况区分大小写</span><br><span class="line">grep -l pattern files ：只列出匹配的文件名，</span><br><span class="line">grep -L pattern files ：列出不匹配的文件名，</span><br><span class="line">grep -w pattern files ：只匹配整个单词，而不是字符串的一部分(如匹配‘magic’，而不是‘magical’)，</span><br><span class="line">grep -C number pattern files ：匹配的上下文分别显示[number]行，</span><br><span class="line">grep pattern1 | pattern2 files ：显示匹配 pattern1 或 pattern2 的行，</span><br><span class="line">grep pattern1 files | grep pattern2 ：显示既匹配 pattern1 又匹配 pattern2 的行。</span><br></pre></td></tr></table></figure>
-<p>pattern为所要匹配的字符串，可使用下列模式</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">. 匹配任意一个字符</span><br><span class="line">* 匹配0 个或多个*前的字符</span><br><span class="line">^ 匹配行开头</span><br><span class="line">$ 匹配行结尾</span><br><span class="line">[] 匹配[ ]中的任意一个字符，[]中可用 - 表示范围，</span><br><span class="line">例如[a-z]表示字母a 至z 中的任意一个</span><br><span class="line">\ 转意字符</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>通用技巧</tag>
-        <tag>grep</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>find命令使用技巧</title>
-    <url>/2020/01/16/2020-01-16-find/</url>
-    <content><![CDATA[<p><code>find &lt; path &gt; &lt; expression &gt; &lt; cmd &gt;</code></p>
-<ul>
-<li>path： 所要搜索的目录及其所有子目录。默认为当前目录。</li>
-<li>expression： 所要搜索的文件的特征。</li>
-<li>cmd： 对搜索结果进行特定的处理。</li>
-</ul>
-<p>如果什么参数也不加，find默认搜索当前目录及其子目录，并且不过滤任何结果（也就是返回所有文件），将它们全都显示在屏幕上。</p>
-<h4 id="find命令常用选项及实例"><a href="#find命令常用选项及实例" class="headerlink" title="find命令常用选项及实例"></a>find命令常用选项及实例</h4><ul>
-<li><p>-name 按照文件名查找文件。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /dir -name filename  在/dir目录及其子目录下面查找名字为filename的文件</span><br><span class="line">find . -name <span class="string">&quot;*.c&quot;</span> 在当前目录及其子目录（用“.”表示）中查找任何扩展名为“c”的文件</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-</li>
-<li><p>-perm 按照文件权限来查找文件。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -perm 755 –<span class="built_in">print</span> 在当前目录下查找文件权限位为755的文件，即文件属主可以读、写、执行，其他用户可以读、执行的文件</span><br></pre></td></tr></table></figure></li>
-<li><p>-prune 使用这一选项可以使find命令不在当前指定的目录中查找，如果同时使用-depth选项，那么-prune将被find命令忽略。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /apps -path <span class="string">&quot;/apps/bin&quot;</span> -prune -o –<span class="built_in">print</span> 在/apps目录下查找文件，但不希望在/apps/bin目录下查找</span><br><span class="line">find /usr/sam -path <span class="string">&quot;/usr/sam/dir1&quot;</span> -prune -o –<span class="built_in">print</span> 在/usr/sam目录下查找不在dir1子目录之内的所有文件</span><br></pre></td></tr></table></figure></li>
-<li><p>-depth：在查找文件时，首先查找当前目录中的文件，然后再在其子目录中查找。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / -name <span class="string">&quot;CON.FILE&quot;</span> -depth –<span class="built_in">print</span> 它将首先匹配所有的文件然后再进入子目录中查找</span><br></pre></td></tr></table></figure></li>
-<li><p>-user 按照文件属主来查找文件。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find ~ -user sam –<span class="built_in">print</span> 在<span class="variable">$HOME</span>目录中查找文件属主为sam的文件</span><br></pre></td></tr></table></figure></li>
-<li><p>-group 按照文件所属的组来查找文件。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /apps -group gem –<span class="built_in">print</span> 在/apps目录下查找属于gem用户组的文件</span><br></pre></td></tr></table></figure></li>
-<li><p>-mtime -n +n 按照文件的更改时间来查找文件， -n表示文件更改时间距现在n天以内，+n表示文件更改时间距现在n天以前。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / -mtime -5 –<span class="built_in">print</span> 在系统根目录下查找更改时间在5日以内的文件</span><br><span class="line">find /var/adm -mtime +3 –<span class="built_in">print</span> 在/var/adm目录下查找更改时间在3日以前的文件</span><br></pre></td></tr></table></figure></li>
-<li><p>-nogroup 查找无有效所属组的文件，即该文件所属的组在/etc/groups中不存在。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / –nogroup -<span class="built_in">print</span></span><br></pre></td></tr></table></figure></li>
-<li><p>-nouser 查找无有效属主的文件，即该文件的属主在/etc/passwd中不存在。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /home -nouser –<span class="built_in">print</span></span><br></pre></td></tr></table></figure></li>
-<li><p>-newer file1 ! file2 查找更改时间比文件file1新但比文件file2旧的文件。</p>
-</li>
-<li><p>-type 查找某一类型的文件，<br>诸如：<br>b - 块设备文件。<br>d - 目录。<br>c - 字符设备文件。<br>p - 管道文件。<br>l - 符号链接文件。<br>f - 普通文件。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /etc -<span class="built_in">type</span> d –<span class="built_in">print</span> 在/etc目录下查找所有的目录</span><br><span class="line">find . ! -<span class="built_in">type</span> d –<span class="built_in">print</span> 在当前目录下查找除目录以外的所有类型的文件</span><br><span class="line">find /etc -<span class="built_in">type</span> l –<span class="built_in">print</span> 在/etc目录下查找所有的符号链接文件</span><br></pre></td></tr></table></figure></li>
-<li><p>-size n[c] 查找文件长度为n块的文件，带有c时表示文件长度以字节计。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -size +1000000c –<span class="built_in">print</span> 在当前目录下查找文件长度大于1 M字节的文件</span><br><span class="line">find /home/apache -size 100c –<span class="built_in">print</span> 在/home/apache目录下查找文件长度恰好为100字节的文件</span><br><span class="line">find . -size +10 –<span class="built_in">print</span> 在当前目录下查找长度超过10块的文件（一块等于512字节）</span><br></pre></td></tr></table></figure></li>
-<li><p>-mount：在查找文件时不跨越文件系统mount点。<br><code>find . -name “*.XC” -mount –print 从当前目录开始查找位于本文件系统中文件名以XC结尾的文件（不进入其他文件系统）</code></p>
-</li>
-<li><p>-follow：如果find命令遇到符号链接文件，就跟踪至链接所指向的文件</p>
-</li>
-<li><p>-exec，find命令对匹配的文件执行该参数所给出的shell命令。相应命令的形式为’command’ {} ;，注意{}和;之间的空格</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt; find ./ -size 0 -<span class="built_in">exec</span> rm &#123;&#125; \; 删除文件大小为零的文件</span><br><span class="line">&gt; rm -i `find ./ -size 0`</span><br><span class="line">&gt; find ./ -size 0 | xargs rm -f &amp;</span><br></pre></td></tr></table></figure>
-<p>为了用ls -l命令列出所匹配到的文件，可以把ls -l命令放在find命令的-exec选项中：<br><code>$ find . -type f -exec ls -l &#123;&#125; \;</code><br>在/logs目录中查找更改时间在5日以前的文件并删除它们：<br><code>find /logs -type f -mtime +5 -exec rm &#123;&#125; \;</code></p>
-</li>
-<li><p>-ok，和-exec的作用相同，只不过以一种更为安全的模式来执行该参数所给出的shell命令，在执行每一个命令之前，都会给出提示，让用户来确定是否执行。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -name <span class="string">&quot;*.conf&quot;</span>  -mtime +5 -ok rm &#123;  &#125; \; 在当前目录中查找所有文件名以.LOG结尾、更改时间在5日以上的文件，并删除它们，只不  过在删除之前先给出提示</span><br></pre></td></tr></table></figure>
-<p>说明： 如果你要寻找一个档案的话，那么使用 find 会是一个不错的主意。不过，由于 find 在寻找数据的时候相当的耗硬盘，所以没事情不要使用 find 啦！有更棒的指令可以取代呦，那就是 whereis 与 locate 咯~</p>
-</li>
-</ul>
-<h4 id="一些常用命令"><a href="#一些常用命令" class="headerlink" title="一些常用命令"></a>一些常用命令</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1. find . -<span class="built_in">type</span> f -<span class="built_in">exec</span> ls -l &#123;&#125; \;</span><br><span class="line">查找当前路径下的所有普通文件，并把它们列出来。</span><br><span class="line">2. find logs -<span class="built_in">type</span> f -mtime +5 -<span class="built_in">exec</span> rm &#123;&#125; \;</span><br><span class="line">删除logs目录下更新时间为5日以上的文件。</span><br><span class="line">3.find . -name <span class="string">&quot;*.log&quot;</span> -mtime +5 -ok rm &#123;&#125; \;</span><br><span class="line">删除当前路径下以。<span class="built_in">log</span>结尾的五日以上的文件，删除之前要确认。</span><br><span class="line">4. find ~ -<span class="built_in">type</span> f -perm 4755 -<span class="built_in">print</span></span><br><span class="line">查找<span class="variable">$HOME</span>目录下suid位被设置，文件属性为755的文件打印出来。</span><br><span class="line">说明： find在有点系统中会一次性得到将匹配到的文件都传给<span class="built_in">exec</span>，但是有的系统对<span class="built_in">exec</span>的命令长度做限制，就会报：”参数列太长“，这就需要使用xargs。xargs是部分取传来的文件。</span><br><span class="line">5. find / -<span class="built_in">type</span> f -<span class="built_in">print</span> |xargs file</span><br><span class="line">xargs测试文件分类</span><br><span class="line">6. find . -name <span class="string">&quot;core*&quot;</span> -<span class="built_in">print</span>|xargs <span class="built_in">echo</span> <span class="string">&quot; &quot;</span>&gt;/tmp/core.log</span><br><span class="line">将core文件信息查询结果报存到core。<span class="built_in">log</span>日志。</span><br><span class="line">7. find / -<span class="built_in">type</span> f -<span class="built_in">print</span> | xargs chmod o -w</span><br><span class="line">8. find . -name * -<span class="built_in">print</span> |xargs grep <span class="string">&quot;DBO&quot;</span></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>通用技巧</tag>
-        <tag>find</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>cmake怎么写?</title>
     <url>/2020/01/16/2020-01-16-cmake/</url>
     <content><![CDATA[<h3 id="cmake中一些预定义变量"><a href="#cmake中一些预定义变量" class="headerlink" title="cmake中一些预定义变量"></a>cmake中一些预定义变量</h3><ul>
@@ -352,55 +257,98 @@
       </tags>
   </entry>
   <entry>
-    <title>xargs命令使用技巧</title>
-    <url>/2020/01/16/2020-01-16-xargs/</url>
-    <content><![CDATA[<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>管道符 | + xargs, 用于把上游输出转换为下游参数输入。</p>
-<p>例如 <code>ls *.bak | xargs rm -f</code></p>
-<p>问题：<br>xargs默认把输入作为参数放到命令的最后，但是很多命令需要自己定位参数的位置，比如拷贝命令cp {上游结果} destFolder<br>解决方法：<br>xargs -I &lt;参数指示符&gt;， 然后用这个参数指示符定位参数插入的位置, </p>
-<p><code>ls *.bak | xargs -I % cp % /tmp/test</code></p>
-<p>注释：这里使用%作为指示符，第一个%可以理解为声明，第二个%可以理解为调用。你也可以用其他字符，比如 <code>ls *.bak | xargs -I &#123;&#125; cp &#123;&#125; /tmp/test</code></p>
+    <title>find命令使用技巧</title>
+    <url>/2020/01/16/2020-01-16-find/</url>
+    <content><![CDATA[<p><code>find &lt; path &gt; &lt; expression &gt; &lt; cmd &gt;</code></p>
+<ul>
+<li>path： 所要搜索的目录及其所有子目录。默认为当前目录。</li>
+<li>expression： 所要搜索的文件的特征。</li>
+<li>cmd： 对搜索结果进行特定的处理。</li>
+</ul>
+<p>如果什么参数也不加，find默认搜索当前目录及其子目录，并且不过滤任何结果（也就是返回所有文件），将它们全都显示在屏幕上。</p>
+<h4 id="find命令常用选项及实例"><a href="#find命令常用选项及实例" class="headerlink" title="find命令常用选项及实例"></a>find命令常用选项及实例</h4><ul>
+<li><p>-name 按照文件名查找文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /dir -name filename  在/dir目录及其子目录下面查找名字为filename的文件</span><br><span class="line">find . -name <span class="string">&quot;*.c&quot;</span> 在当前目录及其子目录（用“.”表示）中查找任何扩展名为“c”的文件</span><br></pre></td></tr></table></figure>
 <a id="more"></a>
-
-<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>之所以要用到xargs这个命令，关键是由于很多命令不支持|管道来传递参数，而日常工作中又有这个需要，所以就有了xargs命令，例如：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /sbin -perm +700 | ls -l       这个命令是错误的</span><br><span class="line">find /sbin -perm +700 | xargs ls -l   这样才是正确的</span><br></pre></td></tr></table></figure>
-<p>xargs 可以读入 stdin 的资料，并且以空白字符或断行字符作为分隔，将 stdin 的资料分隔成为 arguments 。 因为是以空白字符作为分隔，所以，如果有一些文件名或者是其他意义的名词内含有空白字符的时候， xargs 可能就会误判了～</p>
-<h4 id="选项解释"><a href="#选项解释" class="headerlink" title="选项解释"></a>选项解释</h4><ul>
-<li><p>-0 当sdtin含有特殊字符时候，将其当成一般字符，像/ ‘ 空格等</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#echo &quot;//&quot;|xargs  echo</span></span><br><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#echo &quot;//&quot;|xargs -0 echo</span></span><br></pre></td></tr></table></figure></li>
-<li><p>-a file 从文件中读入作为sdtin</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat test</span></span><br><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;hello world/n&quot;</span></span><br><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#xargs -a test echo</span></span><br><span class="line"><span class="meta">#!/bin/sh echo hello world/n</span></span><br><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#</span></span><br></pre></td></tr></table></figure></li>
-<li><p>-e flag ，注意有的时候可能会是-E，flag必须是一个以空格分隔的标志，当xargs分析到含有flag这个标志的时候就停止。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat txt</span></span><br><span class="line">/bin tao shou kun</span><br><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat txt|xargs -E &#x27;shou&#x27; echo</span></span><br><span class="line">/bin tao</span><br></pre></td></tr></table></figure></li>
-<li><p>-p 当每次执行一个argument的时候询问一次用户。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat txt|xargs -p echo</span></span><br><span class="line"><span class="built_in">echo</span> /bin tao shou kun ff ?...y</span><br><span class="line">/bin tao shou kun ff</span><br></pre></td></tr></table></figure></li>
-<li><p>-n num 后面加次数，表示命令在执行的时候一次用的argument的个数，默认是用所有的</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat txt|xargs -n 1 echo</span></span><br><span class="line">/bin</span><br><span class="line">tao</span><br><span class="line">shou</span><br><span class="line">kun</span><br><span class="line">root@localhost:~/test3<span class="comment">#cat txt|xargs  echo</span></span><br><span class="line">/bin tao shou kun</span><br></pre></td></tr></table></figure></li>
-<li><p>-t 表示先打印命令，然后再执行。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat txt|xargs -t echo</span></span><br><span class="line"><span class="built_in">echo</span> /bin tao shou kun</span><br><span class="line">/bin tao shou kun</span><br></pre></td></tr></table></figure></li>
-<li><p>-i 或者是-I，这得看linux支持了，将xargs的每项名称，一般是一行一行赋值给{}，可以用{}代替。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt; ls | xargs -t -i mv &#123;&#125; &#123;&#125;.bak</span><br></pre></td></tr></table></figure></li>
-<li><p>-r no-run-if-empty 当xargs的输入为空的时候则停止xargs，不用再去执行了。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#echo &quot;&quot;|xargs -t -r  mv</span></span><br><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#</span></span><br></pre></td></tr></table></figure></li>
-<li><p>-s num 命令行的最大字符数，指的是xargs后面那个命令的最大命令行字符数</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat test |xargs -i -x  -s 14 echo &quot;&#123;&#125;&quot;</span></span><br><span class="line">exp1</span><br><span class="line">exp5</span><br><span class="line">file</span><br><span class="line">xargs: argument line too long</span><br><span class="line">linux-2</span><br><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#</span></span><br></pre></td></tr></table></figure></li>
-<li><p>-L num Use at most max-lines nonblank input lines per command line.-s是含有空格的。</p>
 </li>
-<li><p>-l  同-L</p>
+<li><p>-perm 按照文件权限来查找文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -perm 755 –<span class="built_in">print</span> 在当前目录下查找文件权限位为755的文件，即文件属主可以读、写、执行，其他用户可以读、执行的文件</span><br></pre></td></tr></table></figure></li>
+<li><p>-prune 使用这一选项可以使find命令不在当前指定的目录中查找，如果同时使用-depth选项，那么-prune将被find命令忽略。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /apps -path <span class="string">&quot;/apps/bin&quot;</span> -prune -o –<span class="built_in">print</span> 在/apps目录下查找文件，但不希望在/apps/bin目录下查找</span><br><span class="line">find /usr/sam -path <span class="string">&quot;/usr/sam/dir1&quot;</span> -prune -o –<span class="built_in">print</span> 在/usr/sam目录下查找不在dir1子目录之内的所有文件</span><br></pre></td></tr></table></figure></li>
+<li><p>-depth：在查找文件时，首先查找当前目录中的文件，然后再在其子目录中查找。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / -name <span class="string">&quot;CON.FILE&quot;</span> -depth –<span class="built_in">print</span> 它将首先匹配所有的文件然后再进入子目录中查找</span><br></pre></td></tr></table></figure></li>
+<li><p>-user 按照文件属主来查找文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find ~ -user sam –<span class="built_in">print</span> 在<span class="variable">$HOME</span>目录中查找文件属主为sam的文件</span><br></pre></td></tr></table></figure></li>
+<li><p>-group 按照文件所属的组来查找文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /apps -group gem –<span class="built_in">print</span> 在/apps目录下查找属于gem用户组的文件</span><br></pre></td></tr></table></figure></li>
+<li><p>-mtime -n +n 按照文件的更改时间来查找文件， -n表示文件更改时间距现在n天以内，+n表示文件更改时间距现在n天以前。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / -mtime -5 –<span class="built_in">print</span> 在系统根目录下查找更改时间在5日以内的文件</span><br><span class="line">find /var/adm -mtime +3 –<span class="built_in">print</span> 在/var/adm目录下查找更改时间在3日以前的文件</span><br></pre></td></tr></table></figure></li>
+<li><p>-nogroup 查找无有效所属组的文件，即该文件所属的组在/etc/groups中不存在。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / –nogroup -<span class="built_in">print</span></span><br></pre></td></tr></table></figure></li>
+<li><p>-nouser 查找无有效属主的文件，即该文件的属主在/etc/passwd中不存在。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /home -nouser –<span class="built_in">print</span></span><br></pre></td></tr></table></figure></li>
+<li><p>-newer file1 ! file2 查找更改时间比文件file1新但比文件file2旧的文件。</p>
 </li>
-<li><p>-d delim 分隔符，默认的xargs分隔符是回车，argument的分隔符是空格，这里修改的是xargs的分隔符</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat txt |xargs -i -p echo &#123;&#125;</span></span><br><span class="line"><span class="built_in">echo</span> /bin tao shou kun ?...y</span><br><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat txt |xargs -i -p -d &quot; &quot; echo &#123;&#125;</span></span><br><span class="line"><span class="built_in">echo</span> /bin ?...y</span><br><span class="line"><span class="built_in">echo</span> tao ?.../bin</span><br><span class="line">y</span><br><span class="line"><span class="built_in">echo</span> shou ?...tao</span><br><span class="line">再如：</span><br><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat test |xargs -i -p -d &quot; &quot; echo &#123;&#125;</span></span><br><span class="line"><span class="built_in">echo</span> exp1</span><br><span class="line">exp5</span><br><span class="line">file</span><br><span class="line">linux-2</span><br><span class="line">ngis_post</span><br><span class="line">tao</span><br><span class="line"><span class="built_in">test</span></span><br><span class="line">txt</span><br><span class="line">xen-3</span><br><span class="line">?...y</span><br><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat test |xargs -i -p echo &#123;&#125;</span></span><br><span class="line"><span class="built_in">echo</span> exp1 ?...y</span><br><span class="line"><span class="built_in">echo</span> exp5 ?...exp1</span><br><span class="line">y</span><br><span class="line"><span class="built_in">echo</span> file ?...exp5</span><br><span class="line">y</span><br></pre></td></tr></table></figure></li>
-<li><p>-x exit的意思，主要是配合-s使用。</p>
+<li><p>-type 查找某一类型的文件，<br>诸如：<br>b - 块设备文件。<br>d - 目录。<br>c - 字符设备文件。<br>p - 管道文件。<br>l - 符号链接文件。<br>f - 普通文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /etc -<span class="built_in">type</span> d –<span class="built_in">print</span> 在/etc目录下查找所有的目录</span><br><span class="line">find . ! -<span class="built_in">type</span> d –<span class="built_in">print</span> 在当前目录下查找除目录以外的所有类型的文件</span><br><span class="line">find /etc -<span class="built_in">type</span> l –<span class="built_in">print</span> 在/etc目录下查找所有的符号链接文件</span><br></pre></td></tr></table></figure></li>
+<li><p>-size n[c] 查找文件长度为n块的文件，带有c时表示文件长度以字节计。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -size +1000000c –<span class="built_in">print</span> 在当前目录下查找文件长度大于1 M字节的文件</span><br><span class="line">find /home/apache -size 100c –<span class="built_in">print</span> 在/home/apache目录下查找文件长度恰好为100字节的文件</span><br><span class="line">find . -size +10 –<span class="built_in">print</span> 在当前目录下查找长度超过10块的文件（一块等于512字节）</span><br></pre></td></tr></table></figure></li>
+<li><p>-mount：在查找文件时不跨越文件系统mount点。<br><code>find . -name “*.XC” -mount –print 从当前目录开始查找位于本文件系统中文件名以XC结尾的文件（不进入其他文件系统）</code></p>
 </li>
-<li><p>-P 修改最大的进程数，默认是1，为0时候为as many as it can</p>
+<li><p>-follow：如果find命令遇到符号链接文件，就跟踪至链接所指向的文件</p>
+</li>
+<li><p>-exec，find命令对匹配的文件执行该参数所给出的shell命令。相应命令的形式为’command’ {} ;，注意{}和;之间的空格</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt; find ./ -size 0 -<span class="built_in">exec</span> rm &#123;&#125; \; 删除文件大小为零的文件</span><br><span class="line">&gt; rm -i `find ./ -size 0`</span><br><span class="line">&gt; find ./ -size 0 | xargs rm -f &amp;</span><br></pre></td></tr></table></figure>
+<p>为了用ls -l命令列出所匹配到的文件，可以把ls -l命令放在find命令的-exec选项中：<br><code>$ find . -type f -exec ls -l &#123;&#125; \;</code><br>在/logs目录中查找更改时间在5日以前的文件并删除它们：<br><code>find /logs -type f -mtime +5 -exec rm &#123;&#125; \;</code></p>
+</li>
+<li><p>-ok，和-exec的作用相同，只不过以一种更为安全的模式来执行该参数所给出的shell命令，在执行每一个命令之前，都会给出提示，让用户来确定是否执行。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -name <span class="string">&quot;*.conf&quot;</span>  -mtime +5 -ok rm &#123;  &#125; \; 在当前目录中查找所有文件名以.LOG结尾、更改时间在5日以上的文件，并删除它们，只不  过在删除之前先给出提示</span><br></pre></td></tr></table></figure>
+<p>说明： 如果你要寻找一个档案的话，那么使用 find 会是一个不错的主意。不过，由于 find 在寻找数据的时候相当的耗硬盘，所以没事情不要使用 find 啦！有更棒的指令可以取代呦，那就是 whereis 与 locate 咯~</p>
 </li>
 </ul>
-]]></content>
+<h4 id="一些常用命令"><a href="#一些常用命令" class="headerlink" title="一些常用命令"></a>一些常用命令</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1. find . -<span class="built_in">type</span> f -<span class="built_in">exec</span> ls -l &#123;&#125; \;</span><br><span class="line">查找当前路径下的所有普通文件，并把它们列出来。</span><br><span class="line">2. find logs -<span class="built_in">type</span> f -mtime +5 -<span class="built_in">exec</span> rm &#123;&#125; \;</span><br><span class="line">删除logs目录下更新时间为5日以上的文件。</span><br><span class="line">3.find . -name <span class="string">&quot;*.log&quot;</span> -mtime +5 -ok rm &#123;&#125; \;</span><br><span class="line">删除当前路径下以。<span class="built_in">log</span>结尾的五日以上的文件，删除之前要确认。</span><br><span class="line">4. find ~ -<span class="built_in">type</span> f -perm 4755 -<span class="built_in">print</span></span><br><span class="line">查找<span class="variable">$HOME</span>目录下suid位被设置，文件属性为755的文件打印出来。</span><br><span class="line">说明： find在有点系统中会一次性得到将匹配到的文件都传给<span class="built_in">exec</span>，但是有的系统对<span class="built_in">exec</span>的命令长度做限制，就会报：”参数列太长“，这就需要使用xargs。xargs是部分取传来的文件。</span><br><span class="line">5. find / -<span class="built_in">type</span> f -<span class="built_in">print</span> |xargs file</span><br><span class="line">xargs测试文件分类</span><br><span class="line">6. find . -name <span class="string">&quot;core*&quot;</span> -<span class="built_in">print</span>|xargs <span class="built_in">echo</span> <span class="string">&quot; &quot;</span>&gt;/tmp/core.log</span><br><span class="line">将core文件信息查询结果报存到core。<span class="built_in">log</span>日志。</span><br><span class="line">7. find / -<span class="built_in">type</span> f -<span class="built_in">print</span> | xargs chmod o -w</span><br><span class="line">8. find . -name * -<span class="built_in">print</span> |xargs grep <span class="string">&quot;DBO&quot;</span></span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>技术</category>
       </categories>
       <tags>
         <tag>通用技巧</tag>
-        <tag>xargs</tag>
+        <tag>find</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>grep命令使用技巧</title>
+    <url>/2020/01/16/2020-01-16-grep/</url>
+    <content><![CDATA[<p>grep [选项] pattern [文件名]</p>
+<p>命令中的选项为：</p>
+<ul>
+<li>-? 同时显示匹配行上下的？行，如：<code>grep -2 pattern filename</code> 同时显示匹配行的上下2行。</li>
+<li>-A ? 显示匹配行和后面的?行, 如: <code>grep -A 2 pattern filename</code></li>
+<li>-B ? 显示匹配行和前面的?行</li>
+<li>-b，–byte-offset 打印匹配行前面打印该行所在的块号码。</li>
+<li>-c,–count 只打印匹配的行数，不显示匹配的内容。</li>
+<li>-f File，–file=File 从文件中提取模板。空文件中包含0个模板，所以什么都不匹配。</li>
+<li>-h，–no-filename 当搜索多个文件时，不显示匹配文件名前缀。</li>
+<li>-i，–ignore-case 忽略大小写差别。</li>
+<li>-q，–quiet 取消显示，只返回退出状态。0则表示找到了匹配的行。</li>
+<li>-l，–files-with-matches 打印匹配模板的文件清单。</li>
+<li>-L，–files-without-match 打印不匹配模板的文件清单。</li>
+<li>-n，–line-number 在匹配的行前面打印行号。</li>
+<li>-s，–silent 不显示关于不存在或者无法读取文件的错误信息。</li>
+<li>-v，–revert-match 反检索，只显示不匹配的行。</li>
+<li>-w，–word-regexp 如果被&lt;和&gt;引用，就把表达式做为一个单词搜索。</li>
+<li>-V，–version 显示软件版本信息。</li>
+</ul>
+<a id="more"></a>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -l | grep <span class="string">&#x27;^a&#x27;</span> 通过管道过滤ls -l输出的内容，只显示以a开头的行。</span><br><span class="line">grep <span class="string">&#x27;test&#x27;</span> d* 显示所有以d开头的文件中包含<span class="built_in">test</span>的行。</span><br><span class="line">grep <span class="string">&#x27;test&#x27;</span> aa bb cc 显示在aa，bb，cc文件中匹配<span class="built_in">test</span>的行。</span><br><span class="line">grep <span class="string">&#x27;[a-z]&#x27;</span> aa 显示所有包含每个字符串至少有5个连续小写字符的字符串的行。</span><br><span class="line">grep <span class="string">&#x27;w(es)t.*&#x27;</span> aa 如果west被匹配，则es就被存储到内存中，并标记为1，然后搜索任意个字符(.*)，这些字符后面紧跟着另外一个es()，找到就显示该行。如果用egrep或grep -E，就不用<span class="string">&quot;&quot;</span>号进行转义，直接写成<span class="string">&#x27;w(es)t.*&#x27;</span>就可以了。</span><br><span class="line">grep -i pattern files ：不区分大小写地搜索。默认情况区分大小写</span><br><span class="line">grep -l pattern files ：只列出匹配的文件名，</span><br><span class="line">grep -L pattern files ：列出不匹配的文件名，</span><br><span class="line">grep -w pattern files ：只匹配整个单词，而不是字符串的一部分(如匹配‘magic’，而不是‘magical’)，</span><br><span class="line">grep -C number pattern files ：匹配的上下文分别显示[number]行，</span><br><span class="line">grep pattern1 | pattern2 files ：显示匹配 pattern1 或 pattern2 的行，</span><br><span class="line">grep pattern1 files | grep pattern2 ：显示既匹配 pattern1 又匹配 pattern2 的行。</span><br></pre></td></tr></table></figure>
+<p>pattern为所要匹配的字符串，可使用下列模式</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">. 匹配任意一个字符</span><br><span class="line">* 匹配0 个或多个*前的字符</span><br><span class="line">^ 匹配行开头</span><br><span class="line">$ 匹配行结尾</span><br><span class="line">[] 匹配[ ]中的任意一个字符，[]中可用 - 表示范围，</span><br><span class="line">例如[a-z]表示字母a 至z 中的任意一个</span><br><span class="line">\ 转意字符</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>通用技巧</tag>
+        <tag>grep</tag>
       </tags>
   </entry>
   <entry>
@@ -456,6 +404,58 @@
       <tags>
         <tag>通用技巧</tag>
         <tag>shell</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>xargs命令使用技巧</title>
+    <url>/2020/01/16/2020-01-16-xargs/</url>
+    <content><![CDATA[<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>管道符 | + xargs, 用于把上游输出转换为下游参数输入。</p>
+<p>例如 <code>ls *.bak | xargs rm -f</code></p>
+<p>问题：<br>xargs默认把输入作为参数放到命令的最后，但是很多命令需要自己定位参数的位置，比如拷贝命令cp {上游结果} destFolder<br>解决方法：<br>xargs -I &lt;参数指示符&gt;， 然后用这个参数指示符定位参数插入的位置, </p>
+<p><code>ls *.bak | xargs -I % cp % /tmp/test</code></p>
+<p>注释：这里使用%作为指示符，第一个%可以理解为声明，第二个%可以理解为调用。你也可以用其他字符，比如 <code>ls *.bak | xargs -I &#123;&#125; cp &#123;&#125; /tmp/test</code></p>
+<a id="more"></a>
+
+<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>之所以要用到xargs这个命令，关键是由于很多命令不支持|管道来传递参数，而日常工作中又有这个需要，所以就有了xargs命令，例如：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /sbin -perm +700 | ls -l       这个命令是错误的</span><br><span class="line">find /sbin -perm +700 | xargs ls -l   这样才是正确的</span><br></pre></td></tr></table></figure>
+<p>xargs 可以读入 stdin 的资料，并且以空白字符或断行字符作为分隔，将 stdin 的资料分隔成为 arguments 。 因为是以空白字符作为分隔，所以，如果有一些文件名或者是其他意义的名词内含有空白字符的时候， xargs 可能就会误判了～</p>
+<h4 id="选项解释"><a href="#选项解释" class="headerlink" title="选项解释"></a>选项解释</h4><ul>
+<li><p>-0 当sdtin含有特殊字符时候，将其当成一般字符，像/ ‘ 空格等</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#echo &quot;//&quot;|xargs  echo</span></span><br><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#echo &quot;//&quot;|xargs -0 echo</span></span><br></pre></td></tr></table></figure></li>
+<li><p>-a file 从文件中读入作为sdtin</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat test</span></span><br><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;hello world/n&quot;</span></span><br><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#xargs -a test echo</span></span><br><span class="line"><span class="meta">#!/bin/sh echo hello world/n</span></span><br><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#</span></span><br></pre></td></tr></table></figure></li>
+<li><p>-e flag ，注意有的时候可能会是-E，flag必须是一个以空格分隔的标志，当xargs分析到含有flag这个标志的时候就停止。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat txt</span></span><br><span class="line">/bin tao shou kun</span><br><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat txt|xargs -E &#x27;shou&#x27; echo</span></span><br><span class="line">/bin tao</span><br></pre></td></tr></table></figure></li>
+<li><p>-p 当每次执行一个argument的时候询问一次用户。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat txt|xargs -p echo</span></span><br><span class="line"><span class="built_in">echo</span> /bin tao shou kun ff ?...y</span><br><span class="line">/bin tao shou kun ff</span><br></pre></td></tr></table></figure></li>
+<li><p>-n num 后面加次数，表示命令在执行的时候一次用的argument的个数，默认是用所有的</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat txt|xargs -n 1 echo</span></span><br><span class="line">/bin</span><br><span class="line">tao</span><br><span class="line">shou</span><br><span class="line">kun</span><br><span class="line">root@localhost:~/test3<span class="comment">#cat txt|xargs  echo</span></span><br><span class="line">/bin tao shou kun</span><br></pre></td></tr></table></figure></li>
+<li><p>-t 表示先打印命令，然后再执行。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat txt|xargs -t echo</span></span><br><span class="line"><span class="built_in">echo</span> /bin tao shou kun</span><br><span class="line">/bin tao shou kun</span><br></pre></td></tr></table></figure></li>
+<li><p>-i 或者是-I，这得看linux支持了，将xargs的每项名称，一般是一行一行赋值给{}，可以用{}代替。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt; ls | xargs -t -i mv &#123;&#125; &#123;&#125;.bak</span><br></pre></td></tr></table></figure></li>
+<li><p>-r no-run-if-empty 当xargs的输入为空的时候则停止xargs，不用再去执行了。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#echo &quot;&quot;|xargs -t -r  mv</span></span><br><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#</span></span><br></pre></td></tr></table></figure></li>
+<li><p>-s num 命令行的最大字符数，指的是xargs后面那个命令的最大命令行字符数</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat test |xargs -i -x  -s 14 echo &quot;&#123;&#125;&quot;</span></span><br><span class="line">exp1</span><br><span class="line">exp5</span><br><span class="line">file</span><br><span class="line">xargs: argument line too long</span><br><span class="line">linux-2</span><br><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#</span></span><br></pre></td></tr></table></figure></li>
+<li><p>-L num Use at most max-lines nonblank input lines per command line.-s是含有空格的。</p>
+</li>
+<li><p>-l  同-L</p>
+</li>
+<li><p>-d delim 分隔符，默认的xargs分隔符是回车，argument的分隔符是空格，这里修改的是xargs的分隔符</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat txt |xargs -i -p echo &#123;&#125;</span></span><br><span class="line"><span class="built_in">echo</span> /bin tao shou kun ?...y</span><br><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat txt |xargs -i -p -d &quot; &quot; echo &#123;&#125;</span></span><br><span class="line"><span class="built_in">echo</span> /bin ?...y</span><br><span class="line"><span class="built_in">echo</span> tao ?.../bin</span><br><span class="line">y</span><br><span class="line"><span class="built_in">echo</span> shou ?...tao</span><br><span class="line">再如：</span><br><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat test |xargs -i -p -d &quot; &quot; echo &#123;&#125;</span></span><br><span class="line"><span class="built_in">echo</span> exp1</span><br><span class="line">exp5</span><br><span class="line">file</span><br><span class="line">linux-2</span><br><span class="line">ngis_post</span><br><span class="line">tao</span><br><span class="line"><span class="built_in">test</span></span><br><span class="line">txt</span><br><span class="line">xen-3</span><br><span class="line">?...y</span><br><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat test |xargs -i -p echo &#123;&#125;</span></span><br><span class="line"><span class="built_in">echo</span> exp1 ?...y</span><br><span class="line"><span class="built_in">echo</span> exp5 ?...exp1</span><br><span class="line">y</span><br><span class="line"><span class="built_in">echo</span> file ?...exp5</span><br><span class="line">y</span><br></pre></td></tr></table></figure></li>
+<li><p>-x exit的意思，主要是配合-s使用。</p>
+</li>
+<li><p>-P 修改最大的进程数，默认是1，为0时候为as many as it can</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>通用技巧</tag>
+        <tag>xargs</tag>
       </tags>
   </entry>
   <entry>
@@ -1570,6 +1570,26 @@
       </categories>
   </entry>
   <entry>
+    <title>When issued 预发行交易</title>
+    <url>/2020/05/28/When-issued/</url>
+    <content><![CDATA[<h3 id="What-Does-“When-Issued”-Mean"><a href="#What-Does-“When-Issued”-Mean" class="headerlink" title="What Does “When Issued” Mean?"></a>What Does “When Issued” Mean?</h3><p>When issued (WI) is a transaction that is made conditionally because a security has been authorized but not yet issued. Treasury securities, stock splits, and new issues of stocks and bonds are all traded on a When-issued basis. Prior to a new issue’s offering, underwriters solicit potential investors who may elect to book an order to purchase a portion of the new issue.</p>
+<p>WI是有条件的交易，因为证券已被授权但尚未发行。短期国库券，股票拆合股以及股票和债券的新发行都是基于WI来进行交易。在发行新股（IPO）之前，承销商会招募潜在的投资者，他们可能会选择购买一点新发行的证券。</p>
+<a id="more"></a>
+
+<h3 id="Understanding-When-Issued"><a href="#Understanding-When-Issued" class="headerlink" title="Understanding When Issued"></a>Understanding When Issued</h3><p>When-issued orders are made conditionally because they may not be completed, particularly in the event the offering is canceled. Orders, when issued, are sometimes called orders “with ice” or orders “when distributed.” The term is short for “when, as and if issued.”</p>
+<p>Securities trade on a When-issued basis when they have been announced but not yet issued. The transaction is settled only after the security has been issued. A When-issued market exists where When-issued instruments are traded. When-issued markets can provide an indication regarding the level of interest that a new issue may attract. When-issued transactions are dependent upon the actual security being issued and the exchange or National Association of Securities Dealers ruling that the transaction is settled.</p>
+<p>When-issued订单之所有<strong>有条件</strong>是由于它们可能不会完成，特别是发行（例如IPO）被取消的情况下。When-issued订单有时也被称为“with ice”订单或“when distributed”订单。该术语是“when, as and if issued”的缩写。</p>
+<p>宣布但是还未发行的证券，是要基于When-issued来交易的。这些交易只有在证券被发行后才会被结算。存在一个专门用来交易When-issued产品的所谓的When-issued市场，这个市场可以给一个信号，看一下这个新发行的证券在市场上对投资者有多大的吸引力。When-issued交易取决于实际发行的证券，以及决定这笔交易可结算的交易所或国际证券商协会（这句话英文好像很别扭）。</p>
+<h3 id="Benefits-of-When-Issued"><a href="#Benefits-of-When-Issued" class="headerlink" title="Benefits of When Issued"></a>Benefits of When Issued</h3><p>When issued sheds light on the demand for securities and can, therefore, attract investors who would otherwise sit out bidding for the securities for fear of a volatile market. Thus, when issued can decrease volatility when the securities are actually issued because investors have confidence in the level of demand for the securities in question. When issued helps develop the market for a new security by attracting investors, and it also offers investors liquidity prior to the actual distribution of the securities in question, allowing them to monetize financial assets more readily.</p>
+<p>When-issued阐明了对证券的需求，因此也能够吸引到那些因担心市场动荡而原本会竞购证券的投资者。因此，由于投资者对证券的需求量水平有信心（不担心IPO时股票卖不出去呗），When-issued可以减少证券真正发行时的波动性。When-issued通过吸引投资者来开拓信证券的市场，也可以在证券真正发行之前给投资者优先提供流动性，使他们更容易将金融资产货币化。</p>
+<h3 id="Example-of-When-Issued"><a href="#Example-of-When-Issued" class="headerlink" title="Example of When Issued"></a>Example of When Issued</h3><p>An industrial conglomerate wants to spin off its chemicals division due to its drag on earnings and low margins. In order to effectuate the spinoff, the conglomerate plans to pay its shareholders a dividend in the form of stock of the new chemicals divisions company. After the record date, the date on which holders of the conglomerate’s stock are entitled to receive stock in the spinoff, the conglomerate’s shareholders can effectively begin trading the right to receive shares in the spinoff on a When-issued basis. Those shareholders who buy the rights but do not hold shares of the conglomerate on the distribution date, the date in which the actual shares in the spinoff are issued and begin trading, receive their shares in the spinoff, and the When-issued market ceases.</p>
+<p>一家工业企业集团化学品部门因为拖累了集团的利润，因此集团决定剥离这个部门。为了完成剥离，该企业集团计划用新化学部门的股票向其股东支付股息。在登记日期（就是我找个小本本记一下你有权利分得这个股息了，我记小本本的这天，不是真正给你股票那天）之后，集团的股东就可以基于When-issued交易获得分拆股票的权利。那些买了这些权利，但是在实际发股票并开始股票交易那天，不实际持有集团股票的股东，会收到他们的股票，同时，When-issued市场停止交易。</p>
+]]></content>
+      <categories>
+        <category>金融</category>
+      </categories>
+  </entry>
+  <entry>
     <title>crontab示例</title>
     <url>/2021/01/08/crontab-examples/</url>
     <content><![CDATA[<p>crontab -e 编辑该用户的crontab， 不存在时新建<br>crontab -l 列出该用户的crontab<br>crontab -r 删除该用户的crontab<br>crontab -u<uid> 指定要设定crontab的用户名称</p>
@@ -1582,6 +1602,46 @@
       <tags>
         <tag>crontab</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>hard-to-borrow list 股市卖空--难借股票列表</title>
+    <url>/2020/05/15/hard-to-borrow-sell-short/</url>
+    <content><![CDATA[<h3 id="What-Is-a-Hard-To-Borrow-List"><a href="#What-Is-a-Hard-To-Borrow-List" class="headerlink" title="What Is a Hard-To-Borrow List?"></a>What Is a Hard-To-Borrow List?</h3><p>A hard-to-borrow list is an inventory record used by brokerages to indicate what stocks are difficult to borrow for short sale transactions. A brokerage firm’s hard-to-borrow list provides an up-to-date catalog of stocks that cannot easily be borrowed for use as a short sale.</p>
+<a id="more"></a>
+
+<blockquote>
+<p>KEY TAKEAWAYS</p>
+<ul>
+<li>Short sellers rely on brokers to have stock shares available to borrow.</li>
+<li>If the broker has very few shares of a stock available, then that stock is placed on the hard-to-borrow list.</li>
+<li>Stocks on the hard-to-borrow list may not be allowed to short.</li>
+</ul>
+</blockquote>
+<p>hard-to-borrow list 首先就是券商要维护更新的一个股票列表， 然后看字面意思， 就是比较难借到，当然还有其他原因会导致某些股票出现在这个list上。我们举个例子，如果A股票90%的持仓都在公司创始股东手里，如果你是创始股东，肯定不希望把股票借给别人，让别人去卖空砸盘吧，这就导致了这个股票是hard-to-borrow的，其他导致某只股票出现在这个list上的原因，请继续往下读。</p>
+<blockquote>
+<p>几个关键点</p>
+<ul>
+<li>卖空者依靠券商借入股票.</li>
+<li>如果券商只有很少股票可以外借，那么该股票将被置于hard-to-borrow list中。</li>
+<li>HTB list上的股票除了卖空利息会很高，还有可能不允许卖空。</li>
+</ul>
+</blockquote>
+<h3 id="Understanding-the-Hard-To-Borrow-List"><a href="#Understanding-the-Hard-To-Borrow-List" class="headerlink" title="Understanding the Hard-To-Borrow List"></a>Understanding the Hard-To-Borrow List</h3><p>Short selling of stocks is built on the notion that an individual trader or investor, wanting to profit from a decrease of that stock’s price, is able to borrow shares of that stock from the broker. Brokerages have a variety of ways to provide access to shares that can be sold short, but regardless of their methods, the result is a finite number of shares available for shorting. Once the number of shares available has come close to running out, the broker will publish a notation of some kind on their platform. This alerts account holders that if they attempt to sell that security short, their trade order may be refused.</p>
+<p>In this way a security may be on the hard-to-borrow list because it is in short supply, but it may also be because of its high volatility or other reasons. To enter a short sale, a brokerage client must first borrow the shares from his or her broker. To provide the shares, the broker can use its own inventory or borrow from the margin account of another client or another brokerage firm.</p>
+<p>Investors who enter short sale transactions attempt to capture profits in a declining market. For example, an investor may think that shares in Apple are likely to drop in price. The investor can short sell the stock and, if the price falls as he or she anticipates, repurchase it back for a profit. If the stock rises, however, the investor loses money.</p>
+<p>股票卖空，是指个人交易者或者投资者，从券商借股票卖出，股票价格下跌时，他们获利。券商有很多方法可以提供可供借出卖空的股票，但是，数量总是<strong>有限</strong>的。一旦数量快用完了，那么券商要在平台上发个某种形式的提醒，提醒自己的客户，如果你试图卖空这些数量即将用完的股票，交易有被拒绝的可能。</p>
+<p>证券可能会因为难以供应而出现在hard-to-borrow list上，但也可能是由于其高波动性或其他原因。要进行卖空，客户必须首先从其交易券商那里借到股票。为了提供股票，券商可以从自有库存，从其客户的<strong>margin账户</strong>中，或者从另一个券商借来可以提供给你用来卖空的股票。</p>
+<p>进行卖空交易的投资者试图在下降的市场中获利。例如，投资者认为苹果股票的价格可能会下跌。投资者可以卖空股票，如果价格如预期那样下跌，再低价买回来就可以获利。但是，如果股票上涨，投资者就会亏损，而且这个亏损是无上限的，理论上股价涨上天，投资者就亏成煞笔。</p>
+<h3 id="Hard-to-Borrow-List-and-Regulation"><a href="#Hard-to-Borrow-List-and-Regulation" class="headerlink" title="Hard-to-Borrow List and Regulation"></a>Hard-to-Borrow List and Regulation</h3><p>Brokerage firms update their hard-to-borrow lists daily. A broker must be able to provide or locate the shares to loan to their client before executing the client’s short sale transaction. Regulation SHO, which was implemented Jan. 3, 2005, has a “locate” condition that requires brokers to have a reasonable belief that the equity to be shorted can be borrowed and delivered to the short seller. The regulation is intended to prevent naked short selling, a practice where the investor places a short sale without holding the shares. (To learn more, see: The Truth About Naked Short Selling.)</p>
+<p>券商每天都会更新其Hart-To-Borrow List。在执行客户的卖空交易之前，券商必须能够provide或locate(就是你当前没有，但是你要知道哪里有）要借给客户的股票。 2005年1月3日实施的SHO监管条例，明确了一个“locate”条件，要求券商有合理的理由确信被卖空的equity（不限于股票啦）可以借到并交付给卖空者。该监管条例旨在防止裸卖空，指投资者在不持有股票或者不确认可以借到股票的情况下卖空。</p>
+<h3 id="Hard-to-Borrow-List-vs-Easy-to-Borrow-List"><a href="#Hard-to-Borrow-List-vs-Easy-to-Borrow-List" class="headerlink" title="Hard-to-Borrow List vs. Easy-to-Borrow List"></a>Hard-to-Borrow List vs. Easy-to-Borrow List</h3><p>The hard-to-borrow list is the opposite of the easy-to-borrow list, which is an inventory record of securities that are available for short sale transactions. In general, an investor can assume that securities not included on the hard-to-borrow list will be available for short selling. While a brokerage firm’s hard-to-borrow list is typically an internal list (and one that is not available to clients), the firm’s clients usually have access to the easy-to-borrow list.</p>
+<p>Brokerage clients may have to pay hard-to-borrow fees on certain short sales. Typically, the cost of borrowing stocks on the difficult-to-borrow list is higher than for stocks that are on the easy-to-borrow list. Large brokerage firms usually have a securities lending desk that helps source stocks that are difficult to borrow. A brokerage’s securities lending desk also lends securities to other firms.</p>
+<p>Easy-to-Borrow list，是指一份可卖空的证券记录表，Hard-to-Borrow list与ETB相反，一般来讲，投资者可以认为不在HTB列表上的证券都可以卖空。但是，通常券商的HTB列表是一个内部的数据（也就是客户不可见的），而ETB对客户通常是可见的。</p>
+<p>投资者可能需要为“难借”买单。通常，借HTB的股票比借ETB的股票的花费要更高。通常大的券商会有一个专门的证券借贷柜台，帮忙借那些难借的证券，也提供出借证券给别的券商的服务。</p>
+]]></content>
+      <categories>
+        <category>金融</category>
+      </categories>
   </entry>
   <entry>
     <title>ssh终端证书方式登录远程linux系统</title>

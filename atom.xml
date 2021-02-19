@@ -94,6 +94,41 @@
   </entry>
   
   <entry>
+    <title>When issued 预发行交易</title>
+    <link href="https://carl-wang-cn.github.io/2020/05/28/When-issued/"/>
+    <id>https://carl-wang-cn.github.io/2020/05/28/When-issued/</id>
+    <published>2020-05-28T01:44:38.000Z</published>
+    <updated>2021-02-19T03:40:12.938Z</updated>
+    
+    
+    <summary type="html">&lt;h3 id=&quot;What-Does-“When-Issued”-Mean&quot;&gt;&lt;a href=&quot;#What-Does-“When-Issued”-Mean&quot; class=&quot;headerlink&quot; title=&quot;What Does “When Issued” Mean?&quot;&gt;&lt;/a&gt;What Does “When Issued” Mean?&lt;/h3&gt;&lt;p&gt;When issued (WI) is a transaction that is made conditionally because a security has been authorized but not yet issued. Treasury securities, stock splits, and new issues of stocks and bonds are all traded on a When-issued basis. Prior to a new issue’s offering, underwriters solicit potential investors who may elect to book an order to purchase a portion of the new issue.&lt;/p&gt;
+&lt;p&gt;WI是有条件的交易，因为证券已被授权但尚未发行。短期国库券，股票拆合股以及股票和债券的新发行都是基于WI来进行交易。在发行新股（IPO）之前，承销商会招募潜在的投资者，他们可能会选择购买一点新发行的证券。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="金融" scheme="https://carl-wang-cn.github.io/categories/%E9%87%91%E8%9E%8D/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>hard-to-borrow list 股市卖空--难借股票列表</title>
+    <link href="https://carl-wang-cn.github.io/2020/05/15/hard-to-borrow-sell-short/"/>
+    <id>https://carl-wang-cn.github.io/2020/05/15/hard-to-borrow-sell-short/</id>
+    <published>2020-05-15T04:17:01.000Z</published>
+    <updated>2021-02-19T03:43:47.500Z</updated>
+    
+    
+    <summary type="html">&lt;h3 id=&quot;What-Is-a-Hard-To-Borrow-List&quot;&gt;&lt;a href=&quot;#What-Is-a-Hard-To-Borrow-List&quot; class=&quot;headerlink&quot; title=&quot;What Is a Hard-To-Borrow List?&quot;&gt;&lt;/a&gt;What Is a Hard-To-Borrow List?&lt;/h3&gt;&lt;p&gt;A hard-to-borrow list is an inventory record used by brokerages to indicate what stocks are difficult to borrow for short sale transactions. A brokerage firm’s hard-to-borrow list provides an up-to-date catalog of stocks that cannot easily be borrowed for use as a short sale.&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="金融" scheme="https://carl-wang-cn.github.io/categories/%E9%87%91%E8%9E%8D/"/>
+    
+    
+  </entry>
+  
+  <entry>
     <title>proto buffer MergeFrom的坑</title>
     <link href="https://carl-wang-cn.github.io/2020/03/17/2020-03-17-donot-use-pb-mergefrom/"/>
     <id>https://carl-wang-cn.github.io/2020/03/17/2020-03-17-donot-use-pb-mergefrom/</id>
@@ -161,50 +196,6 @@
 &lt;li&gt;消息队列具有随内核的持续性.一个进程可以往某个队列写入一些消息, 然后终止, 再让另外一个进程在以后某个时刻读出这些消息&lt;/li&gt;
 &lt;li&gt;队列属性&lt;/li&gt;
 &lt;/ol&gt;</summary>
-    
-    
-    
-    <category term="技术" scheme="https://carl-wang-cn.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-    
-    <category term="ipc" scheme="https://carl-wang-cn.github.io/tags/ipc/"/>
-    
-    <category term="多进程" scheme="https://carl-wang-cn.github.io/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>进程间通信-管道</title>
-    <link href="https://carl-wang-cn.github.io/2020/02/07/2020-02-07-ipc-pipe/"/>
-    <id>https://carl-wang-cn.github.io/2020/02/07/2020-02-07-ipc-pipe/</id>
-    <published>2020-02-07T15:29:22.000Z</published>
-    <updated>2021-02-19T03:26:56.049Z</updated>
-    
-    
-    <summary type="html">&lt;h3 id=&quot;pipe匿名管道&quot;&gt;&lt;a href=&quot;#pipe匿名管道&quot; class=&quot;headerlink&quot; title=&quot;pipe匿名管道&quot;&gt;&lt;/a&gt;pipe匿名管道&lt;/h3&gt;&lt;p&gt;匿名管道由于没有名字, 因此只能由有亲缘关系的进程使用&lt;/p&gt;
-&lt;figure class=&quot;highlight cpp&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;#&lt;span class=&quot;meta-keyword&quot;&gt;include&lt;/span&gt; &lt;span class=&quot;meta-string&quot;&gt;&amp;lt;unistd.h&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;pipe&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; fd[&lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;])&lt;/span&gt;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;返回: 成功返回&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;, 出错返回&lt;span class=&quot;number&quot;&gt;-1&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;该函数返回两个文件描述符: fd[&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;]和fd[&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;], 前者打开来读, 后者打开来写.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;</summary>
-    
-    
-    
-    <category term="技术" scheme="https://carl-wang-cn.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-    
-    <category term="ipc" scheme="https://carl-wang-cn.github.io/tags/ipc/"/>
-    
-    <category term="多进程" scheme="https://carl-wang-cn.github.io/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>多进程通信-互斥锁和条件变量</title>
-    <link href="https://carl-wang-cn.github.io/2020/02/07/2020-02-07-mutex-cond/"/>
-    <id>https://carl-wang-cn.github.io/2020/02/07/2020-02-07-mutex-cond/</id>
-    <published>2020-02-07T01:43:06.000Z</published>
-    <updated>2021-02-19T03:26:56.049Z</updated>
-    
-    
-    <summary type="html">&lt;h2 id=&quot;互斥锁&quot;&gt;&lt;a href=&quot;#互斥锁&quot; class=&quot;headerlink&quot; title=&quot;互斥锁&quot;&gt;&lt;/a&gt;互斥锁&lt;/h2&gt;&lt;p&gt;互斥锁和条件变量总是可用来同步一个进程内的各个线程。但是如果一个互斥锁或条件变量是&lt;br&gt;存放在多个进程间共享的某个内存区内，那么它还可以被用来同步这几个进程。&lt;/p&gt;
-&lt;p&gt;互斥锁指代相互排斥，用于保护临界区，以保证任何时刻&lt;strong&gt;只有一个线程/进程&lt;/strong&gt;在执行&lt;br&gt;其中的代码。保护一个临界区的代码的通常轮廓大体如下：&lt;/p&gt;</summary>
     
     
     
