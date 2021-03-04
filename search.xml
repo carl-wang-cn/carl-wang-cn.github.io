@@ -20,89 +20,6 @@
       </tags>
   </entry>
   <entry>
-    <title>awk怎么写?</title>
-    <url>/2020/01/16/2020-01-16-awk/</url>
-    <content><![CDATA[<p>本篇文章主要是参考左耳朵耗子前辈的博文整理而来, 作为自己学习备忘之用.</p>
-<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>awk是一个强大的文本分析工具, 相对于grep的查找, sed的编辑, awk在其对数据分析并生成报告时, 显得尤为强大. 简单来说awk就是把文件逐行的读入, 以空格为默认分隔符将每行切片, 切开的部分再进行各种分析处理.</p>
-<p>awk有3个不同版本: awk, nawk和gawk, 未作特别说明, 一般指gawk, gawk是AWK的GNU版本.</p>
-<p>awk其名称得自于它的创始人Alfred Aho, Peter Weinberger和Brian Kernighan姓氏的首个字母. 实际上 AWK 的确拥有自己的语言: AWK 程序设计语言, 三位创建者已将它正式定义为”样式扫描和处理语言”. 它允许您创建简短的程序, 这些程序读取输入文件, 为数据排序, 处理数据, 对输入执行计算以及生成报表, 还有无数其他的功能.</p>
-<a id="more"></a>
-
-<h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">awk <span class="string">&#x27;pattern + &#123;action&#125;&#x27;</span> &#123;filenames&#125;</span><br></pre></td></tr></table></figure>
-<p>尽管操作可能会很复杂, 但语法总是这样, 其中 pattern 表示 AWK 在数据中查找的内容, 而 action 是在找到匹配内容时所执行的一系列命令.花括号（{}）不需要在程序中始终出现, 但它们用于根据特定的模式对一系列指令进行分组. pattern就是要表示的正则表达式, 用斜杠括起来.</p>
-<p>awk语言的最基本功能是在文件或者字符串中基于指定规则浏览和抽取信息, awk抽取信息后, 才能进行其他文本操作.完整的awk脚本通常用来格式化文本文件中的信息.<br>通常, awk是以文件的一行为处理单位的.awk每接收文件的一行, 然后执行相应的命令, 来处理文本.</p>
-<h3 id="调用awk有三种方式调用awk"><a href="#调用awk有三种方式调用awk" class="headerlink" title="调用awk有三种方式调用awk"></a>调用awk有三种方式调用awk</h3><ol>
-<li>命令行方式awk [-F  field-separator]  ‘commands’  input-file(s)其中, commands 是真正awk命令, [-F域分隔符]是可选的. input-file(s) 是待处理的文件.在awk中, 文件的每一行中, 由域分隔符分开的每一项称为一个域.通常, 在不指名-F域分隔符的情况下, 默认的域分隔符是空格.</li>
-<li>shell脚本方式将所有的awk命令插入一个文件, 并使awk程序可执行, 然后awk命令解释器作为脚本的首行, 以便通过键入脚本名称来调用.相当于shell脚本首行的：#!/bin/sh可以换成：#!/bin/awk</li>
-<li>将所有的awk命令插入一个单独文件, 然后调用：awk -f awk-script-file input-file(s)其中, -f选项加载awk-script-file中的awk脚本, input-file(s)跟上面的是一样的.</li>
-</ol>
-<h4 id="入门实例"><a href="#入门实例" class="headerlink" title="入门实例"></a>入门实例</h4><p>假设last -n 5的输出如下</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ last -n 5 &lt;==仅取出前五行</span><br><span class="line">root     pts/1   192.168.1.100  Tue Feb 10 11:21   still logged <span class="keyword">in</span></span><br><span class="line">root     pts/1   192.168.1.100  Tue Feb 10 00:46 - 02:28  (01:41)</span><br><span class="line">root     pts/1   192.168.1.100  Mon Feb  9 11:41 - 18:30  (06:48)</span><br><span class="line">dmtsai   pts/1   192.168.1.100  Mon Feb  9 11:41 - 11:41  (00:00)</span><br><span class="line">root     tty1                   Fri Sep  5 14:09 - 14:10  (00:01)</span><br></pre></td></tr></table></figure>
-<p>如果只是显示最近登录的5个帐号</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ last -n 5 | awk  <span class="string">&#x27;&#123;print $1&#125;&#x27;</span>  -- 必须是单引号<span class="string">&#x27; &#x27;</span>,<span class="string">&quot; &quot;</span>不生效的</span><br><span class="line">root</span><br><span class="line">root</span><br><span class="line">root</span><br><span class="line">dmtsai</span><br><span class="line">root</span><br></pre></td></tr></table></figure>
-<p>awk工作流程是这样的：读入有’\n’换行符分割的一条记录, 然后将记录按指定的域分隔符划分域, 填充域, $0则表示所有域, $1表示第一个域, $n表示第n个域. 默认域分隔符是”空白键” 或 “[tab]键”, 所以$1表示登录用户, $3表示登录用户ip,以此类推.<br>字符串匹配的示例：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ awk <span class="string">&#x27;$6 ~ /FIN/ || NR==1 &#123;print NR,$4,$5,$6&#125;&#x27;</span> OFS=<span class="string">&quot;\t&quot;</span> netstat.txt</span><br><span class="line">1       Local-Address   Foreign-Address State</span><br><span class="line">6       coolshell.cn:80 61.140.101.185:37538    FIN_WAIT2</span><br><span class="line">9       coolshell.cn:80 116.234.127.77:11502    FIN_WAIT2</span><br><span class="line">13      coolshell.cn:80 124.152.181.209:26825   FIN_WAIT1</span><br><span class="line">18      coolshell.cn:80 117.136.20.85:50025     FIN_WAIT2</span><br><span class="line"></span><br><span class="line">$ awk <span class="string">&#x27;$6 ~ /WAIT/ || NR==1 &#123;print NR,$4,$5,$6&#125;&#x27;</span> OFS=<span class="string">&quot;\t&quot;</span> netstat.txt</span><br><span class="line">1       Local-Address   Foreign-Address State</span><br><span class="line">5       coolshell.cn:80 124.205.5.146:18245     TIME_WAIT</span><br><span class="line">6       coolshell.cn:80 61.140.101.185:37538    FIN_WAIT2</span><br><span class="line">9       coolshell.cn:80 116.234.127.77:11502    FIN_WAIT2</span><br><span class="line">11      coolshell.cn:80 183.60.215.36:36970     TIME_WAIT</span><br><span class="line">13      coolshell.cn:80 124.152.181.209:26825   FIN_WAIT1</span><br><span class="line">15      coolshell.cn:80 183.60.212.163:51082    TIME_WAIT</span><br><span class="line">18      coolshell.cn:80 117.136.20.85:50025     FIN_WAIT2</span><br></pre></td></tr></table></figure>
-<p>上面的第一个示例匹配FIN状态,  第二个示例匹配WAIT字样的状态.其实 ~ 表示模式开始./ /中是模式.其实就是一个正则表达式的匹配.<br>可以使用 “/FIN|TIME/“ 来匹配 FIN 或者 TIME :</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ awk <span class="string">&#x27;$6 ~ /FIN|TIME/ || NR==1 &#123;print NR,$4,$5,$6&#125;&#x27;</span> OFS=<span class="string">&quot;\t&quot;</span> netstat.txt</span><br><span class="line">1       Local-Address   Foreign-Address State</span><br><span class="line">5       coolshell.cn:80 124.205.5.146:18245     TIME_WAIT</span><br><span class="line">6       coolshell.cn:80 61.140.101.185:37538    FIN_WAIT2</span><br><span class="line">9       coolshell.cn:80 116.234.127.77:11502    FIN_WAIT2</span><br><span class="line">11      coolshell.cn:80 183.60.215.36:36970     TIME_WAIT</span><br><span class="line">13      coolshell.cn:80 124.152.181.209:26825   FIN_WAIT1</span><br><span class="line">15      coolshell.cn:80 183.60.212.163:51082    TIME_WAIT</span><br><span class="line">18      coolshell.cn:80 117.136.20.85:50025     FIN_WAIT2</span><br></pre></td></tr></table></figure>
-<p>再来看看模式取反的例子：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ awk <span class="string">&#x27;$6 !~ /WAIT/ || NR==1 &#123;print NR,$4,$5,$6&#125;&#x27;</span> OFS=<span class="string">&quot;\t&quot;</span> netstat.txt</span><br><span class="line">1       Local-Address   Foreign-Address State</span><br><span class="line">2       0.0.0.0:3306    0.0.0.0:*       LISTEN</span><br><span class="line">3       0.0.0.0:80      0.0.0.0:*       LISTEN</span><br><span class="line">4       127.0.0.1:9000  0.0.0.0:*       LISTEN</span><br><span class="line">7       coolshell.cn:80 110.194.134.189:1032    ESTABLISHED</span><br><span class="line">8       coolshell.cn:80 123.169.124.111:49809   ESTABLISHED</span><br><span class="line">10      coolshell.cn:80 123.169.124.111:49829   ESTABLISHED</span><br><span class="line">12      coolshell.cn:80 61.148.242.38:30901     ESTABLISHED</span><br><span class="line">14      coolshell.cn:80 110.194.134.189:4796    ESTABLISHED</span><br><span class="line">16      coolshell.cn:80 208.115.113.92:50601    LAST_ACK</span><br><span class="line">17      coolshell.cn:80 123.169.124.111:49840   ESTABLISHED</span><br><span class="line">19      :::22   :::*    LISTEN</span><br></pre></td></tr></table></figure>
-<p>或是：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">awk <span class="string">&#x27;!/WAIT/&#x27;</span> netstat.txt</span><br></pre></td></tr></table></figure>
-<p>如果只是显示/etc/passwd的账户</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cat /etc/passwd |awk  -F <span class="string">&#x27;:&#x27;</span>  <span class="string">&#x27;&#123;print $1&#125;&#x27;</span></span><br><span class="line">rootdaemonbinsys</span><br></pre></td></tr></table></figure>
-<p>这种是awk+action的示例, 每行都会执行action {print $1}.</p>
-<p>-F指定域分隔符为’:’.<br>如果只是显示/etc/passwd的账户和账户对应的shell,而账户与shell之间以tab键分割</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cat /etc/passwd |awk  -F <span class="string">&#x27;:&#x27;</span>  <span class="string">&#x27;&#123;print $1&quot;\t&quot;$7&#125;&#x27;</span></span><br><span class="line">root    /bin/bash</span><br><span class="line">daemon  /bin/sh</span><br><span class="line">bin     /bin/sh</span><br><span class="line">sys     /bin/sh</span><br></pre></td></tr></table></figure>
-<p>如果只是显示/etc/passwd的账户和账户对应的shell, 而账户与shell之间以逗号分割, 而且在所有行添加列名name, shell, 在最后一行添加”blue,/bin/nosh”.</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cat /etc/passwd |awk  -F <span class="string">&#x27;:&#x27;</span>  <span class="string">&#x27;BEGIN &#123;print &quot;name,shell&quot;&#125;  &#123;print $1&quot;,&quot;$7&#125; END &#123;print &quot;blue,/bin/nosh&quot;&#125;&#x27;</span></span><br><span class="line">name,shell</span><br><span class="line">root,/bin/bash</span><br><span class="line">daemon,/bin/sh</span><br><span class="line">bin,/bin/sh</span><br><span class="line">sys,/bin/sh</span><br><span class="line">....</span><br><span class="line">blue,/bin/nosh</span><br></pre></td></tr></table></figure>
-<p>awk工作流程是这样的：先执行BEGIN, 然后读取文件, 读入有/n换行符分割的一条记录, 然后将记录按指定的域分隔符划分域, 填充域, $0则表示所有域,$1表示第一个域,$n表示第n个域,随后开始执行模式所对应的动作action.接着开始读入第二条记录······直到所有的记录都读完, 最后执行END操作.<br>搜索/etc/passwd有root关键字的所有行</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ awk -F: <span class="string">&#x27;/root/&#x27;</span> /etc/passwd</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br></pre></td></tr></table></figure>
-<p>这种是pattern的使用示例, 匹配了pattern(这里是root)的行才会执行action(没有指定action, 默认输出每行的内容).<br>搜索支持正则, 例如找root开头的: awk -F: ‘/^root/‘ /etc/passwd<br>搜索/etc/passwd有root关键字的所有行, 并显示对应的shell</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ awk -F: <span class="string">&#x27;/root/ &#123;print $7&#125;&#x27;</span> /etc/passwd</span><br><span class="line">/bin/bash</span><br></pre></td></tr></table></figure>
-<p>这里指定了action{print $7}<br>awk内置变量awk有许多内置变量用来设置环境信息, 这些变量可以被改变, 下面给出了最常用的一些变量.</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ARGC               命令行参数个数</span><br><span class="line">ARGV               命令行参数排列</span><br><span class="line">ENVIRON            支持队列中系统环境变量的使用</span><br><span class="line">FILENAME           awk浏览的文件名</span><br><span class="line">FNR                浏览文件的记录数</span><br><span class="line">FS                 设置输入域分隔符, 等价于命令行 -F选项</span><br><span class="line">NF                 浏览记录的域的个数</span><br><span class="line">NR                 已读的记录数</span><br><span class="line">OFS                输出域分隔符   默认空格</span><br><span class="line">ORS                输出记录分隔符 默认换行符</span><br><span class="line">RS                 控制记录分隔符 默认换行符</span><br><span class="line">此外,<span class="variable">$0</span>变量是指整条记录.<span class="variable">$1</span>表示当前行的第一个域,<span class="variable">$2</span>表示当前行的第二个域,......以此类推.</span><br></pre></td></tr></table></figure>
-<p>统计/etc/passwd:文件名, 每行的行号, 每行的列数, 对应的完整行内容:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ awk  -F <span class="string">&#x27;:&#x27;</span>  <span class="string">&#x27;&#123;print &quot;filename:&quot; FILENAME &quot;,linenumber:&quot; NR &quot;,columns:&quot; NF &quot;,linecontent:&quot;$0&#125;&#x27;</span> /etc/passwd</span><br><span class="line">filename:/etc/passwd,linenumber:1,columns:7,linecontent:root:x:0:0:root:/root:/bin/bash</span><br><span class="line">filename:/etc/passwd,linenumber:2,columns:7,linecontent:daemon:x:1:1:daemon:/usr/sbin:/bin/sh</span><br><span class="line">filename:/etc/passwd,linenumber:3,columns:7,linecontent:bin:x:2:2:bin:/bin:/bin/sh</span><br><span class="line">filename:/etc/passwd,linenumber:4,columns:7,linecontent:sys:x:3:3:sys:/dev:/bin/sh</span><br></pre></td></tr></table></figure>
-<p>使用printf替代print,可以让代码更加简洁, 易读</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">awk  -F <span class="string">&#x27;:&#x27;</span>  <span class="string">&#x27;&#123;printf(&quot;filename:%10s,linenumber:%s,columns:%s,linecontent:%s\n&quot;,FILENAME,NR,NF,$0)&#125;&#x27;</span> /etc/passwd</span><br></pre></td></tr></table></figure>
-<h4 id="print和printf"><a href="#print和printf" class="headerlink" title="print和printf"></a>print和printf</h4><p>awk中同时提供了print和printf两种打印输出的函数.</p>
-<p>其中print函数的参数可以是变量, 数值或者字符串. 字符串必须用双引号引用, 参数用逗号分隔. 如果没有逗号, 参数就串联在一起而无法区分. 这里, 逗号的作用与输出文件的分隔符的作用是一样的, 只是后者是空格而已.<br>printf函数, 其用法和c语言中printf基本相似, 可以格式化字符串, 输出复杂时, printf更加好用, 代码更易懂.</p>
-<h3 id="awk编程"><a href="#awk编程" class="headerlink" title="awk编程"></a>awk编程</h3><h4 id="变量和赋值"><a href="#变量和赋值" class="headerlink" title="变量和赋值"></a>变量和赋值</h4><p>除了awk的内置变量, awk还可以自定义变量.</p>
-<p>下面统计/etc/passwd的账户人数</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">awk <span class="string">&#x27;&#123;count++;print $0;&#125; END&#123;print &quot;user count is &quot;, count&#125;&#x27;</span> /etc/passwd</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">......</span><br><span class="line">user count is  40</span><br></pre></td></tr></table></figure>
-<p>count是自定义变量. 之前的action{}里都是只有一个print, 其实print只是一个语句, 而action{}可以有多个语句, 以;号隔开.<br>这里没有初始化count, 虽然默认是0, 但是妥当的做法还是初始化为0:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">awk <span class="string">&#x27;BEGIN &#123;count=0;print &quot;[start]user count is &quot;, count&#125; &#123;count=count+1;print $0;&#125; END&#123;print &quot;[end]user count is &quot;, count&#125;&#x27;</span> /etc/passwd</span><br><span class="line">[start]user count is  0</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">...</span><br><span class="line">[end]user count is  40</span><br></pre></td></tr></table></figure>
-<p>统计某个文件夹下的文件占用的字节数</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -l |awk <span class="string">&#x27;BEGIN &#123;size=0;&#125; &#123;size=size+$5;&#125; END&#123;print &quot;[end]size is &quot;, size&#125;&#x27;</span></span><br><span class="line">[end]size is  8657198</span><br></pre></td></tr></table></figure>
-<p>如果以M为单位显示:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -l |awk <span class="string">&#x27;BEGIN &#123;size=0;&#125; &#123;size=size+$5;&#125; END&#123;print &quot;[end]size is &quot;, size/1024/1024,&quot;M&quot;&#125;&#x27;</span></span><br><span class="line">[end]size is  8.25889 M</span><br></pre></td></tr></table></figure>
-<p>注意, 统计不包括文件夹的子目录.</p>
-<h4 id="条件语句"><a href="#条件语句" class="headerlink" title="条件语句"></a>条件语句</h4><p>awk中的条件语句是从C语言中借鉴来的, 见如下声明方式：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (expression)</span><br><span class="line">&#123;</span><br><span class="line">    statement;</span><br><span class="line">    statement;</span><br><span class="line">    ... ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (expression)</span><br><span class="line">&#123;</span><br><span class="line">    statement;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    statement2;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (expression)</span><br><span class="line">&#123;</span><br><span class="line">    statement1;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (expression1)</span><br><span class="line">&#123;</span><br><span class="line">    statement2;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    statement3;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>统计某个文件夹下的文件占用的字节数,过滤4096大小的文件(一般都是文件夹):</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -l |awk <span class="string">&#x27;BEGIN &#123;size=0;print &quot;[start]size is &quot;, size&#125; &#123;if($5!=4096)&#123;size=size+$5;&#125;&#125; END&#123;print &quot;[end]size is &quot;, size/1024/1024,&quot;M&quot;&#125;&#x27;</span></span><br><span class="line">[end]size is  8.22339 M</span><br></pre></td></tr></table></figure>
-<p>统计下面的命令计算所有的C文件, CPP文件和H文件的文件大小总和.</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ls -l  *.cpp *.c *.h | awk <span class="string">&#x27;&#123;sum+=$5&#125; END &#123;print sum&#125;&#x27;</span></span><br><span class="line">2511401</span><br></pre></td></tr></table></figure>
-<p>我们再来看一个统计各个connection状态的用法：（我们可以看到一些编程的影子了, 大家都是程序员我就不解释了）</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ awk <span class="string">&#x27;NR!=1&#123;a[$6]++;&#125; END &#123;for (i in a) print i &quot;, &quot; a[i];&#125;&#x27;</span> netstat.txt</span><br><span class="line">TIME_WAIT, 3</span><br><span class="line">FIN_WAIT1, 1</span><br><span class="line">ESTABLISHED, 6</span><br><span class="line">FIN_WAIT2, 3</span><br><span class="line">LAST_ACK, 1</span><br><span class="line">LISTEN, 4</span><br></pre></td></tr></table></figure>
-<p>再来看看统计每个用户的进程的占了多少内存（注：sum的RSS那一列）</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ps aux | awk <span class="string">&#x27;NR!=1&#123;a[$1]+=$6;&#125; END &#123; for(i in a) print i &quot;, &quot; a[i]&quot;KB&quot;;&#125;&#x27;</span></span><br><span class="line">dbus, 540KB</span><br><span class="line">mysql, 99928KB</span><br><span class="line">www, 3264924KB</span><br><span class="line">root, 63644KB</span><br><span class="line">hchen, 6020KB</span><br></pre></td></tr></table></figure>
-<p>环境变量即然说到了脚本, 我们来看看怎么和环境变量交互：（使用-v参数和ENVIRON, 使用ENVIRON的环境变量需要export）</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt; x=5</span><br><span class="line"></span><br><span class="line">&gt; y=10</span><br><span class="line">&gt; <span class="built_in">export</span> y</span><br><span class="line"></span><br><span class="line">&gt; <span class="built_in">echo</span> <span class="variable">$x</span> <span class="variable">$y</span></span><br><span class="line">5 10</span><br><span class="line"></span><br><span class="line">$ awk -v val=<span class="variable">$x</span> <span class="string">&#x27;&#123;print $1, $2, $3, $4+val, $5+ENVIRON[&quot;y&quot;]&#125;&#x27;</span> OFS=<span class="string">&quot;\t&quot;</span> score.txt</span><br><span class="line">Marry   2143    78      89      87</span><br><span class="line">Jack    2321    66      83      55</span><br><span class="line">Tom     2122    48      82      81</span><br><span class="line">Mike    2537    87      102     105</span><br><span class="line">Bob     2415    40      62      72</span><br></pre></td></tr></table></figure>
-<h4 id="循环语句"><a href="#循环语句" class="headerlink" title="循环语句"></a>循环语句</h4><p>awk中的循环语句同样借鉴于C语言, 支持while, do/while, for, break, continue, 这些关键字的语义和C语言中的语义完全相同.</p>
-<p>数组</p>
-<p>  因为awk中数组的下标可以是数字和字母, 数组的下标通常被称为关键字(key). 值和关键字都存储在内部的一张针对key/value应用hash的表格里.由于hash不是顺序存储, 因此在显示数组内容时会发现, 它们并不是按照你预料的顺序显示出来的. 数组和变量一样, 都是在使用时自动创建的, awk也同样会自动判断其存储的是数字还是字符串.一般而言, awk中的数组用来从记录中收集信息, 可以用于计算总和, 统计单词以及跟踪模板被匹配的次数等等.</p>
-<p>显示/etc/passwd的账户</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 这里使用for循环遍历数组</span></span><br><span class="line"></span><br><span class="line">awk -F <span class="string">&#x27;:&#x27;</span> <span class="string">&#x27;BEGIN &#123;count=0;&#125; &#123;name[count] = $1;count++;&#125;; END&#123;for (i = 0; i &lt; NR; i++) print i, name[i]&#125;&#x27;</span> /etc/passwd</span><br><span class="line">0 root</span><br><span class="line">1 daemon</span><br><span class="line">2 bin</span><br><span class="line">3 sys</span><br><span class="line">4 sync</span><br><span class="line">5 games</span><br><span class="line">......</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>awk</tag>
-        <tag>通用技巧</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>cmake怎么写?</title>
     <url>/2020/01/16/2020-01-16-cmake/</url>
     <content><![CDATA[<h3 id="cmake中一些预定义变量"><a href="#cmake中一些预定义变量" class="headerlink" title="cmake中一些预定义变量"></a>cmake中一些预定义变量</h3><ul>
@@ -254,6 +171,89 @@
       <tags>
         <tag>cmake</tag>
         <tag>编译</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>awk怎么写?</title>
+    <url>/2020/01/16/2020-01-16-awk/</url>
+    <content><![CDATA[<p>本篇文章主要是参考左耳朵耗子前辈的博文整理而来, 作为自己学习备忘之用.</p>
+<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>awk是一个强大的文本分析工具, 相对于grep的查找, sed的编辑, awk在其对数据分析并生成报告时, 显得尤为强大. 简单来说awk就是把文件逐行的读入, 以空格为默认分隔符将每行切片, 切开的部分再进行各种分析处理.</p>
+<p>awk有3个不同版本: awk, nawk和gawk, 未作特别说明, 一般指gawk, gawk是AWK的GNU版本.</p>
+<p>awk其名称得自于它的创始人Alfred Aho, Peter Weinberger和Brian Kernighan姓氏的首个字母. 实际上 AWK 的确拥有自己的语言: AWK 程序设计语言, 三位创建者已将它正式定义为”样式扫描和处理语言”. 它允许您创建简短的程序, 这些程序读取输入文件, 为数据排序, 处理数据, 对输入执行计算以及生成报表, 还有无数其他的功能.</p>
+<a id="more"></a>
+
+<h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">awk <span class="string">&#x27;pattern + &#123;action&#125;&#x27;</span> &#123;filenames&#125;</span><br></pre></td></tr></table></figure>
+<p>尽管操作可能会很复杂, 但语法总是这样, 其中 pattern 表示 AWK 在数据中查找的内容, 而 action 是在找到匹配内容时所执行的一系列命令.花括号（{}）不需要在程序中始终出现, 但它们用于根据特定的模式对一系列指令进行分组. pattern就是要表示的正则表达式, 用斜杠括起来.</p>
+<p>awk语言的最基本功能是在文件或者字符串中基于指定规则浏览和抽取信息, awk抽取信息后, 才能进行其他文本操作.完整的awk脚本通常用来格式化文本文件中的信息.<br>通常, awk是以文件的一行为处理单位的.awk每接收文件的一行, 然后执行相应的命令, 来处理文本.</p>
+<h3 id="调用awk有三种方式调用awk"><a href="#调用awk有三种方式调用awk" class="headerlink" title="调用awk有三种方式调用awk"></a>调用awk有三种方式调用awk</h3><ol>
+<li>命令行方式awk [-F  field-separator]  ‘commands’  input-file(s)其中, commands 是真正awk命令, [-F域分隔符]是可选的. input-file(s) 是待处理的文件.在awk中, 文件的每一行中, 由域分隔符分开的每一项称为一个域.通常, 在不指名-F域分隔符的情况下, 默认的域分隔符是空格.</li>
+<li>shell脚本方式将所有的awk命令插入一个文件, 并使awk程序可执行, 然后awk命令解释器作为脚本的首行, 以便通过键入脚本名称来调用.相当于shell脚本首行的：#!/bin/sh可以换成：#!/bin/awk</li>
+<li>将所有的awk命令插入一个单独文件, 然后调用：awk -f awk-script-file input-file(s)其中, -f选项加载awk-script-file中的awk脚本, input-file(s)跟上面的是一样的.</li>
+</ol>
+<h4 id="入门实例"><a href="#入门实例" class="headerlink" title="入门实例"></a>入门实例</h4><p>假设last -n 5的输出如下</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ last -n 5 &lt;==仅取出前五行</span><br><span class="line">root     pts/1   192.168.1.100  Tue Feb 10 11:21   still logged <span class="keyword">in</span></span><br><span class="line">root     pts/1   192.168.1.100  Tue Feb 10 00:46 - 02:28  (01:41)</span><br><span class="line">root     pts/1   192.168.1.100  Mon Feb  9 11:41 - 18:30  (06:48)</span><br><span class="line">dmtsai   pts/1   192.168.1.100  Mon Feb  9 11:41 - 11:41  (00:00)</span><br><span class="line">root     tty1                   Fri Sep  5 14:09 - 14:10  (00:01)</span><br></pre></td></tr></table></figure>
+<p>如果只是显示最近登录的5个帐号</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ last -n 5 | awk  <span class="string">&#x27;&#123;print $1&#125;&#x27;</span>  -- 必须是单引号<span class="string">&#x27; &#x27;</span>,<span class="string">&quot; &quot;</span>不生效的</span><br><span class="line">root</span><br><span class="line">root</span><br><span class="line">root</span><br><span class="line">dmtsai</span><br><span class="line">root</span><br></pre></td></tr></table></figure>
+<p>awk工作流程是这样的：读入有’\n’换行符分割的一条记录, 然后将记录按指定的域分隔符划分域, 填充域, $0则表示所有域, $1表示第一个域, $n表示第n个域. 默认域分隔符是”空白键” 或 “[tab]键”, 所以$1表示登录用户, $3表示登录用户ip,以此类推.<br>字符串匹配的示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ awk <span class="string">&#x27;$6 ~ /FIN/ || NR==1 &#123;print NR,$4,$5,$6&#125;&#x27;</span> OFS=<span class="string">&quot;\t&quot;</span> netstat.txt</span><br><span class="line">1       Local-Address   Foreign-Address State</span><br><span class="line">6       coolshell.cn:80 61.140.101.185:37538    FIN_WAIT2</span><br><span class="line">9       coolshell.cn:80 116.234.127.77:11502    FIN_WAIT2</span><br><span class="line">13      coolshell.cn:80 124.152.181.209:26825   FIN_WAIT1</span><br><span class="line">18      coolshell.cn:80 117.136.20.85:50025     FIN_WAIT2</span><br><span class="line"></span><br><span class="line">$ awk <span class="string">&#x27;$6 ~ /WAIT/ || NR==1 &#123;print NR,$4,$5,$6&#125;&#x27;</span> OFS=<span class="string">&quot;\t&quot;</span> netstat.txt</span><br><span class="line">1       Local-Address   Foreign-Address State</span><br><span class="line">5       coolshell.cn:80 124.205.5.146:18245     TIME_WAIT</span><br><span class="line">6       coolshell.cn:80 61.140.101.185:37538    FIN_WAIT2</span><br><span class="line">9       coolshell.cn:80 116.234.127.77:11502    FIN_WAIT2</span><br><span class="line">11      coolshell.cn:80 183.60.215.36:36970     TIME_WAIT</span><br><span class="line">13      coolshell.cn:80 124.152.181.209:26825   FIN_WAIT1</span><br><span class="line">15      coolshell.cn:80 183.60.212.163:51082    TIME_WAIT</span><br><span class="line">18      coolshell.cn:80 117.136.20.85:50025     FIN_WAIT2</span><br></pre></td></tr></table></figure>
+<p>上面的第一个示例匹配FIN状态,  第二个示例匹配WAIT字样的状态.其实 ~ 表示模式开始./ /中是模式.其实就是一个正则表达式的匹配.<br>可以使用 “/FIN|TIME/“ 来匹配 FIN 或者 TIME :</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ awk <span class="string">&#x27;$6 ~ /FIN|TIME/ || NR==1 &#123;print NR,$4,$5,$6&#125;&#x27;</span> OFS=<span class="string">&quot;\t&quot;</span> netstat.txt</span><br><span class="line">1       Local-Address   Foreign-Address State</span><br><span class="line">5       coolshell.cn:80 124.205.5.146:18245     TIME_WAIT</span><br><span class="line">6       coolshell.cn:80 61.140.101.185:37538    FIN_WAIT2</span><br><span class="line">9       coolshell.cn:80 116.234.127.77:11502    FIN_WAIT2</span><br><span class="line">11      coolshell.cn:80 183.60.215.36:36970     TIME_WAIT</span><br><span class="line">13      coolshell.cn:80 124.152.181.209:26825   FIN_WAIT1</span><br><span class="line">15      coolshell.cn:80 183.60.212.163:51082    TIME_WAIT</span><br><span class="line">18      coolshell.cn:80 117.136.20.85:50025     FIN_WAIT2</span><br></pre></td></tr></table></figure>
+<p>再来看看模式取反的例子：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ awk <span class="string">&#x27;$6 !~ /WAIT/ || NR==1 &#123;print NR,$4,$5,$6&#125;&#x27;</span> OFS=<span class="string">&quot;\t&quot;</span> netstat.txt</span><br><span class="line">1       Local-Address   Foreign-Address State</span><br><span class="line">2       0.0.0.0:3306    0.0.0.0:*       LISTEN</span><br><span class="line">3       0.0.0.0:80      0.0.0.0:*       LISTEN</span><br><span class="line">4       127.0.0.1:9000  0.0.0.0:*       LISTEN</span><br><span class="line">7       coolshell.cn:80 110.194.134.189:1032    ESTABLISHED</span><br><span class="line">8       coolshell.cn:80 123.169.124.111:49809   ESTABLISHED</span><br><span class="line">10      coolshell.cn:80 123.169.124.111:49829   ESTABLISHED</span><br><span class="line">12      coolshell.cn:80 61.148.242.38:30901     ESTABLISHED</span><br><span class="line">14      coolshell.cn:80 110.194.134.189:4796    ESTABLISHED</span><br><span class="line">16      coolshell.cn:80 208.115.113.92:50601    LAST_ACK</span><br><span class="line">17      coolshell.cn:80 123.169.124.111:49840   ESTABLISHED</span><br><span class="line">19      :::22   :::*    LISTEN</span><br></pre></td></tr></table></figure>
+<p>或是：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">awk <span class="string">&#x27;!/WAIT/&#x27;</span> netstat.txt</span><br></pre></td></tr></table></figure>
+<p>如果只是显示/etc/passwd的账户</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cat /etc/passwd |awk  -F <span class="string">&#x27;:&#x27;</span>  <span class="string">&#x27;&#123;print $1&#125;&#x27;</span></span><br><span class="line">rootdaemonbinsys</span><br></pre></td></tr></table></figure>
+<p>这种是awk+action的示例, 每行都会执行action {print $1}.</p>
+<p>-F指定域分隔符为’:’.<br>如果只是显示/etc/passwd的账户和账户对应的shell,而账户与shell之间以tab键分割</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cat /etc/passwd |awk  -F <span class="string">&#x27;:&#x27;</span>  <span class="string">&#x27;&#123;print $1&quot;\t&quot;$7&#125;&#x27;</span></span><br><span class="line">root    /bin/bash</span><br><span class="line">daemon  /bin/sh</span><br><span class="line">bin     /bin/sh</span><br><span class="line">sys     /bin/sh</span><br></pre></td></tr></table></figure>
+<p>如果只是显示/etc/passwd的账户和账户对应的shell, 而账户与shell之间以逗号分割, 而且在所有行添加列名name, shell, 在最后一行添加”blue,/bin/nosh”.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cat /etc/passwd |awk  -F <span class="string">&#x27;:&#x27;</span>  <span class="string">&#x27;BEGIN &#123;print &quot;name,shell&quot;&#125;  &#123;print $1&quot;,&quot;$7&#125; END &#123;print &quot;blue,/bin/nosh&quot;&#125;&#x27;</span></span><br><span class="line">name,shell</span><br><span class="line">root,/bin/bash</span><br><span class="line">daemon,/bin/sh</span><br><span class="line">bin,/bin/sh</span><br><span class="line">sys,/bin/sh</span><br><span class="line">....</span><br><span class="line">blue,/bin/nosh</span><br></pre></td></tr></table></figure>
+<p>awk工作流程是这样的：先执行BEGIN, 然后读取文件, 读入有/n换行符分割的一条记录, 然后将记录按指定的域分隔符划分域, 填充域, $0则表示所有域,$1表示第一个域,$n表示第n个域,随后开始执行模式所对应的动作action.接着开始读入第二条记录······直到所有的记录都读完, 最后执行END操作.<br>搜索/etc/passwd有root关键字的所有行</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ awk -F: <span class="string">&#x27;/root/&#x27;</span> /etc/passwd</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br></pre></td></tr></table></figure>
+<p>这种是pattern的使用示例, 匹配了pattern(这里是root)的行才会执行action(没有指定action, 默认输出每行的内容).<br>搜索支持正则, 例如找root开头的: awk -F: ‘/^root/‘ /etc/passwd<br>搜索/etc/passwd有root关键字的所有行, 并显示对应的shell</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ awk -F: <span class="string">&#x27;/root/ &#123;print $7&#125;&#x27;</span> /etc/passwd</span><br><span class="line">/bin/bash</span><br></pre></td></tr></table></figure>
+<p>这里指定了action{print $7}<br>awk内置变量awk有许多内置变量用来设置环境信息, 这些变量可以被改变, 下面给出了最常用的一些变量.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ARGC               命令行参数个数</span><br><span class="line">ARGV               命令行参数排列</span><br><span class="line">ENVIRON            支持队列中系统环境变量的使用</span><br><span class="line">FILENAME           awk浏览的文件名</span><br><span class="line">FNR                浏览文件的记录数</span><br><span class="line">FS                 设置输入域分隔符, 等价于命令行 -F选项</span><br><span class="line">NF                 浏览记录的域的个数</span><br><span class="line">NR                 已读的记录数</span><br><span class="line">OFS                输出域分隔符   默认空格</span><br><span class="line">ORS                输出记录分隔符 默认换行符</span><br><span class="line">RS                 控制记录分隔符 默认换行符</span><br><span class="line">此外,<span class="variable">$0</span>变量是指整条记录.<span class="variable">$1</span>表示当前行的第一个域,<span class="variable">$2</span>表示当前行的第二个域,......以此类推.</span><br></pre></td></tr></table></figure>
+<p>统计/etc/passwd:文件名, 每行的行号, 每行的列数, 对应的完整行内容:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ awk  -F <span class="string">&#x27;:&#x27;</span>  <span class="string">&#x27;&#123;print &quot;filename:&quot; FILENAME &quot;,linenumber:&quot; NR &quot;,columns:&quot; NF &quot;,linecontent:&quot;$0&#125;&#x27;</span> /etc/passwd</span><br><span class="line">filename:/etc/passwd,linenumber:1,columns:7,linecontent:root:x:0:0:root:/root:/bin/bash</span><br><span class="line">filename:/etc/passwd,linenumber:2,columns:7,linecontent:daemon:x:1:1:daemon:/usr/sbin:/bin/sh</span><br><span class="line">filename:/etc/passwd,linenumber:3,columns:7,linecontent:bin:x:2:2:bin:/bin:/bin/sh</span><br><span class="line">filename:/etc/passwd,linenumber:4,columns:7,linecontent:sys:x:3:3:sys:/dev:/bin/sh</span><br></pre></td></tr></table></figure>
+<p>使用printf替代print,可以让代码更加简洁, 易读</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">awk  -F <span class="string">&#x27;:&#x27;</span>  <span class="string">&#x27;&#123;printf(&quot;filename:%10s,linenumber:%s,columns:%s,linecontent:%s\n&quot;,FILENAME,NR,NF,$0)&#125;&#x27;</span> /etc/passwd</span><br></pre></td></tr></table></figure>
+<h4 id="print和printf"><a href="#print和printf" class="headerlink" title="print和printf"></a>print和printf</h4><p>awk中同时提供了print和printf两种打印输出的函数.</p>
+<p>其中print函数的参数可以是变量, 数值或者字符串. 字符串必须用双引号引用, 参数用逗号分隔. 如果没有逗号, 参数就串联在一起而无法区分. 这里, 逗号的作用与输出文件的分隔符的作用是一样的, 只是后者是空格而已.<br>printf函数, 其用法和c语言中printf基本相似, 可以格式化字符串, 输出复杂时, printf更加好用, 代码更易懂.</p>
+<h3 id="awk编程"><a href="#awk编程" class="headerlink" title="awk编程"></a>awk编程</h3><h4 id="变量和赋值"><a href="#变量和赋值" class="headerlink" title="变量和赋值"></a>变量和赋值</h4><p>除了awk的内置变量, awk还可以自定义变量.</p>
+<p>下面统计/etc/passwd的账户人数</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">awk <span class="string">&#x27;&#123;count++;print $0;&#125; END&#123;print &quot;user count is &quot;, count&#125;&#x27;</span> /etc/passwd</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">......</span><br><span class="line">user count is  40</span><br></pre></td></tr></table></figure>
+<p>count是自定义变量. 之前的action{}里都是只有一个print, 其实print只是一个语句, 而action{}可以有多个语句, 以;号隔开.<br>这里没有初始化count, 虽然默认是0, 但是妥当的做法还是初始化为0:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">awk <span class="string">&#x27;BEGIN &#123;count=0;print &quot;[start]user count is &quot;, count&#125; &#123;count=count+1;print $0;&#125; END&#123;print &quot;[end]user count is &quot;, count&#125;&#x27;</span> /etc/passwd</span><br><span class="line">[start]user count is  0</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">...</span><br><span class="line">[end]user count is  40</span><br></pre></td></tr></table></figure>
+<p>统计某个文件夹下的文件占用的字节数</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -l |awk <span class="string">&#x27;BEGIN &#123;size=0;&#125; &#123;size=size+$5;&#125; END&#123;print &quot;[end]size is &quot;, size&#125;&#x27;</span></span><br><span class="line">[end]size is  8657198</span><br></pre></td></tr></table></figure>
+<p>如果以M为单位显示:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -l |awk <span class="string">&#x27;BEGIN &#123;size=0;&#125; &#123;size=size+$5;&#125; END&#123;print &quot;[end]size is &quot;, size/1024/1024,&quot;M&quot;&#125;&#x27;</span></span><br><span class="line">[end]size is  8.25889 M</span><br></pre></td></tr></table></figure>
+<p>注意, 统计不包括文件夹的子目录.</p>
+<h4 id="条件语句"><a href="#条件语句" class="headerlink" title="条件语句"></a>条件语句</h4><p>awk中的条件语句是从C语言中借鉴来的, 见如下声明方式：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (expression)</span><br><span class="line">&#123;</span><br><span class="line">    statement;</span><br><span class="line">    statement;</span><br><span class="line">    ... ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (expression)</span><br><span class="line">&#123;</span><br><span class="line">    statement;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    statement2;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (expression)</span><br><span class="line">&#123;</span><br><span class="line">    statement1;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (expression1)</span><br><span class="line">&#123;</span><br><span class="line">    statement2;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    statement3;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>统计某个文件夹下的文件占用的字节数,过滤4096大小的文件(一般都是文件夹):</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -l |awk <span class="string">&#x27;BEGIN &#123;size=0;print &quot;[start]size is &quot;, size&#125; &#123;if($5!=4096)&#123;size=size+$5;&#125;&#125; END&#123;print &quot;[end]size is &quot;, size/1024/1024,&quot;M&quot;&#125;&#x27;</span></span><br><span class="line">[end]size is  8.22339 M</span><br></pre></td></tr></table></figure>
+<p>统计下面的命令计算所有的C文件, CPP文件和H文件的文件大小总和.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ls -l  *.cpp *.c *.h | awk <span class="string">&#x27;&#123;sum+=$5&#125; END &#123;print sum&#125;&#x27;</span></span><br><span class="line">2511401</span><br></pre></td></tr></table></figure>
+<p>我们再来看一个统计各个connection状态的用法：（我们可以看到一些编程的影子了, 大家都是程序员我就不解释了）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ awk <span class="string">&#x27;NR!=1&#123;a[$6]++;&#125; END &#123;for (i in a) print i &quot;, &quot; a[i];&#125;&#x27;</span> netstat.txt</span><br><span class="line">TIME_WAIT, 3</span><br><span class="line">FIN_WAIT1, 1</span><br><span class="line">ESTABLISHED, 6</span><br><span class="line">FIN_WAIT2, 3</span><br><span class="line">LAST_ACK, 1</span><br><span class="line">LISTEN, 4</span><br></pre></td></tr></table></figure>
+<p>再来看看统计每个用户的进程的占了多少内存（注：sum的RSS那一列）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ps aux | awk <span class="string">&#x27;NR!=1&#123;a[$1]+=$6;&#125; END &#123; for(i in a) print i &quot;, &quot; a[i]&quot;KB&quot;;&#125;&#x27;</span></span><br><span class="line">dbus, 540KB</span><br><span class="line">mysql, 99928KB</span><br><span class="line">www, 3264924KB</span><br><span class="line">root, 63644KB</span><br><span class="line">hchen, 6020KB</span><br></pre></td></tr></table></figure>
+<p>环境变量即然说到了脚本, 我们来看看怎么和环境变量交互：（使用-v参数和ENVIRON, 使用ENVIRON的环境变量需要export）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt; x=5</span><br><span class="line"></span><br><span class="line">&gt; y=10</span><br><span class="line">&gt; <span class="built_in">export</span> y</span><br><span class="line"></span><br><span class="line">&gt; <span class="built_in">echo</span> <span class="variable">$x</span> <span class="variable">$y</span></span><br><span class="line">5 10</span><br><span class="line"></span><br><span class="line">$ awk -v val=<span class="variable">$x</span> <span class="string">&#x27;&#123;print $1, $2, $3, $4+val, $5+ENVIRON[&quot;y&quot;]&#125;&#x27;</span> OFS=<span class="string">&quot;\t&quot;</span> score.txt</span><br><span class="line">Marry   2143    78      89      87</span><br><span class="line">Jack    2321    66      83      55</span><br><span class="line">Tom     2122    48      82      81</span><br><span class="line">Mike    2537    87      102     105</span><br><span class="line">Bob     2415    40      62      72</span><br></pre></td></tr></table></figure>
+<h4 id="循环语句"><a href="#循环语句" class="headerlink" title="循环语句"></a>循环语句</h4><p>awk中的循环语句同样借鉴于C语言, 支持while, do/while, for, break, continue, 这些关键字的语义和C语言中的语义完全相同.</p>
+<p>数组</p>
+<p>  因为awk中数组的下标可以是数字和字母, 数组的下标通常被称为关键字(key). 值和关键字都存储在内部的一张针对key/value应用hash的表格里.由于hash不是顺序存储, 因此在显示数组内容时会发现, 它们并不是按照你预料的顺序显示出来的. 数组和变量一样, 都是在使用时自动创建的, awk也同样会自动判断其存储的是数字还是字符串.一般而言, awk中的数组用来从记录中收集信息, 可以用于计算总和, 统计单词以及跟踪模板被匹配的次数等等.</p>
+<p>显示/etc/passwd的账户</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 这里使用for循环遍历数组</span></span><br><span class="line"></span><br><span class="line">awk -F <span class="string">&#x27;:&#x27;</span> <span class="string">&#x27;BEGIN &#123;count=0;&#125; &#123;name[count] = $1;count++;&#125;; END&#123;for (i = 0; i &lt; NR; i++) print i, name[i]&#125;&#x27;</span> /etc/passwd</span><br><span class="line">0 root</span><br><span class="line">1 daemon</span><br><span class="line">2 bin</span><br><span class="line">3 sys</span><br><span class="line">4 sync</span><br><span class="line">5 games</span><br><span class="line">......</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>awk</tag>
+        <tag>通用技巧</tag>
       </tags>
   </entry>
   <entry>
@@ -814,6 +814,27 @@
       </tags>
   </entry>
   <entry>
+    <title>免密登录远程linux机器</title>
+    <url>/2020/02/01/2020-02-01-ssh-remote-linux/</url>
+    <content><![CDATA[<h3 id="为什么选择证书登陆？"><a href="#为什么选择证书登陆？" class="headerlink" title="为什么选择证书登陆？"></a>为什么选择证书登陆？</h3><p>Mac下原生及主流的ssh终端工具大多不具备保存ssh登陆密码的功能, 通过证书登陆的方式，就可以实现原生终端工具Terminal或第三方明星终端iTerm免密码登录远程系统，并且比单纯的密码验证登陆方式提高了安全性。</p>
+<a id="more"></a>
+
+<h3 id="配置过程（以下操作都在终端命令行下运行）"><a href="#配置过程（以下操作都在终端命令行下运行）" class="headerlink" title="配置过程（以下操作都在终端命令行下运行）"></a>配置过程（以下操作都在终端命令行下运行）</h3><ol>
+<li>进入系统的ssh证书目录 cd ~/.ssh/</li>
+<li>建立证书文件 ssh-keygen -t rsa 提示输入，直接回车即可。</li>
+<li>输入 ls 命令查看当前目录会发现新生成的一对秘钥文件分别是：<br>公钥：id_rsa.pub<br>私钥：id_rsa</li>
+<li>登陆到远程服务器，进入.ssh目录 cd ~/.ssh<br>将上面生成的公钥文件的内容copy进 authorized_keys 文件中</li>
+<li>在Mac终端下执行登陆命令 ssh username@server<br>即可免密码登录到远程服务器</li>
+</ol>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>ssh</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>进程间通信-fcntl记录上锁</title>
     <url>/2020/02/01/2020-02-01-ipc-fcntl/</url>
     <content><![CDATA[<p>这是读写锁的一种扩展类型，可用于有亲缘关系或<strong>无亲缘关系</strong>的<strong>进程</strong>之间共享某个文件的读写。这些锁用于不同进程间的上锁，而不是用于同一进程中不同线程间的上锁。</p>
@@ -855,27 +876,6 @@
       <tags>
         <tag>ipc</tag>
         <tag>多进程</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>免密登录远程linux机器</title>
-    <url>/2020/02/01/2020-02-01-ssh-remote-linux/</url>
-    <content><![CDATA[<h3 id="为什么选择证书登陆？"><a href="#为什么选择证书登陆？" class="headerlink" title="为什么选择证书登陆？"></a>为什么选择证书登陆？</h3><p>Mac下原生及主流的ssh终端工具大多不具备保存ssh登陆密码的功能, 通过证书登陆的方式，就可以实现原生终端工具Terminal或第三方明星终端iTerm免密码登录远程系统，并且比单纯的密码验证登陆方式提高了安全性。</p>
-<a id="more"></a>
-
-<h3 id="配置过程（以下操作都在终端命令行下运行）"><a href="#配置过程（以下操作都在终端命令行下运行）" class="headerlink" title="配置过程（以下操作都在终端命令行下运行）"></a>配置过程（以下操作都在终端命令行下运行）</h3><ol>
-<li>进入系统的ssh证书目录 cd ~/.ssh/</li>
-<li>建立证书文件 ssh-keygen -t rsa 提示输入，直接回车即可。</li>
-<li>输入 ls 命令查看当前目录会发现新生成的一对秘钥文件分别是：<br>公钥：id_rsa.pub<br>私钥：id_rsa</li>
-<li>登陆到远程服务器，进入.ssh目录 cd ~/.ssh<br>将上面生成的公钥文件的内容copy进 authorized_keys 文件中</li>
-<li>在Mac终端下执行登陆命令 ssh username@server<br>即可免密码登录到远程服务器</li>
-</ol>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>ssh</tag>
       </tags>
   </entry>
   <entry>
@@ -1120,6 +1120,64 @@
 </li>
 </ol>
 <p><strong>FIFO的真正优势</strong>表现在服务器可以是一个长期运行的进程（例如守护进程）, 而且与其客户可以无亲缘关系。<br>作为服务器的守护进程以某个众所周知的路径名创建一个FIFO, 并打开该FIFO来读。此后某个<br>时刻启动的客户打开该FIFO来写, 并将其命令或给守护进程的其他任何东西通过该FIFO发送出去。<br>使用FIFO很容易实现这种形式的单向通信(client-&gt;server)。如果守护进程需要向客户发送<br>回一些东西, 那就需要点技巧(例如客户需要通知守护进程要打开哪个FIFO可以给其发消息)</p>
+<blockquote>
+<p>文中代码托管在: <a href="https://github.com/carl-wang-cn/demo/tree/master/ipc">https://github.com/carl-wang-cn/demo/tree/master/ipc</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>ipc</tag>
+        <tag>多进程</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>多进程通信-互斥锁和条件变量</title>
+    <url>/2020/02/07/2020-02-07-mutex-cond/</url>
+    <content><![CDATA[<h2 id="互斥锁"><a href="#互斥锁" class="headerlink" title="互斥锁"></a>互斥锁</h2><p>互斥锁和条件变量总是可用来同步一个进程内的各个线程。但是如果一个互斥锁或条件变量是<br>存放在多个进程间共享的某个内存区内，那么它还可以被用来同步这几个进程。</p>
+<p>互斥锁指代相互排斥，用于保护临界区，以保证任何时刻<strong>只有一个线程/进程</strong>在执行<br>其中的代码。保护一个临界区的代码的通常轮廓大体如下：</p>
+<a id="more"></a>
+
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">lock_the_mutex(...)</span><br><span class="line">操作临界区</span><br><span class="line">unlock_the_mutex(...)</span><br></pre></td></tr></table></figure>
+<h3 id="互斥锁的初始化"><a href="#互斥锁的初始化" class="headerlink" title="互斥锁的初始化"></a>互斥锁的初始化</h3><ol>
+<li>静态分配。 static pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;</li>
+<li>动态分配。 在运行之时通过调用pthread_mutex_init函数来初始化。</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutex_lock</span><span class="params">(<span class="keyword">pthread_mutex_t</span> *mptr)</span></span>;  <span class="comment">// block</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutex_trylock</span><span class="params">(<span class="keyword">pthread_mutex_t</span> *mptr)</span></span>;  <span class="comment">// unblock</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutex_unlock</span><span class="params">(<span class="keyword">pthread_mutex_t</span> *mptr)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>，失败返回Exxx错误码</span><br><span class="line"></span><br><span class="line">如果尝试给一个已由另外某个线程锁住的互斥锁上锁，那么pthread_mutex_lock会阻塞到该</span><br><span class="line">互斥锁被解锁为止，pthread_mutex_trylock是对应的非阻塞函数，如果该互斥锁已锁住，</span><br><span class="line">它就返回一个EBUSY错误</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>互斥锁是协作性锁。<strong>由coder来保证</strong>操作临界区之前获取对应互斥锁。</p>
+<blockquote>
+<p>prodcons_mutex.c 使用互斥锁的producer-consumer示例</p>
+</blockquote>
+<h2 id="条件变量"><a href="#条件变量" class="headerlink" title="条件变量"></a>条件变量</h2><p>互斥锁用于上锁，条件变量用于等待.</p>
+<p>条件变量类型为：pthread_cond_t</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_cond_wait</span><span class="params">(<span class="keyword">pthread_cond_t</span> *cptr, <span class="keyword">pthread_mutex_t</span> *mptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_cond_signal</span><span class="params">(<span class="keyword">pthread_cond_t</span> *cptr)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>，失败返回Exxx错误码</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>每个条件变量总是有一个互斥锁与之关联</p>
+<p>pthread_cond_wait <strong>会原子地</strong>执行2个动作</p>
+<ol>
+<li>给互斥锁mptr解锁</li>
+<li>把调用线程投入睡眠，直到另外某个线程就本条件变量调用pthread_cond_signal, pthread_cond_wait返回前重新给mptr上锁</li>
+</ol>
+<p><strong>给条件变量发送信号的代码：</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span>     </span><br><span class="line">    <span class="keyword">pthread_mutex_t</span> mutex;     </span><br><span class="line">    <span class="keyword">pthread_cond_t</span>  cond;     </span><br><span class="line">    <span class="comment">// vars</span></span><br><span class="line">&#125; var = &#123;PTHREAD_MUTEX_INITIALIZER, PTHREAD_COND_INITIALIZER, ...&#125;;</span><br><span class="line"></span><br><span class="line">pthread_mutex_lock(&amp;var.mutex);</span><br><span class="line">设置条件为真</span><br><span class="line">pthread_cond_signal(&amp;var.cond);</span><br><span class="line">pthread_mutex_unlock(&amp;var.mutex);</span><br><span class="line"></span><br><span class="line">调用pthread_cond_signal的线程不必是与之关联的互斥锁的当前属主。但是如果需要可预见的</span><br><span class="line">调度行为，那么调用pthread_cond_signal的线程必须锁住该互斥锁</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>测试条件并进入睡眠以等待该条件变为真的代码：</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">pthread_mutex_lock(&amp;var.mutex);</span><br><span class="line"><span class="keyword">while</span> (条件为假)</span><br><span class="line">&#123;     </span><br><span class="line">    pthread_cond_wait(&amp;var.cond, &amp;var.mutex);</span><br><span class="line">&#125;</span><br><span class="line">修改条件</span><br><span class="line">pthread_mutex_unlock(&amp;var.mutex);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>prodcons_mutex_cond.c 使用条件变量的producer-consumer示例</p>
+</blockquote>
+<h3 id="条件变量的定时等待和广播"><a href="#条件变量的定时等待和广播" class="headerlink" title="条件变量的定时等待和广播"></a>条件变量的定时等待和广播</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_cond_broadcast</span><span class="params">(<span class="keyword">pthread_cond_t</span> *cptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_cond_timewait</span><span class="params">(<span class="keyword">pthread_cond_t</span> *cptr, <span class="keyword">pthread_mutex_t</span> *mptr, <span class="keyword">const</span> struct timespec *abstime)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>，失败返回Exxx错误码</span><br><span class="line"></span><br><span class="line">pthread_cond_timewait 超时返回ETIMEOUT错误</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">timespec</span></span></span><br><span class="line"><span class="class">&#123;</span>     </span><br><span class="line">    <span class="keyword">time_t</span> tv_sec;  <span class="comment">// seconds     </span></span><br><span class="line">    <span class="keyword">long</span>   tv_nsec; <span class="comment">// nanosecondes</span></span><br><span class="line">&#125;;</span><br><span class="line">abstime是UTC时间，而不是时间差</span><br></pre></td></tr></table></figure>
+<h2 id="互斥锁和条件变量的属性"><a href="#互斥锁和条件变量的属性" class="headerlink" title="互斥锁和条件变量的属性"></a>互斥锁和条件变量的属性</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutex_init</span><span class="params">(<span class="keyword">pthread_mutex_t</span> *mptr, <span class="keyword">const</span> <span class="keyword">pthread_mutexattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutex_destory</span><span class="params">(<span class="keyword">pthread_mutex_t</span> *mptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_cond_init</span><span class="params">(<span class="keyword">pthread_cond_t</span> *cptr, <span class="keyword">const</span> <span class="keyword">pthread_condattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_cond_destroy</span><span class="params">(<span class="keyword">pthread_cond_t</span> *cptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutexattr_init</span><span class="params">(<span class="keyword">pthread_mutexattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutexattr_destroy</span><span class="params">(<span class="keyword">pthread_mutexattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_condattr_init</span><span class="params">(<span class="keyword">pthread_condattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_condattr_destroy</span><span class="params">(<span class="keyword">pthread_condattr_t</span> *attr)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>，失败返回Exxx错误码</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>一旦某个互斥锁属性对象或者某个条件变量属性对象已被初始化，就通过调用不同函数启用或<br>禁止特定的特性。例如，指定互斥锁或条件变量在不同进程间共享，而不是只在单个进程内的<br>不同线程间共享</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutexattr_getpshared</span><span class="params">(<span class="keyword">const</span> <span class="keyword">pthread_mutexattr_t</span> *ptr, <span class="keyword">int</span> *valptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutexattr_setpshared</span><span class="params">(<span class="keyword">const</span> <span class="keyword">pthread_mutexattr_t</span> *ptr, <span class="keyword">int</span> val)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_condattr_getpshared</span><span class="params">(<span class="keyword">const</span> <span class="keyword">pthread_condattr_t</span> *ptr, <span class="keyword">int</span> *valptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_condattr_setpshared</span><span class="params">(<span class="keyword">const</span> <span class="keyword">pthread_condattr_t</span> *ptr, <span class="keyword">int</span> val)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>，失败返回Exxx错误码</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>这个特性只在&lt;unistd.h&gt;中定义了<strong>_POSIX_THREAD_PROCESS_SHARED</strong>时才得以支持，下面给<br>出初始化一个互斥锁以便它能在进程间共享的示例：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">pthread_mutex_t</span> *mptr;  <span class="comment">// 这个互斥锁要存放在**某块共享内存**中</span></span><br><span class="line"><span class="keyword">pthread_mutexattr_t</span> mattr;</span><br><span class="line"></span><br><span class="line">mptr = <span class="comment">// some value that points to shared </span></span><br><span class="line">memorypthread_mutexattr_init(&amp;mattr);  <span class="comment">// 初始化属性</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> _POSIX_THREAD_PROCESS_SHARED         </span></span><br><span class="line">    pthread_mutexattr_setpshared(&amp;mattr, PTHREAD_PROCESS_SHARED);  <span class="comment">// 设置特定属性</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span>     </span></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">error</span> this implementation does not support _POSIX_THREAD_PROCESS_SHARED</span></span><br><span class="line">pthread_mutex_init(mptr, &amp;mattr); <span class="comment">// 初始化锁</span></span><br></pre></td></tr></table></figure>
+<h2 id="持有锁期间进程终止"><a href="#持有锁期间进程终止" class="headerlink" title="持有锁期间进程终止"></a>持有锁期间进程终止</h2><ul>
+<li>没有办法让系统在进程终止时自动释放所持有的锁。</li>
+<li>进程终止时，内核总是自动清理的唯一同步锁类型是：fcntl记录锁 </li>
+<li>在使用System V信号量时，应用程序可以选择进程终止时内核是否自动清理某个信号量锁。 </li>
+<li>线程可以注册一个在自己被另一线程取消时要执行的清理处理程序</li>
+</ul>
 <blockquote>
 <p>文中代码托管在: <a href="https://github.com/carl-wang-cn/demo/tree/master/ipc">https://github.com/carl-wang-cn/demo/tree/master/ipc</a></p>
 </blockquote>
@@ -1386,64 +1444,6 @@
       </tags>
   </entry>
   <entry>
-    <title>多进程通信-互斥锁和条件变量</title>
-    <url>/2020/02/07/2020-02-07-mutex-cond/</url>
-    <content><![CDATA[<h2 id="互斥锁"><a href="#互斥锁" class="headerlink" title="互斥锁"></a>互斥锁</h2><p>互斥锁和条件变量总是可用来同步一个进程内的各个线程。但是如果一个互斥锁或条件变量是<br>存放在多个进程间共享的某个内存区内，那么它还可以被用来同步这几个进程。</p>
-<p>互斥锁指代相互排斥，用于保护临界区，以保证任何时刻<strong>只有一个线程/进程</strong>在执行<br>其中的代码。保护一个临界区的代码的通常轮廓大体如下：</p>
-<a id="more"></a>
-
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">lock_the_mutex(...)</span><br><span class="line">操作临界区</span><br><span class="line">unlock_the_mutex(...)</span><br></pre></td></tr></table></figure>
-<h3 id="互斥锁的初始化"><a href="#互斥锁的初始化" class="headerlink" title="互斥锁的初始化"></a>互斥锁的初始化</h3><ol>
-<li>静态分配。 static pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;</li>
-<li>动态分配。 在运行之时通过调用pthread_mutex_init函数来初始化。</li>
-</ol>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutex_lock</span><span class="params">(<span class="keyword">pthread_mutex_t</span> *mptr)</span></span>;  <span class="comment">// block</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutex_trylock</span><span class="params">(<span class="keyword">pthread_mutex_t</span> *mptr)</span></span>;  <span class="comment">// unblock</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutex_unlock</span><span class="params">(<span class="keyword">pthread_mutex_t</span> *mptr)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>，失败返回Exxx错误码</span><br><span class="line"></span><br><span class="line">如果尝试给一个已由另外某个线程锁住的互斥锁上锁，那么pthread_mutex_lock会阻塞到该</span><br><span class="line">互斥锁被解锁为止，pthread_mutex_trylock是对应的非阻塞函数，如果该互斥锁已锁住，</span><br><span class="line">它就返回一个EBUSY错误</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>互斥锁是协作性锁。<strong>由coder来保证</strong>操作临界区之前获取对应互斥锁。</p>
-<blockquote>
-<p>prodcons_mutex.c 使用互斥锁的producer-consumer示例</p>
-</blockquote>
-<h2 id="条件变量"><a href="#条件变量" class="headerlink" title="条件变量"></a>条件变量</h2><p>互斥锁用于上锁，条件变量用于等待.</p>
-<p>条件变量类型为：pthread_cond_t</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_cond_wait</span><span class="params">(<span class="keyword">pthread_cond_t</span> *cptr, <span class="keyword">pthread_mutex_t</span> *mptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_cond_signal</span><span class="params">(<span class="keyword">pthread_cond_t</span> *cptr)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>，失败返回Exxx错误码</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>每个条件变量总是有一个互斥锁与之关联</p>
-<p>pthread_cond_wait <strong>会原子地</strong>执行2个动作</p>
-<ol>
-<li>给互斥锁mptr解锁</li>
-<li>把调用线程投入睡眠，直到另外某个线程就本条件变量调用pthread_cond_signal, pthread_cond_wait返回前重新给mptr上锁</li>
-</ol>
-<p><strong>给条件变量发送信号的代码：</strong></p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span>     </span><br><span class="line">    <span class="keyword">pthread_mutex_t</span> mutex;     </span><br><span class="line">    <span class="keyword">pthread_cond_t</span>  cond;     </span><br><span class="line">    <span class="comment">// vars</span></span><br><span class="line">&#125; var = &#123;PTHREAD_MUTEX_INITIALIZER, PTHREAD_COND_INITIALIZER, ...&#125;;</span><br><span class="line"></span><br><span class="line">pthread_mutex_lock(&amp;var.mutex);</span><br><span class="line">设置条件为真</span><br><span class="line">pthread_cond_signal(&amp;var.cond);</span><br><span class="line">pthread_mutex_unlock(&amp;var.mutex);</span><br><span class="line"></span><br><span class="line">调用pthread_cond_signal的线程不必是与之关联的互斥锁的当前属主。但是如果需要可预见的</span><br><span class="line">调度行为，那么调用pthread_cond_signal的线程必须锁住该互斥锁</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p><strong>测试条件并进入睡眠以等待该条件变为真的代码：</strong></p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">pthread_mutex_lock(&amp;var.mutex);</span><br><span class="line"><span class="keyword">while</span> (条件为假)</span><br><span class="line">&#123;     </span><br><span class="line">    pthread_cond_wait(&amp;var.cond, &amp;var.mutex);</span><br><span class="line">&#125;</span><br><span class="line">修改条件</span><br><span class="line">pthread_mutex_unlock(&amp;var.mutex);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>prodcons_mutex_cond.c 使用条件变量的producer-consumer示例</p>
-</blockquote>
-<h3 id="条件变量的定时等待和广播"><a href="#条件变量的定时等待和广播" class="headerlink" title="条件变量的定时等待和广播"></a>条件变量的定时等待和广播</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_cond_broadcast</span><span class="params">(<span class="keyword">pthread_cond_t</span> *cptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_cond_timewait</span><span class="params">(<span class="keyword">pthread_cond_t</span> *cptr, <span class="keyword">pthread_mutex_t</span> *mptr, <span class="keyword">const</span> struct timespec *abstime)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>，失败返回Exxx错误码</span><br><span class="line"></span><br><span class="line">pthread_cond_timewait 超时返回ETIMEOUT错误</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">timespec</span></span></span><br><span class="line"><span class="class">&#123;</span>     </span><br><span class="line">    <span class="keyword">time_t</span> tv_sec;  <span class="comment">// seconds     </span></span><br><span class="line">    <span class="keyword">long</span>   tv_nsec; <span class="comment">// nanosecondes</span></span><br><span class="line">&#125;;</span><br><span class="line">abstime是UTC时间，而不是时间差</span><br></pre></td></tr></table></figure>
-<h2 id="互斥锁和条件变量的属性"><a href="#互斥锁和条件变量的属性" class="headerlink" title="互斥锁和条件变量的属性"></a>互斥锁和条件变量的属性</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutex_init</span><span class="params">(<span class="keyword">pthread_mutex_t</span> *mptr, <span class="keyword">const</span> <span class="keyword">pthread_mutexattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutex_destory</span><span class="params">(<span class="keyword">pthread_mutex_t</span> *mptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_cond_init</span><span class="params">(<span class="keyword">pthread_cond_t</span> *cptr, <span class="keyword">const</span> <span class="keyword">pthread_condattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_cond_destroy</span><span class="params">(<span class="keyword">pthread_cond_t</span> *cptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutexattr_init</span><span class="params">(<span class="keyword">pthread_mutexattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutexattr_destroy</span><span class="params">(<span class="keyword">pthread_mutexattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_condattr_init</span><span class="params">(<span class="keyword">pthread_condattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_condattr_destroy</span><span class="params">(<span class="keyword">pthread_condattr_t</span> *attr)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>，失败返回Exxx错误码</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>一旦某个互斥锁属性对象或者某个条件变量属性对象已被初始化，就通过调用不同函数启用或<br>禁止特定的特性。例如，指定互斥锁或条件变量在不同进程间共享，而不是只在单个进程内的<br>不同线程间共享</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutexattr_getpshared</span><span class="params">(<span class="keyword">const</span> <span class="keyword">pthread_mutexattr_t</span> *ptr, <span class="keyword">int</span> *valptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutexattr_setpshared</span><span class="params">(<span class="keyword">const</span> <span class="keyword">pthread_mutexattr_t</span> *ptr, <span class="keyword">int</span> val)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_condattr_getpshared</span><span class="params">(<span class="keyword">const</span> <span class="keyword">pthread_condattr_t</span> *ptr, <span class="keyword">int</span> *valptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_condattr_setpshared</span><span class="params">(<span class="keyword">const</span> <span class="keyword">pthread_condattr_t</span> *ptr, <span class="keyword">int</span> val)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>，失败返回Exxx错误码</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>这个特性只在&lt;unistd.h&gt;中定义了<strong>_POSIX_THREAD_PROCESS_SHARED</strong>时才得以支持，下面给<br>出初始化一个互斥锁以便它能在进程间共享的示例：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">pthread_mutex_t</span> *mptr;  <span class="comment">// 这个互斥锁要存放在**某块共享内存**中</span></span><br><span class="line"><span class="keyword">pthread_mutexattr_t</span> mattr;</span><br><span class="line"></span><br><span class="line">mptr = <span class="comment">// some value that points to shared </span></span><br><span class="line">memorypthread_mutexattr_init(&amp;mattr);  <span class="comment">// 初始化属性</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> _POSIX_THREAD_PROCESS_SHARED         </span></span><br><span class="line">    pthread_mutexattr_setpshared(&amp;mattr, PTHREAD_PROCESS_SHARED);  <span class="comment">// 设置特定属性</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span>     </span></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">error</span> this implementation does not support _POSIX_THREAD_PROCESS_SHARED</span></span><br><span class="line">pthread_mutex_init(mptr, &amp;mattr); <span class="comment">// 初始化锁</span></span><br></pre></td></tr></table></figure>
-<h2 id="持有锁期间进程终止"><a href="#持有锁期间进程终止" class="headerlink" title="持有锁期间进程终止"></a>持有锁期间进程终止</h2><ul>
-<li>没有办法让系统在进程终止时自动释放所持有的锁。</li>
-<li>进程终止时，内核总是自动清理的唯一同步锁类型是：fcntl记录锁 </li>
-<li>在使用System V信号量时，应用程序可以选择进程终止时内核是否自动清理某个信号量锁。 </li>
-<li>线程可以注册一个在自己被另一线程取消时要执行的清理处理程序</li>
-</ul>
-<blockquote>
-<p>文中代码托管在: <a href="https://github.com/carl-wang-cn/demo/tree/master/ipc">https://github.com/carl-wang-cn/demo/tree/master/ipc</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>ipc</tag>
-        <tag>多进程</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>python的finally语句中使用return要慎重!!!</title>
     <url>/2020/02/13/2020-02-13-python-finally-hole/</url>
     <content><![CDATA[<p>前两天, 同事踩了一个坑, python代码的一个接口抛了异常, 但是返回值是0. 这里记录一下.</p>
@@ -1588,6 +1588,31 @@
       <categories>
         <category>金融</category>
       </categories>
+  </entry>
+  <entry>
+    <title>我被收了ADR费</title>
+    <url>/2021/02/19/adr-vs-ads/</url>
+    <content><![CDATA[<p><strong>今天发现因为持有JD被收了ADR费，但是JD不是美国上市的吗？跟TCEHY（腾讯ADR）有什么区别？</strong></p>
+<p>ADR: American Depositary Receipts</p>
+<p>ADS: American Depositary Shares</p>
+<p>从以上ADR和ADS的英文全写其实大概就能理解二者的区别了。</p>
+<a id="more"></a>
+
+<p>ADR，大多数非美国公司的股票都是通过ADR在美股市场交易的，ADR指的是整个发行过程。</p>
+<p>ADS，是以美元计价的非美国公司的实际股票，可在美国证券交易所购买，ADS指的是单独的股票。</p>
+<p>ADR是由美国存托银行发行的，投资者买了ADR，就获得了获取该ADR代表的具体非美国股票的权利，但实际上，对投资者来说，交易ADR其实挺方便的。</p>
+<p>ADR:ADS = 1:n，n&gt;0，n可以小于1，也可以大于1。</p>
+<p>不知道你们用过大闸蟹礼券没有，其实很类似，那张大闸蟹兑换券你可以卖给别人，可以从别人那买；每张券可能只能换1只大闸蟹，也可能可以换5只大闸蟹；对于单纯想通过买卖兑换券来获取价差收益的人来说，兑换券相对于实际的大闸蟹可能还更方便好用。</p>
+<h2 id="JD跟TCEHY有啥区别呢？"><a href="#JD跟TCEHY有啥区别呢？" class="headerlink" title="JD跟TCEHY有啥区别呢？"></a>JD跟TCEHY有啥区别呢？</h2><p>JD是作为非美国公司在NASDAQ上市的。但是市场上交易的仍然是ADR。</p>
+<p>TCEHY，因为腾讯是在香港上市的，为了让投资者可以在美国市场上交易腾讯，腾讯就需要找一家有资质的美国机构（通常是某国际投行），将他的部分股票托管给该机构在香港的分支机构，然后这个机构会通知美国总部，收到了来自腾讯的股票，然后美国的机构总部就拿出相对应数量的ADR在美股市场中流通了。并且只要投资者持有ADR，在每个月固定的某个时间只要你当时持有ADR，就需要向该机构缴纳一定的费用。</p>
+<p>二者都是要被收ADR托管费的。</p>
+]]></content>
+      <categories>
+        <category>金融</category>
+      </categories>
+      <tags>
+        <tag>ADR</tag>
+      </tags>
   </entry>
   <entry>
     <title>crontab示例</title>

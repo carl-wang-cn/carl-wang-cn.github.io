@@ -15,8 +15,32 @@
     <atom:link href="https://carl-wang-cn.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>金融程序员</description>
-    <pubDate>Fri, 19 Feb 2021 03:26:56 GMT</pubDate>
+    <pubDate>Thu, 04 Mar 2021 01:58:29 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>我被收了ADR费</title>
+      <link>https://carl-wang-cn.github.io/2021/02/19/adr-vs-ads/</link>
+      <guid>https://carl-wang-cn.github.io/2021/02/19/adr-vs-ads/</guid>
+      <pubDate>Fri, 19 Feb 2021 14:29:40 GMT</pubDate>
+      
+      <description>&lt;p&gt;&lt;strong&gt;今天发现因为持有JD被收了ADR费，但是JD不是美国上市的吗？跟TCEHY（腾讯ADR）有什么区别？&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;ADR: American Depositary Receipts&lt;/p&gt;
+&lt;p&gt;ADS: American Depositary Shares&lt;/p&gt;
+&lt;p&gt;从以上ADR和ADS的英文全写其实大概就能理解二者的区别了。&lt;/p&gt;</description>
+      
+      
+      
+      
+      <category domain="https://carl-wang-cn.github.io/categories/%E9%87%91%E8%9E%8D/">金融</category>
+      
+      
+      <category domain="https://carl-wang-cn.github.io/tags/ADR/">ADR</category>
+      
+      
+      <comments>https://carl-wang-cn.github.io/2021/02/19/adr-vs-ads/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>crontab示例</title>
@@ -199,34 +223,6 @@
       
       
       <comments>https://carl-wang-cn.github.io/2020/02/13/2020-02-13-python-finally-hole/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>多进程通信-消息队列</title>
-      <link>https://carl-wang-cn.github.io/2020/02/08/2020-02-07-ipc-posix-msg-queue/</link>
-      <guid>https://carl-wang-cn.github.io/2020/02/08/2020-02-07-ipc-posix-msg-queue/</guid>
-      <pubDate>Sat, 08 Feb 2020 12:51:02 GMT</pubDate>
-      
-      <description>&lt;h3 id=&quot;基本特性&quot;&gt;&lt;a href=&quot;#基本特性&quot; class=&quot;headerlink&quot; title=&quot;基本特性&quot;&gt;&lt;/a&gt;基本特性&lt;/h3&gt;&lt;hr&gt;
-&lt;ol&gt;
-&lt;li&gt;在某个进程往一个队列写入消息之前, 并不需要另外某个进程在该队列上等待消息的到达. 这个与管道和FIFO是相反的, 对后两者来说, 除非读出者已存在, 否则先有写入者是没有意义的.&lt;/li&gt;
-&lt;li&gt;消息队列具有随内核的持续性.一个进程可以往某个队列写入一些消息, 然后终止, 再让另外一个进程在以后某个时刻读出这些消息&lt;/li&gt;
-&lt;li&gt;队列属性&lt;/li&gt;
-&lt;/ol&gt;</description>
-      
-      
-      
-      
-      <category domain="https://carl-wang-cn.github.io/categories/%E6%8A%80%E6%9C%AF/">技术</category>
-      
-      
-      <category domain="https://carl-wang-cn.github.io/tags/ipc/">ipc</category>
-      
-      <category domain="https://carl-wang-cn.github.io/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B/">多进程</category>
-      
-      
-      <comments>https://carl-wang-cn.github.io/2020/02/08/2020-02-07-ipc-posix-msg-queue/#disqus_thread</comments>
       
     </item>
     
