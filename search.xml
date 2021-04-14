@@ -814,27 +814,6 @@
       </tags>
   </entry>
   <entry>
-    <title>免密登录远程linux机器</title>
-    <url>/2020/02/01/2020-02-01-ssh-remote-linux/</url>
-    <content><![CDATA[<h3 id="为什么选择证书登陆？"><a href="#为什么选择证书登陆？" class="headerlink" title="为什么选择证书登陆？"></a>为什么选择证书登陆？</h3><p>Mac下原生及主流的ssh终端工具大多不具备保存ssh登陆密码的功能, 通过证书登陆的方式，就可以实现原生终端工具Terminal或第三方明星终端iTerm免密码登录远程系统，并且比单纯的密码验证登陆方式提高了安全性。</p>
-<a id="more"></a>
-
-<h3 id="配置过程（以下操作都在终端命令行下运行）"><a href="#配置过程（以下操作都在终端命令行下运行）" class="headerlink" title="配置过程（以下操作都在终端命令行下运行）"></a>配置过程（以下操作都在终端命令行下运行）</h3><ol>
-<li>进入系统的ssh证书目录 cd ~/.ssh/</li>
-<li>建立证书文件 ssh-keygen -t rsa 提示输入，直接回车即可。</li>
-<li>输入 ls 命令查看当前目录会发现新生成的一对秘钥文件分别是：<br>公钥：id_rsa.pub<br>私钥：id_rsa</li>
-<li>登陆到远程服务器，进入.ssh目录 cd ~/.ssh<br>将上面生成的公钥文件的内容copy进 authorized_keys 文件中</li>
-<li>在Mac终端下执行登陆命令 ssh username@server<br>即可免密码登录到远程服务器</li>
-</ol>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>ssh</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>进程间通信-fcntl记录上锁</title>
     <url>/2020/02/01/2020-02-01-ipc-fcntl/</url>
     <content><![CDATA[<p>这是读写锁的一种扩展类型，可用于有亲缘关系或<strong>无亲缘关系</strong>的<strong>进程</strong>之间共享某个文件的读写。这些锁用于不同进程间的上锁，而不是用于同一进程中不同线程间的上锁。</p>
@@ -876,6 +855,27 @@
       <tags>
         <tag>ipc</tag>
         <tag>多进程</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>免密登录远程linux机器</title>
+    <url>/2020/02/01/2020-02-01-ssh-remote-linux/</url>
+    <content><![CDATA[<h3 id="为什么选择证书登陆？"><a href="#为什么选择证书登陆？" class="headerlink" title="为什么选择证书登陆？"></a>为什么选择证书登陆？</h3><p>Mac下原生及主流的ssh终端工具大多不具备保存ssh登陆密码的功能, 通过证书登陆的方式，就可以实现原生终端工具Terminal或第三方明星终端iTerm免密码登录远程系统，并且比单纯的密码验证登陆方式提高了安全性。</p>
+<a id="more"></a>
+
+<h3 id="配置过程（以下操作都在终端命令行下运行）"><a href="#配置过程（以下操作都在终端命令行下运行）" class="headerlink" title="配置过程（以下操作都在终端命令行下运行）"></a>配置过程（以下操作都在终端命令行下运行）</h3><ol>
+<li>进入系统的ssh证书目录 cd ~/.ssh/</li>
+<li>建立证书文件 ssh-keygen -t rsa 提示输入，直接回车即可。</li>
+<li>输入 ls 命令查看当前目录会发现新生成的一对秘钥文件分别是：<br>公钥：id_rsa.pub<br>私钥：id_rsa</li>
+<li>登陆到远程服务器，进入.ssh目录 cd ~/.ssh<br>将上面生成的公钥文件的内容copy进 authorized_keys 文件中</li>
+<li>在Mac终端下执行登陆命令 ssh username@server<br>即可免密码登录到远程服务器</li>
+</ol>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>ssh</tag>
       </tags>
   </entry>
   <entry>
@@ -1020,64 +1020,6 @@
       </tags>
   </entry>
   <entry>
-    <title>进程间通信-共享内存</title>
-    <url>/2020/02/05/2020-02-05-mmap/</url>
-    <content><![CDATA[<p>共享内存区是IPC形式中<strong>最快</strong>的. 一旦这样的内存区映射到共享它的进程的地址<br>空间, 这些进程间数据的传递就不再涉及内核. 然而往该共享内存区存放信息或从<br>中取走信息的进程间通常需要某种形式的同步.</p>
-<a id="more"></a>
-
-<p><strong>再次强调</strong>: 默认情况下fork派生的子进程并不与其父进程共享内存区.</p>
-<p>mmap函数把一个文件或一个Posix共享内存区对象映射到调用进程的地址空间. 使用该<br>函数的3个目的:</p>
-<ol>
-<li>使用普通文件以提供内存映射I/O</li>
-<li>使用特殊文件以提供匿名内存映射</li>
-<li>使用shm_open以提供无亲缘关系进程间的Posix共享内存区</li>
-</ol>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/mman.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">mmap</span><span class="params">(<span class="keyword">void</span> *addr, <span class="keyword">size_t</span> len, <span class="keyword">int</span> prot, <span class="keyword">int</span> flags, <span class="keyword">int</span> fd, <span class="keyword">off_t</span> offset)</span></span>;</span><br><span class="line">返回: 成功返回被映射区的起始地址, 失败返回MAP_FAILED</span><br><span class="line"></span><br><span class="line">addr 可以指定描述符fd应被映射到的进程内空间的起始地址. 它通常被设为<span class="literal">NULL</span>, 这</span><br><span class="line">     样告诉内核自己去选择起始地址</span><br><span class="line"></span><br><span class="line">len 映射到调用进程地址空间中的字节数, 它从被映射文件开头起第offset个字节处</span><br><span class="line">    开始算. 通常被设置为<span class="number">0</span></span><br><span class="line"></span><br><span class="line">prot 指定内存映射区的保护, 常见值是 PROT_READ | PROT_WRITE</span><br><span class="line">     prot        说明</span><br><span class="line">     PROT_READ   数据可读</span><br><span class="line">     PROT_WRITE  数据可写</span><br><span class="line">     PROT_EXEC   数据可执行</span><br><span class="line">     PROT_NONE   数据不可访问</span><br><span class="line"></span><br><span class="line">flags MAP_SHARED或MAP_PRIVATE这两个标志必须指定一个, 并有选择地 | MAP_FIXED. </span><br><span class="line">      MAP_PRIVATE 调用进程对被映射数据所做的修改只对本进程可见, 而不改变底层</span><br><span class="line">                  支撑对象</span><br><span class="line">      MAP_SHARED  调用进程对被映射数据所做的修改对于共享该对象的所有进程都可</span><br><span class="line">                  见, 而且确实改变了其底层支撑对象</span><br><span class="line">     </span><br><span class="line">      Flags         说明</span><br><span class="line">      MAP_PRIVATE   变动是私自的</span><br><span class="line">      MAP_SHARED    变动是共享的</span><br><span class="line">      MAP_FIXED     准确的解释addr参数</span><br><span class="line"></span><br><span class="line">      从移植性上考虑, MAP_FIXED不应被指定. 可移植性的代码应该把addr置为<span class="literal">NULL</span>,</span><br><span class="line">      不指定MAP_FIXED</span><br><span class="line"></span><br><span class="line">父子进程之间共享内存区的方法之一: 父进程在调用fork之前先指定MAP_SHARED调用mmap.</span><br><span class="line">Posix<span class="number">.1</span>保证父进程中的内存映射关系存留到子进程中.</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">munmap</span><span class="params">(<span class="keyword">void</span> *addr, <span class="keyword">size_t</span> len)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">从某个进程的地址空间删除一个映射关系. munmap后再访问这些地址将会导致想调用进程</span><br><span class="line">产生一个SIGSEGV信号</span><br><span class="line"></span><br><span class="line">如果被映射区是使用MAP_PRIVATE标志映射的, 那么调用进程对它所做的变动都会被丢弃掉.</span><br><span class="line"></span><br><span class="line">addr mmap返回的地址</span><br><span class="line">len  映射区的大小</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">msync</span><span class="params">(<span class="keyword">void</span> *addr, <span class="keyword">size_t</span> len, <span class="keyword">int</span> flags)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">内核的虚拟内存算法保持内存映射文件(一般在硬盘上)与内存映射区(在内存中)的同步,</span><br><span class="line">前提是它是一个MAP_SHARED内存区. 如果我们修改了处于内存映射到某个文件的内存区中</span><br><span class="line">某个位置的内容, 那么内核将在稍后某个时刻相应的更新文件. 然而有时候希望确信硬盘</span><br><span class="line">上的文件内容与内存映射区中的内容一致, 这就需要调用msync来执行这种同步</span><br><span class="line"></span><br><span class="line">addr和len通常指代内存中的整个内存映射区, 不过也可以指定该内存区的一个子集.</span><br><span class="line">flags参数: MS_ASYNC和MS_SYNC必须指定一个, 但不能同时指定</span><br><span class="line">- MS_ASYNC  执行异步写, 一旦写操作由内核排入队列, 立即返回</span><br><span class="line">- MS_SYNC   执行同步写, ........................, 等到写操作完成后才返回</span><br><span class="line">- MS_INVALIDATE 使高速缓存的数据失效. 指定了该flag, 那么与其最终副本不一致的文</span><br><span class="line">            件数据的所有内存中副本都失效, 后续的引用将从文件中取得数据.</span><br><span class="line"></span><br><span class="line">Posix还定义了处理内存管理的<span class="number">4</span>个额外函数</span><br><span class="line">- mlockall会使调用进程的整个内存空间常驻内存. munlockall则撤销这种锁定</span><br><span class="line">- mlcok会是调用进程地址空间的某个指定范围常驻内存, 该函数的参数指定了这个范围的</span><br><span class="line">  起始地址以及从该地址算起的字节数. munlock则撤销某个指定内存区的锁定.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>使用mmap的好处:</p>
-<p>使用内存映射文件所得到的奇妙特性是, 所有的I/O都在内核的掩盖下完成, 我们只需编<br>写存取内存映射区中各个值的代码. 我们决不调用read, write, lseek, 把显示的文件<br>I/O操作变换成存取内存单元, 这样可以简化我们的代码, 有时候还能改善性能</p>
-<p>mmap的另一个用途是在无亲缘关系的进程间提供共享内存区(需指定MAP_SHARED标志).这<br>种情形下, 所映射文件的实际内容成了被共享内存区的初始内容, 而且这些进程对该共享<br>内存区所做的任何变动都复制回所映射的文件(以提供随文件系统的持续性).</p>
-<ul>
-<li>count01.c 父子进程给共享内存区的一个计数器加1, 使用有名信号量</li>
-<li>count02.c 父子进程给共享内存区的一个计数器加1, 使用基于内存的信号量</li>
-</ul>
-<p>内存映射一个普通文件时, 内存映射区的大小(mmap的第二个参数)通常等于该文件的大小.<br>但是文件大小和内存映射区大小可以不同. 我们总是能够访问在当前文件大小以内又在内<br>存映射区以内的那些字节.</p>
-<ul>
-<li>SIGBUS  内存映射区大小 &gt; 文件大小, 访问了超出文件大小的位置但是未超出内存映射区</li>
-<li>SIGSEGV 越界访问内存映射区</li>
-</ul>
-<h3 id="Posix共享内存区"><a href="#Posix共享内存区" class="headerlink" title="Posix共享内存区"></a>Posix共享内存区</h3><hr>
-<p>两者无亲缘关系进程间共享内存区的方法</p>
-<ol>
-<li>内存映射文件. 由open函数打开, 由mmap函数把所得到的描述符映射到当前进程地址空<br>间中的一个文件</li>
-<li>共享内存区对象. 由shm_open打开一个Posix.1 IPC名字, 所返回的描述符由mmap函数<br>映射到当前进程地址空间</li>
-</ol>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/mman.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">shm_open</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *name, <span class="keyword">int</span> oflag, <span class="keyword">mode_t</span> mode)</span></span>;</span><br><span class="line">返回: 成功返回非负描述符, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">oflag  必须含有O_RDONLY或O_RDWR之一, 还可以有O_CREAT, O_EXCL. 如果 O_RDWR | O_TRUNC,</span><br><span class="line">       而且所需的共享内存区对象已经存在, 那么它将被截断为<span class="number">0</span>长度.</span><br><span class="line">mode   指定权限位, 在O_CREAT时必须指定mode, 未指定O_CREAT时可以mode设为<span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">shm_unlink</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *name)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">shm_unlink删除一个共享内存区对象的名字. 跟所有其他unlink函数(删除文件系统中一个路径名</span><br><span class="line">的unlink, 删除一个Posix消息队列的mq_unlink, 以及删除一个Posix有名信号量的sem_unlink)</span><br><span class="line">一样, 删除一个名字不会影响对于底层支撑对象的现有引用, 知道对于该对象的引用全部关闭为</span><br><span class="line">止. 删除一个名字仅仅防止后续的open, mq_open或sem_open调用取得成功.</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ftruncate</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">off_t</span> length)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">调用ftruncate来指定新创建的共享内存区对象的大小, 或者修改已存在的对象的大小.</span><br><span class="line"></span><br><span class="line">- 对于普通文件: 如果该文件大小大于length, 额外的数据就被丢弃掉, 如果该文件的大小小于</span><br><span class="line">  length, 那么该文件是否修改以及其大小是否增长是未定义的. </span><br><span class="line">  实际上对于一个普通文件, 把它的大小扩展到length字节的可移植办法是:先lseek到偏移为</span><br><span class="line">  length<span class="number">-1</span>处, 然后write <span class="number">1</span>个字节的数据</span><br><span class="line">- 对于共享内存区对象: 把该对象的大小设置成length字节.</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fstat</span><span class="params">(<span class="keyword">int</span> fd, struct stat *buf)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stat</span>有12个或以上的成员, 但是当<span class="title">fd</span>指代一个共享内存区对象时, 只有4个成员含有信息</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stat</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">mode_t</span> st_mode;  <span class="comment">// mode: S_I&#123;RW&#125;&#123;USR, GRP, OTH&#125;</span></span><br><span class="line">    <span class="keyword">uid_t</span>  st_uid;   <span class="comment">// user id of owner</span></span><br><span class="line">    <span class="keyword">gid_t</span>  st_gid;   <span class="comment">// group id of owner</span></span><br><span class="line">    <span class="keyword">off_t</span>  st_size;  <span class="comment">// size in bytes</span></span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<ul>
-<li>shmcreate.c 创建一个具有指定大小的Posix共享内存区对象</li>
-<li>shmunlink.c 删除一个共享内存区对象的名字</li>
-<li>shmwrite.c  打开一个共享内存区对象, 填写一个数据模式</li>
-<li>shmread.c   打开一个共享内存区对象, 验证其数据模式</li>
-</ul>
-<p>同一个共享内存区对象内存映射到不同进程的地址空间时, 起始地址可以不同.</p>
-<ul>
-<li>count03_server.c 创建并初始化共享内存区和信号量的程序</li>
-<li>count03_client.c 给存放在共享内存区中的一个计数器加1, 测试的时候可以启动多个client来观察效果</li>
-<li>cosumer.c 从共享内存区中取得并输出消息</li>
-<li>producer.c 在共享内存区存放消息</li>
-</ul>
-<blockquote>
-<p>文中代码托管在: <a href="https://github.com/carl-wang-cn/demo/tree/master/ipc">https://github.com/carl-wang-cn/demo/tree/master/ipc</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>ipc</tag>
-        <tag>多进程</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>进程间通信-管道</title>
     <url>/2020/02/07/2020-02-07-ipc-pipe/</url>
     <content><![CDATA[<h3 id="pipe匿名管道"><a href="#pipe匿名管道" class="headerlink" title="pipe匿名管道"></a>pipe匿名管道</h3><p>匿名管道由于没有名字, 因此只能由有亲缘关系的进程使用</p>
@@ -1133,50 +1075,50 @@
       </tags>
   </entry>
   <entry>
-    <title>多进程通信-互斥锁和条件变量</title>
-    <url>/2020/02/07/2020-02-07-mutex-cond/</url>
-    <content><![CDATA[<h2 id="互斥锁"><a href="#互斥锁" class="headerlink" title="互斥锁"></a>互斥锁</h2><p>互斥锁和条件变量总是可用来同步一个进程内的各个线程。但是如果一个互斥锁或条件变量是<br>存放在多个进程间共享的某个内存区内，那么它还可以被用来同步这几个进程。</p>
-<p>互斥锁指代相互排斥，用于保护临界区，以保证任何时刻<strong>只有一个线程/进程</strong>在执行<br>其中的代码。保护一个临界区的代码的通常轮廓大体如下：</p>
+    <title>进程间通信-共享内存</title>
+    <url>/2020/02/05/2020-02-05-mmap/</url>
+    <content><![CDATA[<p>共享内存区是IPC形式中<strong>最快</strong>的. 一旦这样的内存区映射到共享它的进程的地址<br>空间, 这些进程间数据的传递就不再涉及内核. 然而往该共享内存区存放信息或从<br>中取走信息的进程间通常需要某种形式的同步.</p>
 <a id="more"></a>
 
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">lock_the_mutex(...)</span><br><span class="line">操作临界区</span><br><span class="line">unlock_the_mutex(...)</span><br></pre></td></tr></table></figure>
-<h3 id="互斥锁的初始化"><a href="#互斥锁的初始化" class="headerlink" title="互斥锁的初始化"></a>互斥锁的初始化</h3><ol>
-<li>静态分配。 static pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;</li>
-<li>动态分配。 在运行之时通过调用pthread_mutex_init函数来初始化。</li>
-</ol>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutex_lock</span><span class="params">(<span class="keyword">pthread_mutex_t</span> *mptr)</span></span>;  <span class="comment">// block</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutex_trylock</span><span class="params">(<span class="keyword">pthread_mutex_t</span> *mptr)</span></span>;  <span class="comment">// unblock</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutex_unlock</span><span class="params">(<span class="keyword">pthread_mutex_t</span> *mptr)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>，失败返回Exxx错误码</span><br><span class="line"></span><br><span class="line">如果尝试给一个已由另外某个线程锁住的互斥锁上锁，那么pthread_mutex_lock会阻塞到该</span><br><span class="line">互斥锁被解锁为止，pthread_mutex_trylock是对应的非阻塞函数，如果该互斥锁已锁住，</span><br><span class="line">它就返回一个EBUSY错误</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>互斥锁是协作性锁。<strong>由coder来保证</strong>操作临界区之前获取对应互斥锁。</p>
-<blockquote>
-<p>prodcons_mutex.c 使用互斥锁的producer-consumer示例</p>
-</blockquote>
-<h2 id="条件变量"><a href="#条件变量" class="headerlink" title="条件变量"></a>条件变量</h2><p>互斥锁用于上锁，条件变量用于等待.</p>
-<p>条件变量类型为：pthread_cond_t</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_cond_wait</span><span class="params">(<span class="keyword">pthread_cond_t</span> *cptr, <span class="keyword">pthread_mutex_t</span> *mptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_cond_signal</span><span class="params">(<span class="keyword">pthread_cond_t</span> *cptr)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>，失败返回Exxx错误码</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>每个条件变量总是有一个互斥锁与之关联</p>
-<p>pthread_cond_wait <strong>会原子地</strong>执行2个动作</p>
+<p><strong>再次强调</strong>: 默认情况下fork派生的子进程并不与其父进程共享内存区.</p>
+<p>mmap函数把一个文件或一个Posix共享内存区对象映射到调用进程的地址空间. 使用该<br>函数的3个目的:</p>
 <ol>
-<li>给互斥锁mptr解锁</li>
-<li>把调用线程投入睡眠，直到另外某个线程就本条件变量调用pthread_cond_signal, pthread_cond_wait返回前重新给mptr上锁</li>
+<li>使用普通文件以提供内存映射I/O</li>
+<li>使用特殊文件以提供匿名内存映射</li>
+<li>使用shm_open以提供无亲缘关系进程间的Posix共享内存区</li>
 </ol>
-<p><strong>给条件变量发送信号的代码：</strong></p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span>     </span><br><span class="line">    <span class="keyword">pthread_mutex_t</span> mutex;     </span><br><span class="line">    <span class="keyword">pthread_cond_t</span>  cond;     </span><br><span class="line">    <span class="comment">// vars</span></span><br><span class="line">&#125; var = &#123;PTHREAD_MUTEX_INITIALIZER, PTHREAD_COND_INITIALIZER, ...&#125;;</span><br><span class="line"></span><br><span class="line">pthread_mutex_lock(&amp;var.mutex);</span><br><span class="line">设置条件为真</span><br><span class="line">pthread_cond_signal(&amp;var.cond);</span><br><span class="line">pthread_mutex_unlock(&amp;var.mutex);</span><br><span class="line"></span><br><span class="line">调用pthread_cond_signal的线程不必是与之关联的互斥锁的当前属主。但是如果需要可预见的</span><br><span class="line">调度行为，那么调用pthread_cond_signal的线程必须锁住该互斥锁</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p><strong>测试条件并进入睡眠以等待该条件变为真的代码：</strong></p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">pthread_mutex_lock(&amp;var.mutex);</span><br><span class="line"><span class="keyword">while</span> (条件为假)</span><br><span class="line">&#123;     </span><br><span class="line">    pthread_cond_wait(&amp;var.cond, &amp;var.mutex);</span><br><span class="line">&#125;</span><br><span class="line">修改条件</span><br><span class="line">pthread_mutex_unlock(&amp;var.mutex);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>prodcons_mutex_cond.c 使用条件变量的producer-consumer示例</p>
-</blockquote>
-<h3 id="条件变量的定时等待和广播"><a href="#条件变量的定时等待和广播" class="headerlink" title="条件变量的定时等待和广播"></a>条件变量的定时等待和广播</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_cond_broadcast</span><span class="params">(<span class="keyword">pthread_cond_t</span> *cptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_cond_timewait</span><span class="params">(<span class="keyword">pthread_cond_t</span> *cptr, <span class="keyword">pthread_mutex_t</span> *mptr, <span class="keyword">const</span> struct timespec *abstime)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>，失败返回Exxx错误码</span><br><span class="line"></span><br><span class="line">pthread_cond_timewait 超时返回ETIMEOUT错误</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">timespec</span></span></span><br><span class="line"><span class="class">&#123;</span>     </span><br><span class="line">    <span class="keyword">time_t</span> tv_sec;  <span class="comment">// seconds     </span></span><br><span class="line">    <span class="keyword">long</span>   tv_nsec; <span class="comment">// nanosecondes</span></span><br><span class="line">&#125;;</span><br><span class="line">abstime是UTC时间，而不是时间差</span><br></pre></td></tr></table></figure>
-<h2 id="互斥锁和条件变量的属性"><a href="#互斥锁和条件变量的属性" class="headerlink" title="互斥锁和条件变量的属性"></a>互斥锁和条件变量的属性</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutex_init</span><span class="params">(<span class="keyword">pthread_mutex_t</span> *mptr, <span class="keyword">const</span> <span class="keyword">pthread_mutexattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutex_destory</span><span class="params">(<span class="keyword">pthread_mutex_t</span> *mptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_cond_init</span><span class="params">(<span class="keyword">pthread_cond_t</span> *cptr, <span class="keyword">const</span> <span class="keyword">pthread_condattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_cond_destroy</span><span class="params">(<span class="keyword">pthread_cond_t</span> *cptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutexattr_init</span><span class="params">(<span class="keyword">pthread_mutexattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutexattr_destroy</span><span class="params">(<span class="keyword">pthread_mutexattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_condattr_init</span><span class="params">(<span class="keyword">pthread_condattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_condattr_destroy</span><span class="params">(<span class="keyword">pthread_condattr_t</span> *attr)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>，失败返回Exxx错误码</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>一旦某个互斥锁属性对象或者某个条件变量属性对象已被初始化，就通过调用不同函数启用或<br>禁止特定的特性。例如，指定互斥锁或条件变量在不同进程间共享，而不是只在单个进程内的<br>不同线程间共享</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutexattr_getpshared</span><span class="params">(<span class="keyword">const</span> <span class="keyword">pthread_mutexattr_t</span> *ptr, <span class="keyword">int</span> *valptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutexattr_setpshared</span><span class="params">(<span class="keyword">const</span> <span class="keyword">pthread_mutexattr_t</span> *ptr, <span class="keyword">int</span> val)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_condattr_getpshared</span><span class="params">(<span class="keyword">const</span> <span class="keyword">pthread_condattr_t</span> *ptr, <span class="keyword">int</span> *valptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_condattr_setpshared</span><span class="params">(<span class="keyword">const</span> <span class="keyword">pthread_condattr_t</span> *ptr, <span class="keyword">int</span> val)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>，失败返回Exxx错误码</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>这个特性只在&lt;unistd.h&gt;中定义了<strong>_POSIX_THREAD_PROCESS_SHARED</strong>时才得以支持，下面给<br>出初始化一个互斥锁以便它能在进程间共享的示例：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">pthread_mutex_t</span> *mptr;  <span class="comment">// 这个互斥锁要存放在**某块共享内存**中</span></span><br><span class="line"><span class="keyword">pthread_mutexattr_t</span> mattr;</span><br><span class="line"></span><br><span class="line">mptr = <span class="comment">// some value that points to shared </span></span><br><span class="line">memorypthread_mutexattr_init(&amp;mattr);  <span class="comment">// 初始化属性</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> _POSIX_THREAD_PROCESS_SHARED         </span></span><br><span class="line">    pthread_mutexattr_setpshared(&amp;mattr, PTHREAD_PROCESS_SHARED);  <span class="comment">// 设置特定属性</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span>     </span></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">error</span> this implementation does not support _POSIX_THREAD_PROCESS_SHARED</span></span><br><span class="line">pthread_mutex_init(mptr, &amp;mattr); <span class="comment">// 初始化锁</span></span><br></pre></td></tr></table></figure>
-<h2 id="持有锁期间进程终止"><a href="#持有锁期间进程终止" class="headerlink" title="持有锁期间进程终止"></a>持有锁期间进程终止</h2><ul>
-<li>没有办法让系统在进程终止时自动释放所持有的锁。</li>
-<li>进程终止时，内核总是自动清理的唯一同步锁类型是：fcntl记录锁 </li>
-<li>在使用System V信号量时，应用程序可以选择进程终止时内核是否自动清理某个信号量锁。 </li>
-<li>线程可以注册一个在自己被另一线程取消时要执行的清理处理程序</li>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/mman.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">mmap</span><span class="params">(<span class="keyword">void</span> *addr, <span class="keyword">size_t</span> len, <span class="keyword">int</span> prot, <span class="keyword">int</span> flags, <span class="keyword">int</span> fd, <span class="keyword">off_t</span> offset)</span></span>;</span><br><span class="line">返回: 成功返回被映射区的起始地址, 失败返回MAP_FAILED</span><br><span class="line"></span><br><span class="line">addr 可以指定描述符fd应被映射到的进程内空间的起始地址. 它通常被设为<span class="literal">NULL</span>, 这</span><br><span class="line">     样告诉内核自己去选择起始地址</span><br><span class="line"></span><br><span class="line">len 映射到调用进程地址空间中的字节数, 它从被映射文件开头起第offset个字节处</span><br><span class="line">    开始算. 通常被设置为<span class="number">0</span></span><br><span class="line"></span><br><span class="line">prot 指定内存映射区的保护, 常见值是 PROT_READ | PROT_WRITE</span><br><span class="line">     prot        说明</span><br><span class="line">     PROT_READ   数据可读</span><br><span class="line">     PROT_WRITE  数据可写</span><br><span class="line">     PROT_EXEC   数据可执行</span><br><span class="line">     PROT_NONE   数据不可访问</span><br><span class="line"></span><br><span class="line">flags MAP_SHARED或MAP_PRIVATE这两个标志必须指定一个, 并有选择地 | MAP_FIXED. </span><br><span class="line">      MAP_PRIVATE 调用进程对被映射数据所做的修改只对本进程可见, 而不改变底层</span><br><span class="line">                  支撑对象</span><br><span class="line">      MAP_SHARED  调用进程对被映射数据所做的修改对于共享该对象的所有进程都可</span><br><span class="line">                  见, 而且确实改变了其底层支撑对象</span><br><span class="line">     </span><br><span class="line">      Flags         说明</span><br><span class="line">      MAP_PRIVATE   变动是私自的</span><br><span class="line">      MAP_SHARED    变动是共享的</span><br><span class="line">      MAP_FIXED     准确的解释addr参数</span><br><span class="line"></span><br><span class="line">      从移植性上考虑, MAP_FIXED不应被指定. 可移植性的代码应该把addr置为<span class="literal">NULL</span>,</span><br><span class="line">      不指定MAP_FIXED</span><br><span class="line"></span><br><span class="line">父子进程之间共享内存区的方法之一: 父进程在调用fork之前先指定MAP_SHARED调用mmap.</span><br><span class="line">Posix<span class="number">.1</span>保证父进程中的内存映射关系存留到子进程中.</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">munmap</span><span class="params">(<span class="keyword">void</span> *addr, <span class="keyword">size_t</span> len)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">从某个进程的地址空间删除一个映射关系. munmap后再访问这些地址将会导致想调用进程</span><br><span class="line">产生一个SIGSEGV信号</span><br><span class="line"></span><br><span class="line">如果被映射区是使用MAP_PRIVATE标志映射的, 那么调用进程对它所做的变动都会被丢弃掉.</span><br><span class="line"></span><br><span class="line">addr mmap返回的地址</span><br><span class="line">len  映射区的大小</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">msync</span><span class="params">(<span class="keyword">void</span> *addr, <span class="keyword">size_t</span> len, <span class="keyword">int</span> flags)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">内核的虚拟内存算法保持内存映射文件(一般在硬盘上)与内存映射区(在内存中)的同步,</span><br><span class="line">前提是它是一个MAP_SHARED内存区. 如果我们修改了处于内存映射到某个文件的内存区中</span><br><span class="line">某个位置的内容, 那么内核将在稍后某个时刻相应的更新文件. 然而有时候希望确信硬盘</span><br><span class="line">上的文件内容与内存映射区中的内容一致, 这就需要调用msync来执行这种同步</span><br><span class="line"></span><br><span class="line">addr和len通常指代内存中的整个内存映射区, 不过也可以指定该内存区的一个子集.</span><br><span class="line">flags参数: MS_ASYNC和MS_SYNC必须指定一个, 但不能同时指定</span><br><span class="line">- MS_ASYNC  执行异步写, 一旦写操作由内核排入队列, 立即返回</span><br><span class="line">- MS_SYNC   执行同步写, ........................, 等到写操作完成后才返回</span><br><span class="line">- MS_INVALIDATE 使高速缓存的数据失效. 指定了该flag, 那么与其最终副本不一致的文</span><br><span class="line">            件数据的所有内存中副本都失效, 后续的引用将从文件中取得数据.</span><br><span class="line"></span><br><span class="line">Posix还定义了处理内存管理的<span class="number">4</span>个额外函数</span><br><span class="line">- mlockall会使调用进程的整个内存空间常驻内存. munlockall则撤销这种锁定</span><br><span class="line">- mlcok会是调用进程地址空间的某个指定范围常驻内存, 该函数的参数指定了这个范围的</span><br><span class="line">  起始地址以及从该地址算起的字节数. munlock则撤销某个指定内存区的锁定.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>使用mmap的好处:</p>
+<p>使用内存映射文件所得到的奇妙特性是, 所有的I/O都在内核的掩盖下完成, 我们只需编<br>写存取内存映射区中各个值的代码. 我们决不调用read, write, lseek, 把显示的文件<br>I/O操作变换成存取内存单元, 这样可以简化我们的代码, 有时候还能改善性能</p>
+<p>mmap的另一个用途是在无亲缘关系的进程间提供共享内存区(需指定MAP_SHARED标志).这<br>种情形下, 所映射文件的实际内容成了被共享内存区的初始内容, 而且这些进程对该共享<br>内存区所做的任何变动都复制回所映射的文件(以提供随文件系统的持续性).</p>
+<ul>
+<li>count01.c 父子进程给共享内存区的一个计数器加1, 使用有名信号量</li>
+<li>count02.c 父子进程给共享内存区的一个计数器加1, 使用基于内存的信号量</li>
+</ul>
+<p>内存映射一个普通文件时, 内存映射区的大小(mmap的第二个参数)通常等于该文件的大小.<br>但是文件大小和内存映射区大小可以不同. 我们总是能够访问在当前文件大小以内又在内<br>存映射区以内的那些字节.</p>
+<ul>
+<li>SIGBUS  内存映射区大小 &gt; 文件大小, 访问了超出文件大小的位置但是未超出内存映射区</li>
+<li>SIGSEGV 越界访问内存映射区</li>
+</ul>
+<h3 id="Posix共享内存区"><a href="#Posix共享内存区" class="headerlink" title="Posix共享内存区"></a>Posix共享内存区</h3><hr>
+<p>两者无亲缘关系进程间共享内存区的方法</p>
+<ol>
+<li>内存映射文件. 由open函数打开, 由mmap函数把所得到的描述符映射到当前进程地址空<br>间中的一个文件</li>
+<li>共享内存区对象. 由shm_open打开一个Posix.1 IPC名字, 所返回的描述符由mmap函数<br>映射到当前进程地址空间</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/mman.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">shm_open</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *name, <span class="keyword">int</span> oflag, <span class="keyword">mode_t</span> mode)</span></span>;</span><br><span class="line">返回: 成功返回非负描述符, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">oflag  必须含有O_RDONLY或O_RDWR之一, 还可以有O_CREAT, O_EXCL. 如果 O_RDWR | O_TRUNC,</span><br><span class="line">       而且所需的共享内存区对象已经存在, 那么它将被截断为<span class="number">0</span>长度.</span><br><span class="line">mode   指定权限位, 在O_CREAT时必须指定mode, 未指定O_CREAT时可以mode设为<span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">shm_unlink</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *name)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">shm_unlink删除一个共享内存区对象的名字. 跟所有其他unlink函数(删除文件系统中一个路径名</span><br><span class="line">的unlink, 删除一个Posix消息队列的mq_unlink, 以及删除一个Posix有名信号量的sem_unlink)</span><br><span class="line">一样, 删除一个名字不会影响对于底层支撑对象的现有引用, 知道对于该对象的引用全部关闭为</span><br><span class="line">止. 删除一个名字仅仅防止后续的open, mq_open或sem_open调用取得成功.</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ftruncate</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">off_t</span> length)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">调用ftruncate来指定新创建的共享内存区对象的大小, 或者修改已存在的对象的大小.</span><br><span class="line"></span><br><span class="line">- 对于普通文件: 如果该文件大小大于length, 额外的数据就被丢弃掉, 如果该文件的大小小于</span><br><span class="line">  length, 那么该文件是否修改以及其大小是否增长是未定义的. </span><br><span class="line">  实际上对于一个普通文件, 把它的大小扩展到length字节的可移植办法是:先lseek到偏移为</span><br><span class="line">  length<span class="number">-1</span>处, 然后write <span class="number">1</span>个字节的数据</span><br><span class="line">- 对于共享内存区对象: 把该对象的大小设置成length字节.</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fstat</span><span class="params">(<span class="keyword">int</span> fd, struct stat *buf)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stat</span>有12个或以上的成员, 但是当<span class="title">fd</span>指代一个共享内存区对象时, 只有4个成员含有信息</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stat</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">mode_t</span> st_mode;  <span class="comment">// mode: S_I&#123;RW&#125;&#123;USR, GRP, OTH&#125;</span></span><br><span class="line">    <span class="keyword">uid_t</span>  st_uid;   <span class="comment">// user id of owner</span></span><br><span class="line">    <span class="keyword">gid_t</span>  st_gid;   <span class="comment">// group id of owner</span></span><br><span class="line">    <span class="keyword">off_t</span>  st_size;  <span class="comment">// size in bytes</span></span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>shmcreate.c 创建一个具有指定大小的Posix共享内存区对象</li>
+<li>shmunlink.c 删除一个共享内存区对象的名字</li>
+<li>shmwrite.c  打开一个共享内存区对象, 填写一个数据模式</li>
+<li>shmread.c   打开一个共享内存区对象, 验证其数据模式</li>
+</ul>
+<p>同一个共享内存区对象内存映射到不同进程的地址空间时, 起始地址可以不同.</p>
+<ul>
+<li>count03_server.c 创建并初始化共享内存区和信号量的程序</li>
+<li>count03_client.c 给存放在共享内存区中的一个计数器加1, 测试的时候可以启动多个client来观察效果</li>
+<li>cosumer.c 从共享内存区中取得并输出消息</li>
+<li>producer.c 在共享内存区存放消息</li>
 </ul>
 <blockquote>
 <p>文中代码托管在: <a href="https://github.com/carl-wang-cn/demo/tree/master/ipc">https://github.com/carl-wang-cn/demo/tree/master/ipc</a></p>
@@ -1430,6 +1372,64 @@
 <p>如果信号由某个其他事件产生, si_code就会被设置成不同于上面所列的某个值.<br>siginfo_t结构的si_value成员只有在si_code为SI_ASYNCIO, SI_MESGQ,<br>SI_QUEUE, SI_TIMER时才有效.</p>
 <ul>
 <li>signal_realtime.c 演示实时信号的简单测试程序.由父进程连续触发9个信号, 信号值从大到小触发, 每个信号伴随一个int型参数.此示例证明了实时信号是FIFO的, 并且较小值的信号优先递交</li>
+</ul>
+<blockquote>
+<p>文中代码托管在: <a href="https://github.com/carl-wang-cn/demo/tree/master/ipc">https://github.com/carl-wang-cn/demo/tree/master/ipc</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>ipc</tag>
+        <tag>多进程</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>多进程通信-互斥锁和条件变量</title>
+    <url>/2020/02/07/2020-02-07-mutex-cond/</url>
+    <content><![CDATA[<h2 id="互斥锁"><a href="#互斥锁" class="headerlink" title="互斥锁"></a>互斥锁</h2><p>互斥锁和条件变量总是可用来同步一个进程内的各个线程。但是如果一个互斥锁或条件变量是<br>存放在多个进程间共享的某个内存区内，那么它还可以被用来同步这几个进程。</p>
+<p>互斥锁指代相互排斥，用于保护临界区，以保证任何时刻<strong>只有一个线程/进程</strong>在执行<br>其中的代码。保护一个临界区的代码的通常轮廓大体如下：</p>
+<a id="more"></a>
+
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">lock_the_mutex(...)</span><br><span class="line">操作临界区</span><br><span class="line">unlock_the_mutex(...)</span><br></pre></td></tr></table></figure>
+<h3 id="互斥锁的初始化"><a href="#互斥锁的初始化" class="headerlink" title="互斥锁的初始化"></a>互斥锁的初始化</h3><ol>
+<li>静态分配。 static pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;</li>
+<li>动态分配。 在运行之时通过调用pthread_mutex_init函数来初始化。</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutex_lock</span><span class="params">(<span class="keyword">pthread_mutex_t</span> *mptr)</span></span>;  <span class="comment">// block</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutex_trylock</span><span class="params">(<span class="keyword">pthread_mutex_t</span> *mptr)</span></span>;  <span class="comment">// unblock</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutex_unlock</span><span class="params">(<span class="keyword">pthread_mutex_t</span> *mptr)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>，失败返回Exxx错误码</span><br><span class="line"></span><br><span class="line">如果尝试给一个已由另外某个线程锁住的互斥锁上锁，那么pthread_mutex_lock会阻塞到该</span><br><span class="line">互斥锁被解锁为止，pthread_mutex_trylock是对应的非阻塞函数，如果该互斥锁已锁住，</span><br><span class="line">它就返回一个EBUSY错误</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>互斥锁是协作性锁。<strong>由coder来保证</strong>操作临界区之前获取对应互斥锁。</p>
+<blockquote>
+<p>prodcons_mutex.c 使用互斥锁的producer-consumer示例</p>
+</blockquote>
+<h2 id="条件变量"><a href="#条件变量" class="headerlink" title="条件变量"></a>条件变量</h2><p>互斥锁用于上锁，条件变量用于等待.</p>
+<p>条件变量类型为：pthread_cond_t</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_cond_wait</span><span class="params">(<span class="keyword">pthread_cond_t</span> *cptr, <span class="keyword">pthread_mutex_t</span> *mptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_cond_signal</span><span class="params">(<span class="keyword">pthread_cond_t</span> *cptr)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>，失败返回Exxx错误码</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>每个条件变量总是有一个互斥锁与之关联</p>
+<p>pthread_cond_wait <strong>会原子地</strong>执行2个动作</p>
+<ol>
+<li>给互斥锁mptr解锁</li>
+<li>把调用线程投入睡眠，直到另外某个线程就本条件变量调用pthread_cond_signal, pthread_cond_wait返回前重新给mptr上锁</li>
+</ol>
+<p><strong>给条件变量发送信号的代码：</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span>     </span><br><span class="line">    <span class="keyword">pthread_mutex_t</span> mutex;     </span><br><span class="line">    <span class="keyword">pthread_cond_t</span>  cond;     </span><br><span class="line">    <span class="comment">// vars</span></span><br><span class="line">&#125; var = &#123;PTHREAD_MUTEX_INITIALIZER, PTHREAD_COND_INITIALIZER, ...&#125;;</span><br><span class="line"></span><br><span class="line">pthread_mutex_lock(&amp;var.mutex);</span><br><span class="line">设置条件为真</span><br><span class="line">pthread_cond_signal(&amp;var.cond);</span><br><span class="line">pthread_mutex_unlock(&amp;var.mutex);</span><br><span class="line"></span><br><span class="line">调用pthread_cond_signal的线程不必是与之关联的互斥锁的当前属主。但是如果需要可预见的</span><br><span class="line">调度行为，那么调用pthread_cond_signal的线程必须锁住该互斥锁</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>测试条件并进入睡眠以等待该条件变为真的代码：</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">pthread_mutex_lock(&amp;var.mutex);</span><br><span class="line"><span class="keyword">while</span> (条件为假)</span><br><span class="line">&#123;     </span><br><span class="line">    pthread_cond_wait(&amp;var.cond, &amp;var.mutex);</span><br><span class="line">&#125;</span><br><span class="line">修改条件</span><br><span class="line">pthread_mutex_unlock(&amp;var.mutex);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>prodcons_mutex_cond.c 使用条件变量的producer-consumer示例</p>
+</blockquote>
+<h3 id="条件变量的定时等待和广播"><a href="#条件变量的定时等待和广播" class="headerlink" title="条件变量的定时等待和广播"></a>条件变量的定时等待和广播</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_cond_broadcast</span><span class="params">(<span class="keyword">pthread_cond_t</span> *cptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_cond_timewait</span><span class="params">(<span class="keyword">pthread_cond_t</span> *cptr, <span class="keyword">pthread_mutex_t</span> *mptr, <span class="keyword">const</span> struct timespec *abstime)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>，失败返回Exxx错误码</span><br><span class="line"></span><br><span class="line">pthread_cond_timewait 超时返回ETIMEOUT错误</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">timespec</span></span></span><br><span class="line"><span class="class">&#123;</span>     </span><br><span class="line">    <span class="keyword">time_t</span> tv_sec;  <span class="comment">// seconds     </span></span><br><span class="line">    <span class="keyword">long</span>   tv_nsec; <span class="comment">// nanosecondes</span></span><br><span class="line">&#125;;</span><br><span class="line">abstime是UTC时间，而不是时间差</span><br></pre></td></tr></table></figure>
+<h2 id="互斥锁和条件变量的属性"><a href="#互斥锁和条件变量的属性" class="headerlink" title="互斥锁和条件变量的属性"></a>互斥锁和条件变量的属性</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutex_init</span><span class="params">(<span class="keyword">pthread_mutex_t</span> *mptr, <span class="keyword">const</span> <span class="keyword">pthread_mutexattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutex_destory</span><span class="params">(<span class="keyword">pthread_mutex_t</span> *mptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_cond_init</span><span class="params">(<span class="keyword">pthread_cond_t</span> *cptr, <span class="keyword">const</span> <span class="keyword">pthread_condattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_cond_destroy</span><span class="params">(<span class="keyword">pthread_cond_t</span> *cptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutexattr_init</span><span class="params">(<span class="keyword">pthread_mutexattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutexattr_destroy</span><span class="params">(<span class="keyword">pthread_mutexattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_condattr_init</span><span class="params">(<span class="keyword">pthread_condattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_condattr_destroy</span><span class="params">(<span class="keyword">pthread_condattr_t</span> *attr)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>，失败返回Exxx错误码</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>一旦某个互斥锁属性对象或者某个条件变量属性对象已被初始化，就通过调用不同函数启用或<br>禁止特定的特性。例如，指定互斥锁或条件变量在不同进程间共享，而不是只在单个进程内的<br>不同线程间共享</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutexattr_getpshared</span><span class="params">(<span class="keyword">const</span> <span class="keyword">pthread_mutexattr_t</span> *ptr, <span class="keyword">int</span> *valptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutexattr_setpshared</span><span class="params">(<span class="keyword">const</span> <span class="keyword">pthread_mutexattr_t</span> *ptr, <span class="keyword">int</span> val)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_condattr_getpshared</span><span class="params">(<span class="keyword">const</span> <span class="keyword">pthread_condattr_t</span> *ptr, <span class="keyword">int</span> *valptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_condattr_setpshared</span><span class="params">(<span class="keyword">const</span> <span class="keyword">pthread_condattr_t</span> *ptr, <span class="keyword">int</span> val)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>，失败返回Exxx错误码</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>这个特性只在&lt;unistd.h&gt;中定义了<strong>_POSIX_THREAD_PROCESS_SHARED</strong>时才得以支持，下面给<br>出初始化一个互斥锁以便它能在进程间共享的示例：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">pthread_mutex_t</span> *mptr;  <span class="comment">// 这个互斥锁要存放在**某块共享内存**中</span></span><br><span class="line"><span class="keyword">pthread_mutexattr_t</span> mattr;</span><br><span class="line"></span><br><span class="line">mptr = <span class="comment">// some value that points to shared </span></span><br><span class="line">memorypthread_mutexattr_init(&amp;mattr);  <span class="comment">// 初始化属性</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> _POSIX_THREAD_PROCESS_SHARED         </span></span><br><span class="line">    pthread_mutexattr_setpshared(&amp;mattr, PTHREAD_PROCESS_SHARED);  <span class="comment">// 设置特定属性</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span>     </span></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">error</span> this implementation does not support _POSIX_THREAD_PROCESS_SHARED</span></span><br><span class="line">pthread_mutex_init(mptr, &amp;mattr); <span class="comment">// 初始化锁</span></span><br></pre></td></tr></table></figure>
+<h2 id="持有锁期间进程终止"><a href="#持有锁期间进程终止" class="headerlink" title="持有锁期间进程终止"></a>持有锁期间进程终止</h2><ul>
+<li>没有办法让系统在进程终止时自动释放所持有的锁。</li>
+<li>进程终止时，内核总是自动清理的唯一同步锁类型是：fcntl记录锁 </li>
+<li>在使用System V信号量时，应用程序可以选择进程终止时内核是否自动清理某个信号量锁。 </li>
+<li>线程可以注册一个在自己被另一线程取消时要执行的清理处理程序</li>
 </ul>
 <blockquote>
 <p>文中代码托管在: <a href="https://github.com/carl-wang-cn/demo/tree/master/ipc">https://github.com/carl-wang-cn/demo/tree/master/ipc</a></p>
