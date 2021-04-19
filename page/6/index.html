@@ -505,6 +505,97 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://carl-wang-cn.github.io/2020/01/16/2020-01-16-xargs/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/ais.jpg">
+      <meta itemprop="name" content="carl">
+      <meta itemprop="description" content="金融程序员">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="carl的修行">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/01/16/2020-01-16-xargs/" class="post-title-link" itemprop="url">xargs命令使用技巧</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-01-16 00:00:00" itemprop="dateCreated datePublished" datetime="2020-01-16T00:00:00+08:00">2020-01-16</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-04-14 11:13:01" itemprop="dateModified" datetime="2021-04-14T11:13:01+08:00">2021-04-14</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>管道符 | + xargs, 用于把上游输出转换为下游参数输入。</p>
+<p>例如 <code>ls *.bak | xargs rm -f</code></p>
+<p>问题：<br>xargs默认把输入作为参数放到命令的最后，但是很多命令需要自己定位参数的位置，比如拷贝命令cp {上游结果} destFolder<br>解决方法：<br>xargs -I &lt;参数指示符&gt;， 然后用这个参数指示符定位参数插入的位置, </p>
+<p><code>ls *.bak | xargs -I % cp % /tmp/test</code></p>
+<p>注释：这里使用%作为指示符，第一个%可以理解为声明，第二个%可以理解为调用。你也可以用其他字符，比如 <code>ls *.bak | xargs -I &#123;&#125; cp &#123;&#125; /tmp/test</code></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/01/16/2020-01-16-xargs/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://carl-wang-cn.github.io/2020/01/16/2020-01-16-shell/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -572,97 +663,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/01/16/2020-01-16-shell/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://carl-wang-cn.github.io/2020/01/16/2020-01-16-xargs/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/ais.jpg">
-      <meta itemprop="name" content="carl">
-      <meta itemprop="description" content="金融程序员">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="carl的修行">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/01/16/2020-01-16-xargs/" class="post-title-link" itemprop="url">xargs命令使用技巧</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-01-16 00:00:00" itemprop="dateCreated datePublished" datetime="2020-01-16T00:00:00+08:00">2020-01-16</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-04-14 11:13:01" itemprop="dateModified" datetime="2021-04-14T11:13:01+08:00">2021-04-14</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>管道符 | + xargs, 用于把上游输出转换为下游参数输入。</p>
-<p>例如 <code>ls *.bak | xargs rm -f</code></p>
-<p>问题：<br>xargs默认把输入作为参数放到命令的最后，但是很多命令需要自己定位参数的位置，比如拷贝命令cp {上游结果} destFolder<br>解决方法：<br>xargs -I &lt;参数指示符&gt;， 然后用这个参数指示符定位参数插入的位置, </p>
-<p><code>ls *.bak | xargs -I % cp % /tmp/test</code></p>
-<p>注释：这里使用%作为指示符，第一个%可以理解为声明，第二个%可以理解为调用。你也可以用其他字符，比如 <code>ls *.bak | xargs -I &#123;&#125; cp &#123;&#125; /tmp/test</code></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/01/16/2020-01-16-xargs/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>

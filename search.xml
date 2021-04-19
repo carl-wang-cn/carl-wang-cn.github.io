@@ -352,6 +352,58 @@
       </tags>
   </entry>
   <entry>
+    <title>xargs命令使用技巧</title>
+    <url>/2020/01/16/2020-01-16-xargs/</url>
+    <content><![CDATA[<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>管道符 | + xargs, 用于把上游输出转换为下游参数输入。</p>
+<p>例如 <code>ls *.bak | xargs rm -f</code></p>
+<p>问题：<br>xargs默认把输入作为参数放到命令的最后，但是很多命令需要自己定位参数的位置，比如拷贝命令cp {上游结果} destFolder<br>解决方法：<br>xargs -I &lt;参数指示符&gt;， 然后用这个参数指示符定位参数插入的位置, </p>
+<p><code>ls *.bak | xargs -I % cp % /tmp/test</code></p>
+<p>注释：这里使用%作为指示符，第一个%可以理解为声明，第二个%可以理解为调用。你也可以用其他字符，比如 <code>ls *.bak | xargs -I &#123;&#125; cp &#123;&#125; /tmp/test</code></p>
+<a id="more"></a>
+
+<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>之所以要用到xargs这个命令，关键是由于很多命令不支持|管道来传递参数，而日常工作中又有这个需要，所以就有了xargs命令，例如：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /sbin -perm +700 | ls -l       这个命令是错误的</span><br><span class="line">find /sbin -perm +700 | xargs ls -l   这样才是正确的</span><br></pre></td></tr></table></figure>
+<p>xargs 可以读入 stdin 的资料，并且以空白字符或断行字符作为分隔，将 stdin 的资料分隔成为 arguments 。 因为是以空白字符作为分隔，所以，如果有一些文件名或者是其他意义的名词内含有空白字符的时候， xargs 可能就会误判了～</p>
+<h4 id="选项解释"><a href="#选项解释" class="headerlink" title="选项解释"></a>选项解释</h4><ul>
+<li><p>-0 当sdtin含有特殊字符时候，将其当成一般字符，像/ ‘ 空格等</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#echo &quot;//&quot;|xargs  echo</span></span><br><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#echo &quot;//&quot;|xargs -0 echo</span></span><br></pre></td></tr></table></figure></li>
+<li><p>-a file 从文件中读入作为sdtin</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat test</span></span><br><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;hello world/n&quot;</span></span><br><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#xargs -a test echo</span></span><br><span class="line"><span class="meta">#!/bin/sh echo hello world/n</span></span><br><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#</span></span><br></pre></td></tr></table></figure></li>
+<li><p>-e flag ，注意有的时候可能会是-E，flag必须是一个以空格分隔的标志，当xargs分析到含有flag这个标志的时候就停止。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat txt</span></span><br><span class="line">/bin tao shou kun</span><br><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat txt|xargs -E &#x27;shou&#x27; echo</span></span><br><span class="line">/bin tao</span><br></pre></td></tr></table></figure></li>
+<li><p>-p 当每次执行一个argument的时候询问一次用户。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat txt|xargs -p echo</span></span><br><span class="line"><span class="built_in">echo</span> /bin tao shou kun ff ?...y</span><br><span class="line">/bin tao shou kun ff</span><br></pre></td></tr></table></figure></li>
+<li><p>-n num 后面加次数，表示命令在执行的时候一次用的argument的个数，默认是用所有的</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat txt|xargs -n 1 echo</span></span><br><span class="line">/bin</span><br><span class="line">tao</span><br><span class="line">shou</span><br><span class="line">kun</span><br><span class="line">root@localhost:~/test3<span class="comment">#cat txt|xargs  echo</span></span><br><span class="line">/bin tao shou kun</span><br></pre></td></tr></table></figure></li>
+<li><p>-t 表示先打印命令，然后再执行。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat txt|xargs -t echo</span></span><br><span class="line"><span class="built_in">echo</span> /bin tao shou kun</span><br><span class="line">/bin tao shou kun</span><br></pre></td></tr></table></figure></li>
+<li><p>-i 或者是-I，这得看linux支持了，将xargs的每项名称，一般是一行一行赋值给{}，可以用{}代替。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt; ls | xargs -t -i mv &#123;&#125; &#123;&#125;.bak</span><br></pre></td></tr></table></figure></li>
+<li><p>-r no-run-if-empty 当xargs的输入为空的时候则停止xargs，不用再去执行了。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#echo &quot;&quot;|xargs -t -r  mv</span></span><br><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#</span></span><br></pre></td></tr></table></figure></li>
+<li><p>-s num 命令行的最大字符数，指的是xargs后面那个命令的最大命令行字符数</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat test |xargs -i -x  -s 14 echo &quot;&#123;&#125;&quot;</span></span><br><span class="line">exp1</span><br><span class="line">exp5</span><br><span class="line">file</span><br><span class="line">xargs: argument line too long</span><br><span class="line">linux-2</span><br><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#</span></span><br></pre></td></tr></table></figure></li>
+<li><p>-L num Use at most max-lines nonblank input lines per command line.-s是含有空格的。</p>
+</li>
+<li><p>-l  同-L</p>
+</li>
+<li><p>-d delim 分隔符，默认的xargs分隔符是回车，argument的分隔符是空格，这里修改的是xargs的分隔符</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat txt |xargs -i -p echo &#123;&#125;</span></span><br><span class="line"><span class="built_in">echo</span> /bin tao shou kun ?...y</span><br><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat txt |xargs -i -p -d &quot; &quot; echo &#123;&#125;</span></span><br><span class="line"><span class="built_in">echo</span> /bin ?...y</span><br><span class="line"><span class="built_in">echo</span> tao ?.../bin</span><br><span class="line">y</span><br><span class="line"><span class="built_in">echo</span> shou ?...tao</span><br><span class="line">再如：</span><br><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat test |xargs -i -p -d &quot; &quot; echo &#123;&#125;</span></span><br><span class="line"><span class="built_in">echo</span> exp1</span><br><span class="line">exp5</span><br><span class="line">file</span><br><span class="line">linux-2</span><br><span class="line">ngis_post</span><br><span class="line">tao</span><br><span class="line"><span class="built_in">test</span></span><br><span class="line">txt</span><br><span class="line">xen-3</span><br><span class="line">?...y</span><br><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat test |xargs -i -p echo &#123;&#125;</span></span><br><span class="line"><span class="built_in">echo</span> exp1 ?...y</span><br><span class="line"><span class="built_in">echo</span> exp5 ?...exp1</span><br><span class="line">y</span><br><span class="line"><span class="built_in">echo</span> file ?...exp5</span><br><span class="line">y</span><br></pre></td></tr></table></figure></li>
+<li><p>-x exit的意思，主要是配合-s使用。</p>
+</li>
+<li><p>-P 修改最大的进程数，默认是1，为0时候为as many as it can</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>通用技巧</tag>
+        <tag>xargs</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>shell脚本必知必会</title>
     <url>/2020/01/16/2020-01-16-shell/</url>
     <content><![CDATA[<h3 id="变量命名"><a href="#变量命名" class="headerlink" title="变量命名"></a>变量命名</h3><h4 id="规则"><a href="#规则" class="headerlink" title="规则"></a>规则</h4><ol>
@@ -404,58 +456,6 @@
       <tags>
         <tag>通用技巧</tag>
         <tag>shell</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>xargs命令使用技巧</title>
-    <url>/2020/01/16/2020-01-16-xargs/</url>
-    <content><![CDATA[<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>管道符 | + xargs, 用于把上游输出转换为下游参数输入。</p>
-<p>例如 <code>ls *.bak | xargs rm -f</code></p>
-<p>问题：<br>xargs默认把输入作为参数放到命令的最后，但是很多命令需要自己定位参数的位置，比如拷贝命令cp {上游结果} destFolder<br>解决方法：<br>xargs -I &lt;参数指示符&gt;， 然后用这个参数指示符定位参数插入的位置, </p>
-<p><code>ls *.bak | xargs -I % cp % /tmp/test</code></p>
-<p>注释：这里使用%作为指示符，第一个%可以理解为声明，第二个%可以理解为调用。你也可以用其他字符，比如 <code>ls *.bak | xargs -I &#123;&#125; cp &#123;&#125; /tmp/test</code></p>
-<a id="more"></a>
-
-<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>之所以要用到xargs这个命令，关键是由于很多命令不支持|管道来传递参数，而日常工作中又有这个需要，所以就有了xargs命令，例如：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /sbin -perm +700 | ls -l       这个命令是错误的</span><br><span class="line">find /sbin -perm +700 | xargs ls -l   这样才是正确的</span><br></pre></td></tr></table></figure>
-<p>xargs 可以读入 stdin 的资料，并且以空白字符或断行字符作为分隔，将 stdin 的资料分隔成为 arguments 。 因为是以空白字符作为分隔，所以，如果有一些文件名或者是其他意义的名词内含有空白字符的时候， xargs 可能就会误判了～</p>
-<h4 id="选项解释"><a href="#选项解释" class="headerlink" title="选项解释"></a>选项解释</h4><ul>
-<li><p>-0 当sdtin含有特殊字符时候，将其当成一般字符，像/ ‘ 空格等</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#echo &quot;//&quot;|xargs  echo</span></span><br><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#echo &quot;//&quot;|xargs -0 echo</span></span><br></pre></td></tr></table></figure></li>
-<li><p>-a file 从文件中读入作为sdtin</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat test</span></span><br><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;hello world/n&quot;</span></span><br><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#xargs -a test echo</span></span><br><span class="line"><span class="meta">#!/bin/sh echo hello world/n</span></span><br><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#</span></span><br></pre></td></tr></table></figure></li>
-<li><p>-e flag ，注意有的时候可能会是-E，flag必须是一个以空格分隔的标志，当xargs分析到含有flag这个标志的时候就停止。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat txt</span></span><br><span class="line">/bin tao shou kun</span><br><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat txt|xargs -E &#x27;shou&#x27; echo</span></span><br><span class="line">/bin tao</span><br></pre></td></tr></table></figure></li>
-<li><p>-p 当每次执行一个argument的时候询问一次用户。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat txt|xargs -p echo</span></span><br><span class="line"><span class="built_in">echo</span> /bin tao shou kun ff ?...y</span><br><span class="line">/bin tao shou kun ff</span><br></pre></td></tr></table></figure></li>
-<li><p>-n num 后面加次数，表示命令在执行的时候一次用的argument的个数，默认是用所有的</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat txt|xargs -n 1 echo</span></span><br><span class="line">/bin</span><br><span class="line">tao</span><br><span class="line">shou</span><br><span class="line">kun</span><br><span class="line">root@localhost:~/test3<span class="comment">#cat txt|xargs  echo</span></span><br><span class="line">/bin tao shou kun</span><br></pre></td></tr></table></figure></li>
-<li><p>-t 表示先打印命令，然后再执行。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat txt|xargs -t echo</span></span><br><span class="line"><span class="built_in">echo</span> /bin tao shou kun</span><br><span class="line">/bin tao shou kun</span><br></pre></td></tr></table></figure></li>
-<li><p>-i 或者是-I，这得看linux支持了，将xargs的每项名称，一般是一行一行赋值给{}，可以用{}代替。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt; ls | xargs -t -i mv &#123;&#125; &#123;&#125;.bak</span><br></pre></td></tr></table></figure></li>
-<li><p>-r no-run-if-empty 当xargs的输入为空的时候则停止xargs，不用再去执行了。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#echo &quot;&quot;|xargs -t -r  mv</span></span><br><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#</span></span><br></pre></td></tr></table></figure></li>
-<li><p>-s num 命令行的最大字符数，指的是xargs后面那个命令的最大命令行字符数</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat test |xargs -i -x  -s 14 echo &quot;&#123;&#125;&quot;</span></span><br><span class="line">exp1</span><br><span class="line">exp5</span><br><span class="line">file</span><br><span class="line">xargs: argument line too long</span><br><span class="line">linux-2</span><br><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#</span></span><br></pre></td></tr></table></figure></li>
-<li><p>-L num Use at most max-lines nonblank input lines per command line.-s是含有空格的。</p>
-</li>
-<li><p>-l  同-L</p>
-</li>
-<li><p>-d delim 分隔符，默认的xargs分隔符是回车，argument的分隔符是空格，这里修改的是xargs的分隔符</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat txt |xargs -i -p echo &#123;&#125;</span></span><br><span class="line"><span class="built_in">echo</span> /bin tao shou kun ?...y</span><br><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat txt |xargs -i -p -d &quot; &quot; echo &#123;&#125;</span></span><br><span class="line"><span class="built_in">echo</span> /bin ?...y</span><br><span class="line"><span class="built_in">echo</span> tao ?.../bin</span><br><span class="line">y</span><br><span class="line"><span class="built_in">echo</span> shou ?...tao</span><br><span class="line">再如：</span><br><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat test |xargs -i -p -d &quot; &quot; echo &#123;&#125;</span></span><br><span class="line"><span class="built_in">echo</span> exp1</span><br><span class="line">exp5</span><br><span class="line">file</span><br><span class="line">linux-2</span><br><span class="line">ngis_post</span><br><span class="line">tao</span><br><span class="line"><span class="built_in">test</span></span><br><span class="line">txt</span><br><span class="line">xen-3</span><br><span class="line">?...y</span><br><span class="line">root@localhost:~/<span class="built_in">test</span><span class="comment">#cat test |xargs -i -p echo &#123;&#125;</span></span><br><span class="line"><span class="built_in">echo</span> exp1 ?...y</span><br><span class="line"><span class="built_in">echo</span> exp5 ?...exp1</span><br><span class="line">y</span><br><span class="line"><span class="built_in">echo</span> file ?...exp5</span><br><span class="line">y</span><br></pre></td></tr></table></figure></li>
-<li><p>-x exit的意思，主要是配合-s使用。</p>
-</li>
-<li><p>-P 修改最大的进程数，默认是1，为0时候为as many as it can</p>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>通用技巧</tag>
-        <tag>xargs</tag>
       </tags>
   </entry>
   <entry>
@@ -984,6 +984,64 @@
       </tags>
   </entry>
   <entry>
+    <title>进程间通信-共享内存</title>
+    <url>/2020/02/05/2020-02-05-mmap/</url>
+    <content><![CDATA[<p>共享内存区是IPC形式中<strong>最快</strong>的. 一旦这样的内存区映射到共享它的进程的地址<br>空间, 这些进程间数据的传递就不再涉及内核. 然而往该共享内存区存放信息或从<br>中取走信息的进程间通常需要某种形式的同步.</p>
+<a id="more"></a>
+
+<p><strong>再次强调</strong>: 默认情况下fork派生的子进程并不与其父进程共享内存区.</p>
+<p>mmap函数把一个文件或一个Posix共享内存区对象映射到调用进程的地址空间. 使用该<br>函数的3个目的:</p>
+<ol>
+<li>使用普通文件以提供内存映射I/O</li>
+<li>使用特殊文件以提供匿名内存映射</li>
+<li>使用shm_open以提供无亲缘关系进程间的Posix共享内存区</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/mman.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">mmap</span><span class="params">(<span class="keyword">void</span> *addr, <span class="keyword">size_t</span> len, <span class="keyword">int</span> prot, <span class="keyword">int</span> flags, <span class="keyword">int</span> fd, <span class="keyword">off_t</span> offset)</span></span>;</span><br><span class="line">返回: 成功返回被映射区的起始地址, 失败返回MAP_FAILED</span><br><span class="line"></span><br><span class="line">addr 可以指定描述符fd应被映射到的进程内空间的起始地址. 它通常被设为<span class="literal">NULL</span>, 这</span><br><span class="line">     样告诉内核自己去选择起始地址</span><br><span class="line"></span><br><span class="line">len 映射到调用进程地址空间中的字节数, 它从被映射文件开头起第offset个字节处</span><br><span class="line">    开始算. 通常被设置为<span class="number">0</span></span><br><span class="line"></span><br><span class="line">prot 指定内存映射区的保护, 常见值是 PROT_READ | PROT_WRITE</span><br><span class="line">     prot        说明</span><br><span class="line">     PROT_READ   数据可读</span><br><span class="line">     PROT_WRITE  数据可写</span><br><span class="line">     PROT_EXEC   数据可执行</span><br><span class="line">     PROT_NONE   数据不可访问</span><br><span class="line"></span><br><span class="line">flags MAP_SHARED或MAP_PRIVATE这两个标志必须指定一个, 并有选择地 | MAP_FIXED. </span><br><span class="line">      MAP_PRIVATE 调用进程对被映射数据所做的修改只对本进程可见, 而不改变底层</span><br><span class="line">                  支撑对象</span><br><span class="line">      MAP_SHARED  调用进程对被映射数据所做的修改对于共享该对象的所有进程都可</span><br><span class="line">                  见, 而且确实改变了其底层支撑对象</span><br><span class="line">     </span><br><span class="line">      Flags         说明</span><br><span class="line">      MAP_PRIVATE   变动是私自的</span><br><span class="line">      MAP_SHARED    变动是共享的</span><br><span class="line">      MAP_FIXED     准确的解释addr参数</span><br><span class="line"></span><br><span class="line">      从移植性上考虑, MAP_FIXED不应被指定. 可移植性的代码应该把addr置为<span class="literal">NULL</span>,</span><br><span class="line">      不指定MAP_FIXED</span><br><span class="line"></span><br><span class="line">父子进程之间共享内存区的方法之一: 父进程在调用fork之前先指定MAP_SHARED调用mmap.</span><br><span class="line">Posix<span class="number">.1</span>保证父进程中的内存映射关系存留到子进程中.</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">munmap</span><span class="params">(<span class="keyword">void</span> *addr, <span class="keyword">size_t</span> len)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">从某个进程的地址空间删除一个映射关系. munmap后再访问这些地址将会导致想调用进程</span><br><span class="line">产生一个SIGSEGV信号</span><br><span class="line"></span><br><span class="line">如果被映射区是使用MAP_PRIVATE标志映射的, 那么调用进程对它所做的变动都会被丢弃掉.</span><br><span class="line"></span><br><span class="line">addr mmap返回的地址</span><br><span class="line">len  映射区的大小</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">msync</span><span class="params">(<span class="keyword">void</span> *addr, <span class="keyword">size_t</span> len, <span class="keyword">int</span> flags)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">内核的虚拟内存算法保持内存映射文件(一般在硬盘上)与内存映射区(在内存中)的同步,</span><br><span class="line">前提是它是一个MAP_SHARED内存区. 如果我们修改了处于内存映射到某个文件的内存区中</span><br><span class="line">某个位置的内容, 那么内核将在稍后某个时刻相应的更新文件. 然而有时候希望确信硬盘</span><br><span class="line">上的文件内容与内存映射区中的内容一致, 这就需要调用msync来执行这种同步</span><br><span class="line"></span><br><span class="line">addr和len通常指代内存中的整个内存映射区, 不过也可以指定该内存区的一个子集.</span><br><span class="line">flags参数: MS_ASYNC和MS_SYNC必须指定一个, 但不能同时指定</span><br><span class="line">- MS_ASYNC  执行异步写, 一旦写操作由内核排入队列, 立即返回</span><br><span class="line">- MS_SYNC   执行同步写, ........................, 等到写操作完成后才返回</span><br><span class="line">- MS_INVALIDATE 使高速缓存的数据失效. 指定了该flag, 那么与其最终副本不一致的文</span><br><span class="line">            件数据的所有内存中副本都失效, 后续的引用将从文件中取得数据.</span><br><span class="line"></span><br><span class="line">Posix还定义了处理内存管理的<span class="number">4</span>个额外函数</span><br><span class="line">- mlockall会使调用进程的整个内存空间常驻内存. munlockall则撤销这种锁定</span><br><span class="line">- mlcok会是调用进程地址空间的某个指定范围常驻内存, 该函数的参数指定了这个范围的</span><br><span class="line">  起始地址以及从该地址算起的字节数. munlock则撤销某个指定内存区的锁定.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>使用mmap的好处:</p>
+<p>使用内存映射文件所得到的奇妙特性是, 所有的I/O都在内核的掩盖下完成, 我们只需编<br>写存取内存映射区中各个值的代码. 我们决不调用read, write, lseek, 把显示的文件<br>I/O操作变换成存取内存单元, 这样可以简化我们的代码, 有时候还能改善性能</p>
+<p>mmap的另一个用途是在无亲缘关系的进程间提供共享内存区(需指定MAP_SHARED标志).这<br>种情形下, 所映射文件的实际内容成了被共享内存区的初始内容, 而且这些进程对该共享<br>内存区所做的任何变动都复制回所映射的文件(以提供随文件系统的持续性).</p>
+<ul>
+<li>count01.c 父子进程给共享内存区的一个计数器加1, 使用有名信号量</li>
+<li>count02.c 父子进程给共享内存区的一个计数器加1, 使用基于内存的信号量</li>
+</ul>
+<p>内存映射一个普通文件时, 内存映射区的大小(mmap的第二个参数)通常等于该文件的大小.<br>但是文件大小和内存映射区大小可以不同. 我们总是能够访问在当前文件大小以内又在内<br>存映射区以内的那些字节.</p>
+<ul>
+<li>SIGBUS  内存映射区大小 &gt; 文件大小, 访问了超出文件大小的位置但是未超出内存映射区</li>
+<li>SIGSEGV 越界访问内存映射区</li>
+</ul>
+<h3 id="Posix共享内存区"><a href="#Posix共享内存区" class="headerlink" title="Posix共享内存区"></a>Posix共享内存区</h3><hr>
+<p>两者无亲缘关系进程间共享内存区的方法</p>
+<ol>
+<li>内存映射文件. 由open函数打开, 由mmap函数把所得到的描述符映射到当前进程地址空<br>间中的一个文件</li>
+<li>共享内存区对象. 由shm_open打开一个Posix.1 IPC名字, 所返回的描述符由mmap函数<br>映射到当前进程地址空间</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/mman.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">shm_open</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *name, <span class="keyword">int</span> oflag, <span class="keyword">mode_t</span> mode)</span></span>;</span><br><span class="line">返回: 成功返回非负描述符, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">oflag  必须含有O_RDONLY或O_RDWR之一, 还可以有O_CREAT, O_EXCL. 如果 O_RDWR | O_TRUNC,</span><br><span class="line">       而且所需的共享内存区对象已经存在, 那么它将被截断为<span class="number">0</span>长度.</span><br><span class="line">mode   指定权限位, 在O_CREAT时必须指定mode, 未指定O_CREAT时可以mode设为<span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">shm_unlink</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *name)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">shm_unlink删除一个共享内存区对象的名字. 跟所有其他unlink函数(删除文件系统中一个路径名</span><br><span class="line">的unlink, 删除一个Posix消息队列的mq_unlink, 以及删除一个Posix有名信号量的sem_unlink)</span><br><span class="line">一样, 删除一个名字不会影响对于底层支撑对象的现有引用, 知道对于该对象的引用全部关闭为</span><br><span class="line">止. 删除一个名字仅仅防止后续的open, mq_open或sem_open调用取得成功.</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ftruncate</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">off_t</span> length)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">调用ftruncate来指定新创建的共享内存区对象的大小, 或者修改已存在的对象的大小.</span><br><span class="line"></span><br><span class="line">- 对于普通文件: 如果该文件大小大于length, 额外的数据就被丢弃掉, 如果该文件的大小小于</span><br><span class="line">  length, 那么该文件是否修改以及其大小是否增长是未定义的. </span><br><span class="line">  实际上对于一个普通文件, 把它的大小扩展到length字节的可移植办法是:先lseek到偏移为</span><br><span class="line">  length<span class="number">-1</span>处, 然后write <span class="number">1</span>个字节的数据</span><br><span class="line">- 对于共享内存区对象: 把该对象的大小设置成length字节.</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fstat</span><span class="params">(<span class="keyword">int</span> fd, struct stat *buf)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stat</span>有12个或以上的成员, 但是当<span class="title">fd</span>指代一个共享内存区对象时, 只有4个成员含有信息</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stat</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">mode_t</span> st_mode;  <span class="comment">// mode: S_I&#123;RW&#125;&#123;USR, GRP, OTH&#125;</span></span><br><span class="line">    <span class="keyword">uid_t</span>  st_uid;   <span class="comment">// user id of owner</span></span><br><span class="line">    <span class="keyword">gid_t</span>  st_gid;   <span class="comment">// group id of owner</span></span><br><span class="line">    <span class="keyword">off_t</span>  st_size;  <span class="comment">// size in bytes</span></span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>shmcreate.c 创建一个具有指定大小的Posix共享内存区对象</li>
+<li>shmunlink.c 删除一个共享内存区对象的名字</li>
+<li>shmwrite.c  打开一个共享内存区对象, 填写一个数据模式</li>
+<li>shmread.c   打开一个共享内存区对象, 验证其数据模式</li>
+</ul>
+<p>同一个共享内存区对象内存映射到不同进程的地址空间时, 起始地址可以不同.</p>
+<ul>
+<li>count03_server.c 创建并初始化共享内存区和信号量的程序</li>
+<li>count03_client.c 给存放在共享内存区中的一个计数器加1, 测试的时候可以启动多个client来观察效果</li>
+<li>cosumer.c 从共享内存区中取得并输出消息</li>
+<li>producer.c 在共享内存区存放消息</li>
+</ul>
+<blockquote>
+<p>文中代码托管在: <a href="https://github.com/carl-wang-cn/demo/tree/master/ipc">https://github.com/carl-wang-cn/demo/tree/master/ipc</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>ipc</tag>
+        <tag>多进程</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>进程间通信-读写锁</title>
     <url>/2020/02/04/2020-02-04-ipc-read-write-lock/</url>
     <content><![CDATA[<p>读写锁是作为pthread_rwlock_t数据类型的变量在内存中分配的。当读写锁是在单个进程内的各个线程间共享时，这些变量可以在那个进程内；<br>当读写锁是在共享某个内存区的进程间共享时，这些变量应该在该共享内存区中。</p>
@@ -1062,64 +1120,6 @@
 </li>
 </ol>
 <p><strong>FIFO的真正优势</strong>表现在服务器可以是一个长期运行的进程（例如守护进程）, 而且与其客户可以无亲缘关系。<br>作为服务器的守护进程以某个众所周知的路径名创建一个FIFO, 并打开该FIFO来读。此后某个<br>时刻启动的客户打开该FIFO来写, 并将其命令或给守护进程的其他任何东西通过该FIFO发送出去。<br>使用FIFO很容易实现这种形式的单向通信(client-&gt;server)。如果守护进程需要向客户发送<br>回一些东西, 那就需要点技巧(例如客户需要通知守护进程要打开哪个FIFO可以给其发消息)</p>
-<blockquote>
-<p>文中代码托管在: <a href="https://github.com/carl-wang-cn/demo/tree/master/ipc">https://github.com/carl-wang-cn/demo/tree/master/ipc</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>ipc</tag>
-        <tag>多进程</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>进程间通信-共享内存</title>
-    <url>/2020/02/05/2020-02-05-mmap/</url>
-    <content><![CDATA[<p>共享内存区是IPC形式中<strong>最快</strong>的. 一旦这样的内存区映射到共享它的进程的地址<br>空间, 这些进程间数据的传递就不再涉及内核. 然而往该共享内存区存放信息或从<br>中取走信息的进程间通常需要某种形式的同步.</p>
-<a id="more"></a>
-
-<p><strong>再次强调</strong>: 默认情况下fork派生的子进程并不与其父进程共享内存区.</p>
-<p>mmap函数把一个文件或一个Posix共享内存区对象映射到调用进程的地址空间. 使用该<br>函数的3个目的:</p>
-<ol>
-<li>使用普通文件以提供内存映射I/O</li>
-<li>使用特殊文件以提供匿名内存映射</li>
-<li>使用shm_open以提供无亲缘关系进程间的Posix共享内存区</li>
-</ol>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/mman.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">mmap</span><span class="params">(<span class="keyword">void</span> *addr, <span class="keyword">size_t</span> len, <span class="keyword">int</span> prot, <span class="keyword">int</span> flags, <span class="keyword">int</span> fd, <span class="keyword">off_t</span> offset)</span></span>;</span><br><span class="line">返回: 成功返回被映射区的起始地址, 失败返回MAP_FAILED</span><br><span class="line"></span><br><span class="line">addr 可以指定描述符fd应被映射到的进程内空间的起始地址. 它通常被设为<span class="literal">NULL</span>, 这</span><br><span class="line">     样告诉内核自己去选择起始地址</span><br><span class="line"></span><br><span class="line">len 映射到调用进程地址空间中的字节数, 它从被映射文件开头起第offset个字节处</span><br><span class="line">    开始算. 通常被设置为<span class="number">0</span></span><br><span class="line"></span><br><span class="line">prot 指定内存映射区的保护, 常见值是 PROT_READ | PROT_WRITE</span><br><span class="line">     prot        说明</span><br><span class="line">     PROT_READ   数据可读</span><br><span class="line">     PROT_WRITE  数据可写</span><br><span class="line">     PROT_EXEC   数据可执行</span><br><span class="line">     PROT_NONE   数据不可访问</span><br><span class="line"></span><br><span class="line">flags MAP_SHARED或MAP_PRIVATE这两个标志必须指定一个, 并有选择地 | MAP_FIXED. </span><br><span class="line">      MAP_PRIVATE 调用进程对被映射数据所做的修改只对本进程可见, 而不改变底层</span><br><span class="line">                  支撑对象</span><br><span class="line">      MAP_SHARED  调用进程对被映射数据所做的修改对于共享该对象的所有进程都可</span><br><span class="line">                  见, 而且确实改变了其底层支撑对象</span><br><span class="line">     </span><br><span class="line">      Flags         说明</span><br><span class="line">      MAP_PRIVATE   变动是私自的</span><br><span class="line">      MAP_SHARED    变动是共享的</span><br><span class="line">      MAP_FIXED     准确的解释addr参数</span><br><span class="line"></span><br><span class="line">      从移植性上考虑, MAP_FIXED不应被指定. 可移植性的代码应该把addr置为<span class="literal">NULL</span>,</span><br><span class="line">      不指定MAP_FIXED</span><br><span class="line"></span><br><span class="line">父子进程之间共享内存区的方法之一: 父进程在调用fork之前先指定MAP_SHARED调用mmap.</span><br><span class="line">Posix<span class="number">.1</span>保证父进程中的内存映射关系存留到子进程中.</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">munmap</span><span class="params">(<span class="keyword">void</span> *addr, <span class="keyword">size_t</span> len)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">从某个进程的地址空间删除一个映射关系. munmap后再访问这些地址将会导致想调用进程</span><br><span class="line">产生一个SIGSEGV信号</span><br><span class="line"></span><br><span class="line">如果被映射区是使用MAP_PRIVATE标志映射的, 那么调用进程对它所做的变动都会被丢弃掉.</span><br><span class="line"></span><br><span class="line">addr mmap返回的地址</span><br><span class="line">len  映射区的大小</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">msync</span><span class="params">(<span class="keyword">void</span> *addr, <span class="keyword">size_t</span> len, <span class="keyword">int</span> flags)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">内核的虚拟内存算法保持内存映射文件(一般在硬盘上)与内存映射区(在内存中)的同步,</span><br><span class="line">前提是它是一个MAP_SHARED内存区. 如果我们修改了处于内存映射到某个文件的内存区中</span><br><span class="line">某个位置的内容, 那么内核将在稍后某个时刻相应的更新文件. 然而有时候希望确信硬盘</span><br><span class="line">上的文件内容与内存映射区中的内容一致, 这就需要调用msync来执行这种同步</span><br><span class="line"></span><br><span class="line">addr和len通常指代内存中的整个内存映射区, 不过也可以指定该内存区的一个子集.</span><br><span class="line">flags参数: MS_ASYNC和MS_SYNC必须指定一个, 但不能同时指定</span><br><span class="line">- MS_ASYNC  执行异步写, 一旦写操作由内核排入队列, 立即返回</span><br><span class="line">- MS_SYNC   执行同步写, ........................, 等到写操作完成后才返回</span><br><span class="line">- MS_INVALIDATE 使高速缓存的数据失效. 指定了该flag, 那么与其最终副本不一致的文</span><br><span class="line">            件数据的所有内存中副本都失效, 后续的引用将从文件中取得数据.</span><br><span class="line"></span><br><span class="line">Posix还定义了处理内存管理的<span class="number">4</span>个额外函数</span><br><span class="line">- mlockall会使调用进程的整个内存空间常驻内存. munlockall则撤销这种锁定</span><br><span class="line">- mlcok会是调用进程地址空间的某个指定范围常驻内存, 该函数的参数指定了这个范围的</span><br><span class="line">  起始地址以及从该地址算起的字节数. munlock则撤销某个指定内存区的锁定.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>使用mmap的好处:</p>
-<p>使用内存映射文件所得到的奇妙特性是, 所有的I/O都在内核的掩盖下完成, 我们只需编<br>写存取内存映射区中各个值的代码. 我们决不调用read, write, lseek, 把显示的文件<br>I/O操作变换成存取内存单元, 这样可以简化我们的代码, 有时候还能改善性能</p>
-<p>mmap的另一个用途是在无亲缘关系的进程间提供共享内存区(需指定MAP_SHARED标志).这<br>种情形下, 所映射文件的实际内容成了被共享内存区的初始内容, 而且这些进程对该共享<br>内存区所做的任何变动都复制回所映射的文件(以提供随文件系统的持续性).</p>
-<ul>
-<li>count01.c 父子进程给共享内存区的一个计数器加1, 使用有名信号量</li>
-<li>count02.c 父子进程给共享内存区的一个计数器加1, 使用基于内存的信号量</li>
-</ul>
-<p>内存映射一个普通文件时, 内存映射区的大小(mmap的第二个参数)通常等于该文件的大小.<br>但是文件大小和内存映射区大小可以不同. 我们总是能够访问在当前文件大小以内又在内<br>存映射区以内的那些字节.</p>
-<ul>
-<li>SIGBUS  内存映射区大小 &gt; 文件大小, 访问了超出文件大小的位置但是未超出内存映射区</li>
-<li>SIGSEGV 越界访问内存映射区</li>
-</ul>
-<h3 id="Posix共享内存区"><a href="#Posix共享内存区" class="headerlink" title="Posix共享内存区"></a>Posix共享内存区</h3><hr>
-<p>两者无亲缘关系进程间共享内存区的方法</p>
-<ol>
-<li>内存映射文件. 由open函数打开, 由mmap函数把所得到的描述符映射到当前进程地址空<br>间中的一个文件</li>
-<li>共享内存区对象. 由shm_open打开一个Posix.1 IPC名字, 所返回的描述符由mmap函数<br>映射到当前进程地址空间</li>
-</ol>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/mman.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">shm_open</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *name, <span class="keyword">int</span> oflag, <span class="keyword">mode_t</span> mode)</span></span>;</span><br><span class="line">返回: 成功返回非负描述符, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">oflag  必须含有O_RDONLY或O_RDWR之一, 还可以有O_CREAT, O_EXCL. 如果 O_RDWR | O_TRUNC,</span><br><span class="line">       而且所需的共享内存区对象已经存在, 那么它将被截断为<span class="number">0</span>长度.</span><br><span class="line">mode   指定权限位, 在O_CREAT时必须指定mode, 未指定O_CREAT时可以mode设为<span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">shm_unlink</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *name)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">shm_unlink删除一个共享内存区对象的名字. 跟所有其他unlink函数(删除文件系统中一个路径名</span><br><span class="line">的unlink, 删除一个Posix消息队列的mq_unlink, 以及删除一个Posix有名信号量的sem_unlink)</span><br><span class="line">一样, 删除一个名字不会影响对于底层支撑对象的现有引用, 知道对于该对象的引用全部关闭为</span><br><span class="line">止. 删除一个名字仅仅防止后续的open, mq_open或sem_open调用取得成功.</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ftruncate</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">off_t</span> length)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">调用ftruncate来指定新创建的共享内存区对象的大小, 或者修改已存在的对象的大小.</span><br><span class="line"></span><br><span class="line">- 对于普通文件: 如果该文件大小大于length, 额外的数据就被丢弃掉, 如果该文件的大小小于</span><br><span class="line">  length, 那么该文件是否修改以及其大小是否增长是未定义的. </span><br><span class="line">  实际上对于一个普通文件, 把它的大小扩展到length字节的可移植办法是:先lseek到偏移为</span><br><span class="line">  length<span class="number">-1</span>处, 然后write <span class="number">1</span>个字节的数据</span><br><span class="line">- 对于共享内存区对象: 把该对象的大小设置成length字节.</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fstat</span><span class="params">(<span class="keyword">int</span> fd, struct stat *buf)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stat</span>有12个或以上的成员, 但是当<span class="title">fd</span>指代一个共享内存区对象时, 只有4个成员含有信息</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stat</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">mode_t</span> st_mode;  <span class="comment">// mode: S_I&#123;RW&#125;&#123;USR, GRP, OTH&#125;</span></span><br><span class="line">    <span class="keyword">uid_t</span>  st_uid;   <span class="comment">// user id of owner</span></span><br><span class="line">    <span class="keyword">gid_t</span>  st_gid;   <span class="comment">// group id of owner</span></span><br><span class="line">    <span class="keyword">off_t</span>  st_size;  <span class="comment">// size in bytes</span></span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<ul>
-<li>shmcreate.c 创建一个具有指定大小的Posix共享内存区对象</li>
-<li>shmunlink.c 删除一个共享内存区对象的名字</li>
-<li>shmwrite.c  打开一个共享内存区对象, 填写一个数据模式</li>
-<li>shmread.c   打开一个共享内存区对象, 验证其数据模式</li>
-</ul>
-<p>同一个共享内存区对象内存映射到不同进程的地址空间时, 起始地址可以不同.</p>
-<ul>
-<li>count03_server.c 创建并初始化共享内存区和信号量的程序</li>
-<li>count03_client.c 给存放在共享内存区中的一个计数器加1, 测试的时候可以启动多个client来观察效果</li>
-<li>cosumer.c 从共享内存区中取得并输出消息</li>
-<li>producer.c 在共享内存区存放消息</li>
-</ul>
 <blockquote>
 <p>文中代码托管在: <a href="https://github.com/carl-wang-cn/demo/tree/master/ipc">https://github.com/carl-wang-cn/demo/tree/master/ipc</a></p>
 </blockquote>
@@ -1519,6 +1519,26 @@
       </categories>
   </entry>
   <entry>
+    <title>When issued 预发行交易</title>
+    <url>/2020/05/28/When-issued/</url>
+    <content><![CDATA[<h3 id="What-Does-“When-Issued”-Mean"><a href="#What-Does-“When-Issued”-Mean" class="headerlink" title="What Does “When Issued” Mean?"></a>What Does “When Issued” Mean?</h3><p>When issued (WI) is a transaction that is made conditionally because a security has been authorized but not yet issued. Treasury securities, stock splits, and new issues of stocks and bonds are all traded on a When-issued basis. Prior to a new issue’s offering, underwriters solicit potential investors who may elect to book an order to purchase a portion of the new issue.</p>
+<p>WI是有条件的交易，因为证券已被授权但尚未发行。短期国库券，股票拆合股以及股票和债券的新发行都是基于WI来进行交易。在发行新股（IPO）之前，承销商会招募潜在的投资者，他们可能会选择购买一点新发行的证券。</p>
+<a id="more"></a>
+
+<h3 id="Understanding-When-Issued"><a href="#Understanding-When-Issued" class="headerlink" title="Understanding When Issued"></a>Understanding When Issued</h3><p>When-issued orders are made conditionally because they may not be completed, particularly in the event the offering is canceled. Orders, when issued, are sometimes called orders “with ice” or orders “when distributed.” The term is short for “when, as and if issued.”</p>
+<p>Securities trade on a When-issued basis when they have been announced but not yet issued. The transaction is settled only after the security has been issued. A When-issued market exists where When-issued instruments are traded. When-issued markets can provide an indication regarding the level of interest that a new issue may attract. When-issued transactions are dependent upon the actual security being issued and the exchange or National Association of Securities Dealers ruling that the transaction is settled.</p>
+<p>When-issued订单之所有<strong>有条件</strong>是由于它们可能不会完成，特别是发行（例如IPO）被取消的情况下。When-issued订单有时也被称为“with ice”订单或“when distributed”订单。该术语是“when, as and if issued”的缩写。</p>
+<p>宣布但是还未发行的证券，是要基于When-issued来交易的。这些交易只有在证券被发行后才会被结算。存在一个专门用来交易When-issued产品的所谓的When-issued市场，这个市场可以给一个信号，看一下这个新发行的证券在市场上对投资者有多大的吸引力。When-issued交易取决于实际发行的证券，以及决定这笔交易可结算的交易所或国际证券商协会（这句话英文好像很别扭）。</p>
+<h3 id="Benefits-of-When-Issued"><a href="#Benefits-of-When-Issued" class="headerlink" title="Benefits of When Issued"></a>Benefits of When Issued</h3><p>When issued sheds light on the demand for securities and can, therefore, attract investors who would otherwise sit out bidding for the securities for fear of a volatile market. Thus, when issued can decrease volatility when the securities are actually issued because investors have confidence in the level of demand for the securities in question. When issued helps develop the market for a new security by attracting investors, and it also offers investors liquidity prior to the actual distribution of the securities in question, allowing them to monetize financial assets more readily.</p>
+<p>When-issued阐明了对证券的需求，因此也能够吸引到那些因担心市场动荡而原本会竞购证券的投资者。因此，由于投资者对证券的需求量水平有信心（不担心IPO时股票卖不出去呗），When-issued可以减少证券真正发行时的波动性。When-issued通过吸引投资者来开拓信证券的市场，也可以在证券真正发行之前给投资者优先提供流动性，使他们更容易将金融资产货币化。</p>
+<h3 id="Example-of-When-Issued"><a href="#Example-of-When-Issued" class="headerlink" title="Example of When Issued"></a>Example of When Issued</h3><p>An industrial conglomerate wants to spin off its chemicals division due to its drag on earnings and low margins. In order to effectuate the spinoff, the conglomerate plans to pay its shareholders a dividend in the form of stock of the new chemicals divisions company. After the record date, the date on which holders of the conglomerate’s stock are entitled to receive stock in the spinoff, the conglomerate’s shareholders can effectively begin trading the right to receive shares in the spinoff on a When-issued basis. Those shareholders who buy the rights but do not hold shares of the conglomerate on the distribution date, the date in which the actual shares in the spinoff are issued and begin trading, receive their shares in the spinoff, and the When-issued market ceases.</p>
+<p>一家工业企业集团化学品部门因为拖累了集团的利润，因此集团决定剥离这个部门。为了完成剥离，该企业集团计划用新化学部门的股票向其股东支付股息。在登记日期（就是我找个小本本记一下你有权利分得这个股息了，我记小本本的这天，不是真正给你股票那天）之后，集团的股东就可以基于When-issued交易获得分拆股票的权利。那些买了这些权利，但是在实际发股票并开始股票交易那天，不实际持有集团股票的股东，会收到他们的股票，同时，When-issued市场停止交易。</p>
+]]></content>
+      <categories>
+        <category>金融</category>
+      </categories>
+  </entry>
+  <entry>
     <title>RSA-数字签名与加密</title>
     <url>/2020/12/27/RSA/</url>
     <content><![CDATA[<h3 id="1-公钥私钥（标准条目）"><a href="#1-公钥私钥（标准条目）" class="headerlink" title="1. 公钥私钥（标准条目）"></a>1. 公钥私钥（标准条目）</h3><ol>
@@ -1567,26 +1587,6 @@
 ]]></content>
       <categories>
         <category>技术</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>When issued 预发行交易</title>
-    <url>/2020/05/28/When-issued/</url>
-    <content><![CDATA[<h3 id="What-Does-“When-Issued”-Mean"><a href="#What-Does-“When-Issued”-Mean" class="headerlink" title="What Does “When Issued” Mean?"></a>What Does “When Issued” Mean?</h3><p>When issued (WI) is a transaction that is made conditionally because a security has been authorized but not yet issued. Treasury securities, stock splits, and new issues of stocks and bonds are all traded on a When-issued basis. Prior to a new issue’s offering, underwriters solicit potential investors who may elect to book an order to purchase a portion of the new issue.</p>
-<p>WI是有条件的交易，因为证券已被授权但尚未发行。短期国库券，股票拆合股以及股票和债券的新发行都是基于WI来进行交易。在发行新股（IPO）之前，承销商会招募潜在的投资者，他们可能会选择购买一点新发行的证券。</p>
-<a id="more"></a>
-
-<h3 id="Understanding-When-Issued"><a href="#Understanding-When-Issued" class="headerlink" title="Understanding When Issued"></a>Understanding When Issued</h3><p>When-issued orders are made conditionally because they may not be completed, particularly in the event the offering is canceled. Orders, when issued, are sometimes called orders “with ice” or orders “when distributed.” The term is short for “when, as and if issued.”</p>
-<p>Securities trade on a When-issued basis when they have been announced but not yet issued. The transaction is settled only after the security has been issued. A When-issued market exists where When-issued instruments are traded. When-issued markets can provide an indication regarding the level of interest that a new issue may attract. When-issued transactions are dependent upon the actual security being issued and the exchange or National Association of Securities Dealers ruling that the transaction is settled.</p>
-<p>When-issued订单之所有<strong>有条件</strong>是由于它们可能不会完成，特别是发行（例如IPO）被取消的情况下。When-issued订单有时也被称为“with ice”订单或“when distributed”订单。该术语是“when, as and if issued”的缩写。</p>
-<p>宣布但是还未发行的证券，是要基于When-issued来交易的。这些交易只有在证券被发行后才会被结算。存在一个专门用来交易When-issued产品的所谓的When-issued市场，这个市场可以给一个信号，看一下这个新发行的证券在市场上对投资者有多大的吸引力。When-issued交易取决于实际发行的证券，以及决定这笔交易可结算的交易所或国际证券商协会（这句话英文好像很别扭）。</p>
-<h3 id="Benefits-of-When-Issued"><a href="#Benefits-of-When-Issued" class="headerlink" title="Benefits of When Issued"></a>Benefits of When Issued</h3><p>When issued sheds light on the demand for securities and can, therefore, attract investors who would otherwise sit out bidding for the securities for fear of a volatile market. Thus, when issued can decrease volatility when the securities are actually issued because investors have confidence in the level of demand for the securities in question. When issued helps develop the market for a new security by attracting investors, and it also offers investors liquidity prior to the actual distribution of the securities in question, allowing them to monetize financial assets more readily.</p>
-<p>When-issued阐明了对证券的需求，因此也能够吸引到那些因担心市场动荡而原本会竞购证券的投资者。因此，由于投资者对证券的需求量水平有信心（不担心IPO时股票卖不出去呗），When-issued可以减少证券真正发行时的波动性。When-issued通过吸引投资者来开拓信证券的市场，也可以在证券真正发行之前给投资者优先提供流动性，使他们更容易将金融资产货币化。</p>
-<h3 id="Example-of-When-Issued"><a href="#Example-of-When-Issued" class="headerlink" title="Example of When Issued"></a>Example of When Issued</h3><p>An industrial conglomerate wants to spin off its chemicals division due to its drag on earnings and low margins. In order to effectuate the spinoff, the conglomerate plans to pay its shareholders a dividend in the form of stock of the new chemicals divisions company. After the record date, the date on which holders of the conglomerate’s stock are entitled to receive stock in the spinoff, the conglomerate’s shareholders can effectively begin trading the right to receive shares in the spinoff on a When-issued basis. Those shareholders who buy the rights but do not hold shares of the conglomerate on the distribution date, the date in which the actual shares in the spinoff are issued and begin trading, receive their shares in the spinoff, and the When-issued market ceases.</p>
-<p>一家工业企业集团化学品部门因为拖累了集团的利润，因此集团决定剥离这个部门。为了完成剥离，该企业集团计划用新化学部门的股票向其股东支付股息。在登记日期（就是我找个小本本记一下你有权利分得这个股息了，我记小本本的这天，不是真正给你股票那天）之后，集团的股东就可以基于When-issued交易获得分拆股票的权利。那些买了这些权利，但是在实际发股票并开始股票交易那天，不实际持有集团股票的股东，会收到他们的股票，同时，When-issued市场停止交易。</p>
-]]></content>
-      <categories>
-        <category>金融</category>
       </categories>
   </entry>
   <entry>
