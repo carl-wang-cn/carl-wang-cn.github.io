@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>从运营事故中成长</title>
+    <url>/2020/01/16/2020-01-16-accident_learn/</url>
+    <content><![CDATA[<h3 id="发布环节"><a href="#发布环节" class="headerlink" title="发布环节"></a>发布环节</h3><p>在经过一段时间的积累后, 会形成一套完善的发布流程, 此时, 在发布前能让自己提高的空间会越来越有限</p>
+<h3 id="发生运营事故后要怎么做"><a href="#发生运营事故后要怎么做" class="headerlink" title="发生运营事故后要怎么做"></a>发生运营事故后要怎么做</h3><ol>
+<li>不是单纯地处理完问题就完事, 然后就阿弥托福以后不会再发生.</li>
+<li>将每次运营事故都当成一次宝贵的学习机会, 仔细检讨为什么会发生该事故, 是什么问题导致的, 从根本上找出原因, 并找到解决方案, 不要再次发生类似的错误.</li>
+<li>事故报告的改进措施, 不能简单的从思想层面去检讨, 下一顿决心就完事了, 事故报告也不是写完发给大家看一眼, 就完事了. 改进措施是必须要能够转化为工作量的实在的事情, 可以是1个周, 一个月, 一个季度, 但是一定要能够量化, 要能够实施, 并且认真地执行完成</li>
+<li>要经常翻看以往的运营事故报告, 从前人的事故中成长, 这样才能避免不同的人去犯类似的错误.</li>
+</ol>
+]]></content>
+      <categories>
+        <category>意识</category>
+      </categories>
+      <tags>
+        <tag>运营事故</tag>
+        <tag>通识</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>awk怎么写?</title>
     <url>/2020/01/16/2020-01-16-awk/</url>
     <content><![CDATA[<p>本篇文章主要是参考左耳朵耗子前辈的博文整理而来, 作为自己学习备忘之用.</p>
@@ -81,25 +100,6 @@
       <tags>
         <tag>awk</tag>
         <tag>通用技巧</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>从运营事故中成长</title>
-    <url>/2020/01/16/2020-01-16-accident_learn/</url>
-    <content><![CDATA[<h3 id="发布环节"><a href="#发布环节" class="headerlink" title="发布环节"></a>发布环节</h3><p>在经过一段时间的积累后, 会形成一套完善的发布流程, 此时, 在发布前能让自己提高的空间会越来越有限</p>
-<h3 id="发生运营事故后要怎么做"><a href="#发生运营事故后要怎么做" class="headerlink" title="发生运营事故后要怎么做"></a>发生运营事故后要怎么做</h3><ol>
-<li>不是单纯地处理完问题就完事, 然后就阿弥托福以后不会再发生.</li>
-<li>将每次运营事故都当成一次宝贵的学习机会, 仔细检讨为什么会发生该事故, 是什么问题导致的, 从根本上找出原因, 并找到解决方案, 不要再次发生类似的错误.</li>
-<li>事故报告的改进措施, 不能简单的从思想层面去检讨, 下一顿决心就完事了, 事故报告也不是写完发给大家看一眼, 就完事了. 改进措施是必须要能够转化为工作量的实在的事情, 可以是1个周, 一个月, 一个季度, 但是一定要能够量化, 要能够实施, 并且认真地执行完成</li>
-<li>要经常翻看以往的运营事故报告, 从前人的事故中成长, 这样才能避免不同的人去犯类似的错误.</li>
-</ol>
-]]></content>
-      <categories>
-        <category>意识</category>
-      </categories>
-      <tags>
-        <tag>运营事故</tag>
-        <tag>通识</tag>
       </tags>
   </entry>
   <entry>
@@ -984,6 +984,42 @@
       </tags>
   </entry>
   <entry>
+    <title>进程间通信-读写锁</title>
+    <url>/2020/02/04/2020-02-04-ipc-read-write-lock/</url>
+    <content><![CDATA[<p>读写锁是作为pthread_rwlock_t数据类型的变量在内存中分配的。当读写锁是在单个进程内的各个线程间共享时，这些变量可以在那个进程内；<br>当读写锁是在共享某个内存区的进程间共享时，这些变量应该在该共享内存区中。</p>
+<a id="more"></a>
+
+<h3 id="读写锁的分配原则"><a href="#读写锁的分配原则" class="headerlink" title="读写锁的分配原则"></a>读写锁的分配原则</h3><ol>
+<li>只有没有线程持有某个给定的读写锁用于写，那么任意数目的线程可以持有该读写锁用于读</li>
+<li>仅当没有线程持有某个给定的读写锁用于读或写时，才能分配该读写锁用于写。</li>
+</ol>
+<p>某些应用中读数据比修改数据频繁，这些应用可以从改用读写锁代替互斥锁中获益。任意给定时刻允许多个读出者存在提供了更高的并发度，同时在某个写入者修改数据期间保护该数据，以免任何其他读出者或写入者的干扰。<br>读写锁的一个日常类比是访问银行账户。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_rdlock</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>; <span class="comment">//获取一个读出锁</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_wrlock</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>; <span class="comment">//获取一个写入锁</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_unlock</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_tryrdlock</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_trywrlock</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>;</span><br></pre></td></tr></table></figure>
+<h3 id="读写锁属性"><a href="#读写锁属性" class="headerlink" title="读写锁属性"></a>读写锁属性</h3><ol>
+<li>静态分配的读写锁，可以用常值PTHREAD_\RWLOCK_INITIALIZER来初始化</li>
+<li>调用pthread_rwlock_init来动态初始化</li>
+<li>当一个线程不再需要某个读写锁时，可以调用pthread_rwlock_destroy来销毁它</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_init</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr, <span class="keyword">const</span> <span class="keyword">pthread_rwlockattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_destroy</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>数据类型为pthread_rwlockattr_t的某个属性对象一旦初始化，就通过调用不同的函数来启用或禁止特定属性。当前定义了的唯一属性是PTHREAD_PROCESS_SHARED。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlockattr_getpshared</span><span class="params">(<span class="keyword">const</span> <span class="keyword">pthread_rwlockattr_t</span> *attr, <span class="keyword">int</span> *valptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlockattr_setpshared</span><span class="params">(<span class="keyword">const</span> <span class="keyword">pthread_rwlockattr_t</span> *attr, <span class="keyword">int</span> value)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>value的值可以为PTHREAD_PROCESS_PRIVATE或PTHREAD_PROCESS_SHARED</p>
+<h3 id="线程清理处理程序"><a href="#线程清理处理程序" class="headerlink" title="线程清理处理程序"></a>线程清理处理程序</h3><p>有时候，线程会在持有锁期间被动（被其他线程cancel）或主动终止（主动调用pthread_exit）。为了处理这种情况，线程可以安装或删除清理处理程序</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">pthread_cleanup_push</span><span class="params">(<span class="keyword">void</span> (*function)(<span class="keyword">void</span> *), <span class="keyword">void</span> *arg)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">pthread_cleanup_pop</span><span class="params">(<span class="keyword">int</span> execute)</span></span>; <span class="comment">// 删除调用线程的取消清理栈中位于栈顶的函数。如果excute不为0，就调用该函数</span></span><br></pre></td></tr></table></figure>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>与普通的互斥锁相比，当被保护数据的读访问比写访问更为频繁时，读写锁能够提供更高的并发度。</p>
+<blockquote>
+<p>文中代码托管在: <a href="https://github.com/carl-wang-cn/demo/tree/master/ipc">https://github.com/carl-wang-cn/demo/tree/master/ipc</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>ipc</tag>
+        <tag>多进程</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>进程间通信-共享内存</title>
     <url>/2020/02/05/2020-02-05-mmap/</url>
     <content><![CDATA[<p>共享内存区是IPC形式中<strong>最快</strong>的. 一旦这样的内存区映射到共享它的进程的地址<br>空间, 这些进程间数据的传递就不再涉及内核. 然而往该共享内存区存放信息或从<br>中取走信息的进程间通常需要某种形式的同步.</p>
@@ -1042,29 +1078,48 @@
       </tags>
   </entry>
   <entry>
-    <title>进程间通信-读写锁</title>
-    <url>/2020/02/04/2020-02-04-ipc-read-write-lock/</url>
-    <content><![CDATA[<p>读写锁是作为pthread_rwlock_t数据类型的变量在内存中分配的。当读写锁是在单个进程内的各个线程间共享时，这些变量可以在那个进程内；<br>当读写锁是在共享某个内存区的进程间共享时，这些变量应该在该共享内存区中。</p>
+    <title>进程间通信-管道</title>
+    <url>/2020/02/07/2020-02-07-ipc-pipe/</url>
+    <content><![CDATA[<h3 id="pipe匿名管道"><a href="#pipe匿名管道" class="headerlink" title="pipe匿名管道"></a>pipe匿名管道</h3><p>匿名管道由于没有名字, 因此只能由有亲缘关系的进程使用</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pipe</span><span class="params">(<span class="keyword">int</span> fd[<span class="number">2</span>])</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 出错返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">该函数返回两个文件描述符: fd[<span class="number">0</span>]和fd[<span class="number">1</span>], 前者打开来读, 后者打开来写.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <a id="more"></a>
 
-<h3 id="读写锁的分配原则"><a href="#读写锁的分配原则" class="headerlink" title="读写锁的分配原则"></a>读写锁的分配原则</h3><ol>
-<li>只有没有线程持有某个给定的读写锁用于写，那么任意数目的线程可以持有该读写锁用于读</li>
-<li>仅当没有线程持有某个给定的读写锁用于读或写时，才能分配该读写锁用于写。</li>
+<p>另一个关于管道的例子, 标准I/O函数库提供了popen函数, 它创建一个管道并启动另一个进程, 该进程要么从该管道读出标准输入, 要么往该管道写入标准输出</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function">FILE *<span class="title">popen</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *command, <span class="keyword">const</span> <span class="keyword">char</span> *type)</span></span>;</span><br><span class="line">返回: 成功返回文件指针，失败返回<span class="literal">NULL</span></span><br><span class="line">注意: popen不对标准错误输出做任何处理, 只有标准输出才被重定向到由它创建的管道</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pclose</span><span class="params">(FILE *stream)</span></span>;</span><br><span class="line">返回: 成功则为shell的终止状态, 失败为<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">command是一个shell命令行, popen在调用进程和所指定的命令之间创建一个管道</span><br><span class="line"></span><br><span class="line">- 如果type为r, 调用进程读入command的标准输出</span><br><span class="line">- 如果type为w, 调用进程写到command的标准输入</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>pipe01.c演示了父子进程间通过pipe实现半双工通信</li>
+<li>pipe02.c演示了使用popen创建管道</li>
+</ul>
+<h3 id="FIFO-有名管道"><a href="#FIFO-有名管道" class="headerlink" title="FIFO 有名管道"></a>FIFO 有名管道</h3><p>每个FIFO有一个路径名与之关联, 从而允许无亲缘关系的进程访问同一个FIFO。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mkfifo</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *pathname, <span class="keyword">mode_t</span> mode)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">mkfifo函数已经隐含指定了O_CREAT | O_EXCL, 也就是说, 它要么创建一个新的FIFO, 要么返回一个EEXIST错误(如果所指定名字的FIFO已经存在)。此处可参考示例中的正确创建FIFO的步骤</span><br><span class="line"></span><br><span class="line">- 创建出一个FIFO后, 它必须或者打开来读, 或者打开来写。不能打开来既读又写, 因为它是**半双工**的</span><br><span class="line">- 如果一个FIFO, 当前尚没有进程打开它来写, 那么此时打开该FIFO来读的进程将会阻塞</span><br><span class="line">- 对管道或FIFO的write总是往末尾添加数据, 对它们的read总是从开头返回数据。</span><br><span class="line">- 如果对管道或FIFO执行lseek, 会返回ESPIPE错误</span><br><span class="line">- 当对一个管道或FIFO的最终close发生时, 该管道或FIFO中的任何残留数据都被丢弃</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>fifo_read.c 中从文件data.txt中读取内容, 写入到FIFO中</li>
+<li>fifo_write.c 中从FIFO中读取内容, 写入到datafromfifo.txt中</li>
+<li>data.txt 是测试文件</li>
+<li>datafromfifo.txt 是fifo_write.c运行后生成的文件</li>
+</ul>
+<h3 id="管道和FIFO的区别"><a href="#管道和FIFO的区别" class="headerlink" title="管道和FIFO的区别"></a>管道和FIFO的区别</h3><ul>
+<li>创建并打开一个管道, 只需要调用pipe；创建并打开一个FIFO则需在调用mkdifo后再调用open</li>
+<li>管道在所有进程最终都关闭它之后自动消失。FIFO的名字则只有通过调用unlink才从文件系统中删除</li>
+<li>FIFO需要额外调用的好处: FIFO在文件系统中有一个名字, 该名字允许某个进程创建一个FIFO, 与它<strong>无亲缘关系</strong>的另一个进程来打开这个FIFO, 这对管道来说是不可能的(不考虑传递描述符的情况)</li>
+</ul>
+<h3 id="管道和FIFO的限制"><a href="#管道和FIFO的限制" class="headerlink" title="管道和FIFO的限制"></a>管道和FIFO的限制</h3><p>系统加于管道和FIFO的唯一限制为:</p>
+<ul>
+<li><p>OPEN_MAX 一个进程在任意时刻打开的最大描述符数</p>
+</li>
+<li><p>PIPE_BUF 可原子地写往一个管道或FIFO的最大数据量</p>
+</li>
+<li><p>get_sys_conf.c 获取当前系统的OPEN_MAX和PIPE_BUF值</p>
+</li>
+</ul>
+<h3 id="将一个描述符设为非阻塞两种方式"><a href="#将一个描述符设为非阻塞两种方式" class="headerlink" title="将一个描述符设为非阻塞两种方式"></a>将一个描述符设为非阻塞两种方式</h3><ol>
+<li>调用open的时候可指定O_NONBLOCK标志</li>
+<li>如果一个描述符已打开, 那么可以调用fcntl以启用O_NONBLOCK标志。<blockquote>
+<p>对于管道来说, 必须使用这种技术, 因为管道没有open调用, 在pipe中也无法指定O_NONBLOCK标志</p>
+</blockquote>
+</li>
 </ol>
-<p>某些应用中读数据比修改数据频繁，这些应用可以从改用读写锁代替互斥锁中获益。任意给定时刻允许多个读出者存在提供了更高的并发度，同时在某个写入者修改数据期间保护该数据，以免任何其他读出者或写入者的干扰。<br>读写锁的一个日常类比是访问银行账户。</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_rdlock</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>; <span class="comment">//获取一个读出锁</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_wrlock</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>; <span class="comment">//获取一个写入锁</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_unlock</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_tryrdlock</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_trywrlock</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>;</span><br></pre></td></tr></table></figure>
-<h3 id="读写锁属性"><a href="#读写锁属性" class="headerlink" title="读写锁属性"></a>读写锁属性</h3><ol>
-<li>静态分配的读写锁，可以用常值PTHREAD_\RWLOCK_INITIALIZER来初始化</li>
-<li>调用pthread_rwlock_init来动态初始化</li>
-<li>当一个线程不再需要某个读写锁时，可以调用pthread_rwlock_destroy来销毁它</li>
-</ol>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_init</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr, <span class="keyword">const</span> <span class="keyword">pthread_rwlockattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_destroy</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>;</span><br></pre></td></tr></table></figure>
-<p>数据类型为pthread_rwlockattr_t的某个属性对象一旦初始化，就通过调用不同的函数来启用或禁止特定属性。当前定义了的唯一属性是PTHREAD_PROCESS_SHARED。</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlockattr_getpshared</span><span class="params">(<span class="keyword">const</span> <span class="keyword">pthread_rwlockattr_t</span> *attr, <span class="keyword">int</span> *valptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlockattr_setpshared</span><span class="params">(<span class="keyword">const</span> <span class="keyword">pthread_rwlockattr_t</span> *attr, <span class="keyword">int</span> value)</span></span>;</span><br></pre></td></tr></table></figure>
-<p>value的值可以为PTHREAD_PROCESS_PRIVATE或PTHREAD_PROCESS_SHARED</p>
-<h3 id="线程清理处理程序"><a href="#线程清理处理程序" class="headerlink" title="线程清理处理程序"></a>线程清理处理程序</h3><p>有时候，线程会在持有锁期间被动（被其他线程cancel）或主动终止（主动调用pthread_exit）。为了处理这种情况，线程可以安装或删除清理处理程序</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">pthread_cleanup_push</span><span class="params">(<span class="keyword">void</span> (*function)(<span class="keyword">void</span> *), <span class="keyword">void</span> *arg)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">pthread_cleanup_pop</span><span class="params">(<span class="keyword">int</span> execute)</span></span>; <span class="comment">// 删除调用线程的取消清理栈中位于栈顶的函数。如果excute不为0，就调用该函数</span></span><br></pre></td></tr></table></figure>
-<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>与普通的互斥锁相比，当被保护数据的读访问比写访问更为频繁时，读写锁能够提供更高的并发度。</p>
+<p><strong>FIFO的真正优势</strong>表现在服务器可以是一个长期运行的进程（例如守护进程）, 而且与其客户可以无亲缘关系。<br>作为服务器的守护进程以某个众所周知的路径名创建一个FIFO, 并打开该FIFO来读。此后某个<br>时刻启动的客户打开该FIFO来写, 并将其命令或给守护进程的其他任何东西通过该FIFO发送出去。<br>使用FIFO很容易实现这种形式的单向通信(client-&gt;server)。如果守护进程需要向客户发送<br>回一些东西, 那就需要点技巧(例如客户需要通知守护进程要打开哪个FIFO可以给其发消息)</p>
 <blockquote>
 <p>文中代码托管在: <a href="https://github.com/carl-wang-cn/demo/tree/master/ipc">https://github.com/carl-wang-cn/demo/tree/master/ipc</a></p>
 </blockquote>
@@ -1318,61 +1373,6 @@
 <ul>
 <li>signal_realtime.c 演示实时信号的简单测试程序.由父进程连续触发9个信号, 信号值从大到小触发, 每个信号伴随一个int型参数.此示例证明了实时信号是FIFO的, 并且较小值的信号优先递交</li>
 </ul>
-<blockquote>
-<p>文中代码托管在: <a href="https://github.com/carl-wang-cn/demo/tree/master/ipc">https://github.com/carl-wang-cn/demo/tree/master/ipc</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>ipc</tag>
-        <tag>多进程</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>进程间通信-管道</title>
-    <url>/2020/02/07/2020-02-07-ipc-pipe/</url>
-    <content><![CDATA[<h3 id="pipe匿名管道"><a href="#pipe匿名管道" class="headerlink" title="pipe匿名管道"></a>pipe匿名管道</h3><p>匿名管道由于没有名字, 因此只能由有亲缘关系的进程使用</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pipe</span><span class="params">(<span class="keyword">int</span> fd[<span class="number">2</span>])</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 出错返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">该函数返回两个文件描述符: fd[<span class="number">0</span>]和fd[<span class="number">1</span>], 前者打开来读, 后者打开来写.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-
-<p>另一个关于管道的例子, 标准I/O函数库提供了popen函数, 它创建一个管道并启动另一个进程, 该进程要么从该管道读出标准输入, 要么往该管道写入标准输出</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function">FILE *<span class="title">popen</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *command, <span class="keyword">const</span> <span class="keyword">char</span> *type)</span></span>;</span><br><span class="line">返回: 成功返回文件指针，失败返回<span class="literal">NULL</span></span><br><span class="line">注意: popen不对标准错误输出做任何处理, 只有标准输出才被重定向到由它创建的管道</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pclose</span><span class="params">(FILE *stream)</span></span>;</span><br><span class="line">返回: 成功则为shell的终止状态, 失败为<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">command是一个shell命令行, popen在调用进程和所指定的命令之间创建一个管道</span><br><span class="line"></span><br><span class="line">- 如果type为r, 调用进程读入command的标准输出</span><br><span class="line">- 如果type为w, 调用进程写到command的标准输入</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<ul>
-<li>pipe01.c演示了父子进程间通过pipe实现半双工通信</li>
-<li>pipe02.c演示了使用popen创建管道</li>
-</ul>
-<h3 id="FIFO-有名管道"><a href="#FIFO-有名管道" class="headerlink" title="FIFO 有名管道"></a>FIFO 有名管道</h3><p>每个FIFO有一个路径名与之关联, 从而允许无亲缘关系的进程访问同一个FIFO。</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mkfifo</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *pathname, <span class="keyword">mode_t</span> mode)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">mkfifo函数已经隐含指定了O_CREAT | O_EXCL, 也就是说, 它要么创建一个新的FIFO, 要么返回一个EEXIST错误(如果所指定名字的FIFO已经存在)。此处可参考示例中的正确创建FIFO的步骤</span><br><span class="line"></span><br><span class="line">- 创建出一个FIFO后, 它必须或者打开来读, 或者打开来写。不能打开来既读又写, 因为它是**半双工**的</span><br><span class="line">- 如果一个FIFO, 当前尚没有进程打开它来写, 那么此时打开该FIFO来读的进程将会阻塞</span><br><span class="line">- 对管道或FIFO的write总是往末尾添加数据, 对它们的read总是从开头返回数据。</span><br><span class="line">- 如果对管道或FIFO执行lseek, 会返回ESPIPE错误</span><br><span class="line">- 当对一个管道或FIFO的最终close发生时, 该管道或FIFO中的任何残留数据都被丢弃</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<ul>
-<li>fifo_read.c 中从文件data.txt中读取内容, 写入到FIFO中</li>
-<li>fifo_write.c 中从FIFO中读取内容, 写入到datafromfifo.txt中</li>
-<li>data.txt 是测试文件</li>
-<li>datafromfifo.txt 是fifo_write.c运行后生成的文件</li>
-</ul>
-<h3 id="管道和FIFO的区别"><a href="#管道和FIFO的区别" class="headerlink" title="管道和FIFO的区别"></a>管道和FIFO的区别</h3><ul>
-<li>创建并打开一个管道, 只需要调用pipe；创建并打开一个FIFO则需在调用mkdifo后再调用open</li>
-<li>管道在所有进程最终都关闭它之后自动消失。FIFO的名字则只有通过调用unlink才从文件系统中删除</li>
-<li>FIFO需要额外调用的好处: FIFO在文件系统中有一个名字, 该名字允许某个进程创建一个FIFO, 与它<strong>无亲缘关系</strong>的另一个进程来打开这个FIFO, 这对管道来说是不可能的(不考虑传递描述符的情况)</li>
-</ul>
-<h3 id="管道和FIFO的限制"><a href="#管道和FIFO的限制" class="headerlink" title="管道和FIFO的限制"></a>管道和FIFO的限制</h3><p>系统加于管道和FIFO的唯一限制为:</p>
-<ul>
-<li><p>OPEN_MAX 一个进程在任意时刻打开的最大描述符数</p>
-</li>
-<li><p>PIPE_BUF 可原子地写往一个管道或FIFO的最大数据量</p>
-</li>
-<li><p>get_sys_conf.c 获取当前系统的OPEN_MAX和PIPE_BUF值</p>
-</li>
-</ul>
-<h3 id="将一个描述符设为非阻塞两种方式"><a href="#将一个描述符设为非阻塞两种方式" class="headerlink" title="将一个描述符设为非阻塞两种方式"></a>将一个描述符设为非阻塞两种方式</h3><ol>
-<li>调用open的时候可指定O_NONBLOCK标志</li>
-<li>如果一个描述符已打开, 那么可以调用fcntl以启用O_NONBLOCK标志。<blockquote>
-<p>对于管道来说, 必须使用这种技术, 因为管道没有open调用, 在pipe中也无法指定O_NONBLOCK标志</p>
-</blockquote>
-</li>
-</ol>
-<p><strong>FIFO的真正优势</strong>表现在服务器可以是一个长期运行的进程（例如守护进程）, 而且与其客户可以无亲缘关系。<br>作为服务器的守护进程以某个众所周知的路径名创建一个FIFO, 并打开该FIFO来读。此后某个<br>时刻启动的客户打开该FIFO来写, 并将其命令或给守护进程的其他任何东西通过该FIFO发送出去。<br>使用FIFO很容易实现这种形式的单向通信(client-&gt;server)。如果守护进程需要向客户发送<br>回一些东西, 那就需要点技巧(例如客户需要通知守护进程要打开哪个FIFO可以给其发消息)</p>
 <blockquote>
 <p>文中代码托管在: <a href="https://github.com/carl-wang-cn/demo/tree/master/ipc">https://github.com/carl-wang-cn/demo/tree/master/ipc</a></p>
 </blockquote>
