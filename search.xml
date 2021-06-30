@@ -103,6 +103,65 @@
       </tags>
   </entry>
   <entry>
+    <title>find命令使用技巧</title>
+    <url>/2020/01/16/2020-01-16-find/</url>
+    <content><![CDATA[<p><code>find &lt; path &gt; &lt; expression &gt; &lt; cmd &gt;</code></p>
+<ul>
+<li>path： 所要搜索的目录及其所有子目录。默认为当前目录。</li>
+<li>expression： 所要搜索的文件的特征。</li>
+<li>cmd： 对搜索结果进行特定的处理。</li>
+</ul>
+<p>如果什么参数也不加，find默认搜索当前目录及其子目录，并且不过滤任何结果（也就是返回所有文件），将它们全都显示在屏幕上。</p>
+<h4 id="find命令常用选项及实例"><a href="#find命令常用选项及实例" class="headerlink" title="find命令常用选项及实例"></a>find命令常用选项及实例</h4><ul>
+<li><p>-name 按照文件名查找文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /dir -name filename  在/dir目录及其子目录下面查找名字为filename的文件</span><br><span class="line">find . -name <span class="string">&quot;*.c&quot;</span> 在当前目录及其子目录（用“.”表示）中查找任何扩展名为“c”的文件</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+</li>
+<li><p>-perm 按照文件权限来查找文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -perm 755 –<span class="built_in">print</span> 在当前目录下查找文件权限位为755的文件，即文件属主可以读、写、执行，其他用户可以读、执行的文件</span><br></pre></td></tr></table></figure></li>
+<li><p>-prune 使用这一选项可以使find命令不在当前指定的目录中查找，如果同时使用-depth选项，那么-prune将被find命令忽略。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /apps -path <span class="string">&quot;/apps/bin&quot;</span> -prune -o –<span class="built_in">print</span> 在/apps目录下查找文件，但不希望在/apps/bin目录下查找</span><br><span class="line">find /usr/sam -path <span class="string">&quot;/usr/sam/dir1&quot;</span> -prune -o –<span class="built_in">print</span> 在/usr/sam目录下查找不在dir1子目录之内的所有文件</span><br></pre></td></tr></table></figure></li>
+<li><p>-depth：在查找文件时，首先查找当前目录中的文件，然后再在其子目录中查找。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / -name <span class="string">&quot;CON.FILE&quot;</span> -depth –<span class="built_in">print</span> 它将首先匹配所有的文件然后再进入子目录中查找</span><br></pre></td></tr></table></figure></li>
+<li><p>-user 按照文件属主来查找文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find ~ -user sam –<span class="built_in">print</span> 在<span class="variable">$HOME</span>目录中查找文件属主为sam的文件</span><br></pre></td></tr></table></figure></li>
+<li><p>-group 按照文件所属的组来查找文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /apps -group gem –<span class="built_in">print</span> 在/apps目录下查找属于gem用户组的文件</span><br></pre></td></tr></table></figure></li>
+<li><p>-mtime -n +n 按照文件的更改时间来查找文件， -n表示文件更改时间距现在n天以内，+n表示文件更改时间距现在n天以前。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / -mtime -5 –<span class="built_in">print</span> 在系统根目录下查找更改时间在5日以内的文件</span><br><span class="line">find /var/adm -mtime +3 –<span class="built_in">print</span> 在/var/adm目录下查找更改时间在3日以前的文件</span><br></pre></td></tr></table></figure></li>
+<li><p>-nogroup 查找无有效所属组的文件，即该文件所属的组在/etc/groups中不存在。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / –nogroup -<span class="built_in">print</span></span><br></pre></td></tr></table></figure></li>
+<li><p>-nouser 查找无有效属主的文件，即该文件的属主在/etc/passwd中不存在。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /home -nouser –<span class="built_in">print</span></span><br></pre></td></tr></table></figure></li>
+<li><p>-newer file1 ! file2 查找更改时间比文件file1新但比文件file2旧的文件。</p>
+</li>
+<li><p>-type 查找某一类型的文件，<br>诸如：<br>b - 块设备文件。<br>d - 目录。<br>c - 字符设备文件。<br>p - 管道文件。<br>l - 符号链接文件。<br>f - 普通文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /etc -<span class="built_in">type</span> d –<span class="built_in">print</span> 在/etc目录下查找所有的目录</span><br><span class="line">find . ! -<span class="built_in">type</span> d –<span class="built_in">print</span> 在当前目录下查找除目录以外的所有类型的文件</span><br><span class="line">find /etc -<span class="built_in">type</span> l –<span class="built_in">print</span> 在/etc目录下查找所有的符号链接文件</span><br></pre></td></tr></table></figure></li>
+<li><p>-size n[c] 查找文件长度为n块的文件，带有c时表示文件长度以字节计。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -size +1000000c –<span class="built_in">print</span> 在当前目录下查找文件长度大于1 M字节的文件</span><br><span class="line">find /home/apache -size 100c –<span class="built_in">print</span> 在/home/apache目录下查找文件长度恰好为100字节的文件</span><br><span class="line">find . -size +10 –<span class="built_in">print</span> 在当前目录下查找长度超过10块的文件（一块等于512字节）</span><br></pre></td></tr></table></figure></li>
+<li><p>-mount：在查找文件时不跨越文件系统mount点。<br><code>find . -name “*.XC” -mount –print 从当前目录开始查找位于本文件系统中文件名以XC结尾的文件（不进入其他文件系统）</code></p>
+</li>
+<li><p>-follow：如果find命令遇到符号链接文件，就跟踪至链接所指向的文件</p>
+</li>
+<li><p>-exec，find命令对匹配的文件执行该参数所给出的shell命令。相应命令的形式为’command’ {} ;，注意{}和;之间的空格</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt; find ./ -size 0 -<span class="built_in">exec</span> rm &#123;&#125; \; 删除文件大小为零的文件</span><br><span class="line">&gt; rm -i `find ./ -size 0`</span><br><span class="line">&gt; find ./ -size 0 | xargs rm -f &amp;</span><br></pre></td></tr></table></figure>
+<p>为了用ls -l命令列出所匹配到的文件，可以把ls -l命令放在find命令的-exec选项中：<br><code>$ find . -type f -exec ls -l &#123;&#125; \;</code><br>在/logs目录中查找更改时间在5日以前的文件并删除它们：<br><code>find /logs -type f -mtime +5 -exec rm &#123;&#125; \;</code></p>
+</li>
+<li><p>-ok，和-exec的作用相同，只不过以一种更为安全的模式来执行该参数所给出的shell命令，在执行每一个命令之前，都会给出提示，让用户来确定是否执行。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -name <span class="string">&quot;*.conf&quot;</span>  -mtime +5 -ok rm &#123;  &#125; \; 在当前目录中查找所有文件名以.LOG结尾、更改时间在5日以上的文件，并删除它们，只不  过在删除之前先给出提示</span><br></pre></td></tr></table></figure>
+<p>说明： 如果你要寻找一个档案的话，那么使用 find 会是一个不错的主意。不过，由于 find 在寻找数据的时候相当的耗硬盘，所以没事情不要使用 find 啦！有更棒的指令可以取代呦，那就是 whereis 与 locate 咯~</p>
+</li>
+</ul>
+<h4 id="一些常用命令"><a href="#一些常用命令" class="headerlink" title="一些常用命令"></a>一些常用命令</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1. find . -<span class="built_in">type</span> f -<span class="built_in">exec</span> ls -l &#123;&#125; \;</span><br><span class="line">查找当前路径下的所有普通文件，并把它们列出来。</span><br><span class="line">2. find logs -<span class="built_in">type</span> f -mtime +5 -<span class="built_in">exec</span> rm &#123;&#125; \;</span><br><span class="line">删除logs目录下更新时间为5日以上的文件。</span><br><span class="line">3.find . -name <span class="string">&quot;*.log&quot;</span> -mtime +5 -ok rm &#123;&#125; \;</span><br><span class="line">删除当前路径下以。<span class="built_in">log</span>结尾的五日以上的文件，删除之前要确认。</span><br><span class="line">4. find ~ -<span class="built_in">type</span> f -perm 4755 -<span class="built_in">print</span></span><br><span class="line">查找<span class="variable">$HOME</span>目录下suid位被设置，文件属性为755的文件打印出来。</span><br><span class="line">说明： find在有点系统中会一次性得到将匹配到的文件都传给<span class="built_in">exec</span>，但是有的系统对<span class="built_in">exec</span>的命令长度做限制，就会报：”参数列太长“，这就需要使用xargs。xargs是部分取传来的文件。</span><br><span class="line">5. find / -<span class="built_in">type</span> f -<span class="built_in">print</span> |xargs file</span><br><span class="line">xargs测试文件分类</span><br><span class="line">6. find . -name <span class="string">&quot;core*&quot;</span> -<span class="built_in">print</span>|xargs <span class="built_in">echo</span> <span class="string">&quot; &quot;</span>&gt;/tmp/core.log</span><br><span class="line">将core文件信息查询结果报存到core。<span class="built_in">log</span>日志。</span><br><span class="line">7. find / -<span class="built_in">type</span> f -<span class="built_in">print</span> | xargs chmod o -w</span><br><span class="line">8. find . -name * -<span class="built_in">print</span> |xargs grep <span class="string">&quot;DBO&quot;</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>通用技巧</tag>
+        <tag>find</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>cmake怎么写?</title>
     <url>/2020/01/16/2020-01-16-cmake/</url>
     <content><![CDATA[<h3 id="cmake中一些预定义变量"><a href="#cmake中一些预定义变量" class="headerlink" title="cmake中一些预定义变量"></a>cmake中一些预定义变量</h3><ul>
@@ -254,65 +313,6 @@
       <tags>
         <tag>cmake</tag>
         <tag>编译</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>find命令使用技巧</title>
-    <url>/2020/01/16/2020-01-16-find/</url>
-    <content><![CDATA[<p><code>find &lt; path &gt; &lt; expression &gt; &lt; cmd &gt;</code></p>
-<ul>
-<li>path： 所要搜索的目录及其所有子目录。默认为当前目录。</li>
-<li>expression： 所要搜索的文件的特征。</li>
-<li>cmd： 对搜索结果进行特定的处理。</li>
-</ul>
-<p>如果什么参数也不加，find默认搜索当前目录及其子目录，并且不过滤任何结果（也就是返回所有文件），将它们全都显示在屏幕上。</p>
-<h4 id="find命令常用选项及实例"><a href="#find命令常用选项及实例" class="headerlink" title="find命令常用选项及实例"></a>find命令常用选项及实例</h4><ul>
-<li><p>-name 按照文件名查找文件。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /dir -name filename  在/dir目录及其子目录下面查找名字为filename的文件</span><br><span class="line">find . -name <span class="string">&quot;*.c&quot;</span> 在当前目录及其子目录（用“.”表示）中查找任何扩展名为“c”的文件</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-</li>
-<li><p>-perm 按照文件权限来查找文件。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -perm 755 –<span class="built_in">print</span> 在当前目录下查找文件权限位为755的文件，即文件属主可以读、写、执行，其他用户可以读、执行的文件</span><br></pre></td></tr></table></figure></li>
-<li><p>-prune 使用这一选项可以使find命令不在当前指定的目录中查找，如果同时使用-depth选项，那么-prune将被find命令忽略。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /apps -path <span class="string">&quot;/apps/bin&quot;</span> -prune -o –<span class="built_in">print</span> 在/apps目录下查找文件，但不希望在/apps/bin目录下查找</span><br><span class="line">find /usr/sam -path <span class="string">&quot;/usr/sam/dir1&quot;</span> -prune -o –<span class="built_in">print</span> 在/usr/sam目录下查找不在dir1子目录之内的所有文件</span><br></pre></td></tr></table></figure></li>
-<li><p>-depth：在查找文件时，首先查找当前目录中的文件，然后再在其子目录中查找。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / -name <span class="string">&quot;CON.FILE&quot;</span> -depth –<span class="built_in">print</span> 它将首先匹配所有的文件然后再进入子目录中查找</span><br></pre></td></tr></table></figure></li>
-<li><p>-user 按照文件属主来查找文件。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find ~ -user sam –<span class="built_in">print</span> 在<span class="variable">$HOME</span>目录中查找文件属主为sam的文件</span><br></pre></td></tr></table></figure></li>
-<li><p>-group 按照文件所属的组来查找文件。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /apps -group gem –<span class="built_in">print</span> 在/apps目录下查找属于gem用户组的文件</span><br></pre></td></tr></table></figure></li>
-<li><p>-mtime -n +n 按照文件的更改时间来查找文件， -n表示文件更改时间距现在n天以内，+n表示文件更改时间距现在n天以前。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / -mtime -5 –<span class="built_in">print</span> 在系统根目录下查找更改时间在5日以内的文件</span><br><span class="line">find /var/adm -mtime +3 –<span class="built_in">print</span> 在/var/adm目录下查找更改时间在3日以前的文件</span><br></pre></td></tr></table></figure></li>
-<li><p>-nogroup 查找无有效所属组的文件，即该文件所属的组在/etc/groups中不存在。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / –nogroup -<span class="built_in">print</span></span><br></pre></td></tr></table></figure></li>
-<li><p>-nouser 查找无有效属主的文件，即该文件的属主在/etc/passwd中不存在。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /home -nouser –<span class="built_in">print</span></span><br></pre></td></tr></table></figure></li>
-<li><p>-newer file1 ! file2 查找更改时间比文件file1新但比文件file2旧的文件。</p>
-</li>
-<li><p>-type 查找某一类型的文件，<br>诸如：<br>b - 块设备文件。<br>d - 目录。<br>c - 字符设备文件。<br>p - 管道文件。<br>l - 符号链接文件。<br>f - 普通文件。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /etc -<span class="built_in">type</span> d –<span class="built_in">print</span> 在/etc目录下查找所有的目录</span><br><span class="line">find . ! -<span class="built_in">type</span> d –<span class="built_in">print</span> 在当前目录下查找除目录以外的所有类型的文件</span><br><span class="line">find /etc -<span class="built_in">type</span> l –<span class="built_in">print</span> 在/etc目录下查找所有的符号链接文件</span><br></pre></td></tr></table></figure></li>
-<li><p>-size n[c] 查找文件长度为n块的文件，带有c时表示文件长度以字节计。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -size +1000000c –<span class="built_in">print</span> 在当前目录下查找文件长度大于1 M字节的文件</span><br><span class="line">find /home/apache -size 100c –<span class="built_in">print</span> 在/home/apache目录下查找文件长度恰好为100字节的文件</span><br><span class="line">find . -size +10 –<span class="built_in">print</span> 在当前目录下查找长度超过10块的文件（一块等于512字节）</span><br></pre></td></tr></table></figure></li>
-<li><p>-mount：在查找文件时不跨越文件系统mount点。<br><code>find . -name “*.XC” -mount –print 从当前目录开始查找位于本文件系统中文件名以XC结尾的文件（不进入其他文件系统）</code></p>
-</li>
-<li><p>-follow：如果find命令遇到符号链接文件，就跟踪至链接所指向的文件</p>
-</li>
-<li><p>-exec，find命令对匹配的文件执行该参数所给出的shell命令。相应命令的形式为’command’ {} ;，注意{}和;之间的空格</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt; find ./ -size 0 -<span class="built_in">exec</span> rm &#123;&#125; \; 删除文件大小为零的文件</span><br><span class="line">&gt; rm -i `find ./ -size 0`</span><br><span class="line">&gt; find ./ -size 0 | xargs rm -f &amp;</span><br></pre></td></tr></table></figure>
-<p>为了用ls -l命令列出所匹配到的文件，可以把ls -l命令放在find命令的-exec选项中：<br><code>$ find . -type f -exec ls -l &#123;&#125; \;</code><br>在/logs目录中查找更改时间在5日以前的文件并删除它们：<br><code>find /logs -type f -mtime +5 -exec rm &#123;&#125; \;</code></p>
-</li>
-<li><p>-ok，和-exec的作用相同，只不过以一种更为安全的模式来执行该参数所给出的shell命令，在执行每一个命令之前，都会给出提示，让用户来确定是否执行。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -name <span class="string">&quot;*.conf&quot;</span>  -mtime +5 -ok rm &#123;  &#125; \; 在当前目录中查找所有文件名以.LOG结尾、更改时间在5日以上的文件，并删除它们，只不  过在删除之前先给出提示</span><br></pre></td></tr></table></figure>
-<p>说明： 如果你要寻找一个档案的话，那么使用 find 会是一个不错的主意。不过，由于 find 在寻找数据的时候相当的耗硬盘，所以没事情不要使用 find 啦！有更棒的指令可以取代呦，那就是 whereis 与 locate 咯~</p>
-</li>
-</ul>
-<h4 id="一些常用命令"><a href="#一些常用命令" class="headerlink" title="一些常用命令"></a>一些常用命令</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1. find . -<span class="built_in">type</span> f -<span class="built_in">exec</span> ls -l &#123;&#125; \;</span><br><span class="line">查找当前路径下的所有普通文件，并把它们列出来。</span><br><span class="line">2. find logs -<span class="built_in">type</span> f -mtime +5 -<span class="built_in">exec</span> rm &#123;&#125; \;</span><br><span class="line">删除logs目录下更新时间为5日以上的文件。</span><br><span class="line">3.find . -name <span class="string">&quot;*.log&quot;</span> -mtime +5 -ok rm &#123;&#125; \;</span><br><span class="line">删除当前路径下以。<span class="built_in">log</span>结尾的五日以上的文件，删除之前要确认。</span><br><span class="line">4. find ~ -<span class="built_in">type</span> f -perm 4755 -<span class="built_in">print</span></span><br><span class="line">查找<span class="variable">$HOME</span>目录下suid位被设置，文件属性为755的文件打印出来。</span><br><span class="line">说明： find在有点系统中会一次性得到将匹配到的文件都传给<span class="built_in">exec</span>，但是有的系统对<span class="built_in">exec</span>的命令长度做限制，就会报：”参数列太长“，这就需要使用xargs。xargs是部分取传来的文件。</span><br><span class="line">5. find / -<span class="built_in">type</span> f -<span class="built_in">print</span> |xargs file</span><br><span class="line">xargs测试文件分类</span><br><span class="line">6. find . -name <span class="string">&quot;core*&quot;</span> -<span class="built_in">print</span>|xargs <span class="built_in">echo</span> <span class="string">&quot; &quot;</span>&gt;/tmp/core.log</span><br><span class="line">将core文件信息查询结果报存到core。<span class="built_in">log</span>日志。</span><br><span class="line">7. find / -<span class="built_in">type</span> f -<span class="built_in">print</span> | xargs chmod o -w</span><br><span class="line">8. find . -name * -<span class="built_in">print</span> |xargs grep <span class="string">&quot;DBO&quot;</span></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>通用技巧</tag>
-        <tag>find</tag>
       </tags>
   </entry>
   <entry>
@@ -1386,6 +1386,27 @@
       </tags>
   </entry>
   <entry>
+    <title>python的finally语句中使用return要慎重!!!</title>
+    <url>/2020/02/13/2020-02-13-python-finally-hole/</url>
+    <content><![CDATA[<p>前两天, 同事踩了一个坑, python代码的一个接口抛了异常, 但是返回值是0. 这里记录一下.</p>
+<p>代码大概是这样的.</p>
+<a id="more"></a>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">division</span>(<span class="params">a, b</span>):</span></span><br><span class="line">    ret = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        ret = a / b</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        print(<span class="string">&#x27;oops!&#x27;</span>)</span><br><span class="line">        <span class="keyword">raise</span> e</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        <span class="keyword">return</span> ret</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    print(division(<span class="number">1</span>, <span class="number">0</span>))</span><br><span class="line"><span class="keyword">except</span> Exception:</span><br><span class="line">    print(<span class="string">&#x27;ooops!!&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行一下, 结果如下.</span></span><br><span class="line">&gt; python3 test.py</span><br><span class="line">oops!</span><br><span class="line"><span class="number">0</span></span><br></pre></td></tr></table></figure>
+<p>是不是不符合你预期?</p>
+<p>我们来改一行, 再看看</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">division</span>(<span class="params">a, b</span>):</span></span><br><span class="line">    ret = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        ret = a / b</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        print(<span class="string">&#x27;oops!&#x27;</span>)</span><br><span class="line">        <span class="keyword">raise</span> e</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        print(<span class="string">&#x27;ops!&#x27;</span>) <span class="comment"># 这行改了哦, 不用return了</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    print(division(<span class="number">1</span>, <span class="number">0</span>))</span><br><span class="line"><span class="keyword">except</span> Exception:</span><br><span class="line">    print(<span class="string">&#x27;ooops!!&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行一下, 结果如下.</span></span><br><span class="line">&gt; python3 test.py</span><br><span class="line">oops!</span><br><span class="line">ops!</span><br><span class="line">ooops!!</span><br></pre></td></tr></table></figure>
+<p>现在的结果是不是符合预期了?</p>
+<p>从这个采坑和测试过程来看, 在finally语句中一定要注意一下return的使用, 要慎重!!!</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>多进程通信-互斥锁和条件变量</title>
     <url>/2020/02/07/2020-02-07-mutex-cond/</url>
     <content><![CDATA[<h2 id="互斥锁"><a href="#互斥锁" class="headerlink" title="互斥锁"></a>互斥锁</h2><p>互斥锁和条件变量总是可用来同步一个进程内的各个线程。但是如果一个互斥锁或条件变量是<br>存放在多个进程间共享的某个内存区内，那么它还可以被用来同步这几个进程。</p>
@@ -1441,27 +1462,6 @@
       <tags>
         <tag>ipc</tag>
         <tag>多进程</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>python的finally语句中使用return要慎重!!!</title>
-    <url>/2020/02/13/2020-02-13-python-finally-hole/</url>
-    <content><![CDATA[<p>前两天, 同事踩了一个坑, python代码的一个接口抛了异常, 但是返回值是0. 这里记录一下.</p>
-<p>代码大概是这样的.</p>
-<a id="more"></a>
-
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">division</span>(<span class="params">a, b</span>):</span></span><br><span class="line">    ret = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        ret = a / b</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        print(<span class="string">&#x27;oops!&#x27;</span>)</span><br><span class="line">        <span class="keyword">raise</span> e</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        <span class="keyword">return</span> ret</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    print(division(<span class="number">1</span>, <span class="number">0</span>))</span><br><span class="line"><span class="keyword">except</span> Exception:</span><br><span class="line">    print(<span class="string">&#x27;ooops!!&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行一下, 结果如下.</span></span><br><span class="line">&gt; python3 test.py</span><br><span class="line">oops!</span><br><span class="line"><span class="number">0</span></span><br></pre></td></tr></table></figure>
-<p>是不是不符合你预期?</p>
-<p>我们来改一行, 再看看</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">division</span>(<span class="params">a, b</span>):</span></span><br><span class="line">    ret = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        ret = a / b</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        print(<span class="string">&#x27;oops!&#x27;</span>)</span><br><span class="line">        <span class="keyword">raise</span> e</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        print(<span class="string">&#x27;ops!&#x27;</span>) <span class="comment"># 这行改了哦, 不用return了</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    print(division(<span class="number">1</span>, <span class="number">0</span>))</span><br><span class="line"><span class="keyword">except</span> Exception:</span><br><span class="line">    print(<span class="string">&#x27;ooops!!&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行一下, 结果如下.</span></span><br><span class="line">&gt; python3 test.py</span><br><span class="line">oops!</span><br><span class="line">ops!</span><br><span class="line">ooops!!</span><br></pre></td></tr></table></figure>
-<p>现在的结果是不是符合预期了?</p>
-<p>从这个采坑和测试过程来看, 在finally语句中一定要注意一下return的使用, 要慎重!!!</p>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
       </tags>
   </entry>
   <entry>
