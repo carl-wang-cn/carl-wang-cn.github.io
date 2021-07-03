@@ -103,65 +103,6 @@
       </tags>
   </entry>
   <entry>
-    <title>find命令使用技巧</title>
-    <url>/2020/01/16/2020-01-16-find/</url>
-    <content><![CDATA[<p><code>find &lt; path &gt; &lt; expression &gt; &lt; cmd &gt;</code></p>
-<ul>
-<li>path： 所要搜索的目录及其所有子目录。默认为当前目录。</li>
-<li>expression： 所要搜索的文件的特征。</li>
-<li>cmd： 对搜索结果进行特定的处理。</li>
-</ul>
-<p>如果什么参数也不加，find默认搜索当前目录及其子目录，并且不过滤任何结果（也就是返回所有文件），将它们全都显示在屏幕上。</p>
-<h4 id="find命令常用选项及实例"><a href="#find命令常用选项及实例" class="headerlink" title="find命令常用选项及实例"></a>find命令常用选项及实例</h4><ul>
-<li><p>-name 按照文件名查找文件。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /dir -name filename  在/dir目录及其子目录下面查找名字为filename的文件</span><br><span class="line">find . -name <span class="string">&quot;*.c&quot;</span> 在当前目录及其子目录（用“.”表示）中查找任何扩展名为“c”的文件</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-</li>
-<li><p>-perm 按照文件权限来查找文件。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -perm 755 –<span class="built_in">print</span> 在当前目录下查找文件权限位为755的文件，即文件属主可以读、写、执行，其他用户可以读、执行的文件</span><br></pre></td></tr></table></figure></li>
-<li><p>-prune 使用这一选项可以使find命令不在当前指定的目录中查找，如果同时使用-depth选项，那么-prune将被find命令忽略。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /apps -path <span class="string">&quot;/apps/bin&quot;</span> -prune -o –<span class="built_in">print</span> 在/apps目录下查找文件，但不希望在/apps/bin目录下查找</span><br><span class="line">find /usr/sam -path <span class="string">&quot;/usr/sam/dir1&quot;</span> -prune -o –<span class="built_in">print</span> 在/usr/sam目录下查找不在dir1子目录之内的所有文件</span><br></pre></td></tr></table></figure></li>
-<li><p>-depth：在查找文件时，首先查找当前目录中的文件，然后再在其子目录中查找。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / -name <span class="string">&quot;CON.FILE&quot;</span> -depth –<span class="built_in">print</span> 它将首先匹配所有的文件然后再进入子目录中查找</span><br></pre></td></tr></table></figure></li>
-<li><p>-user 按照文件属主来查找文件。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find ~ -user sam –<span class="built_in">print</span> 在<span class="variable">$HOME</span>目录中查找文件属主为sam的文件</span><br></pre></td></tr></table></figure></li>
-<li><p>-group 按照文件所属的组来查找文件。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /apps -group gem –<span class="built_in">print</span> 在/apps目录下查找属于gem用户组的文件</span><br></pre></td></tr></table></figure></li>
-<li><p>-mtime -n +n 按照文件的更改时间来查找文件， -n表示文件更改时间距现在n天以内，+n表示文件更改时间距现在n天以前。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / -mtime -5 –<span class="built_in">print</span> 在系统根目录下查找更改时间在5日以内的文件</span><br><span class="line">find /var/adm -mtime +3 –<span class="built_in">print</span> 在/var/adm目录下查找更改时间在3日以前的文件</span><br></pre></td></tr></table></figure></li>
-<li><p>-nogroup 查找无有效所属组的文件，即该文件所属的组在/etc/groups中不存在。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / –nogroup -<span class="built_in">print</span></span><br></pre></td></tr></table></figure></li>
-<li><p>-nouser 查找无有效属主的文件，即该文件的属主在/etc/passwd中不存在。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /home -nouser –<span class="built_in">print</span></span><br></pre></td></tr></table></figure></li>
-<li><p>-newer file1 ! file2 查找更改时间比文件file1新但比文件file2旧的文件。</p>
-</li>
-<li><p>-type 查找某一类型的文件，<br>诸如：<br>b - 块设备文件。<br>d - 目录。<br>c - 字符设备文件。<br>p - 管道文件。<br>l - 符号链接文件。<br>f - 普通文件。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /etc -<span class="built_in">type</span> d –<span class="built_in">print</span> 在/etc目录下查找所有的目录</span><br><span class="line">find . ! -<span class="built_in">type</span> d –<span class="built_in">print</span> 在当前目录下查找除目录以外的所有类型的文件</span><br><span class="line">find /etc -<span class="built_in">type</span> l –<span class="built_in">print</span> 在/etc目录下查找所有的符号链接文件</span><br></pre></td></tr></table></figure></li>
-<li><p>-size n[c] 查找文件长度为n块的文件，带有c时表示文件长度以字节计。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -size +1000000c –<span class="built_in">print</span> 在当前目录下查找文件长度大于1 M字节的文件</span><br><span class="line">find /home/apache -size 100c –<span class="built_in">print</span> 在/home/apache目录下查找文件长度恰好为100字节的文件</span><br><span class="line">find . -size +10 –<span class="built_in">print</span> 在当前目录下查找长度超过10块的文件（一块等于512字节）</span><br></pre></td></tr></table></figure></li>
-<li><p>-mount：在查找文件时不跨越文件系统mount点。<br><code>find . -name “*.XC” -mount –print 从当前目录开始查找位于本文件系统中文件名以XC结尾的文件（不进入其他文件系统）</code></p>
-</li>
-<li><p>-follow：如果find命令遇到符号链接文件，就跟踪至链接所指向的文件</p>
-</li>
-<li><p>-exec，find命令对匹配的文件执行该参数所给出的shell命令。相应命令的形式为’command’ {} ;，注意{}和;之间的空格</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt; find ./ -size 0 -<span class="built_in">exec</span> rm &#123;&#125; \; 删除文件大小为零的文件</span><br><span class="line">&gt; rm -i `find ./ -size 0`</span><br><span class="line">&gt; find ./ -size 0 | xargs rm -f &amp;</span><br></pre></td></tr></table></figure>
-<p>为了用ls -l命令列出所匹配到的文件，可以把ls -l命令放在find命令的-exec选项中：<br><code>$ find . -type f -exec ls -l &#123;&#125; \;</code><br>在/logs目录中查找更改时间在5日以前的文件并删除它们：<br><code>find /logs -type f -mtime +5 -exec rm &#123;&#125; \;</code></p>
-</li>
-<li><p>-ok，和-exec的作用相同，只不过以一种更为安全的模式来执行该参数所给出的shell命令，在执行每一个命令之前，都会给出提示，让用户来确定是否执行。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -name <span class="string">&quot;*.conf&quot;</span>  -mtime +5 -ok rm &#123;  &#125; \; 在当前目录中查找所有文件名以.LOG结尾、更改时间在5日以上的文件，并删除它们，只不  过在删除之前先给出提示</span><br></pre></td></tr></table></figure>
-<p>说明： 如果你要寻找一个档案的话，那么使用 find 会是一个不错的主意。不过，由于 find 在寻找数据的时候相当的耗硬盘，所以没事情不要使用 find 啦！有更棒的指令可以取代呦，那就是 whereis 与 locate 咯~</p>
-</li>
-</ul>
-<h4 id="一些常用命令"><a href="#一些常用命令" class="headerlink" title="一些常用命令"></a>一些常用命令</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1. find . -<span class="built_in">type</span> f -<span class="built_in">exec</span> ls -l &#123;&#125; \;</span><br><span class="line">查找当前路径下的所有普通文件，并把它们列出来。</span><br><span class="line">2. find logs -<span class="built_in">type</span> f -mtime +5 -<span class="built_in">exec</span> rm &#123;&#125; \;</span><br><span class="line">删除logs目录下更新时间为5日以上的文件。</span><br><span class="line">3.find . -name <span class="string">&quot;*.log&quot;</span> -mtime +5 -ok rm &#123;&#125; \;</span><br><span class="line">删除当前路径下以。<span class="built_in">log</span>结尾的五日以上的文件，删除之前要确认。</span><br><span class="line">4. find ~ -<span class="built_in">type</span> f -perm 4755 -<span class="built_in">print</span></span><br><span class="line">查找<span class="variable">$HOME</span>目录下suid位被设置，文件属性为755的文件打印出来。</span><br><span class="line">说明： find在有点系统中会一次性得到将匹配到的文件都传给<span class="built_in">exec</span>，但是有的系统对<span class="built_in">exec</span>的命令长度做限制，就会报：”参数列太长“，这就需要使用xargs。xargs是部分取传来的文件。</span><br><span class="line">5. find / -<span class="built_in">type</span> f -<span class="built_in">print</span> |xargs file</span><br><span class="line">xargs测试文件分类</span><br><span class="line">6. find . -name <span class="string">&quot;core*&quot;</span> -<span class="built_in">print</span>|xargs <span class="built_in">echo</span> <span class="string">&quot; &quot;</span>&gt;/tmp/core.log</span><br><span class="line">将core文件信息查询结果报存到core。<span class="built_in">log</span>日志。</span><br><span class="line">7. find / -<span class="built_in">type</span> f -<span class="built_in">print</span> | xargs chmod o -w</span><br><span class="line">8. find . -name * -<span class="built_in">print</span> |xargs grep <span class="string">&quot;DBO&quot;</span></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>通用技巧</tag>
-        <tag>find</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>cmake怎么写?</title>
     <url>/2020/01/16/2020-01-16-cmake/</url>
     <content><![CDATA[<h3 id="cmake中一些预定义变量"><a href="#cmake中一些预定义变量" class="headerlink" title="cmake中一些预定义变量"></a>cmake中一些预定义变量</h3><ul>
@@ -349,6 +290,65 @@
       <tags>
         <tag>通用技巧</tag>
         <tag>grep</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>find命令使用技巧</title>
+    <url>/2020/01/16/2020-01-16-find/</url>
+    <content><![CDATA[<p><code>find &lt; path &gt; &lt; expression &gt; &lt; cmd &gt;</code></p>
+<ul>
+<li>path： 所要搜索的目录及其所有子目录。默认为当前目录。</li>
+<li>expression： 所要搜索的文件的特征。</li>
+<li>cmd： 对搜索结果进行特定的处理。</li>
+</ul>
+<p>如果什么参数也不加，find默认搜索当前目录及其子目录，并且不过滤任何结果（也就是返回所有文件），将它们全都显示在屏幕上。</p>
+<h4 id="find命令常用选项及实例"><a href="#find命令常用选项及实例" class="headerlink" title="find命令常用选项及实例"></a>find命令常用选项及实例</h4><ul>
+<li><p>-name 按照文件名查找文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /dir -name filename  在/dir目录及其子目录下面查找名字为filename的文件</span><br><span class="line">find . -name <span class="string">&quot;*.c&quot;</span> 在当前目录及其子目录（用“.”表示）中查找任何扩展名为“c”的文件</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+</li>
+<li><p>-perm 按照文件权限来查找文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -perm 755 –<span class="built_in">print</span> 在当前目录下查找文件权限位为755的文件，即文件属主可以读、写、执行，其他用户可以读、执行的文件</span><br></pre></td></tr></table></figure></li>
+<li><p>-prune 使用这一选项可以使find命令不在当前指定的目录中查找，如果同时使用-depth选项，那么-prune将被find命令忽略。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /apps -path <span class="string">&quot;/apps/bin&quot;</span> -prune -o –<span class="built_in">print</span> 在/apps目录下查找文件，但不希望在/apps/bin目录下查找</span><br><span class="line">find /usr/sam -path <span class="string">&quot;/usr/sam/dir1&quot;</span> -prune -o –<span class="built_in">print</span> 在/usr/sam目录下查找不在dir1子目录之内的所有文件</span><br></pre></td></tr></table></figure></li>
+<li><p>-depth：在查找文件时，首先查找当前目录中的文件，然后再在其子目录中查找。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / -name <span class="string">&quot;CON.FILE&quot;</span> -depth –<span class="built_in">print</span> 它将首先匹配所有的文件然后再进入子目录中查找</span><br></pre></td></tr></table></figure></li>
+<li><p>-user 按照文件属主来查找文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find ~ -user sam –<span class="built_in">print</span> 在<span class="variable">$HOME</span>目录中查找文件属主为sam的文件</span><br></pre></td></tr></table></figure></li>
+<li><p>-group 按照文件所属的组来查找文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /apps -group gem –<span class="built_in">print</span> 在/apps目录下查找属于gem用户组的文件</span><br></pre></td></tr></table></figure></li>
+<li><p>-mtime -n +n 按照文件的更改时间来查找文件， -n表示文件更改时间距现在n天以内，+n表示文件更改时间距现在n天以前。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / -mtime -5 –<span class="built_in">print</span> 在系统根目录下查找更改时间在5日以内的文件</span><br><span class="line">find /var/adm -mtime +3 –<span class="built_in">print</span> 在/var/adm目录下查找更改时间在3日以前的文件</span><br></pre></td></tr></table></figure></li>
+<li><p>-nogroup 查找无有效所属组的文件，即该文件所属的组在/etc/groups中不存在。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / –nogroup -<span class="built_in">print</span></span><br></pre></td></tr></table></figure></li>
+<li><p>-nouser 查找无有效属主的文件，即该文件的属主在/etc/passwd中不存在。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /home -nouser –<span class="built_in">print</span></span><br></pre></td></tr></table></figure></li>
+<li><p>-newer file1 ! file2 查找更改时间比文件file1新但比文件file2旧的文件。</p>
+</li>
+<li><p>-type 查找某一类型的文件，<br>诸如：<br>b - 块设备文件。<br>d - 目录。<br>c - 字符设备文件。<br>p - 管道文件。<br>l - 符号链接文件。<br>f - 普通文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /etc -<span class="built_in">type</span> d –<span class="built_in">print</span> 在/etc目录下查找所有的目录</span><br><span class="line">find . ! -<span class="built_in">type</span> d –<span class="built_in">print</span> 在当前目录下查找除目录以外的所有类型的文件</span><br><span class="line">find /etc -<span class="built_in">type</span> l –<span class="built_in">print</span> 在/etc目录下查找所有的符号链接文件</span><br></pre></td></tr></table></figure></li>
+<li><p>-size n[c] 查找文件长度为n块的文件，带有c时表示文件长度以字节计。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -size +1000000c –<span class="built_in">print</span> 在当前目录下查找文件长度大于1 M字节的文件</span><br><span class="line">find /home/apache -size 100c –<span class="built_in">print</span> 在/home/apache目录下查找文件长度恰好为100字节的文件</span><br><span class="line">find . -size +10 –<span class="built_in">print</span> 在当前目录下查找长度超过10块的文件（一块等于512字节）</span><br></pre></td></tr></table></figure></li>
+<li><p>-mount：在查找文件时不跨越文件系统mount点。<br><code>find . -name “*.XC” -mount –print 从当前目录开始查找位于本文件系统中文件名以XC结尾的文件（不进入其他文件系统）</code></p>
+</li>
+<li><p>-follow：如果find命令遇到符号链接文件，就跟踪至链接所指向的文件</p>
+</li>
+<li><p>-exec，find命令对匹配的文件执行该参数所给出的shell命令。相应命令的形式为’command’ {} ;，注意{}和;之间的空格</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt; find ./ -size 0 -<span class="built_in">exec</span> rm &#123;&#125; \; 删除文件大小为零的文件</span><br><span class="line">&gt; rm -i `find ./ -size 0`</span><br><span class="line">&gt; find ./ -size 0 | xargs rm -f &amp;</span><br></pre></td></tr></table></figure>
+<p>为了用ls -l命令列出所匹配到的文件，可以把ls -l命令放在find命令的-exec选项中：<br><code>$ find . -type f -exec ls -l &#123;&#125; \;</code><br>在/logs目录中查找更改时间在5日以前的文件并删除它们：<br><code>find /logs -type f -mtime +5 -exec rm &#123;&#125; \;</code></p>
+</li>
+<li><p>-ok，和-exec的作用相同，只不过以一种更为安全的模式来执行该参数所给出的shell命令，在执行每一个命令之前，都会给出提示，让用户来确定是否执行。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -name <span class="string">&quot;*.conf&quot;</span>  -mtime +5 -ok rm &#123;  &#125; \; 在当前目录中查找所有文件名以.LOG结尾、更改时间在5日以上的文件，并删除它们，只不  过在删除之前先给出提示</span><br></pre></td></tr></table></figure>
+<p>说明： 如果你要寻找一个档案的话，那么使用 find 会是一个不错的主意。不过，由于 find 在寻找数据的时候相当的耗硬盘，所以没事情不要使用 find 啦！有更棒的指令可以取代呦，那就是 whereis 与 locate 咯~</p>
+</li>
+</ul>
+<h4 id="一些常用命令"><a href="#一些常用命令" class="headerlink" title="一些常用命令"></a>一些常用命令</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1. find . -<span class="built_in">type</span> f -<span class="built_in">exec</span> ls -l &#123;&#125; \;</span><br><span class="line">查找当前路径下的所有普通文件，并把它们列出来。</span><br><span class="line">2. find logs -<span class="built_in">type</span> f -mtime +5 -<span class="built_in">exec</span> rm &#123;&#125; \;</span><br><span class="line">删除logs目录下更新时间为5日以上的文件。</span><br><span class="line">3.find . -name <span class="string">&quot;*.log&quot;</span> -mtime +5 -ok rm &#123;&#125; \;</span><br><span class="line">删除当前路径下以。<span class="built_in">log</span>结尾的五日以上的文件，删除之前要确认。</span><br><span class="line">4. find ~ -<span class="built_in">type</span> f -perm 4755 -<span class="built_in">print</span></span><br><span class="line">查找<span class="variable">$HOME</span>目录下suid位被设置，文件属性为755的文件打印出来。</span><br><span class="line">说明： find在有点系统中会一次性得到将匹配到的文件都传给<span class="built_in">exec</span>，但是有的系统对<span class="built_in">exec</span>的命令长度做限制，就会报：”参数列太长“，这就需要使用xargs。xargs是部分取传来的文件。</span><br><span class="line">5. find / -<span class="built_in">type</span> f -<span class="built_in">print</span> |xargs file</span><br><span class="line">xargs测试文件分类</span><br><span class="line">6. find . -name <span class="string">&quot;core*&quot;</span> -<span class="built_in">print</span>|xargs <span class="built_in">echo</span> <span class="string">&quot; &quot;</span>&gt;/tmp/core.log</span><br><span class="line">将core文件信息查询结果报存到core。<span class="built_in">log</span>日志。</span><br><span class="line">7. find / -<span class="built_in">type</span> f -<span class="built_in">print</span> | xargs chmod o -w</span><br><span class="line">8. find . -name * -<span class="built_in">print</span> |xargs grep <span class="string">&quot;DBO&quot;</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>通用技巧</tag>
+        <tag>find</tag>
       </tags>
   </entry>
   <entry>
@@ -879,6 +879,100 @@
       </tags>
   </entry>
   <entry>
+    <title>进程间通信-读写锁</title>
+    <url>/2020/02/04/2020-02-04-ipc-read-write-lock/</url>
+    <content><![CDATA[<p>读写锁是作为pthread_rwlock_t数据类型的变量在内存中分配的。当读写锁是在单个进程内的各个线程间共享时，这些变量可以在那个进程内；<br>当读写锁是在共享某个内存区的进程间共享时，这些变量应该在该共享内存区中。</p>
+<a id="more"></a>
+
+<h3 id="读写锁的分配原则"><a href="#读写锁的分配原则" class="headerlink" title="读写锁的分配原则"></a>读写锁的分配原则</h3><ol>
+<li>只有没有线程持有某个给定的读写锁用于写，那么任意数目的线程可以持有该读写锁用于读</li>
+<li>仅当没有线程持有某个给定的读写锁用于读或写时，才能分配该读写锁用于写。</li>
+</ol>
+<p>某些应用中读数据比修改数据频繁，这些应用可以从改用读写锁代替互斥锁中获益。任意给定时刻允许多个读出者存在提供了更高的并发度，同时在某个写入者修改数据期间保护该数据，以免任何其他读出者或写入者的干扰。<br>读写锁的一个日常类比是访问银行账户。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_rdlock</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>; <span class="comment">//获取一个读出锁</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_wrlock</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>; <span class="comment">//获取一个写入锁</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_unlock</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_tryrdlock</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_trywrlock</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>;</span><br></pre></td></tr></table></figure>
+<h3 id="读写锁属性"><a href="#读写锁属性" class="headerlink" title="读写锁属性"></a>读写锁属性</h3><ol>
+<li>静态分配的读写锁，可以用常值PTHREAD_\RWLOCK_INITIALIZER来初始化</li>
+<li>调用pthread_rwlock_init来动态初始化</li>
+<li>当一个线程不再需要某个读写锁时，可以调用pthread_rwlock_destroy来销毁它</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_init</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr, <span class="keyword">const</span> <span class="keyword">pthread_rwlockattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_destroy</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>数据类型为pthread_rwlockattr_t的某个属性对象一旦初始化，就通过调用不同的函数来启用或禁止特定属性。当前定义了的唯一属性是PTHREAD_PROCESS_SHARED。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlockattr_getpshared</span><span class="params">(<span class="keyword">const</span> <span class="keyword">pthread_rwlockattr_t</span> *attr, <span class="keyword">int</span> *valptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlockattr_setpshared</span><span class="params">(<span class="keyword">const</span> <span class="keyword">pthread_rwlockattr_t</span> *attr, <span class="keyword">int</span> value)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>value的值可以为PTHREAD_PROCESS_PRIVATE或PTHREAD_PROCESS_SHARED</p>
+<h3 id="线程清理处理程序"><a href="#线程清理处理程序" class="headerlink" title="线程清理处理程序"></a>线程清理处理程序</h3><p>有时候，线程会在持有锁期间被动（被其他线程cancel）或主动终止（主动调用pthread_exit）。为了处理这种情况，线程可以安装或删除清理处理程序</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">pthread_cleanup_push</span><span class="params">(<span class="keyword">void</span> (*function)(<span class="keyword">void</span> *), <span class="keyword">void</span> *arg)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">pthread_cleanup_pop</span><span class="params">(<span class="keyword">int</span> execute)</span></span>; <span class="comment">// 删除调用线程的取消清理栈中位于栈顶的函数。如果excute不为0，就调用该函数</span></span><br></pre></td></tr></table></figure>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>与普通的互斥锁相比，当被保护数据的读访问比写访问更为频繁时，读写锁能够提供更高的并发度。</p>
+<blockquote>
+<p>文中代码托管在: <a href="https://github.com/carl-wang-cn/demo/tree/master/ipc">https://github.com/carl-wang-cn/demo/tree/master/ipc</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>ipc</tag>
+        <tag>多进程</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>进程间通信-共享内存</title>
+    <url>/2020/02/05/2020-02-05-mmap/</url>
+    <content><![CDATA[<p>共享内存区是IPC形式中<strong>最快</strong>的. 一旦这样的内存区映射到共享它的进程的地址<br>空间, 这些进程间数据的传递就不再涉及内核. 然而往该共享内存区存放信息或从<br>中取走信息的进程间通常需要某种形式的同步.</p>
+<a id="more"></a>
+
+<p><strong>再次强调</strong>: 默认情况下fork派生的子进程并不与其父进程共享内存区.</p>
+<p>mmap函数把一个文件或一个Posix共享内存区对象映射到调用进程的地址空间. 使用该<br>函数的3个目的:</p>
+<ol>
+<li>使用普通文件以提供内存映射I/O</li>
+<li>使用特殊文件以提供匿名内存映射</li>
+<li>使用shm_open以提供无亲缘关系进程间的Posix共享内存区</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/mman.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">mmap</span><span class="params">(<span class="keyword">void</span> *addr, <span class="keyword">size_t</span> len, <span class="keyword">int</span> prot, <span class="keyword">int</span> flags, <span class="keyword">int</span> fd, <span class="keyword">off_t</span> offset)</span></span>;</span><br><span class="line">返回: 成功返回被映射区的起始地址, 失败返回MAP_FAILED</span><br><span class="line"></span><br><span class="line">addr 可以指定描述符fd应被映射到的进程内空间的起始地址. 它通常被设为<span class="literal">NULL</span>, 这</span><br><span class="line">     样告诉内核自己去选择起始地址</span><br><span class="line"></span><br><span class="line">len 映射到调用进程地址空间中的字节数, 它从被映射文件开头起第offset个字节处</span><br><span class="line">    开始算. 通常被设置为<span class="number">0</span></span><br><span class="line"></span><br><span class="line">prot 指定内存映射区的保护, 常见值是 PROT_READ | PROT_WRITE</span><br><span class="line">     prot        说明</span><br><span class="line">     PROT_READ   数据可读</span><br><span class="line">     PROT_WRITE  数据可写</span><br><span class="line">     PROT_EXEC   数据可执行</span><br><span class="line">     PROT_NONE   数据不可访问</span><br><span class="line"></span><br><span class="line">flags MAP_SHARED或MAP_PRIVATE这两个标志必须指定一个, 并有选择地 | MAP_FIXED. </span><br><span class="line">      MAP_PRIVATE 调用进程对被映射数据所做的修改只对本进程可见, 而不改变底层</span><br><span class="line">                  支撑对象</span><br><span class="line">      MAP_SHARED  调用进程对被映射数据所做的修改对于共享该对象的所有进程都可</span><br><span class="line">                  见, 而且确实改变了其底层支撑对象</span><br><span class="line">     </span><br><span class="line">      Flags         说明</span><br><span class="line">      MAP_PRIVATE   变动是私自的</span><br><span class="line">      MAP_SHARED    变动是共享的</span><br><span class="line">      MAP_FIXED     准确的解释addr参数</span><br><span class="line"></span><br><span class="line">      从移植性上考虑, MAP_FIXED不应被指定. 可移植性的代码应该把addr置为<span class="literal">NULL</span>,</span><br><span class="line">      不指定MAP_FIXED</span><br><span class="line"></span><br><span class="line">父子进程之间共享内存区的方法之一: 父进程在调用fork之前先指定MAP_SHARED调用mmap.</span><br><span class="line">Posix<span class="number">.1</span>保证父进程中的内存映射关系存留到子进程中.</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">munmap</span><span class="params">(<span class="keyword">void</span> *addr, <span class="keyword">size_t</span> len)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">从某个进程的地址空间删除一个映射关系. munmap后再访问这些地址将会导致想调用进程</span><br><span class="line">产生一个SIGSEGV信号</span><br><span class="line"></span><br><span class="line">如果被映射区是使用MAP_PRIVATE标志映射的, 那么调用进程对它所做的变动都会被丢弃掉.</span><br><span class="line"></span><br><span class="line">addr mmap返回的地址</span><br><span class="line">len  映射区的大小</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">msync</span><span class="params">(<span class="keyword">void</span> *addr, <span class="keyword">size_t</span> len, <span class="keyword">int</span> flags)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">内核的虚拟内存算法保持内存映射文件(一般在硬盘上)与内存映射区(在内存中)的同步,</span><br><span class="line">前提是它是一个MAP_SHARED内存区. 如果我们修改了处于内存映射到某个文件的内存区中</span><br><span class="line">某个位置的内容, 那么内核将在稍后某个时刻相应的更新文件. 然而有时候希望确信硬盘</span><br><span class="line">上的文件内容与内存映射区中的内容一致, 这就需要调用msync来执行这种同步</span><br><span class="line"></span><br><span class="line">addr和len通常指代内存中的整个内存映射区, 不过也可以指定该内存区的一个子集.</span><br><span class="line">flags参数: MS_ASYNC和MS_SYNC必须指定一个, 但不能同时指定</span><br><span class="line">- MS_ASYNC  执行异步写, 一旦写操作由内核排入队列, 立即返回</span><br><span class="line">- MS_SYNC   执行同步写, ........................, 等到写操作完成后才返回</span><br><span class="line">- MS_INVALIDATE 使高速缓存的数据失效. 指定了该flag, 那么与其最终副本不一致的文</span><br><span class="line">            件数据的所有内存中副本都失效, 后续的引用将从文件中取得数据.</span><br><span class="line"></span><br><span class="line">Posix还定义了处理内存管理的<span class="number">4</span>个额外函数</span><br><span class="line">- mlockall会使调用进程的整个内存空间常驻内存. munlockall则撤销这种锁定</span><br><span class="line">- mlcok会是调用进程地址空间的某个指定范围常驻内存, 该函数的参数指定了这个范围的</span><br><span class="line">  起始地址以及从该地址算起的字节数. munlock则撤销某个指定内存区的锁定.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>使用mmap的好处:</p>
+<p>使用内存映射文件所得到的奇妙特性是, 所有的I/O都在内核的掩盖下完成, 我们只需编<br>写存取内存映射区中各个值的代码. 我们决不调用read, write, lseek, 把显示的文件<br>I/O操作变换成存取内存单元, 这样可以简化我们的代码, 有时候还能改善性能</p>
+<p>mmap的另一个用途是在无亲缘关系的进程间提供共享内存区(需指定MAP_SHARED标志).这<br>种情形下, 所映射文件的实际内容成了被共享内存区的初始内容, 而且这些进程对该共享<br>内存区所做的任何变动都复制回所映射的文件(以提供随文件系统的持续性).</p>
+<ul>
+<li>count01.c 父子进程给共享内存区的一个计数器加1, 使用有名信号量</li>
+<li>count02.c 父子进程给共享内存区的一个计数器加1, 使用基于内存的信号量</li>
+</ul>
+<p>内存映射一个普通文件时, 内存映射区的大小(mmap的第二个参数)通常等于该文件的大小.<br>但是文件大小和内存映射区大小可以不同. 我们总是能够访问在当前文件大小以内又在内<br>存映射区以内的那些字节.</p>
+<ul>
+<li>SIGBUS  内存映射区大小 &gt; 文件大小, 访问了超出文件大小的位置但是未超出内存映射区</li>
+<li>SIGSEGV 越界访问内存映射区</li>
+</ul>
+<h3 id="Posix共享内存区"><a href="#Posix共享内存区" class="headerlink" title="Posix共享内存区"></a>Posix共享内存区</h3><hr>
+<p>两者无亲缘关系进程间共享内存区的方法</p>
+<ol>
+<li>内存映射文件. 由open函数打开, 由mmap函数把所得到的描述符映射到当前进程地址空<br>间中的一个文件</li>
+<li>共享内存区对象. 由shm_open打开一个Posix.1 IPC名字, 所返回的描述符由mmap函数<br>映射到当前进程地址空间</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/mman.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">shm_open</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *name, <span class="keyword">int</span> oflag, <span class="keyword">mode_t</span> mode)</span></span>;</span><br><span class="line">返回: 成功返回非负描述符, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">oflag  必须含有O_RDONLY或O_RDWR之一, 还可以有O_CREAT, O_EXCL. 如果 O_RDWR | O_TRUNC,</span><br><span class="line">       而且所需的共享内存区对象已经存在, 那么它将被截断为<span class="number">0</span>长度.</span><br><span class="line">mode   指定权限位, 在O_CREAT时必须指定mode, 未指定O_CREAT时可以mode设为<span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">shm_unlink</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *name)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">shm_unlink删除一个共享内存区对象的名字. 跟所有其他unlink函数(删除文件系统中一个路径名</span><br><span class="line">的unlink, 删除一个Posix消息队列的mq_unlink, 以及删除一个Posix有名信号量的sem_unlink)</span><br><span class="line">一样, 删除一个名字不会影响对于底层支撑对象的现有引用, 知道对于该对象的引用全部关闭为</span><br><span class="line">止. 删除一个名字仅仅防止后续的open, mq_open或sem_open调用取得成功.</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ftruncate</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">off_t</span> length)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">调用ftruncate来指定新创建的共享内存区对象的大小, 或者修改已存在的对象的大小.</span><br><span class="line"></span><br><span class="line">- 对于普通文件: 如果该文件大小大于length, 额外的数据就被丢弃掉, 如果该文件的大小小于</span><br><span class="line">  length, 那么该文件是否修改以及其大小是否增长是未定义的. </span><br><span class="line">  实际上对于一个普通文件, 把它的大小扩展到length字节的可移植办法是:先lseek到偏移为</span><br><span class="line">  length<span class="number">-1</span>处, 然后write <span class="number">1</span>个字节的数据</span><br><span class="line">- 对于共享内存区对象: 把该对象的大小设置成length字节.</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fstat</span><span class="params">(<span class="keyword">int</span> fd, struct stat *buf)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stat</span>有12个或以上的成员, 但是当<span class="title">fd</span>指代一个共享内存区对象时, 只有4个成员含有信息</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stat</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">mode_t</span> st_mode;  <span class="comment">// mode: S_I&#123;RW&#125;&#123;USR, GRP, OTH&#125;</span></span><br><span class="line">    <span class="keyword">uid_t</span>  st_uid;   <span class="comment">// user id of owner</span></span><br><span class="line">    <span class="keyword">gid_t</span>  st_gid;   <span class="comment">// group id of owner</span></span><br><span class="line">    <span class="keyword">off_t</span>  st_size;  <span class="comment">// size in bytes</span></span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>shmcreate.c 创建一个具有指定大小的Posix共享内存区对象</li>
+<li>shmunlink.c 删除一个共享内存区对象的名字</li>
+<li>shmwrite.c  打开一个共享内存区对象, 填写一个数据模式</li>
+<li>shmread.c   打开一个共享内存区对象, 验证其数据模式</li>
+</ul>
+<p>同一个共享内存区对象内存映射到不同进程的地址空间时, 起始地址可以不同.</p>
+<ul>
+<li>count03_server.c 创建并初始化共享内存区和信号量的程序</li>
+<li>count03_client.c 给存放在共享内存区中的一个计数器加1, 测试的时候可以启动多个client来观察效果</li>
+<li>cosumer.c 从共享内存区中取得并输出消息</li>
+<li>producer.c 在共享内存区存放消息</li>
+</ul>
+<blockquote>
+<p>文中代码托管在: <a href="https://github.com/carl-wang-cn/demo/tree/master/ipc">https://github.com/carl-wang-cn/demo/tree/master/ipc</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>ipc</tag>
+        <tag>多进程</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>进程间通信-Posix信号量</title>
     <url>/2020/02/04/2020-02-04-ipc-posix-sem/</url>
     <content><![CDATA[<h5 id="信号量是一种用于提供不同进程间或一个给定进程的不同线程间同步手段的原语。"><a href="#信号量是一种用于提供不同进程间或一个给定进程的不同线程间同步手段的原语。" class="headerlink" title="信号量是一种用于提供不同进程间或一个给定进程的不同线程间同步手段的原语。"></a>信号量是一种用于提供不同进程间或一个给定进程的不同线程间同步手段的原语。</h5><ul>
@@ -971,100 +1065,6 @@
 <p>服务器可以创建一个共享内存区，在该共享内存区中初始化一个Posix基于内存的信号量，然后终止。一段时间后，一个或多个客户可打开该共享内存区，访问存放在其中的基于内存的信号量。</p>
 </blockquote>
 <p>producer_consumer02.c使用Posix基于内存的信号量，演示了生产者-消费者问题。</p>
-<blockquote>
-<p>文中代码托管在: <a href="https://github.com/carl-wang-cn/demo/tree/master/ipc">https://github.com/carl-wang-cn/demo/tree/master/ipc</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>ipc</tag>
-        <tag>多进程</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>进程间通信-读写锁</title>
-    <url>/2020/02/04/2020-02-04-ipc-read-write-lock/</url>
-    <content><![CDATA[<p>读写锁是作为pthread_rwlock_t数据类型的变量在内存中分配的。当读写锁是在单个进程内的各个线程间共享时，这些变量可以在那个进程内；<br>当读写锁是在共享某个内存区的进程间共享时，这些变量应该在该共享内存区中。</p>
-<a id="more"></a>
-
-<h3 id="读写锁的分配原则"><a href="#读写锁的分配原则" class="headerlink" title="读写锁的分配原则"></a>读写锁的分配原则</h3><ol>
-<li>只有没有线程持有某个给定的读写锁用于写，那么任意数目的线程可以持有该读写锁用于读</li>
-<li>仅当没有线程持有某个给定的读写锁用于读或写时，才能分配该读写锁用于写。</li>
-</ol>
-<p>某些应用中读数据比修改数据频繁，这些应用可以从改用读写锁代替互斥锁中获益。任意给定时刻允许多个读出者存在提供了更高的并发度，同时在某个写入者修改数据期间保护该数据，以免任何其他读出者或写入者的干扰。<br>读写锁的一个日常类比是访问银行账户。</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_rdlock</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>; <span class="comment">//获取一个读出锁</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_wrlock</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>; <span class="comment">//获取一个写入锁</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_unlock</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_tryrdlock</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_trywrlock</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>;</span><br></pre></td></tr></table></figure>
-<h3 id="读写锁属性"><a href="#读写锁属性" class="headerlink" title="读写锁属性"></a>读写锁属性</h3><ol>
-<li>静态分配的读写锁，可以用常值PTHREAD_\RWLOCK_INITIALIZER来初始化</li>
-<li>调用pthread_rwlock_init来动态初始化</li>
-<li>当一个线程不再需要某个读写锁时，可以调用pthread_rwlock_destroy来销毁它</li>
-</ol>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_init</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr, <span class="keyword">const</span> <span class="keyword">pthread_rwlockattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_destroy</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>;</span><br></pre></td></tr></table></figure>
-<p>数据类型为pthread_rwlockattr_t的某个属性对象一旦初始化，就通过调用不同的函数来启用或禁止特定属性。当前定义了的唯一属性是PTHREAD_PROCESS_SHARED。</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlockattr_getpshared</span><span class="params">(<span class="keyword">const</span> <span class="keyword">pthread_rwlockattr_t</span> *attr, <span class="keyword">int</span> *valptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlockattr_setpshared</span><span class="params">(<span class="keyword">const</span> <span class="keyword">pthread_rwlockattr_t</span> *attr, <span class="keyword">int</span> value)</span></span>;</span><br></pre></td></tr></table></figure>
-<p>value的值可以为PTHREAD_PROCESS_PRIVATE或PTHREAD_PROCESS_SHARED</p>
-<h3 id="线程清理处理程序"><a href="#线程清理处理程序" class="headerlink" title="线程清理处理程序"></a>线程清理处理程序</h3><p>有时候，线程会在持有锁期间被动（被其他线程cancel）或主动终止（主动调用pthread_exit）。为了处理这种情况，线程可以安装或删除清理处理程序</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">pthread_cleanup_push</span><span class="params">(<span class="keyword">void</span> (*function)(<span class="keyword">void</span> *), <span class="keyword">void</span> *arg)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">pthread_cleanup_pop</span><span class="params">(<span class="keyword">int</span> execute)</span></span>; <span class="comment">// 删除调用线程的取消清理栈中位于栈顶的函数。如果excute不为0，就调用该函数</span></span><br></pre></td></tr></table></figure>
-<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>与普通的互斥锁相比，当被保护数据的读访问比写访问更为频繁时，读写锁能够提供更高的并发度。</p>
-<blockquote>
-<p>文中代码托管在: <a href="https://github.com/carl-wang-cn/demo/tree/master/ipc">https://github.com/carl-wang-cn/demo/tree/master/ipc</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>ipc</tag>
-        <tag>多进程</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>进程间通信-共享内存</title>
-    <url>/2020/02/05/2020-02-05-mmap/</url>
-    <content><![CDATA[<p>共享内存区是IPC形式中<strong>最快</strong>的. 一旦这样的内存区映射到共享它的进程的地址<br>空间, 这些进程间数据的传递就不再涉及内核. 然而往该共享内存区存放信息或从<br>中取走信息的进程间通常需要某种形式的同步.</p>
-<a id="more"></a>
-
-<p><strong>再次强调</strong>: 默认情况下fork派生的子进程并不与其父进程共享内存区.</p>
-<p>mmap函数把一个文件或一个Posix共享内存区对象映射到调用进程的地址空间. 使用该<br>函数的3个目的:</p>
-<ol>
-<li>使用普通文件以提供内存映射I/O</li>
-<li>使用特殊文件以提供匿名内存映射</li>
-<li>使用shm_open以提供无亲缘关系进程间的Posix共享内存区</li>
-</ol>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/mman.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">mmap</span><span class="params">(<span class="keyword">void</span> *addr, <span class="keyword">size_t</span> len, <span class="keyword">int</span> prot, <span class="keyword">int</span> flags, <span class="keyword">int</span> fd, <span class="keyword">off_t</span> offset)</span></span>;</span><br><span class="line">返回: 成功返回被映射区的起始地址, 失败返回MAP_FAILED</span><br><span class="line"></span><br><span class="line">addr 可以指定描述符fd应被映射到的进程内空间的起始地址. 它通常被设为<span class="literal">NULL</span>, 这</span><br><span class="line">     样告诉内核自己去选择起始地址</span><br><span class="line"></span><br><span class="line">len 映射到调用进程地址空间中的字节数, 它从被映射文件开头起第offset个字节处</span><br><span class="line">    开始算. 通常被设置为<span class="number">0</span></span><br><span class="line"></span><br><span class="line">prot 指定内存映射区的保护, 常见值是 PROT_READ | PROT_WRITE</span><br><span class="line">     prot        说明</span><br><span class="line">     PROT_READ   数据可读</span><br><span class="line">     PROT_WRITE  数据可写</span><br><span class="line">     PROT_EXEC   数据可执行</span><br><span class="line">     PROT_NONE   数据不可访问</span><br><span class="line"></span><br><span class="line">flags MAP_SHARED或MAP_PRIVATE这两个标志必须指定一个, 并有选择地 | MAP_FIXED. </span><br><span class="line">      MAP_PRIVATE 调用进程对被映射数据所做的修改只对本进程可见, 而不改变底层</span><br><span class="line">                  支撑对象</span><br><span class="line">      MAP_SHARED  调用进程对被映射数据所做的修改对于共享该对象的所有进程都可</span><br><span class="line">                  见, 而且确实改变了其底层支撑对象</span><br><span class="line">     </span><br><span class="line">      Flags         说明</span><br><span class="line">      MAP_PRIVATE   变动是私自的</span><br><span class="line">      MAP_SHARED    变动是共享的</span><br><span class="line">      MAP_FIXED     准确的解释addr参数</span><br><span class="line"></span><br><span class="line">      从移植性上考虑, MAP_FIXED不应被指定. 可移植性的代码应该把addr置为<span class="literal">NULL</span>,</span><br><span class="line">      不指定MAP_FIXED</span><br><span class="line"></span><br><span class="line">父子进程之间共享内存区的方法之一: 父进程在调用fork之前先指定MAP_SHARED调用mmap.</span><br><span class="line">Posix<span class="number">.1</span>保证父进程中的内存映射关系存留到子进程中.</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">munmap</span><span class="params">(<span class="keyword">void</span> *addr, <span class="keyword">size_t</span> len)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">从某个进程的地址空间删除一个映射关系. munmap后再访问这些地址将会导致想调用进程</span><br><span class="line">产生一个SIGSEGV信号</span><br><span class="line"></span><br><span class="line">如果被映射区是使用MAP_PRIVATE标志映射的, 那么调用进程对它所做的变动都会被丢弃掉.</span><br><span class="line"></span><br><span class="line">addr mmap返回的地址</span><br><span class="line">len  映射区的大小</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">msync</span><span class="params">(<span class="keyword">void</span> *addr, <span class="keyword">size_t</span> len, <span class="keyword">int</span> flags)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">内核的虚拟内存算法保持内存映射文件(一般在硬盘上)与内存映射区(在内存中)的同步,</span><br><span class="line">前提是它是一个MAP_SHARED内存区. 如果我们修改了处于内存映射到某个文件的内存区中</span><br><span class="line">某个位置的内容, 那么内核将在稍后某个时刻相应的更新文件. 然而有时候希望确信硬盘</span><br><span class="line">上的文件内容与内存映射区中的内容一致, 这就需要调用msync来执行这种同步</span><br><span class="line"></span><br><span class="line">addr和len通常指代内存中的整个内存映射区, 不过也可以指定该内存区的一个子集.</span><br><span class="line">flags参数: MS_ASYNC和MS_SYNC必须指定一个, 但不能同时指定</span><br><span class="line">- MS_ASYNC  执行异步写, 一旦写操作由内核排入队列, 立即返回</span><br><span class="line">- MS_SYNC   执行同步写, ........................, 等到写操作完成后才返回</span><br><span class="line">- MS_INVALIDATE 使高速缓存的数据失效. 指定了该flag, 那么与其最终副本不一致的文</span><br><span class="line">            件数据的所有内存中副本都失效, 后续的引用将从文件中取得数据.</span><br><span class="line"></span><br><span class="line">Posix还定义了处理内存管理的<span class="number">4</span>个额外函数</span><br><span class="line">- mlockall会使调用进程的整个内存空间常驻内存. munlockall则撤销这种锁定</span><br><span class="line">- mlcok会是调用进程地址空间的某个指定范围常驻内存, 该函数的参数指定了这个范围的</span><br><span class="line">  起始地址以及从该地址算起的字节数. munlock则撤销某个指定内存区的锁定.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>使用mmap的好处:</p>
-<p>使用内存映射文件所得到的奇妙特性是, 所有的I/O都在内核的掩盖下完成, 我们只需编<br>写存取内存映射区中各个值的代码. 我们决不调用read, write, lseek, 把显示的文件<br>I/O操作变换成存取内存单元, 这样可以简化我们的代码, 有时候还能改善性能</p>
-<p>mmap的另一个用途是在无亲缘关系的进程间提供共享内存区(需指定MAP_SHARED标志).这<br>种情形下, 所映射文件的实际内容成了被共享内存区的初始内容, 而且这些进程对该共享<br>内存区所做的任何变动都复制回所映射的文件(以提供随文件系统的持续性).</p>
-<ul>
-<li>count01.c 父子进程给共享内存区的一个计数器加1, 使用有名信号量</li>
-<li>count02.c 父子进程给共享内存区的一个计数器加1, 使用基于内存的信号量</li>
-</ul>
-<p>内存映射一个普通文件时, 内存映射区的大小(mmap的第二个参数)通常等于该文件的大小.<br>但是文件大小和内存映射区大小可以不同. 我们总是能够访问在当前文件大小以内又在内<br>存映射区以内的那些字节.</p>
-<ul>
-<li>SIGBUS  内存映射区大小 &gt; 文件大小, 访问了超出文件大小的位置但是未超出内存映射区</li>
-<li>SIGSEGV 越界访问内存映射区</li>
-</ul>
-<h3 id="Posix共享内存区"><a href="#Posix共享内存区" class="headerlink" title="Posix共享内存区"></a>Posix共享内存区</h3><hr>
-<p>两者无亲缘关系进程间共享内存区的方法</p>
-<ol>
-<li>内存映射文件. 由open函数打开, 由mmap函数把所得到的描述符映射到当前进程地址空<br>间中的一个文件</li>
-<li>共享内存区对象. 由shm_open打开一个Posix.1 IPC名字, 所返回的描述符由mmap函数<br>映射到当前进程地址空间</li>
-</ol>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/mman.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">shm_open</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *name, <span class="keyword">int</span> oflag, <span class="keyword">mode_t</span> mode)</span></span>;</span><br><span class="line">返回: 成功返回非负描述符, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">oflag  必须含有O_RDONLY或O_RDWR之一, 还可以有O_CREAT, O_EXCL. 如果 O_RDWR | O_TRUNC,</span><br><span class="line">       而且所需的共享内存区对象已经存在, 那么它将被截断为<span class="number">0</span>长度.</span><br><span class="line">mode   指定权限位, 在O_CREAT时必须指定mode, 未指定O_CREAT时可以mode设为<span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">shm_unlink</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *name)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">shm_unlink删除一个共享内存区对象的名字. 跟所有其他unlink函数(删除文件系统中一个路径名</span><br><span class="line">的unlink, 删除一个Posix消息队列的mq_unlink, 以及删除一个Posix有名信号量的sem_unlink)</span><br><span class="line">一样, 删除一个名字不会影响对于底层支撑对象的现有引用, 知道对于该对象的引用全部关闭为</span><br><span class="line">止. 删除一个名字仅仅防止后续的open, mq_open或sem_open调用取得成功.</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ftruncate</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">off_t</span> length)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">调用ftruncate来指定新创建的共享内存区对象的大小, 或者修改已存在的对象的大小.</span><br><span class="line"></span><br><span class="line">- 对于普通文件: 如果该文件大小大于length, 额外的数据就被丢弃掉, 如果该文件的大小小于</span><br><span class="line">  length, 那么该文件是否修改以及其大小是否增长是未定义的. </span><br><span class="line">  实际上对于一个普通文件, 把它的大小扩展到length字节的可移植办法是:先lseek到偏移为</span><br><span class="line">  length<span class="number">-1</span>处, 然后write <span class="number">1</span>个字节的数据</span><br><span class="line">- 对于共享内存区对象: 把该对象的大小设置成length字节.</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fstat</span><span class="params">(<span class="keyword">int</span> fd, struct stat *buf)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stat</span>有12个或以上的成员, 但是当<span class="title">fd</span>指代一个共享内存区对象时, 只有4个成员含有信息</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stat</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">mode_t</span> st_mode;  <span class="comment">// mode: S_I&#123;RW&#125;&#123;USR, GRP, OTH&#125;</span></span><br><span class="line">    <span class="keyword">uid_t</span>  st_uid;   <span class="comment">// user id of owner</span></span><br><span class="line">    <span class="keyword">gid_t</span>  st_gid;   <span class="comment">// group id of owner</span></span><br><span class="line">    <span class="keyword">off_t</span>  st_size;  <span class="comment">// size in bytes</span></span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<ul>
-<li>shmcreate.c 创建一个具有指定大小的Posix共享内存区对象</li>
-<li>shmunlink.c 删除一个共享内存区对象的名字</li>
-<li>shmwrite.c  打开一个共享内存区对象, 填写一个数据模式</li>
-<li>shmread.c   打开一个共享内存区对象, 验证其数据模式</li>
-</ul>
-<p>同一个共享内存区对象内存映射到不同进程的地址空间时, 起始地址可以不同.</p>
-<ul>
-<li>count03_server.c 创建并初始化共享内存区和信号量的程序</li>
-<li>count03_client.c 给存放在共享内存区中的一个计数器加1, 测试的时候可以启动多个client来观察效果</li>
-<li>cosumer.c 从共享内存区中取得并输出消息</li>
-<li>producer.c 在共享内存区存放消息</li>
-</ul>
 <blockquote>
 <p>文中代码托管在: <a href="https://github.com/carl-wang-cn/demo/tree/master/ipc">https://github.com/carl-wang-cn/demo/tree/master/ipc</a></p>
 </blockquote>
@@ -1386,27 +1386,6 @@
       </tags>
   </entry>
   <entry>
-    <title>python的finally语句中使用return要慎重!!!</title>
-    <url>/2020/02/13/2020-02-13-python-finally-hole/</url>
-    <content><![CDATA[<p>前两天, 同事踩了一个坑, python代码的一个接口抛了异常, 但是返回值是0. 这里记录一下.</p>
-<p>代码大概是这样的.</p>
-<a id="more"></a>
-
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">division</span>(<span class="params">a, b</span>):</span></span><br><span class="line">    ret = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        ret = a / b</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        print(<span class="string">&#x27;oops!&#x27;</span>)</span><br><span class="line">        <span class="keyword">raise</span> e</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        <span class="keyword">return</span> ret</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    print(division(<span class="number">1</span>, <span class="number">0</span>))</span><br><span class="line"><span class="keyword">except</span> Exception:</span><br><span class="line">    print(<span class="string">&#x27;ooops!!&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行一下, 结果如下.</span></span><br><span class="line">&gt; python3 test.py</span><br><span class="line">oops!</span><br><span class="line"><span class="number">0</span></span><br></pre></td></tr></table></figure>
-<p>是不是不符合你预期?</p>
-<p>我们来改一行, 再看看</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">division</span>(<span class="params">a, b</span>):</span></span><br><span class="line">    ret = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        ret = a / b</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        print(<span class="string">&#x27;oops!&#x27;</span>)</span><br><span class="line">        <span class="keyword">raise</span> e</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        print(<span class="string">&#x27;ops!&#x27;</span>) <span class="comment"># 这行改了哦, 不用return了</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    print(division(<span class="number">1</span>, <span class="number">0</span>))</span><br><span class="line"><span class="keyword">except</span> Exception:</span><br><span class="line">    print(<span class="string">&#x27;ooops!!&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行一下, 结果如下.</span></span><br><span class="line">&gt; python3 test.py</span><br><span class="line">oops!</span><br><span class="line">ops!</span><br><span class="line">ooops!!</span><br></pre></td></tr></table></figure>
-<p>现在的结果是不是符合预期了?</p>
-<p>从这个采坑和测试过程来看, 在finally语句中一定要注意一下return的使用, 要慎重!!!</p>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>多进程通信-互斥锁和条件变量</title>
     <url>/2020/02/07/2020-02-07-mutex-cond/</url>
     <content><![CDATA[<h2 id="互斥锁"><a href="#互斥锁" class="headerlink" title="互斥锁"></a>互斥锁</h2><p>互斥锁和条件变量总是可用来同步一个进程内的各个线程。但是如果一个互斥锁或条件变量是<br>存放在多个进程间共享的某个内存区内，那么它还可以被用来同步这几个进程。</p>
@@ -1465,6 +1444,27 @@
       </tags>
   </entry>
   <entry>
+    <title>python的finally语句中使用return要慎重!!!</title>
+    <url>/2020/02/13/2020-02-13-python-finally-hole/</url>
+    <content><![CDATA[<p>前两天, 同事踩了一个坑, python代码的一个接口抛了异常, 但是返回值是0. 这里记录一下.</p>
+<p>代码大概是这样的.</p>
+<a id="more"></a>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">division</span>(<span class="params">a, b</span>):</span></span><br><span class="line">    ret = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        ret = a / b</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        print(<span class="string">&#x27;oops!&#x27;</span>)</span><br><span class="line">        <span class="keyword">raise</span> e</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        <span class="keyword">return</span> ret</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    print(division(<span class="number">1</span>, <span class="number">0</span>))</span><br><span class="line"><span class="keyword">except</span> Exception:</span><br><span class="line">    print(<span class="string">&#x27;ooops!!&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行一下, 结果如下.</span></span><br><span class="line">&gt; python3 test.py</span><br><span class="line">oops!</span><br><span class="line"><span class="number">0</span></span><br></pre></td></tr></table></figure>
+<p>是不是不符合你预期?</p>
+<p>我们来改一行, 再看看</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">division</span>(<span class="params">a, b</span>):</span></span><br><span class="line">    ret = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        ret = a / b</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        print(<span class="string">&#x27;oops!&#x27;</span>)</span><br><span class="line">        <span class="keyword">raise</span> e</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        print(<span class="string">&#x27;ops!&#x27;</span>) <span class="comment"># 这行改了哦, 不用return了</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    print(division(<span class="number">1</span>, <span class="number">0</span>))</span><br><span class="line"><span class="keyword">except</span> Exception:</span><br><span class="line">    print(<span class="string">&#x27;ooops!!&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行一下, 结果如下.</span></span><br><span class="line">&gt; python3 test.py</span><br><span class="line">oops!</span><br><span class="line">ops!</span><br><span class="line">ooops!!</span><br></pre></td></tr></table></figure>
+<p>现在的结果是不是符合预期了?</p>
+<p>从这个采坑和测试过程来看, 在finally语句中一定要注意一下return的使用, 要慎重!!!</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>proto buffer MergeFrom的坑</title>
     <url>/2020/03/17/2020-03-17-donot-use-pb-mergefrom/</url>
     <content><![CDATA[<p>pb好用, 性能虽然比不上二进制, 不过也比json在大多数情况下还是好很多. 尤其是字段的向前向后兼容, 这一点应该也是大多数同学选用pb的原因. 然后终于<strong>掉进坑</strong>了, 严重得影响了一次线上服务.<br>整理测试程序的时候发现, python的官方指南压根就没提MergeFrom这个接口, 看起来是专门用来坑c++的兄弟的啊</p>
@@ -1477,42 +1477,6 @@
 <h5 id="3-用write-new-py程序创建一个address-book对象并写入文件-输出结果如下"><a href="#3-用write-new-py程序创建一个address-book对象并写入文件-输出结果如下" class="headerlink" title="3. 用write_new.py程序创建一个address_book对象并写入文件, 输出结果如下:"></a>3. 用write_new.py程序创建一个address_book对象并写入文件, 输出结果如下:</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[carl pb_mergefrom_trap]$ python write_new.py addressbook</span><br><span class="line">address_book: host_name: <span class="string">&quot;carl&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 30</span><br><span class="line">new1: 1</span><br><span class="line">new2: 2</span><br><span class="line">&#125;</span><br><span class="line">new3: 3</span><br><span class="line">new4: 4</span><br></pre></td></tr></table></figure>
 <h5 id="4-执行上面c-的bin文件"><a href="#4-执行上面c-的bin文件" class="headerlink" title="4. 执行上面c++的bin文件"></a>4. 执行上面c++的bin文件</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[carl pb_mergefrom_trap]$ ./read_new_write_old.bin addressbook</span><br><span class="line">book: host_name: <span class="string">&quot;carl&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 30</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_update_mergefrom&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_update_mergefrom&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_update_mergefrom&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_update_mergefrom&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_update_mergefrom&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br></pre></td></tr></table></figure>
 <h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>由上测试结果可以看出, 一个使用了旧proto的c++程序, 在调用mergefrom的时候, 那2个unknown的字段不是覆盖回原来已有的字段上, 而是<strong>新增</strong>了. 连续调用几次, 这个是指数级增长的. 这会导致serialize出来的bin文件大小指数级增长, 然后会影响到进程, 在Parse和Serialize的时候, 函数调用会阻塞几十秒甚至几分钟, 网络流量也会剧增, 这对一个生产服务器可以说是致命的, 血淋淋的教训啊.<br>以上文件托管在<br><a href="https://github.com/carl-wang-cn/demo/tree/master/testcode/pb_mergefrom_trap">github/demo/tree/master/testcode/pb_mergefrom_trap</a></p>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>记录一次因为redis aof rewrite重写导致的运维事故</title>
-    <url>/2020/03/17/2020-03-17-redis-aof-disaster/</url>
-    <content><![CDATA[<h2 id="事情起因"><a href="#事情起因" class="headerlink" title="事情起因"></a>事情起因</h2><p>redis master 所在物理机A, 物理内存16G, aof rewrite 被触发时, aof文件已达12G, redis的默认配置触发了后台的rewrite进程, 内存占用达到了50%, 已严重影响到redis的正常访问. 而此时距离美股交易开盘只剩1小时.</p>
-<a id="more"></a>
-
-<h2 id="处理过程"><a href="#处理过程" class="headerlink" title="处理过程"></a>处理过程</h2><h4 id="跟server组几名同事-carl-shilinchen-echo-jiezhao-zhiguocai-一起理清楚问题现状"><a href="#跟server组几名同事-carl-shilinchen-echo-jiezhao-zhiguocai-一起理清楚问题现状" class="headerlink" title="跟server组几名同事(carl, shilinchen, echo, jiezhao, zhiguocai)一起理清楚问题现状"></a>跟server组几名同事(carl, shilinchen, echo, jiezhao, zhiguocai)一起理清楚问题现状</h4><ol>
-<li>redis slave的数据是完整的, 1小时内不会有写入请求</li>
-<li>aof rewrite进程已运行2小时, 是否能在1小时内运行完毕不可控</li>
-<li>aof rewrite进程, 即使在1小时内运行完, 不确认是否会马上触发第2次rewrite</li>
-</ol>
-<h4 id="整理方案如下"><a href="#整理方案如下" class="headerlink" title="整理方案如下:"></a>整理方案如下:</h4><ol>
-<li>将物理机B的redis slave切换为master, 使其跟现有物理机A的redis脱离master-slave关系</li>
-<li>对生产环境的hosts文件修改, 使hosts中配置的域名指向新的master</li>
-<li>重启相关进程, 使其连接到新的redis master</li>
-<li>测试白名单账号验证服务正常</li>
-<li>stop原来物理机A上的旧master进行, 暂时保留现场不动</li>
-<li>第2天, 交易收盘后, 清理redis中的历史数据</li>
-<li>周末进一步处理<blockquote>
-<ol>
-<li>新准备好下一交易日的uinfo和margin相关数据</li>
-<li>将物理机A的redis配置为物理机B新master的slave</li>
-<li>重命名该redis配置路径的aof文件</li>
-<li>重启该redis, 使该redis从0开始从物理机A的redis master进行数据同步</li>
-<li>手动触发物理机B的redis master的aof rewrite, 此过程完成后, aof文件从10G变为1.5G</li>
-</ol>
-</blockquote>
-</li>
-<li>补齐定期删除历史数据的server逻辑</li>
-</ol>
-<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>交易系统和风控系统经过重新设计, 进行了重构, redis已经是过去时了, 不过曾经踩过的这个坑希望能记录下来, 让我们时时警示一下.</p>
 ]]></content>
       <categories>
         <category>技术</category>
@@ -1564,6 +1528,42 @@
 <li>加密和解密发送方利用接收方的公钥对要发送的明文进行加密,接受方利用自己的私钥进行解密,其中公钥和私钥匙相对的,任何一个作为公钥,则另一个就为私钥.但是因为非对称加密技术的速度比较慢,所以,一般采用对称加密技术加密明文,然后用非对称加密技术加密对称密钥,即数字信封技术.</li>
 <li>签名和验证发送方用特殊的hash算法，由明文中产生固定长度的摘要，然后利用自己的私钥对形成的摘要进行加密，这个过程就叫签名。接受方利用发送方的公钥解密被加密的摘要得到结果A，然后对明文也进行hash操作产生摘要B.最后,把A和B作比较。此方式既可以保证发送方的身份不可抵赖，又可以保证数据在传输过程中不会被篡改。</li>
 </ol>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>记录一次因为redis aof rewrite重写导致的运维事故</title>
+    <url>/2020/03/17/2020-03-17-redis-aof-disaster/</url>
+    <content><![CDATA[<h2 id="事情起因"><a href="#事情起因" class="headerlink" title="事情起因"></a>事情起因</h2><p>redis master 所在物理机A, 物理内存16G, aof rewrite 被触发时, aof文件已达12G, redis的默认配置触发了后台的rewrite进程, 内存占用达到了50%, 已严重影响到redis的正常访问. 而此时距离美股交易开盘只剩1小时.</p>
+<a id="more"></a>
+
+<h2 id="处理过程"><a href="#处理过程" class="headerlink" title="处理过程"></a>处理过程</h2><h4 id="跟server组几名同事-carl-shilinchen-echo-jiezhao-zhiguocai-一起理清楚问题现状"><a href="#跟server组几名同事-carl-shilinchen-echo-jiezhao-zhiguocai-一起理清楚问题现状" class="headerlink" title="跟server组几名同事(carl, shilinchen, echo, jiezhao, zhiguocai)一起理清楚问题现状"></a>跟server组几名同事(carl, shilinchen, echo, jiezhao, zhiguocai)一起理清楚问题现状</h4><ol>
+<li>redis slave的数据是完整的, 1小时内不会有写入请求</li>
+<li>aof rewrite进程已运行2小时, 是否能在1小时内运行完毕不可控</li>
+<li>aof rewrite进程, 即使在1小时内运行完, 不确认是否会马上触发第2次rewrite</li>
+</ol>
+<h4 id="整理方案如下"><a href="#整理方案如下" class="headerlink" title="整理方案如下:"></a>整理方案如下:</h4><ol>
+<li>将物理机B的redis slave切换为master, 使其跟现有物理机A的redis脱离master-slave关系</li>
+<li>对生产环境的hosts文件修改, 使hosts中配置的域名指向新的master</li>
+<li>重启相关进程, 使其连接到新的redis master</li>
+<li>测试白名单账号验证服务正常</li>
+<li>stop原来物理机A上的旧master进行, 暂时保留现场不动</li>
+<li>第2天, 交易收盘后, 清理redis中的历史数据</li>
+<li>周末进一步处理<blockquote>
+<ol>
+<li>新准备好下一交易日的uinfo和margin相关数据</li>
+<li>将物理机A的redis配置为物理机B新master的slave</li>
+<li>重命名该redis配置路径的aof文件</li>
+<li>重启该redis, 使该redis从0开始从物理机A的redis master进行数据同步</li>
+<li>手动触发物理机B的redis master的aof rewrite, 此过程完成后, aof文件从10G变为1.5G</li>
+</ol>
+</blockquote>
+</li>
+<li>补齐定期删除历史数据的server逻辑</li>
+</ol>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>交易系统和风控系统经过重新设计, 进行了重构, redis已经是过去时了, 不过曾经踩过的这个坑希望能记录下来, 让我们时时警示一下.</p>
 ]]></content>
       <categories>
         <category>技术</category>
