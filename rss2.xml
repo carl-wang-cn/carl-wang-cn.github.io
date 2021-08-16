@@ -15,8 +15,41 @@
     <atom:link href="https://carl-wang-cn.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>金融程序员</description>
-    <pubDate>Mon, 12 Jul 2021 00:24:16 GMT</pubDate>
+    <pubDate>Mon, 16 Aug 2021 01:25:33 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>tcpdump-netstat</title>
+      <link>https://carl-wang-cn.github.io/2021/08/16/tcpdump-netstat/</link>
+      <guid>https://carl-wang-cn.github.io/2021/08/16/tcpdump-netstat/</guid>
+      <pubDate>Mon, 16 Aug 2021 01:22:08 GMT</pubDate>
+      
+      <description>&lt;h2 id=&quot;tcpdump&quot;&gt;&lt;a href=&quot;#tcpdump&quot; class=&quot;headerlink&quot; title=&quot;tcpdump&quot;&gt;&lt;/a&gt;tcpdump&lt;/h2&gt;&lt;p&gt;底层基于libpcap，一个可移植的网络传输层C/C++库&lt;/p&gt;
+&lt;p&gt;tcpdump 不加任何参数，默认监听一个默认网卡（eth0网卡），抓取经过该端口的所有的数据包 ^C停止，会显示抓了多少个包&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;c 10 限制只抓10个包&lt;/li&gt;
+&lt;li&gt;w filename 输出到文件，tcpdump保存的数据包文件格式，是被大部分主流抓包软件所兼容的&lt;/li&gt;
+&lt;li&gt;r filename 读取之前保存到文件的数据包&lt;/li&gt;
+&lt;li&gt;D 显示系统当前的网卡列表&lt;/li&gt;
+&lt;li&gt;i eth0 指定只抓取eth0网卡的流量&lt;/li&gt;
+&lt;li&gt;v -vv 显示抓到的流量的详细信息，v越多越详细&lt;/li&gt;
+&lt;li&gt;n 源地址和目的地址用ip显示，不反解为域名&lt;/li&gt;
+&lt;/ul&gt;</description>
+      
+      
+      
+      
+      <category domain="https://carl-wang-cn.github.io/categories/SRE/">SRE</category>
+      
+      
+      <category domain="https://carl-wang-cn.github.io/tags/tcpdump/">tcpdump</category>
+      
+      <category domain="https://carl-wang-cn.github.io/tags/netstat/">netstat</category>
+      
+      
+      <comments>https://carl-wang-cn.github.io/2021/08/16/tcpdump-netstat/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>异地多活架构设计-概论</title>
@@ -221,25 +254,6 @@
       
       
       <comments>https://carl-wang-cn.github.io/2020/03/17/2020-03-17-donot-use-pb-mergefrom/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>记录一次因为redis aof rewrite重写导致的运维事故</title>
-      <link>https://carl-wang-cn.github.io/2020/03/17/2020-03-17-redis-aof-disaster/</link>
-      <guid>https://carl-wang-cn.github.io/2020/03/17/2020-03-17-redis-aof-disaster/</guid>
-      <pubDate>Tue, 17 Mar 2020 07:02:49 GMT</pubDate>
-      
-      <description>&lt;h2 id=&quot;事情起因&quot;&gt;&lt;a href=&quot;#事情起因&quot; class=&quot;headerlink&quot; title=&quot;事情起因&quot;&gt;&lt;/a&gt;事情起因&lt;/h2&gt;&lt;p&gt;redis master 所在物理机A, 物理内存16G, aof rewrite 被触发时, aof文件已达12G, redis的默认配置触发了后台的rewrite进程, 内存占用达到了50%, 已严重影响到redis的正常访问. 而此时距离美股交易开盘只剩1小时.&lt;/p&gt;</description>
-      
-      
-      
-      
-      <category domain="https://carl-wang-cn.github.io/categories/%E6%8A%80%E6%9C%AF/">技术</category>
-      
-      
-      
-      <comments>https://carl-wang-cn.github.io/2020/03/17/2020-03-17-redis-aof-disaster/#disqus_thread</comments>
       
     </item>
     

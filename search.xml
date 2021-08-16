@@ -1483,6 +1483,42 @@
       </categories>
   </entry>
   <entry>
+    <title>记录一次因为redis aof rewrite重写导致的运维事故</title>
+    <url>/2020/03/17/2020-03-17-redis-aof-disaster/</url>
+    <content><![CDATA[<h2 id="事情起因"><a href="#事情起因" class="headerlink" title="事情起因"></a>事情起因</h2><p>redis master 所在物理机A, 物理内存16G, aof rewrite 被触发时, aof文件已达12G, redis的默认配置触发了后台的rewrite进程, 内存占用达到了50%, 已严重影响到redis的正常访问. 而此时距离美股交易开盘只剩1小时.</p>
+<a id="more"></a>
+
+<h2 id="处理过程"><a href="#处理过程" class="headerlink" title="处理过程"></a>处理过程</h2><h4 id="跟server组几名同事-carl-shilinchen-echo-jiezhao-zhiguocai-一起理清楚问题现状"><a href="#跟server组几名同事-carl-shilinchen-echo-jiezhao-zhiguocai-一起理清楚问题现状" class="headerlink" title="跟server组几名同事(carl, shilinchen, echo, jiezhao, zhiguocai)一起理清楚问题现状"></a>跟server组几名同事(carl, shilinchen, echo, jiezhao, zhiguocai)一起理清楚问题现状</h4><ol>
+<li>redis slave的数据是完整的, 1小时内不会有写入请求</li>
+<li>aof rewrite进程已运行2小时, 是否能在1小时内运行完毕不可控</li>
+<li>aof rewrite进程, 即使在1小时内运行完, 不确认是否会马上触发第2次rewrite</li>
+</ol>
+<h4 id="整理方案如下"><a href="#整理方案如下" class="headerlink" title="整理方案如下:"></a>整理方案如下:</h4><ol>
+<li>将物理机B的redis slave切换为master, 使其跟现有物理机A的redis脱离master-slave关系</li>
+<li>对生产环境的hosts文件修改, 使hosts中配置的域名指向新的master</li>
+<li>重启相关进程, 使其连接到新的redis master</li>
+<li>测试白名单账号验证服务正常</li>
+<li>stop原来物理机A上的旧master进行, 暂时保留现场不动</li>
+<li>第2天, 交易收盘后, 清理redis中的历史数据</li>
+<li>周末进一步处理<blockquote>
+<ol>
+<li>新准备好下一交易日的uinfo和margin相关数据</li>
+<li>将物理机A的redis配置为物理机B新master的slave</li>
+<li>重命名该redis配置路径的aof文件</li>
+<li>重启该redis, 使该redis从0开始从物理机A的redis master进行数据同步</li>
+<li>手动触发物理机B的redis master的aof rewrite, 此过程完成后, aof文件从10G变为1.5G</li>
+</ol>
+</blockquote>
+</li>
+<li>补齐定期删除历史数据的server逻辑</li>
+</ol>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>交易系统和风控系统经过重新设计, 进行了重构, redis已经是过去时了, 不过曾经踩过的这个坑希望能记录下来, 让我们时时警示一下.</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+  </entry>
+  <entry>
     <title>RSA-数字签名与加密</title>
     <url>/2020/12/27/RSA/</url>
     <content><![CDATA[<h3 id="1-公钥私钥（标准条目）"><a href="#1-公钥私钥（标准条目）" class="headerlink" title="1. 公钥私钥（标准条目）"></a>1. 公钥私钥（标准条目）</h3><ol>
@@ -1528,42 +1564,6 @@
 <li>加密和解密发送方利用接收方的公钥对要发送的明文进行加密,接受方利用自己的私钥进行解密,其中公钥和私钥匙相对的,任何一个作为公钥,则另一个就为私钥.但是因为非对称加密技术的速度比较慢,所以,一般采用对称加密技术加密明文,然后用非对称加密技术加密对称密钥,即数字信封技术.</li>
 <li>签名和验证发送方用特殊的hash算法，由明文中产生固定长度的摘要，然后利用自己的私钥对形成的摘要进行加密，这个过程就叫签名。接受方利用发送方的公钥解密被加密的摘要得到结果A，然后对明文也进行hash操作产生摘要B.最后,把A和B作比较。此方式既可以保证发送方的身份不可抵赖，又可以保证数据在传输过程中不会被篡改。</li>
 </ol>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>记录一次因为redis aof rewrite重写导致的运维事故</title>
-    <url>/2020/03/17/2020-03-17-redis-aof-disaster/</url>
-    <content><![CDATA[<h2 id="事情起因"><a href="#事情起因" class="headerlink" title="事情起因"></a>事情起因</h2><p>redis master 所在物理机A, 物理内存16G, aof rewrite 被触发时, aof文件已达12G, redis的默认配置触发了后台的rewrite进程, 内存占用达到了50%, 已严重影响到redis的正常访问. 而此时距离美股交易开盘只剩1小时.</p>
-<a id="more"></a>
-
-<h2 id="处理过程"><a href="#处理过程" class="headerlink" title="处理过程"></a>处理过程</h2><h4 id="跟server组几名同事-carl-shilinchen-echo-jiezhao-zhiguocai-一起理清楚问题现状"><a href="#跟server组几名同事-carl-shilinchen-echo-jiezhao-zhiguocai-一起理清楚问题现状" class="headerlink" title="跟server组几名同事(carl, shilinchen, echo, jiezhao, zhiguocai)一起理清楚问题现状"></a>跟server组几名同事(carl, shilinchen, echo, jiezhao, zhiguocai)一起理清楚问题现状</h4><ol>
-<li>redis slave的数据是完整的, 1小时内不会有写入请求</li>
-<li>aof rewrite进程已运行2小时, 是否能在1小时内运行完毕不可控</li>
-<li>aof rewrite进程, 即使在1小时内运行完, 不确认是否会马上触发第2次rewrite</li>
-</ol>
-<h4 id="整理方案如下"><a href="#整理方案如下" class="headerlink" title="整理方案如下:"></a>整理方案如下:</h4><ol>
-<li>将物理机B的redis slave切换为master, 使其跟现有物理机A的redis脱离master-slave关系</li>
-<li>对生产环境的hosts文件修改, 使hosts中配置的域名指向新的master</li>
-<li>重启相关进程, 使其连接到新的redis master</li>
-<li>测试白名单账号验证服务正常</li>
-<li>stop原来物理机A上的旧master进行, 暂时保留现场不动</li>
-<li>第2天, 交易收盘后, 清理redis中的历史数据</li>
-<li>周末进一步处理<blockquote>
-<ol>
-<li>新准备好下一交易日的uinfo和margin相关数据</li>
-<li>将物理机A的redis配置为物理机B新master的slave</li>
-<li>重命名该redis配置路径的aof文件</li>
-<li>重启该redis, 使该redis从0开始从物理机A的redis master进行数据同步</li>
-<li>手动触发物理机B的redis master的aof rewrite, 此过程完成后, aof文件从10G变为1.5G</li>
-</ol>
-</blockquote>
-</li>
-<li>补齐定期删除历史数据的server逻辑</li>
-</ol>
-<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>交易系统和风控系统经过重新设计, 进行了重构, redis已经是过去时了, 不过曾经踩过的这个坑希望能记录下来, 让我们时时警示一下.</p>
 ]]></content>
       <categories>
         <category>技术</category>
@@ -1694,6 +1694,57 @@
       <categories>
         <category>技术</category>
       </categories>
+  </entry>
+  <entry>
+    <title>tcpdump-netstat</title>
+    <url>/2021/08/16/tcpdump-netstat/</url>
+    <content><![CDATA[<h2 id="tcpdump"><a href="#tcpdump" class="headerlink" title="tcpdump"></a>tcpdump</h2><p>底层基于libpcap，一个可移植的网络传输层C/C++库</p>
+<p>tcpdump 不加任何参数，默认监听一个默认网卡（eth0网卡），抓取经过该端口的所有的数据包 ^C停止，会显示抓了多少个包</p>
+<ul>
+<li>c 10 限制只抓10个包</li>
+<li>w filename 输出到文件，tcpdump保存的数据包文件格式，是被大部分主流抓包软件所兼容的</li>
+<li>r filename 读取之前保存到文件的数据包</li>
+<li>D 显示系统当前的网卡列表</li>
+<li>i eth0 指定只抓取eth0网卡的流量</li>
+<li>v -vv 显示抓到的流量的详细信息，v越多越详细</li>
+<li>n 源地址和目的地址用ip显示，不反解为域名</li>
+</ul>
+<a id="more"></a>
+
+<p>tcpdump tcp/udp/icmp 指定抓取某种类型的流量</p>
+<p>icmp 例如ping</p>
+<p>tcpdump port 80 指定抓取某个端口的流量（80是http的流量）</p>
+<p>tcpdump portrange 1-1024 抓取某个范围端口的流量</p>
+<p>tcpdump src/dst port 80 指定源/目标端口为80的流量</p>
+<p>tcpdump src/dst host hostname 只抓取源/目标地址的流量</p>
+<p>tcpdump host <a href="http://www.baidu.com/">www.baidu.com</a> 指定抓取来自或去到某个host（可以是域名或IP）的流量</p>
+<p>tcpdump greater 1000 只抓取大于1000bytes的流量</p>
+<p>tcpdump less 10  只抓取小于10bytes的流量</p>
+<ul>
+<li>A 以ASCII码形式显示数据包的内容</li>
+<li>X 以16进制和ASCII码形式来显示数据包内容</li>
+</ul>
+<p>支持与 或 非</p>
+<p>tcpdump tcp and src [host] 192.168.1.1 and src port 1000 抓取源地址为192.168.1.1:1000的tcp包</p>
+<p>tcpdump src 192.168.1.1 or src 192.168.1.2  抓取源地址为192.168.1.1或192.168.1.2的数据包</p>
+<p>tcpdump not port 80 抓取非80端口的流量</p>
+<h2 id="netstat"><a href="#netstat" class="headerlink" title="netstat"></a>netstat</h2><ul>
+<li>p port</li>
+<li>a all</li>
+<li>t tcp</li>
+<li>u udp</li>
+<li>l listenning</li>
+<li>n 不进行域名解析</li>
+<li>c connection status real-time</li>
+</ul>
+]]></content>
+      <categories>
+        <category>SRE</category>
+      </categories>
+      <tags>
+        <tag>tcpdump</tag>
+        <tag>netstat</tag>
+      </tags>
   </entry>
   <entry>
     <title>异地多活架构设计-概论</title>

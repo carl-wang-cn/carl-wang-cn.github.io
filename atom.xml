@@ -6,7 +6,7 @@
   <link href="https://carl-wang-cn.github.io/atom.xml" rel="self"/>
   
   <link href="https://carl-wang-cn.github.io/"/>
-  <updated>2021-07-12T00:24:16.278Z</updated>
+  <updated>2021-08-16T01:25:33.904Z</updated>
   <id>https://carl-wang-cn.github.io/</id>
   
   <author>
@@ -15,6 +15,37 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>tcpdump-netstat</title>
+    <link href="https://carl-wang-cn.github.io/2021/08/16/tcpdump-netstat/"/>
+    <id>https://carl-wang-cn.github.io/2021/08/16/tcpdump-netstat/</id>
+    <published>2021-08-16T01:22:08.000Z</published>
+    <updated>2021-08-16T01:25:33.904Z</updated>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;tcpdump&quot;&gt;&lt;a href=&quot;#tcpdump&quot; class=&quot;headerlink&quot; title=&quot;tcpdump&quot;&gt;&lt;/a&gt;tcpdump&lt;/h2&gt;&lt;p&gt;底层基于libpcap，一个可移植的网络传输层C/C++库&lt;/p&gt;
+&lt;p&gt;tcpdump 不加任何参数，默认监听一个默认网卡（eth0网卡），抓取经过该端口的所有的数据包 ^C停止，会显示抓了多少个包&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;c 10 限制只抓10个包&lt;/li&gt;
+&lt;li&gt;w filename 输出到文件，tcpdump保存的数据包文件格式，是被大部分主流抓包软件所兼容的&lt;/li&gt;
+&lt;li&gt;r filename 读取之前保存到文件的数据包&lt;/li&gt;
+&lt;li&gt;D 显示系统当前的网卡列表&lt;/li&gt;
+&lt;li&gt;i eth0 指定只抓取eth0网卡的流量&lt;/li&gt;
+&lt;li&gt;v -vv 显示抓到的流量的详细信息，v越多越详细&lt;/li&gt;
+&lt;li&gt;n 源地址和目的地址用ip显示，不反解为域名&lt;/li&gt;
+&lt;/ul&gt;</summary>
+    
+    
+    
+    <category term="SRE" scheme="https://carl-wang-cn.github.io/categories/SRE/"/>
+    
+    
+    <category term="tcpdump" scheme="https://carl-wang-cn.github.io/tags/tcpdump/"/>
+    
+    <category term="netstat" scheme="https://carl-wang-cn.github.io/tags/netstat/"/>
+    
+  </entry>
   
   <entry>
     <title>异地多活架构设计-概论</title>
@@ -196,23 +227,6 @@
     
     
     <summary type="html">&lt;p&gt;pb好用, 性能虽然比不上二进制, 不过也比json在大多数情况下还是好很多. 尤其是字段的向前向后兼容, 这一点应该也是大多数同学选用pb的原因. 然后终于&lt;strong&gt;掉进坑&lt;/strong&gt;了, 严重得影响了一次线上服务.&lt;br&gt;整理测试程序的时候发现, python的官方指南压根就没提MergeFrom这个接口, 看起来是专门用来坑c++的兄弟的啊&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="技术" scheme="https://carl-wang-cn.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>记录一次因为redis aof rewrite重写导致的运维事故</title>
-    <link href="https://carl-wang-cn.github.io/2020/03/17/2020-03-17-redis-aof-disaster/"/>
-    <id>https://carl-wang-cn.github.io/2020/03/17/2020-03-17-redis-aof-disaster/</id>
-    <published>2020-03-17T07:02:49.000Z</published>
-    <updated>2021-07-12T00:24:16.279Z</updated>
-    
-    
-    <summary type="html">&lt;h2 id=&quot;事情起因&quot;&gt;&lt;a href=&quot;#事情起因&quot; class=&quot;headerlink&quot; title=&quot;事情起因&quot;&gt;&lt;/a&gt;事情起因&lt;/h2&gt;&lt;p&gt;redis master 所在物理机A, 物理内存16G, aof rewrite 被触发时, aof文件已达12G, redis的默认配置触发了后台的rewrite进程, 内存占用达到了50%, 已严重影响到redis的正常访问. 而此时距离美股交易开盘只剩1小时.&lt;/p&gt;</summary>
     
     
     
