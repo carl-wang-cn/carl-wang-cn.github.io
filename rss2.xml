@@ -15,8 +15,30 @@
     <atom:link href="https://carl-wang-cn.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>金融程序员</description>
-    <pubDate>Mon, 16 Aug 2021 01:25:33 GMT</pubDate>
+    <pubDate>Fri, 17 Dec 2021 11:24:20 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>四巫日</title>
+      <link>https://carl-wang-cn.github.io/2021/12/17/four-witching-days/</link>
+      <guid>https://carl-wang-cn.github.io/2021/12/17/four-witching-days/</guid>
+      <pubDate>Fri, 17 Dec 2021 11:22:34 GMT</pubDate>
+      
+      <description>&lt;p&gt;什么是美国金融市场“四巫日”&lt;/p&gt;
+&lt;p&gt;“四巫日”是美股每季度一次的金融衍生品到期日，分别发生在每年三、六、九、十二月的第三个星期五。&lt;/p&gt;</description>
+      
+      
+      
+      
+      <category domain="https://carl-wang-cn.github.io/categories/%E9%87%91%E8%9E%8D/">金融</category>
+      
+      
+      <category domain="https://carl-wang-cn.github.io/tags/%E7%A7%91%E6%99%AE/">科普</category>
+      
+      
+      <comments>https://carl-wang-cn.github.io/2021/12/17/four-witching-days/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>tcpdump-netstat</title>
@@ -235,25 +257,6 @@
       
       
       <comments>https://carl-wang-cn.github.io/2020/05/15/hard-to-borrow-sell-short/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>proto buffer MergeFrom的坑</title>
-      <link>https://carl-wang-cn.github.io/2020/03/17/2020-03-17-donot-use-pb-mergefrom/</link>
-      <guid>https://carl-wang-cn.github.io/2020/03/17/2020-03-17-donot-use-pb-mergefrom/</guid>
-      <pubDate>Tue, 17 Mar 2020 07:06:33 GMT</pubDate>
-      
-      <description>&lt;p&gt;pb好用, 性能虽然比不上二进制, 不过也比json在大多数情况下还是好很多. 尤其是字段的向前向后兼容, 这一点应该也是大多数同学选用pb的原因. 然后终于&lt;strong&gt;掉进坑&lt;/strong&gt;了, 严重得影响了一次线上服务.&lt;br&gt;整理测试程序的时候发现, python的官方指南压根就没提MergeFrom这个接口, 看起来是专门用来坑c++的兄弟的啊&lt;/p&gt;</description>
-      
-      
-      
-      
-      <category domain="https://carl-wang-cn.github.io/categories/%E6%8A%80%E6%9C%AF/">技术</category>
-      
-      
-      
-      <comments>https://carl-wang-cn.github.io/2020/03/17/2020-03-17-donot-use-pb-mergefrom/#disqus_thread</comments>
       
     </item>
     

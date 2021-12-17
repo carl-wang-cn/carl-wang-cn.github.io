@@ -231,7 +231,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives">
         
-          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-count">32</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -244,7 +244,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags">
           
-        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-count">27</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -303,6 +303,93 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://carl-wang-cn.github.io/2020/03/17/2020-03-17-donot-use-pb-mergefrom/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/ais.jpg">
+      <meta itemprop="name" content="carl">
+      <meta itemprop="description" content="金融程序员">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="carl的修行">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/03/17/2020-03-17-donot-use-pb-mergefrom/" class="post-title-link" itemprop="url">proto buffer MergeFrom的坑</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-03-17 15:06:33" itemprop="dateCreated datePublished" datetime="2020-03-17T15:06:33+08:00">2020-03-17</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-12-13 20:57:31" itemprop="dateModified" datetime="2021-12-13T20:57:31+08:00">2021-12-13</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>pb好用, 性能虽然比不上二进制, 不过也比json在大多数情况下还是好很多. 尤其是字段的向前向后兼容, 这一点应该也是大多数同学选用pb的原因. 然后终于<strong>掉进坑</strong>了, 严重得影响了一次线上服务.<br>整理测试程序的时候发现, python的官方指南压根就没提MergeFrom这个接口, 看起来是专门用来坑c++的兄弟的啊</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/03/17/2020-03-17-donot-use-pb-mergefrom/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://carl-wang-cn.github.io/2020/03/17/2020-03-17-redis-aof-disaster/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -334,7 +421,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-07-12 08:24:16" itemprop="dateModified" datetime="2021-07-12T08:24:16+08:00">2021-07-12</time>
+        <time title="修改时间：2021-12-13 20:57:30" itemprop="dateModified" datetime="2021-12-13T20:57:30+08:00">2021-12-13</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -421,7 +508,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-07-12 08:24:16" itemprop="dateModified" datetime="2021-07-12T08:24:16+08:00">2021-07-12</time>
+        <time title="修改时间：2021-12-13 20:57:29" itemprop="dateModified" datetime="2021-12-13T20:57:29+08:00">2021-12-13</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -509,7 +596,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-07-12 08:24:16" itemprop="dateModified" datetime="2021-07-12T08:24:16+08:00">2021-07-12</time>
+        <time title="修改时间：2021-12-13 20:57:30" itemprop="dateModified" datetime="2021-12-13T20:57:30+08:00">2021-12-13</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -601,7 +688,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-07-12 08:24:16" itemprop="dateModified" datetime="2021-07-12T08:24:16+08:00">2021-07-12</time>
+        <time title="修改时间：2021-12-13 20:57:30" itemprop="dateModified" datetime="2021-12-13T20:57:30+08:00">2021-12-13</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -628,94 +715,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/02/07/2020-02-07-ipc-pipe/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://carl-wang-cn.github.io/2020/02/07/2020-02-07-mutex-cond/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/ais.jpg">
-      <meta itemprop="name" content="carl">
-      <meta itemprop="description" content="金融程序员">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="carl的修行">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/02/07/2020-02-07-mutex-cond/" class="post-title-link" itemprop="url">多进程通信-互斥锁和条件变量</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-02-07 09:43:06" itemprop="dateCreated datePublished" datetime="2020-02-07T09:43:06+08:00">2020-02-07</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-07-12 08:24:16" itemprop="dateModified" datetime="2021-07-12T08:24:16+08:00">2021-07-12</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="互斥锁"><a href="#互斥锁" class="headerlink" title="互斥锁"></a>互斥锁</h2><p>互斥锁和条件变量总是可用来同步一个进程内的各个线程。但是如果一个互斥锁或条件变量是<br>存放在多个进程间共享的某个内存区内，那么它还可以被用来同步这几个进程。</p>
-<p>互斥锁指代相互排斥，用于保护临界区，以保证任何时刻<strong>只有一个线程/进程</strong>在执行<br>其中的代码。保护一个临界区的代码的通常轮廓大体如下：</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/02/07/2020-02-07-mutex-cond/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
