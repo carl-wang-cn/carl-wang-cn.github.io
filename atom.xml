@@ -6,7 +6,7 @@
   <link href="https://carl-wang-cn.github.io/atom.xml" rel="self"/>
   
   <link href="https://carl-wang-cn.github.io/"/>
-  <updated>2021-12-30T14:00:07.609Z</updated>
+  <updated>2022-01-22T08:40:22.163Z</updated>
   <id>https://carl-wang-cn.github.io/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Wash Trading</title>
+    <link href="https://carl-wang-cn.github.io/2022/01/22/Wash-Trading/"/>
+    <id>https://carl-wang-cn.github.io/2022/01/22/Wash-Trading/</id>
+    <published>2022-01-22T08:38:54.000Z</published>
+    <updated>2022-01-22T08:40:22.163Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;Wash Trading&lt;/p&gt;
+&lt;p&gt;Wash Trading是交易者买卖证券向市场提供误导性信息。Wash Trading可以由交易者和经纪人相互勾结来进行，也可以是一个投资者自己同时充当证券买方和卖方来进行。根据美国法律，Wash Trading是非法的。美国国税局禁止纳税人从其应纳税收入金额中扣除因为Wash Trading造成的损失。&lt;/p&gt;
+&lt;p&gt;在1936年通过《商品交易法》后，联邦政府就禁止进行Wash Trading，该法律对《谷物期货法》进行了修订，并要求所有商品交易都必须在受监管的交易所进行。在1930年代被禁止之前，Wash Trading是股票操纵者很喜欢的一个手段，去假装表示对某只股票有很大兴趣，进而试图提高股价，然后高价位的时候做空来收割韭菜们。&lt;/p&gt;
+&lt;p&gt;商品期货交易委员会（CFTC）也禁止券商从Wash Trading中获利，即使券商声称不知道交易者的意图。因此，券商必须对客户进行尽职调查，以确保他们出于共同受益所有权的目的购买公司的股份。&lt;/p&gt;
+&lt;p&gt;美国国税局（IRS）也有严格的禁止Wash Trading的规定，并要求纳税人不能从应纳税金额中扣除Wash Trading产生的损失。美国国税局将Wash Trading定义为购买证券后30天内出售并造成损失的交易。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="金融知识分享" scheme="https://carl-wang-cn.github.io/categories/%E9%87%91%E8%9E%8D%E7%9F%A5%E8%AF%86%E5%88%86%E4%BA%AB/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>四巫日</title>
@@ -213,23 +234,6 @@
     
     <summary type="html">&lt;h3 id=&quot;What-Does-“When-Issued”-Mean&quot;&gt;&lt;a href=&quot;#What-Does-“When-Issued”-Mean&quot; class=&quot;headerlink&quot; title=&quot;What Does “When Issued” Mean?&quot;&gt;&lt;/a&gt;What Does “When Issued” Mean?&lt;/h3&gt;&lt;p&gt;When issued (WI) is a transaction that is made conditionally because a security has been authorized but not yet issued. Treasury securities, stock splits, and new issues of stocks and bonds are all traded on a When-issued basis. Prior to a new issue’s offering, underwriters solicit potential investors who may elect to book an order to purchase a portion of the new issue.&lt;/p&gt;
 &lt;p&gt;WI是有条件的交易，因为证券已被授权但尚未发行。短期国库券，股票拆合股以及股票和债券的新发行都是基于WI来进行交易。在发行新股（IPO）之前，承销商会招募潜在的投资者，他们可能会选择购买一点新发行的证券。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="金融" scheme="https://carl-wang-cn.github.io/categories/%E9%87%91%E8%9E%8D/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>hard-to-borrow list 股市卖空--难借股票列表</title>
-    <link href="https://carl-wang-cn.github.io/2020/05/15/hard-to-borrow-sell-short/"/>
-    <id>https://carl-wang-cn.github.io/2020/05/15/hard-to-borrow-sell-short/</id>
-    <published>2020-05-15T04:17:01.000Z</published>
-    <updated>2021-12-30T14:00:07.610Z</updated>
-    
-    
-    <summary type="html">&lt;h3 id=&quot;What-Is-a-Hard-To-Borrow-List&quot;&gt;&lt;a href=&quot;#What-Is-a-Hard-To-Borrow-List&quot; class=&quot;headerlink&quot; title=&quot;What Is a Hard-To-Borrow List?&quot;&gt;&lt;/a&gt;What Is a Hard-To-Borrow List?&lt;/h3&gt;&lt;p&gt;A hard-to-borrow list is an inventory record used by brokerages to indicate what stocks are difficult to borrow for short sale transactions. A brokerage firm’s hard-to-borrow list provides an up-to-date catalog of stocks that cannot easily be borrowed for use as a short sale.&lt;/p&gt;</summary>
     
     
     
