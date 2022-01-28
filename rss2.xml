@@ -15,7 +15,7 @@
     <atom:link href="https://carl-wang-cn.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>金融程序员</description>
-    <pubDate>Mon, 24 Jan 2022 12:45:11 GMT</pubDate>
+    <pubDate>Tue, 25 Jan 2022 11:41:21 GMT</pubDate>
     <generator>http://hexo.io/</generator>
     
     <item>
@@ -44,6 +44,8 @@
       
       <category domain="https://carl-wang-cn.github.io/categories/%E6%8A%80%E6%9C%AF/">技术</category>
       
+      
+      <category domain="https://carl-wang-cn.github.io/tags/%E6%97%A5%E5%BF%97/">日志</category>
       
       
       <comments>https://carl-wang-cn.github.io/2022/01/24/better-sys-log/#disqus_thread</comments>
