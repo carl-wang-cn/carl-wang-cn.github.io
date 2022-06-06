@@ -660,7 +660,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://carl-wang-cn.github.io/2020/01/16/2020-01-16-cmake/">
+    <link itemprop="mainEntityOfPage" href="https://carl-wang-cn.github.io/2020/01/16/2020-01-16-awk/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/ais.jpg">
@@ -673,7 +673,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/01/16/2020-01-16-cmake/" class="post-title-link" itemprop="url">cmake怎么写?</a>
+          <a href="/2020/01/16/2020-01-16-awk/" class="post-title-link" itemprop="url">awk怎么写?</a>
         </h2>
 
         <div class="post-meta-container">
@@ -713,24 +713,13 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h3 id="cmake中一些预定义变量"><a href="#cmake中一些预定义变量" class="headerlink" title="cmake中一些预定义变量"></a>cmake中一些预定义变量</h3><ul>
-<li>PROJECT_SOURCE_DIR 工程的根目录</li>
-<li>PROJECT_BINARY_DIR 运行cmake命令的目录,通常是${PROJECT_SOURCE_DIR}/build</li>
-<li>CMAKE_INCLUDE_PATH 环境变量,非cmake变量</li>
-<li>CMAKE_LIBRARY_PATH 环境变量</li>
-<li>CMAKE_CURRENT_SOURCE_DIR 当前处理的CMakeLists.txt所在的路径</li>
-<li>CMAKE_CURRENT_BINARY_DIR target编译目录<br>使用ADD_SURDIRECTORY(src bin)可以更改此变量的值<br>SET(EXECUTABLE_OUTPUT_PATH &lt;新路径&gt;)并不会对此变量有影响,只是改变了最终目标文件的存储路径</li>
-<li>CMAKE_CURRENT_LIST_FILE 输出调用这个变量的CMakeLists.txt的完整路径</li>
-<li>CMAKE_CURRENT_LIST_LINE 输出这个变量所在的行</li>
-<li>CMAKE_MODULE_PATH 定义自己的cmake模块所在的路径<br>SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake),然后可以用INCLUDE命令来调用自己的模块</li>
-<li>EXECUTABLE_OUTPUT_PATH 重新定义目标二进制可执行文件的存放位置</li>
-<li>LIBRARY_OUTPUT_PATH 重新定义目标链接库文件的存放位置</li>
-<li>PROJECT_NAME 返回通过PROJECT指令定义的项目名称</li>
-<li>CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS 用来控制IF ELSE语句的书写方式</li>
-</ul>
+          <p>本篇文章主要是参考左耳朵耗子前辈的博文整理而来, 作为自己学习备忘之用.</p>
+<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>awk是一个强大的文本分析工具, 相对于grep的查找, sed的编辑, awk在其对数据分析并生成报告时, 显得尤为强大. 简单来说awk就是把文件逐行的读入, 以空格为默认分隔符将每行切片, 切开的部分再进行各种分析处理.</p>
+<p>awk有3个不同版本: awk, nawk和gawk, 未作特别说明, 一般指gawk, gawk是AWK的GNU版本.</p>
+<p>awk其名称得自于它的创始人Alfred Aho, Peter Weinberger和Brian Kernighan姓氏的首个字母. 实际上 AWK 的确拥有自己的语言: AWK 程序设计语言, 三位创建者已将它正式定义为”样式扫描和处理语言”. 它允许您创建简短的程序, 这些程序读取输入文件, 为数据排序, 处理数据, 对输入执行计算以及生成报表, 还有无数其他的功能.</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/01/16/2020-01-16-cmake/#more" rel="contents">
+              <a class="btn" href="/2020/01/16/2020-01-16-awk/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
