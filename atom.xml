@@ -6,7 +6,7 @@
   <link href="https://carl-wang-cn.github.io/atom.xml" rel="self"/>
   
   <link href="https://carl-wang-cn.github.io/"/>
-  <updated>2022-01-25T11:41:21.316Z</updated>
+  <updated>2022-06-06T02:26:41.678Z</updated>
   <id>https://carl-wang-cn.github.io/</id>
   
   <author>
@@ -15,6 +15,23 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>better-leader</title>
+    <link href="https://carl-wang-cn.github.io/2022/05/26/better-leader/"/>
+    <id>https://carl-wang-cn.github.io/2022/05/26/better-leader/</id>
+    <published>2022-05-26T12:24:39.000Z</published>
+    <updated>2022-06-06T02:26:41.678Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;就是单纯列一下我自己认为比较重要的几点&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="team" scheme="https://carl-wang-cn.github.io/categories/team/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>系统日志实践</title>
@@ -231,23 +248,6 @@
 &lt;li&gt;如果可以用公钥解密，则必然是对应的私钥加的密&lt;/li&gt;
 &lt;li&gt;如果可以用私钥解密，则必然是对应的公钥加的密&lt;/li&gt;
 &lt;/ol&gt;</summary>
-    
-    
-    
-    <category term="技术" scheme="https://carl-wang-cn.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>我的MySQL速查手册</title>
-    <link href="https://carl-wang-cn.github.io/2020/12/27/mysql-manual/"/>
-    <id>https://carl-wang-cn.github.io/2020/12/27/mysql-manual/</id>
-    <published>2020-12-27T08:02:49.000Z</published>
-    <updated>2021-12-30T14:00:07.608Z</updated>
-    
-    
-    <summary type="html">&lt;h5 id=&quot;查看已存在的数据库&quot;&gt;&lt;a href=&quot;#查看已存在的数据库&quot; class=&quot;headerlink&quot; title=&quot;查看已存在的数据库&quot;&gt;&lt;/a&gt;查看已存在的数据库&lt;/h5&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;MariaDB [carltest]&amp;gt; show databases;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;+-------------------------+&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;| Database                |&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;+-------------------------+&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;| carltest                |&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;| &lt;span class=&quot;built_in&quot;&gt;test&lt;/span&gt;                    |&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;| test2                   |&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;| test3                   |&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;| test_insert             |&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;+-------------------------+&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5 rows &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;built_in&quot;&gt;set&lt;/span&gt; (0.00 sec)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;MariaDB [carltest]&amp;gt; show databases like &lt;span class=&quot;string&quot;&gt;&amp;#x27;carl%&amp;#x27;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;+------------------+&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;| Database (carl%) |&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;+------------------+&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;| carltest         |&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;+------------------+&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;1 row &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;built_in&quot;&gt;set&lt;/span&gt; (0.00 sec)&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;</summary>
     
     
     
