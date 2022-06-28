@@ -6,7 +6,7 @@
   <link href="https://carl-wang-cn.github.io/atom.xml" rel="self"/>
   
   <link href="https://carl-wang-cn.github.io/"/>
-  <updated>2022-06-06T02:56:26.256Z</updated>
+  <updated>2022-06-28T06:46:57.242Z</updated>
   <id>https://carl-wang-cn.github.io/</id>
   
   <author>
@@ -15,6 +15,23 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>一些优秀的文字</title>
+    <link href="https://carl-wang-cn.github.io/2022/06/28/good-words-01-md/"/>
+    <id>https://carl-wang-cn.github.io/2022/06/28/good-words-01-md/</id>
+    <published>2022-06-28T06:46:13.000Z</published>
+    <updated>2022-06-28T06:46:57.242Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;阅读的时候，记录了一些对自己触动很大，希望还能时长翻看的文字，也会随手记下几句闪过脑子的文字。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="文字" scheme="https://carl-wang-cn.github.io/categories/%E6%96%87%E5%AD%97/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>一个小leader应该关注些什么</title>
@@ -224,30 +241,6 @@
     
     
     <summary type="html">&lt;h3 id=&quot;为什么选择证书登陆？&quot;&gt;&lt;a href=&quot;#为什么选择证书登陆？&quot; class=&quot;headerlink&quot; title=&quot;为什么选择证书登陆？&quot;&gt;&lt;/a&gt;为什么选择证书登陆？&lt;/h3&gt;&lt;p&gt;Mac下原生及主流的ssh终端工具大多不具备保存ssh登陆密码的功能, 通过证书登陆的方式，就可以实现原生终端工具Terminal或第三方明星终端iTerm免密码登录远程系统，并且比单纯的密码验证登陆方式提高了安全性。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="技术" scheme="https://carl-wang-cn.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>RSA-数字签名与加密</title>
-    <link href="https://carl-wang-cn.github.io/2020/12/27/RSA/"/>
-    <id>https://carl-wang-cn.github.io/2020/12/27/RSA/</id>
-    <published>2020-12-27T09:02:49.000Z</published>
-    <updated>2021-12-30T14:00:07.612Z</updated>
-    
-    
-    <summary type="html">&lt;h3 id=&quot;1-公钥私钥（标准条目）&quot;&gt;&lt;a href=&quot;#1-公钥私钥（标准条目）&quot; class=&quot;headerlink&quot; title=&quot;1. 公钥私钥（标准条目）&quot;&gt;&lt;/a&gt;1. 公钥私钥（标准条目）&lt;/h3&gt;&lt;ol&gt;
-&lt;li&gt;公钥和私钥成对出现&lt;/li&gt;
-&lt;li&gt;公开的密钥叫公钥，只有自己知道的叫私钥&lt;/li&gt;
-&lt;li&gt;用公钥加密的数据只有对应的私钥可以解密&lt;/li&gt;
-&lt;li&gt;用私钥加密的数据只有对应的公钥可以解密&lt;/li&gt;
-&lt;li&gt;如果可以用公钥解密，则必然是对应的私钥加的密&lt;/li&gt;
-&lt;li&gt;如果可以用私钥解密，则必然是对应的公钥加的密&lt;/li&gt;
-&lt;/ol&gt;</summary>
     
     
     

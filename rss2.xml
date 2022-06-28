@@ -15,8 +15,27 @@
     <atom:link href="https://carl-wang-cn.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>金融程序员</description>
-    <pubDate>Mon, 06 Jun 2022 02:56:26 GMT</pubDate>
+    <pubDate>Tue, 28 Jun 2022 06:46:57 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>一些优秀的文字</title>
+      <link>https://carl-wang-cn.github.io/2022/06/28/good-words-01-md/</link>
+      <guid>https://carl-wang-cn.github.io/2022/06/28/good-words-01-md/</guid>
+      <pubDate>Tue, 28 Jun 2022 06:46:13 GMT</pubDate>
+      
+      <description>&lt;p&gt;阅读的时候，记录了一些对自己触动很大，希望还能时长翻看的文字，也会随手记下几句闪过脑子的文字。&lt;/p&gt;</description>
+      
+      
+      
+      
+      <category domain="https://carl-wang-cn.github.io/categories/%E6%96%87%E5%AD%97/">文字</category>
+      
+      
+      
+      <comments>https://carl-wang-cn.github.io/2022/06/28/good-words-01-md/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>一个小leader应该关注些什么</title>
@@ -249,32 +268,6 @@
       
       
       <comments>https://carl-wang-cn.github.io/2020/12/28/ssh-without-passwd/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>RSA-数字签名与加密</title>
-      <link>https://carl-wang-cn.github.io/2020/12/27/RSA/</link>
-      <guid>https://carl-wang-cn.github.io/2020/12/27/RSA/</guid>
-      <pubDate>Sun, 27 Dec 2020 09:02:49 GMT</pubDate>
-      
-      <description>&lt;h3 id=&quot;1-公钥私钥（标准条目）&quot;&gt;&lt;a href=&quot;#1-公钥私钥（标准条目）&quot; class=&quot;headerlink&quot; title=&quot;1. 公钥私钥（标准条目）&quot;&gt;&lt;/a&gt;1. 公钥私钥（标准条目）&lt;/h3&gt;&lt;ol&gt;
-&lt;li&gt;公钥和私钥成对出现&lt;/li&gt;
-&lt;li&gt;公开的密钥叫公钥，只有自己知道的叫私钥&lt;/li&gt;
-&lt;li&gt;用公钥加密的数据只有对应的私钥可以解密&lt;/li&gt;
-&lt;li&gt;用私钥加密的数据只有对应的公钥可以解密&lt;/li&gt;
-&lt;li&gt;如果可以用公钥解密，则必然是对应的私钥加的密&lt;/li&gt;
-&lt;li&gt;如果可以用私钥解密，则必然是对应的公钥加的密&lt;/li&gt;
-&lt;/ol&gt;</description>
-      
-      
-      
-      
-      <category domain="https://carl-wang-cn.github.io/categories/%E6%8A%80%E6%9C%AF/">技术</category>
-      
-      
-      
-      <comments>https://carl-wang-cn.github.io/2020/12/27/RSA/#disqus_thread</comments>
       
     </item>
     
