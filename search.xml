@@ -20,120 +20,6 @@
       </tags>
   </entry>
   <entry>
-    <title>find命令使用技巧</title>
-    <url>/2020/01/16/2020-01-16-find/</url>
-    <content><![CDATA[<p><code>find &lt; path &gt; &lt; expression &gt; &lt; cmd &gt;</code></p>
-<ul>
-<li>path： 所要搜索的目录及其所有子目录。默认为当前目录。</li>
-<li>expression： 所要搜索的文件的特征。</li>
-<li>cmd： 对搜索结果进行特定的处理。</li>
-</ul>
-<p>如果什么参数也不加，find默认搜索当前目录及其子目录，并且不过滤任何结果（也就是返回所有文件），将它们全都显示在屏幕上。</p>
-<h4 id="find命令常用选项及实例"><a href="#find命令常用选项及实例" class="headerlink" title="find命令常用选项及实例"></a>find命令常用选项及实例</h4><ul>
-<li><p>-name 按照文件名查找文件。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /dir -name filename  在/dir目录及其子目录下面查找名字为filename的文件</span><br><span class="line">find . -name <span class="string">&quot;*.c&quot;</span> 在当前目录及其子目录（用“.”表示）中查找任何扩展名为“c”的文件</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-</li>
-<li><p>-perm 按照文件权限来查找文件。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -perm 755 –<span class="built_in">print</span> 在当前目录下查找文件权限位为755的文件，即文件属主可以读、写、执行，其他用户可以读、执行的文件</span><br></pre></td></tr></table></figure></li>
-<li><p>-prune 使用这一选项可以使find命令不在当前指定的目录中查找，如果同时使用-depth选项，那么-prune将被find命令忽略。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /apps -path <span class="string">&quot;/apps/bin&quot;</span> -prune -o –<span class="built_in">print</span> 在/apps目录下查找文件，但不希望在/apps/bin目录下查找</span><br><span class="line">find /usr/sam -path <span class="string">&quot;/usr/sam/dir1&quot;</span> -prune -o –<span class="built_in">print</span> 在/usr/sam目录下查找不在dir1子目录之内的所有文件</span><br></pre></td></tr></table></figure></li>
-<li><p>-depth：在查找文件时，首先查找当前目录中的文件，然后再在其子目录中查找。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / -name <span class="string">&quot;CON.FILE&quot;</span> -depth –<span class="built_in">print</span> 它将首先匹配所有的文件然后再进入子目录中查找</span><br></pre></td></tr></table></figure></li>
-<li><p>-user 按照文件属主来查找文件。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find ~ -user sam –<span class="built_in">print</span> 在<span class="variable">$HOME</span>目录中查找文件属主为sam的文件</span><br></pre></td></tr></table></figure></li>
-<li><p>-group 按照文件所属的组来查找文件。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /apps -group gem –<span class="built_in">print</span> 在/apps目录下查找属于gem用户组的文件</span><br></pre></td></tr></table></figure></li>
-<li><p>-mtime -n +n 按照文件的更改时间来查找文件， -n表示文件更改时间距现在n天以内，+n表示文件更改时间距现在n天以前。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / -mtime -5 –<span class="built_in">print</span> 在系统根目录下查找更改时间在5日以内的文件</span><br><span class="line">find /var/adm -mtime +3 –<span class="built_in">print</span> 在/var/adm目录下查找更改时间在3日以前的文件</span><br></pre></td></tr></table></figure></li>
-<li><p>-nogroup 查找无有效所属组的文件，即该文件所属的组在/etc/groups中不存在。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / –nogroup -<span class="built_in">print</span></span><br></pre></td></tr></table></figure></li>
-<li><p>-nouser 查找无有效属主的文件，即该文件的属主在/etc/passwd中不存在。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /home -nouser –<span class="built_in">print</span></span><br></pre></td></tr></table></figure></li>
-<li><p>-newer file1 ! file2 查找更改时间比文件file1新但比文件file2旧的文件。</p>
-</li>
-<li><p>-type 查找某一类型的文件，<br>诸如：<br>b - 块设备文件。<br>d - 目录。<br>c - 字符设备文件。<br>p - 管道文件。<br>l - 符号链接文件。<br>f - 普通文件。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /etc -<span class="built_in">type</span> d –<span class="built_in">print</span> 在/etc目录下查找所有的目录</span><br><span class="line">find . ! -<span class="built_in">type</span> d –<span class="built_in">print</span> 在当前目录下查找除目录以外的所有类型的文件</span><br><span class="line">find /etc -<span class="built_in">type</span> l –<span class="built_in">print</span> 在/etc目录下查找所有的符号链接文件</span><br></pre></td></tr></table></figure></li>
-<li><p>-size n[c] 查找文件长度为n块的文件，带有c时表示文件长度以字节计。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -size +1000000c –<span class="built_in">print</span> 在当前目录下查找文件长度大于1 M字节的文件</span><br><span class="line">find /home/apache -size 100c –<span class="built_in">print</span> 在/home/apache目录下查找文件长度恰好为100字节的文件</span><br><span class="line">find . -size +10 –<span class="built_in">print</span> 在当前目录下查找长度超过10块的文件（一块等于512字节）</span><br></pre></td></tr></table></figure></li>
-<li><p>-mount：在查找文件时不跨越文件系统mount点。<br><code>find . -name “*.XC” -mount –print 从当前目录开始查找位于本文件系统中文件名以XC结尾的文件（不进入其他文件系统）</code></p>
-</li>
-<li><p>-follow：如果find命令遇到符号链接文件，就跟踪至链接所指向的文件</p>
-</li>
-<li><p>-exec，find命令对匹配的文件执行该参数所给出的shell命令。相应命令的形式为’command’ {} ;，注意{}和;之间的空格</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt; find ./ -size 0 -<span class="built_in">exec</span> rm &#123;&#125; \; 删除文件大小为零的文件</span><br><span class="line">&gt; rm -i `find ./ -size 0`</span><br><span class="line">&gt; find ./ -size 0 | xargs rm -f &amp;</span><br></pre></td></tr></table></figure>
-<p>为了用ls -l命令列出所匹配到的文件，可以把ls -l命令放在find命令的-exec选项中：<br><code>$ find . -type f -exec ls -l &#123;&#125; \;</code><br>在/logs目录中查找更改时间在5日以前的文件并删除它们：<br><code>find /logs -type f -mtime +5 -exec rm &#123;&#125; \;</code></p>
-</li>
-<li><p>-ok，和-exec的作用相同，只不过以一种更为安全的模式来执行该参数所给出的shell命令，在执行每一个命令之前，都会给出提示，让用户来确定是否执行。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -name <span class="string">&quot;*.conf&quot;</span>  -mtime +5 -ok rm &#123;  &#125; \; 在当前目录中查找所有文件名以.LOG结尾、更改时间在5日以上的文件，并删除它们，只不  过在删除之前先给出提示</span><br></pre></td></tr></table></figure>
-<p>说明： 如果你要寻找一个档案的话，那么使用 find 会是一个不错的主意。不过，由于 find 在寻找数据的时候相当的耗硬盘，所以没事情不要使用 find 啦！有更棒的指令可以取代呦，那就是 whereis 与 locate 咯~</p>
-</li>
-</ul>
-<h4 id="一些常用命令"><a href="#一些常用命令" class="headerlink" title="一些常用命令"></a>一些常用命令</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1. find . -<span class="built_in">type</span> f -<span class="built_in">exec</span> ls -l &#123;&#125; \;</span><br><span class="line">查找当前路径下的所有普通文件，并把它们列出来。</span><br><span class="line">2. find logs -<span class="built_in">type</span> f -mtime +5 -<span class="built_in">exec</span> rm &#123;&#125; \;</span><br><span class="line">删除logs目录下更新时间为5日以上的文件。</span><br><span class="line">3.find . -name <span class="string">&quot;*.log&quot;</span> -mtime +5 -ok rm &#123;&#125; \;</span><br><span class="line">删除当前路径下以。<span class="built_in">log</span>结尾的五日以上的文件，删除之前要确认。</span><br><span class="line">4. find ~ -<span class="built_in">type</span> f -perm 4755 -<span class="built_in">print</span></span><br><span class="line">查找<span class="variable">$HOME</span>目录下suid位被设置，文件属性为755的文件打印出来。</span><br><span class="line">说明： find在有点系统中会一次性得到将匹配到的文件都传给<span class="built_in">exec</span>，但是有的系统对<span class="built_in">exec</span>的命令长度做限制，就会报：”参数列太长“，这就需要使用xargs。xargs是部分取传来的文件。</span><br><span class="line">5. find / -<span class="built_in">type</span> f -<span class="built_in">print</span> |xargs file</span><br><span class="line">xargs测试文件分类</span><br><span class="line">6. find . -name <span class="string">&quot;core*&quot;</span> -<span class="built_in">print</span>|xargs <span class="built_in">echo</span> <span class="string">&quot; &quot;</span>&gt;/tmp/core.log</span><br><span class="line">将core文件信息查询结果报存到core。<span class="built_in">log</span>日志。</span><br><span class="line">7. find / -<span class="built_in">type</span> f -<span class="built_in">print</span> | xargs chmod o -w</span><br><span class="line">8. find . -name * -<span class="built_in">print</span> |xargs grep <span class="string">&quot;DBO&quot;</span></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>find</tag>
-        <tag>通用技巧</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>shell脚本必知必会</title>
-    <url>/2020/01/16/2020-01-16-shell/</url>
-    <content><![CDATA[<h3 id="变量命名"><a href="#变量命名" class="headerlink" title="变量命名"></a>变量命名</h3><h4 id="规则"><a href="#规则" class="headerlink" title="规则"></a>规则</h4><ol>
-<li>首字符必须为字母</li>
-<li>中间不能有空格, 可以有下划线_</li>
-<li>不能使用标点符号</li>
-<li>不能使用bash里的关键字</li>
-</ol>
-<h4 id="代码风格建议"><a href="#代码风格建议" class="headerlink" title="代码风格建议"></a>代码风格建议</h4><ul>
-<li>全部用大写</li>
-<li>下划线分隔</li>
-<li>定义在文件的顶部</li>
-</ul>
-<a id="more"></a>
-
-<h3 id="变量赋值"><a href="#变量赋值" class="headerlink" title="变量赋值"></a>变量赋值</h3><p>变量名=值,  （注意, = 两边不能有空格）</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">var=1</span><br><span class="line">var=<span class="variable">$var</span>+1</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$var</span>+1</span><br><span class="line"><span class="comment"># 输出为1+1, 而不是2</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 可以用如下方法使其输出为2</span></span><br><span class="line"><span class="built_in">let</span> <span class="string">&quot;var+=1&quot;</span></span><br><span class="line"><span class="comment">#var=$[$var+1]</span></span><br><span class="line"><span class="comment">#var=$(($var+1))</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$var</span></span><br><span class="line">或者</span><br><span class="line">var=1</span><br><span class="line">var= expr <span class="variable">$var</span> + 1 <span class="comment">#（注意, + 两边的空格, 一定要有）</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">let</span>表示数学运算, expr用于整数值运算, 每一项用空格隔开, $[]将中括号内的表达式作为数学运算先计算结果再输出.</span><br><span class="line">在bash中, 将数学运算结果赋给某个变量,  var=$[ operation ]</span><br><span class="line"></span><br><span class="line">变量自增, 自减</span><br><span class="line"><span class="built_in">let</span> var++  <span class="built_in">let</span> var--</span><br><span class="line"><span class="built_in">let</span> var+=2</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;10.2-2&quot;</span> | bc   -- 小数运算要用bc  $[]不支持小数</span><br></pre></td></tr></table></figure>
-<h3 id="变量使用"><a href="#变量使用" class="headerlink" title="变量使用"></a>变量使用</h3><p>$var ${var}<br>双引号“ “ 中可以用$var<br>单引号‘ ‘ 中不可以用$var</p>
-<p>$(cmd) 与 `cmd` 等效, 推荐用前者</p>
-<ul>
-<li>支持内嵌</li>
-<li>不用转义</li>
-<li>有些字体, 反引号和单引号很像, 让人看着很难受</li>
-</ul>
-<h4 id="内建变量"><a href="#内建变量" class="headerlink" title="内建变量"></a>内建变量</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">- <span class="variable">$RANDOM</span>  随机数</span><br><span class="line">- 字段分隔符, IFS=$<span class="string">&#x27;n&#x27;</span></span><br><span class="line">- <span class="variable">$0</span> 程序名, <span class="variable">$1</span> … <span class="variable">$9</span> 是命令行参数, 多于9个命令行参数的话, 后面的需要<span class="variable">$&#123;10&#125;</span> <span class="variable">$&#123;11&#125;</span>这种格式</span><br><span class="line">- <span class="variable">$#</span> 表示传入的命令行参数的个数. 在&#123;&#125;中使用<span class="variable">$#</span>时, 要改用<span class="variable">$&#123;!#&#125;</span>.</span><br><span class="line">- $* 所有命令行参数当成一个单词存储</span><br><span class="line">- <span class="variable">$@</span> 所有命令行参数当成一个字符串中的多个单词</span><br><span class="line">- $$ 脚本的PID</span><br></pre></td></tr></table></figure>
-<h3 id="比较运算符"><a href="#比较运算符" class="headerlink" title="比较运算符"></a>比较运算符</h3><h4 id="文件比较运算符"><a href="#文件比较运算符" class="headerlink" title="文件比较运算符"></a>文件比较运算符</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-e filename                如果 filename 存在, 则为真               [ -e /var/<span class="built_in">log</span>/syslog ]</span><br><span class="line">-d filename                如果 filename 为目录, 则为真             [ -d /tmp/mydir ]</span><br><span class="line">-f filename                如果 filename 为常规文件, 则为真          [ -f /usr/bin/grep ]</span><br><span class="line">-L filename                如果 filename 为符号链接, 则为真          [ -L /usr/bin/grep ]</span><br><span class="line">-r filename                如果 filename 可读, 则为真               [ -r /var/<span class="built_in">log</span>/syslog ]</span><br><span class="line">-w filename                如果 filename 可写, 则为真               [ -w /var/mytmp.txt ]</span><br><span class="line">-x filename                如果 filename 可执行, 则为真             [ -L /usr/bin/grep ]</span><br><span class="line">! -e filename              如果 filename 不存在, 则为真               [ ! -e /var/<span class="built_in">log</span>/syslog ]</span><br><span class="line">filename1 -nt filename2    如果 filename1 比 filename2 新, 则为真   [ /tmp/install/etc/services -nt /etc/services ]</span><br><span class="line">filename1 -ot filename2    如果 filename1 比 filename2 旧, 则为真   [ /boot/bzImage -ot arch/i386/boot/bzImage ]</span><br></pre></td></tr></table></figure>
-<h4 id="字符串比较运算符-（请注意引号的使用-这是防止空格扰乱代码的好方法）"><a href="#字符串比较运算符-（请注意引号的使用-这是防止空格扰乱代码的好方法）" class="headerlink" title="字符串比较运算符 （请注意引号的使用, 这是防止空格扰乱代码的好方法）"></a>字符串比较运算符 （请注意引号的使用, 这是防止空格扰乱代码的好方法）</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-z string               如果 string 长度为零, 则为真            [ -z <span class="string">&quot;<span class="variable">$myvar</span>&quot;</span> ]</span><br><span class="line">-n string               如果 string 长度非零, 则为真            [ -n <span class="string">&quot;<span class="variable">$myvar</span>&quot;</span> ]</span><br><span class="line">string1 = string2       如果 string1 与 string2 相同, 则为真    [ <span class="string">&quot;<span class="variable">$myvar</span>&quot;</span> = <span class="string">&quot;one two three&quot;</span> ]</span><br><span class="line">string1 != string2      如果 string1 与 string2 不同, 则为真    [ <span class="string">&quot;<span class="variable">$myvar</span>&quot;</span> != <span class="string">&quot;one two three&quot;</span> ]</span><br></pre></td></tr></table></figure>
-<h4 id="算术比较运算符"><a href="#算术比较运算符" class="headerlink" title="算术比较运算符"></a>算术比较运算符</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">num1 -eq num2       等于            [ 3 -eq <span class="variable">$mynum</span> ]</span><br><span class="line">num1 -ne num2       不等于          [ 3 -ne <span class="variable">$mynum</span> ]</span><br><span class="line">num1 -lt num2       小于            [ 3 -lt <span class="variable">$mynum</span> ]</span><br><span class="line">num1 -le num2       小于或等于      [ 3 -le <span class="variable">$mynum</span> ]</span><br><span class="line">num1 -gt num2       大于            [ 3 -gt <span class="variable">$mynum</span> ]</span><br><span class="line">num1 -ge num2       大于或等于      [ 3 -ge <span class="variable">$mynum</span> ]</span><br></pre></td></tr></table></figure>
-<h3 id="结构语句"><a href="#结构语句" class="headerlink" title="结构语句"></a>结构语句</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="built_in">command</span></span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">    commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> command1 &amp;&amp; command2</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">    commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">command</span>; <span class="keyword">then</span>  <span class="comment">#如果then与if在同一行, if command后要加&#x27;;&#x27;</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">command</span></span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> command1</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">elif</span> command2</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 不推荐</span></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">test</span> condition</span><br><span class="line"><span class="keyword">if</span> [ condition ] 注意[]与condition之间的空格, &gt; &lt; 需要转义</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 不推荐</span></span><br><span class="line"><span class="keyword">if</span> ((expression)) &gt; &lt; 不需要转义</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 推荐用 [[ ]] 的形式</span></span><br><span class="line"><span class="comment"># 1. 避免转义问题</span></span><br><span class="line"><span class="comment"># 2. 有新功能, 包括但不限于以下</span></span><br><span class="line"><span class="comment">#    - ||: 逻辑or</span></span><br><span class="line"><span class="comment">#    - &amp;&amp;: 逻辑and</span></span><br><span class="line"><span class="comment">#    - &lt;: 字符串比较(不需要转义)</span></span><br><span class="line"><span class="comment">#    - ==: 通配符字符串比较</span></span><br><span class="line"><span class="comment">#    - =~: 正则表达式字符串比较</span></span><br><span class="line"><span class="keyword">if</span> [[ condition ]]  可以用正则表达式</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">t=<span class="string">&quot;abc123&quot;</span></span><br><span class="line"></span><br><span class="line">[[ <span class="string">&quot;<span class="variable">$t</span>&quot;</span> == abc* ]]         <span class="comment">#true</span></span><br><span class="line">[[ <span class="string">&quot;<span class="variable">$t</span>&quot;</span> == <span class="string">&quot;abc*&quot;</span> ]]       <span class="comment"># false</span></span><br><span class="line">[[ <span class="string">&quot;<span class="variable">$t</span>&quot;</span> =~ [abc]+[123]+ ]] <span class="comment"># true</span></span><br><span class="line">[[ <span class="string">&quot;<span class="variable">$t</span>&quot;</span> =~ <span class="string">&quot;abc*&quot;</span> ]]       <span class="comment"># false</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">case</span> variable <span class="keyword">in</span></span><br><span class="line">pattern1 | pattern2)</span><br><span class="line">    commands1</span><br><span class="line">    ;;</span><br><span class="line">pattern3)</span><br><span class="line">    commands2::</span><br><span class="line">    ;;</span><br><span class="line">*)</span><br><span class="line">    default commands</span><br><span class="line">    ;;</span><br><span class="line"><span class="keyword">esac</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> var <span class="keyword">in</span> list</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="built_in">test</span> <span class="built_in">command</span></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">     other commands</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line">until <span class="built_in">test</span> <span class="built_in">command</span></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">     other commands</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">break</span> n (default 1) 跳出n层循环</span><br><span class="line"><span class="built_in">continue</span> n (default 1) 继续n级循环</span><br><span class="line"></span><br><span class="line">select var <span class="keyword">in</span> list</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    commands</span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
-<h3 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h3><p>语法</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[ <span class="keyword">function</span> ] funname [()]</span><br><span class="line">&#123;</span><br><span class="line">    action;</span><br><span class="line">    [<span class="built_in">return</span> int;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>说明：</p>
-<ol>
-<li>可以带function fun()  定义, 也可以直接fun() 定义, 不带任何参数.</li>
-<li>参数返回, 可以显式return返回, return后跟数值n(0-255)；如果不加, 将以最后一条命令运行结果, 作为返回值.</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 将所有的错误信息导向STDERR</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">err</span></span>() &#123;</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;[<span class="subst">$(date +&#x27;%Y-%m-%dT%H:%M:%S%z&#x27;)</span>]: <span class="variable">$@</span>&quot;</span> &gt;&amp;2</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> ! do_something; <span class="keyword">then</span></span><br><span class="line">    err <span class="string">&quot;Unable to do_something&quot;</span></span><br><span class="line">    <span class="built_in">exit</span> <span class="string">&quot;<span class="variable">$&#123;E_DID_NOTHING&#125;</span>”</span></span><br><span class="line"><span class="string">fi</span></span><br><span class="line"><span class="string"></span></span><br></pre></td></tr></table></figure>
-<p>注意事项</p>
-<ol>
-<li>必须在调用函数地方之前, 声明函数, shell脚本是逐行运行. 不会像其它语言一样先预编译. 一次必须在使用函数前先声明函数.</li>
-<li>total=$(func 3 2);  </li>
-<li>函数返回值, 只能通过$? 系统变量获得, 直接通过=获得是空值</li>
-<li>如果需要传出其它类型函数值, 可以在函数调用之前, 定义变量（这个就是全局变量）. 在函数内部就可以直接修改, 然后在执行函数就可以读出修改过的值</li>
-<li>如果需要定义自己变量, 可以在函数中定义, local 变量=值, 这时变量就是内部变量, 它的修改, 不会影响函数外部相同变量的值.</li>
-</ol>
-<h3 id="实用技巧"><a href="#实用技巧" class="headerlink" title="实用技巧"></a>实用技巧</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#! /bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在默认情况下，遇到不存在的变量，会忽略并继续执行，而这往往不符合预期，加入该选项，可以避免恶果扩大，终止脚本的执行。</span></span><br><span class="line"><span class="built_in">set</span> -o nounset</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在默认情况下，遇到执行出错，会跳过并继续执行，而这往往不符合预期，加入该选项，可以避免恶果扩大，终止脚本的执行</span></span><br><span class="line"><span class="built_in">set</span> -o errexit</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">log</span></span>() &#123;</span><br><span class="line">    <span class="built_in">local</span> prefix=<span class="string">&quot;[<span class="subst">$(date +%Y/%m/%d\ %H:%M:%S)</span>]:&quot;</span></span><br><span class="line">    <span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$_DEBUG</span>&quot;</span> == <span class="string">&quot;true&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$&#123;prefix&#125;</span> <span class="variable">$@</span>&quot;</span> &gt;&amp;2</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">log</span> <span class="string">&quot;INFO&quot;</span> <span class="string">&quot;a message&quot;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>通用技巧</tag>
-        <tag>shell</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>cmake怎么写?</title>
     <url>/2020/01/16/2020-01-16-cmake/</url>
     <content><![CDATA[<h3 id="cmake中一些预定义变量"><a href="#cmake中一些预定义变量" class="headerlink" title="cmake中一些预定义变量"></a>cmake中一些预定义变量</h3><ul>
@@ -288,6 +174,120 @@
       </tags>
   </entry>
   <entry>
+    <title>shell脚本必知必会</title>
+    <url>/2020/01/16/2020-01-16-shell/</url>
+    <content><![CDATA[<h3 id="变量命名"><a href="#变量命名" class="headerlink" title="变量命名"></a>变量命名</h3><h4 id="规则"><a href="#规则" class="headerlink" title="规则"></a>规则</h4><ol>
+<li>首字符必须为字母</li>
+<li>中间不能有空格, 可以有下划线_</li>
+<li>不能使用标点符号</li>
+<li>不能使用bash里的关键字</li>
+</ol>
+<h4 id="代码风格建议"><a href="#代码风格建议" class="headerlink" title="代码风格建议"></a>代码风格建议</h4><ul>
+<li>全部用大写</li>
+<li>下划线分隔</li>
+<li>定义在文件的顶部</li>
+</ul>
+<a id="more"></a>
+
+<h3 id="变量赋值"><a href="#变量赋值" class="headerlink" title="变量赋值"></a>变量赋值</h3><p>变量名=值,  （注意, = 两边不能有空格）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">var=1</span><br><span class="line">var=<span class="variable">$var</span>+1</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$var</span>+1</span><br><span class="line"><span class="comment"># 输出为1+1, 而不是2</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 可以用如下方法使其输出为2</span></span><br><span class="line"><span class="built_in">let</span> <span class="string">&quot;var+=1&quot;</span></span><br><span class="line"><span class="comment">#var=$[$var+1]</span></span><br><span class="line"><span class="comment">#var=$(($var+1))</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$var</span></span><br><span class="line">或者</span><br><span class="line">var=1</span><br><span class="line">var= expr <span class="variable">$var</span> + 1 <span class="comment">#（注意, + 两边的空格, 一定要有）</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">let</span>表示数学运算, expr用于整数值运算, 每一项用空格隔开, $[]将中括号内的表达式作为数学运算先计算结果再输出.</span><br><span class="line">在bash中, 将数学运算结果赋给某个变量,  var=$[ operation ]</span><br><span class="line"></span><br><span class="line">变量自增, 自减</span><br><span class="line"><span class="built_in">let</span> var++  <span class="built_in">let</span> var--</span><br><span class="line"><span class="built_in">let</span> var+=2</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;10.2-2&quot;</span> | bc   -- 小数运算要用bc  $[]不支持小数</span><br></pre></td></tr></table></figure>
+<h3 id="变量使用"><a href="#变量使用" class="headerlink" title="变量使用"></a>变量使用</h3><p>$var ${var}<br>双引号“ “ 中可以用$var<br>单引号‘ ‘ 中不可以用$var</p>
+<p>$(cmd) 与 `cmd` 等效, 推荐用前者</p>
+<ul>
+<li>支持内嵌</li>
+<li>不用转义</li>
+<li>有些字体, 反引号和单引号很像, 让人看着很难受</li>
+</ul>
+<h4 id="内建变量"><a href="#内建变量" class="headerlink" title="内建变量"></a>内建变量</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">- <span class="variable">$RANDOM</span>  随机数</span><br><span class="line">- 字段分隔符, IFS=$<span class="string">&#x27;n&#x27;</span></span><br><span class="line">- <span class="variable">$0</span> 程序名, <span class="variable">$1</span> … <span class="variable">$9</span> 是命令行参数, 多于9个命令行参数的话, 后面的需要<span class="variable">$&#123;10&#125;</span> <span class="variable">$&#123;11&#125;</span>这种格式</span><br><span class="line">- <span class="variable">$#</span> 表示传入的命令行参数的个数. 在&#123;&#125;中使用<span class="variable">$#</span>时, 要改用<span class="variable">$&#123;!#&#125;</span>.</span><br><span class="line">- $* 所有命令行参数当成一个单词存储</span><br><span class="line">- <span class="variable">$@</span> 所有命令行参数当成一个字符串中的多个单词</span><br><span class="line">- $$ 脚本的PID</span><br></pre></td></tr></table></figure>
+<h3 id="比较运算符"><a href="#比较运算符" class="headerlink" title="比较运算符"></a>比较运算符</h3><h4 id="文件比较运算符"><a href="#文件比较运算符" class="headerlink" title="文件比较运算符"></a>文件比较运算符</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-e filename                如果 filename 存在, 则为真               [ -e /var/<span class="built_in">log</span>/syslog ]</span><br><span class="line">-d filename                如果 filename 为目录, 则为真             [ -d /tmp/mydir ]</span><br><span class="line">-f filename                如果 filename 为常规文件, 则为真          [ -f /usr/bin/grep ]</span><br><span class="line">-L filename                如果 filename 为符号链接, 则为真          [ -L /usr/bin/grep ]</span><br><span class="line">-r filename                如果 filename 可读, 则为真               [ -r /var/<span class="built_in">log</span>/syslog ]</span><br><span class="line">-w filename                如果 filename 可写, 则为真               [ -w /var/mytmp.txt ]</span><br><span class="line">-x filename                如果 filename 可执行, 则为真             [ -L /usr/bin/grep ]</span><br><span class="line">! -e filename              如果 filename 不存在, 则为真               [ ! -e /var/<span class="built_in">log</span>/syslog ]</span><br><span class="line">filename1 -nt filename2    如果 filename1 比 filename2 新, 则为真   [ /tmp/install/etc/services -nt /etc/services ]</span><br><span class="line">filename1 -ot filename2    如果 filename1 比 filename2 旧, 则为真   [ /boot/bzImage -ot arch/i386/boot/bzImage ]</span><br></pre></td></tr></table></figure>
+<h4 id="字符串比较运算符-（请注意引号的使用-这是防止空格扰乱代码的好方法）"><a href="#字符串比较运算符-（请注意引号的使用-这是防止空格扰乱代码的好方法）" class="headerlink" title="字符串比较运算符 （请注意引号的使用, 这是防止空格扰乱代码的好方法）"></a>字符串比较运算符 （请注意引号的使用, 这是防止空格扰乱代码的好方法）</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-z string               如果 string 长度为零, 则为真            [ -z <span class="string">&quot;<span class="variable">$myvar</span>&quot;</span> ]</span><br><span class="line">-n string               如果 string 长度非零, 则为真            [ -n <span class="string">&quot;<span class="variable">$myvar</span>&quot;</span> ]</span><br><span class="line">string1 = string2       如果 string1 与 string2 相同, 则为真    [ <span class="string">&quot;<span class="variable">$myvar</span>&quot;</span> = <span class="string">&quot;one two three&quot;</span> ]</span><br><span class="line">string1 != string2      如果 string1 与 string2 不同, 则为真    [ <span class="string">&quot;<span class="variable">$myvar</span>&quot;</span> != <span class="string">&quot;one two three&quot;</span> ]</span><br></pre></td></tr></table></figure>
+<h4 id="算术比较运算符"><a href="#算术比较运算符" class="headerlink" title="算术比较运算符"></a>算术比较运算符</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">num1 -eq num2       等于            [ 3 -eq <span class="variable">$mynum</span> ]</span><br><span class="line">num1 -ne num2       不等于          [ 3 -ne <span class="variable">$mynum</span> ]</span><br><span class="line">num1 -lt num2       小于            [ 3 -lt <span class="variable">$mynum</span> ]</span><br><span class="line">num1 -le num2       小于或等于      [ 3 -le <span class="variable">$mynum</span> ]</span><br><span class="line">num1 -gt num2       大于            [ 3 -gt <span class="variable">$mynum</span> ]</span><br><span class="line">num1 -ge num2       大于或等于      [ 3 -ge <span class="variable">$mynum</span> ]</span><br></pre></td></tr></table></figure>
+<h3 id="结构语句"><a href="#结构语句" class="headerlink" title="结构语句"></a>结构语句</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="built_in">command</span></span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">    commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> command1 &amp;&amp; command2</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">    commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">command</span>; <span class="keyword">then</span>  <span class="comment">#如果then与if在同一行, if command后要加&#x27;;&#x27;</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">command</span></span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> command1</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">elif</span> command2</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 不推荐</span></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">test</span> condition</span><br><span class="line"><span class="keyword">if</span> [ condition ] 注意[]与condition之间的空格, &gt; &lt; 需要转义</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 不推荐</span></span><br><span class="line"><span class="keyword">if</span> ((expression)) &gt; &lt; 不需要转义</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 推荐用 [[ ]] 的形式</span></span><br><span class="line"><span class="comment"># 1. 避免转义问题</span></span><br><span class="line"><span class="comment"># 2. 有新功能, 包括但不限于以下</span></span><br><span class="line"><span class="comment">#    - ||: 逻辑or</span></span><br><span class="line"><span class="comment">#    - &amp;&amp;: 逻辑and</span></span><br><span class="line"><span class="comment">#    - &lt;: 字符串比较(不需要转义)</span></span><br><span class="line"><span class="comment">#    - ==: 通配符字符串比较</span></span><br><span class="line"><span class="comment">#    - =~: 正则表达式字符串比较</span></span><br><span class="line"><span class="keyword">if</span> [[ condition ]]  可以用正则表达式</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">t=<span class="string">&quot;abc123&quot;</span></span><br><span class="line"></span><br><span class="line">[[ <span class="string">&quot;<span class="variable">$t</span>&quot;</span> == abc* ]]         <span class="comment">#true</span></span><br><span class="line">[[ <span class="string">&quot;<span class="variable">$t</span>&quot;</span> == <span class="string">&quot;abc*&quot;</span> ]]       <span class="comment"># false</span></span><br><span class="line">[[ <span class="string">&quot;<span class="variable">$t</span>&quot;</span> =~ [abc]+[123]+ ]] <span class="comment"># true</span></span><br><span class="line">[[ <span class="string">&quot;<span class="variable">$t</span>&quot;</span> =~ <span class="string">&quot;abc*&quot;</span> ]]       <span class="comment"># false</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">case</span> variable <span class="keyword">in</span></span><br><span class="line">pattern1 | pattern2)</span><br><span class="line">    commands1</span><br><span class="line">    ;;</span><br><span class="line">pattern3)</span><br><span class="line">    commands2::</span><br><span class="line">    ;;</span><br><span class="line">*)</span><br><span class="line">    default commands</span><br><span class="line">    ;;</span><br><span class="line"><span class="keyword">esac</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> var <span class="keyword">in</span> list</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="built_in">test</span> <span class="built_in">command</span></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">     other commands</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line">until <span class="built_in">test</span> <span class="built_in">command</span></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">     other commands</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">break</span> n (default 1) 跳出n层循环</span><br><span class="line"><span class="built_in">continue</span> n (default 1) 继续n级循环</span><br><span class="line"></span><br><span class="line">select var <span class="keyword">in</span> list</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    commands</span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+<h3 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h3><p>语法</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[ <span class="keyword">function</span> ] funname [()]</span><br><span class="line">&#123;</span><br><span class="line">    action;</span><br><span class="line">    [<span class="built_in">return</span> int;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>说明：</p>
+<ol>
+<li>可以带function fun()  定义, 也可以直接fun() 定义, 不带任何参数.</li>
+<li>参数返回, 可以显式return返回, return后跟数值n(0-255)；如果不加, 将以最后一条命令运行结果, 作为返回值.</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 将所有的错误信息导向STDERR</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">err</span></span>() &#123;</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;[<span class="subst">$(date +&#x27;%Y-%m-%dT%H:%M:%S%z&#x27;)</span>]: <span class="variable">$@</span>&quot;</span> &gt;&amp;2</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> ! do_something; <span class="keyword">then</span></span><br><span class="line">    err <span class="string">&quot;Unable to do_something&quot;</span></span><br><span class="line">    <span class="built_in">exit</span> <span class="string">&quot;<span class="variable">$&#123;E_DID_NOTHING&#125;</span>”</span></span><br><span class="line"><span class="string">fi</span></span><br><span class="line"><span class="string"></span></span><br></pre></td></tr></table></figure>
+<p>注意事项</p>
+<ol>
+<li>必须在调用函数地方之前, 声明函数, shell脚本是逐行运行. 不会像其它语言一样先预编译. 一次必须在使用函数前先声明函数.</li>
+<li>total=$(func 3 2);  </li>
+<li>函数返回值, 只能通过$? 系统变量获得, 直接通过=获得是空值</li>
+<li>如果需要传出其它类型函数值, 可以在函数调用之前, 定义变量（这个就是全局变量）. 在函数内部就可以直接修改, 然后在执行函数就可以读出修改过的值</li>
+<li>如果需要定义自己变量, 可以在函数中定义, local 变量=值, 这时变量就是内部变量, 它的修改, 不会影响函数外部相同变量的值.</li>
+</ol>
+<h3 id="实用技巧"><a href="#实用技巧" class="headerlink" title="实用技巧"></a>实用技巧</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#! /bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在默认情况下，遇到不存在的变量，会忽略并继续执行，而这往往不符合预期，加入该选项，可以避免恶果扩大，终止脚本的执行。</span></span><br><span class="line"><span class="built_in">set</span> -o nounset</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在默认情况下，遇到执行出错，会跳过并继续执行，而这往往不符合预期，加入该选项，可以避免恶果扩大，终止脚本的执行</span></span><br><span class="line"><span class="built_in">set</span> -o errexit</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">log</span></span>() &#123;</span><br><span class="line">    <span class="built_in">local</span> prefix=<span class="string">&quot;[<span class="subst">$(date +%Y/%m/%d\ %H:%M:%S)</span>]:&quot;</span></span><br><span class="line">    <span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$_DEBUG</span>&quot;</span> == <span class="string">&quot;true&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$&#123;prefix&#125;</span> <span class="variable">$@</span>&quot;</span> &gt;&amp;2</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">log</span> <span class="string">&quot;INFO&quot;</span> <span class="string">&quot;a message&quot;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>shell</tag>
+        <tag>通用技巧</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>find命令使用技巧</title>
+    <url>/2020/01/16/2020-01-16-find/</url>
+    <content><![CDATA[<p><code>find &lt; path &gt; &lt; expression &gt; &lt; cmd &gt;</code></p>
+<ul>
+<li>path： 所要搜索的目录及其所有子目录。默认为当前目录。</li>
+<li>expression： 所要搜索的文件的特征。</li>
+<li>cmd： 对搜索结果进行特定的处理。</li>
+</ul>
+<p>如果什么参数也不加，find默认搜索当前目录及其子目录，并且不过滤任何结果（也就是返回所有文件），将它们全都显示在屏幕上。</p>
+<h4 id="find命令常用选项及实例"><a href="#find命令常用选项及实例" class="headerlink" title="find命令常用选项及实例"></a>find命令常用选项及实例</h4><ul>
+<li><p>-name 按照文件名查找文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /dir -name filename  在/dir目录及其子目录下面查找名字为filename的文件</span><br><span class="line">find . -name <span class="string">&quot;*.c&quot;</span> 在当前目录及其子目录（用“.”表示）中查找任何扩展名为“c”的文件</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+</li>
+<li><p>-perm 按照文件权限来查找文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -perm 755 –<span class="built_in">print</span> 在当前目录下查找文件权限位为755的文件，即文件属主可以读、写、执行，其他用户可以读、执行的文件</span><br></pre></td></tr></table></figure></li>
+<li><p>-prune 使用这一选项可以使find命令不在当前指定的目录中查找，如果同时使用-depth选项，那么-prune将被find命令忽略。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /apps -path <span class="string">&quot;/apps/bin&quot;</span> -prune -o –<span class="built_in">print</span> 在/apps目录下查找文件，但不希望在/apps/bin目录下查找</span><br><span class="line">find /usr/sam -path <span class="string">&quot;/usr/sam/dir1&quot;</span> -prune -o –<span class="built_in">print</span> 在/usr/sam目录下查找不在dir1子目录之内的所有文件</span><br></pre></td></tr></table></figure></li>
+<li><p>-depth：在查找文件时，首先查找当前目录中的文件，然后再在其子目录中查找。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / -name <span class="string">&quot;CON.FILE&quot;</span> -depth –<span class="built_in">print</span> 它将首先匹配所有的文件然后再进入子目录中查找</span><br></pre></td></tr></table></figure></li>
+<li><p>-user 按照文件属主来查找文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find ~ -user sam –<span class="built_in">print</span> 在<span class="variable">$HOME</span>目录中查找文件属主为sam的文件</span><br></pre></td></tr></table></figure></li>
+<li><p>-group 按照文件所属的组来查找文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /apps -group gem –<span class="built_in">print</span> 在/apps目录下查找属于gem用户组的文件</span><br></pre></td></tr></table></figure></li>
+<li><p>-mtime -n +n 按照文件的更改时间来查找文件， -n表示文件更改时间距现在n天以内，+n表示文件更改时间距现在n天以前。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / -mtime -5 –<span class="built_in">print</span> 在系统根目录下查找更改时间在5日以内的文件</span><br><span class="line">find /var/adm -mtime +3 –<span class="built_in">print</span> 在/var/adm目录下查找更改时间在3日以前的文件</span><br></pre></td></tr></table></figure></li>
+<li><p>-nogroup 查找无有效所属组的文件，即该文件所属的组在/etc/groups中不存在。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / –nogroup -<span class="built_in">print</span></span><br></pre></td></tr></table></figure></li>
+<li><p>-nouser 查找无有效属主的文件，即该文件的属主在/etc/passwd中不存在。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /home -nouser –<span class="built_in">print</span></span><br></pre></td></tr></table></figure></li>
+<li><p>-newer file1 ! file2 查找更改时间比文件file1新但比文件file2旧的文件。</p>
+</li>
+<li><p>-type 查找某一类型的文件，<br>诸如：<br>b - 块设备文件。<br>d - 目录。<br>c - 字符设备文件。<br>p - 管道文件。<br>l - 符号链接文件。<br>f - 普通文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /etc -<span class="built_in">type</span> d –<span class="built_in">print</span> 在/etc目录下查找所有的目录</span><br><span class="line">find . ! -<span class="built_in">type</span> d –<span class="built_in">print</span> 在当前目录下查找除目录以外的所有类型的文件</span><br><span class="line">find /etc -<span class="built_in">type</span> l –<span class="built_in">print</span> 在/etc目录下查找所有的符号链接文件</span><br></pre></td></tr></table></figure></li>
+<li><p>-size n[c] 查找文件长度为n块的文件，带有c时表示文件长度以字节计。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -size +1000000c –<span class="built_in">print</span> 在当前目录下查找文件长度大于1 M字节的文件</span><br><span class="line">find /home/apache -size 100c –<span class="built_in">print</span> 在/home/apache目录下查找文件长度恰好为100字节的文件</span><br><span class="line">find . -size +10 –<span class="built_in">print</span> 在当前目录下查找长度超过10块的文件（一块等于512字节）</span><br></pre></td></tr></table></figure></li>
+<li><p>-mount：在查找文件时不跨越文件系统mount点。<br><code>find . -name “*.XC” -mount –print 从当前目录开始查找位于本文件系统中文件名以XC结尾的文件（不进入其他文件系统）</code></p>
+</li>
+<li><p>-follow：如果find命令遇到符号链接文件，就跟踪至链接所指向的文件</p>
+</li>
+<li><p>-exec，find命令对匹配的文件执行该参数所给出的shell命令。相应命令的形式为’command’ {} ;，注意{}和;之间的空格</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt; find ./ -size 0 -<span class="built_in">exec</span> rm &#123;&#125; \; 删除文件大小为零的文件</span><br><span class="line">&gt; rm -i `find ./ -size 0`</span><br><span class="line">&gt; find ./ -size 0 | xargs rm -f &amp;</span><br></pre></td></tr></table></figure>
+<p>为了用ls -l命令列出所匹配到的文件，可以把ls -l命令放在find命令的-exec选项中：<br><code>$ find . -type f -exec ls -l &#123;&#125; \;</code><br>在/logs目录中查找更改时间在5日以前的文件并删除它们：<br><code>find /logs -type f -mtime +5 -exec rm &#123;&#125; \;</code></p>
+</li>
+<li><p>-ok，和-exec的作用相同，只不过以一种更为安全的模式来执行该参数所给出的shell命令，在执行每一个命令之前，都会给出提示，让用户来确定是否执行。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -name <span class="string">&quot;*.conf&quot;</span>  -mtime +5 -ok rm &#123;  &#125; \; 在当前目录中查找所有文件名以.LOG结尾、更改时间在5日以上的文件，并删除它们，只不  过在删除之前先给出提示</span><br></pre></td></tr></table></figure>
+<p>说明： 如果你要寻找一个档案的话，那么使用 find 会是一个不错的主意。不过，由于 find 在寻找数据的时候相当的耗硬盘，所以没事情不要使用 find 啦！有更棒的指令可以取代呦，那就是 whereis 与 locate 咯~</p>
+</li>
+</ul>
+<h4 id="一些常用命令"><a href="#一些常用命令" class="headerlink" title="一些常用命令"></a>一些常用命令</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1. find . -<span class="built_in">type</span> f -<span class="built_in">exec</span> ls -l &#123;&#125; \;</span><br><span class="line">查找当前路径下的所有普通文件，并把它们列出来。</span><br><span class="line">2. find logs -<span class="built_in">type</span> f -mtime +5 -<span class="built_in">exec</span> rm &#123;&#125; \;</span><br><span class="line">删除logs目录下更新时间为5日以上的文件。</span><br><span class="line">3.find . -name <span class="string">&quot;*.log&quot;</span> -mtime +5 -ok rm &#123;&#125; \;</span><br><span class="line">删除当前路径下以。<span class="built_in">log</span>结尾的五日以上的文件，删除之前要确认。</span><br><span class="line">4. find ~ -<span class="built_in">type</span> f -perm 4755 -<span class="built_in">print</span></span><br><span class="line">查找<span class="variable">$HOME</span>目录下suid位被设置，文件属性为755的文件打印出来。</span><br><span class="line">说明： find在有点系统中会一次性得到将匹配到的文件都传给<span class="built_in">exec</span>，但是有的系统对<span class="built_in">exec</span>的命令长度做限制，就会报：”参数列太长“，这就需要使用xargs。xargs是部分取传来的文件。</span><br><span class="line">5. find / -<span class="built_in">type</span> f -<span class="built_in">print</span> |xargs file</span><br><span class="line">xargs测试文件分类</span><br><span class="line">6. find . -name <span class="string">&quot;core*&quot;</span> -<span class="built_in">print</span>|xargs <span class="built_in">echo</span> <span class="string">&quot; &quot;</span>&gt;/tmp/core.log</span><br><span class="line">将core文件信息查询结果报存到core。<span class="built_in">log</span>日志。</span><br><span class="line">7. find / -<span class="built_in">type</span> f -<span class="built_in">print</span> | xargs chmod o -w</span><br><span class="line">8. find . -name * -<span class="built_in">print</span> |xargs grep <span class="string">&quot;DBO&quot;</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>通用技巧</tag>
+        <tag>find</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>xargs命令使用技巧</title>
     <url>/2020/01/16/2020-01-16-xargs/</url>
     <content><![CDATA[<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>管道符 | + xargs, 用于把上游输出转换为下游参数输入。</p>
@@ -403,6 +403,111 @@
         <tag>gdb</tag>
         <tag>linux</tag>
         <tag>debug</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>如何写好一封Email</title>
+    <url>/2020/01/29/2020-01-29-write-good-email/</url>
+    <content><![CDATA[<h3 id="接收人"><a href="#接收人" class="headerlink" title="接收人"></a>接收人</h3><ol>
+<li><p>收件人</p>
+<blockquote>
+<p>事件接棒人, 是需要对事件做出响应及跟进的人, 如果需要老板处理, 那么收件人就加上老板, 而不是抄送</p>
+</blockquote>
+</li>
+<li><p>抄送人</p>
+<blockquote>
+<p>事件知会人, 只需要知道邮件的内容就可以了, 不必要一定做出响应或去跟进</p>
+</blockquote>
+</li>
+</ol>
+<a id="more"></a>
+
+<h3 id="称呼及问候语"><a href="#称呼及问候语" class="headerlink" title="称呼及问候语"></a>称呼及问候语</h3><p>写上称呼是一种礼貌的象征, 尤其写对外邮件的时候, 是必要项.</p>
+<blockquote>
+<ul>
+<li>Dear LastName, 比较正式的场合</li>
+<li>Hi FirstName, 朋友之间比较随意的场合</li>
+<li>Dear FirstName, 如果你不知道用什么, 就用这个</li>
+</ul>
+</blockquote>
+<h3 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h3><ul>
+<li><strong>直奔主题, 言简意赅</strong>, 以下给几个例子来展示如何直奔主题</li>
+</ul>
+<blockquote>
+<ol>
+<li>I’m working on an article about xxx for yyy publication, and wondered if you had a few minutes to answer the following 3 questions.<br>我正在写一篇要交给yyy出版社的文章, 不知道您是否有时间回答下下面3个问题呢?</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol start="2">
+<li>Could you supply me with a quote for the following project?<br>可否对下面的设计项目进行引证?</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol start="3">
+<li>I’d like to discuss the revisions with you. Would Tuesday at 2pm be a good time?<br>我想和你谈谈修订的事情, 这周二下午2点您有空吗?</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol start="4">
+<li>I’ve attached the documents you requested at our meeting yesterday.<br>昨天会议上您要求的文件已附上, 请查收.</li>
+</ol>
+</blockquote>
+<ul>
+<li><p>如果有问题需要提出, 或者需要重点突出的内容, 那么将其放到 <strong>开头</strong>. 如果问题放到最后, 收信人可能都不会留意到, 或者不会意识到你在等他的回复.</p>
+</li>
+<li><p>如果是咨询邮件, 或者说明什么产品, 那么将问题(或特性)一点点的 <strong>编号</strong> 列出来.</p>
+</li>
+</ul>
+<h3 id="常用英文邮件术语"><a href="#常用英文邮件术语" class="headerlink" title="常用英文邮件术语"></a>常用英文邮件术语</h3><ol>
+<li><p>To inform 提供信息</p>
+<blockquote>
+<p>The sender of the email wants to tell the receiver about something such as a new show coming to London. It might contain a link to the theatre. Generally speaking no reply is necessary. It can be a group email sent to a circle of friends, <strong>for example.</strong></p>
+<p>Dear all,</p>
+<p>Hope you are all well. Just to let you know that The China National Peking Opera is coming to London at the end of November to perform classical Peking Opera and the show will only be on for 3 days, so grab your tickets soon. Here is the link xxx</p>
+</blockquote>
+</li>
+<li><p>To inquire 询问</p>
+<blockquote>
+<p>The sender needs some information and is expecting a reply.</p>
+<p>Dear Sir/Madam,</p>
+<p>I am writing to inquire about the rules regarding children travelling alone. For instance, can a 15 year old child travel on Air China alone? What should we do if there is not an adult to accompany the child?</p>
+<p>I look forward to your advice.</p>
+</blockquote>
+</li>
+<li><p>To request 请求</p>
+<blockquote>
+<p>The sender is asking for permission to do something, such as an permission to leave 5 days for a trip.<br>I’m writing to see whether it is possible for me to leave 5 days from next Monday for a trip with my family.</p>
+<p>Dear xxx</p>
+<p>I would be very grateful if you could consider my request.<br>Thanks.</p>
+<p>Carl</p>
+</blockquote>
+</li>
+<li><p>Stay in touch 保持联系</p>
+<blockquote>
+<p>I’m writing to say hello for the purpose to maintain social connections, friendship, and perhaps future collaboration.</p>
+<p>Hi xxx,</p>
+<p>How are you doing in your new job? It should be perfect, for you are a superman.<br>I’m also busy these two months and have not played any sports these days.</p>
+<p>Let me know when you will be free, so we can have a game and a drink.</p>
+<p>Best<br>Carl</p>
+</blockquote>
+</li>
+</ol>
+<h3 id="校对拼写错误"><a href="#校对拼写错误" class="headerlink" title="校对拼写错误"></a>校对拼写错误</h3><p>很重要, 一定不能有错别字</p>
+<h3 id="邮件签名"><a href="#邮件签名" class="headerlink" title="邮件签名"></a>邮件签名</h3><p>写清楚</p>
+<ul>
+<li>你是谁</li>
+<li>你来自哪里</li>
+<li>你是做什么的</li>
+<li>你的联系方式(电话, 工作地址)</li>
+<li>其他(例如你的社交网络账号, 最新宣传博客等), 此条不适用与公司对公邮件</li>
+</ul>
+]]></content>
+      <categories>
+        <category>职业素养</category>
+      </categories>
+      <tags>
+        <tag>Email</tag>
       </tags>
   </entry>
   <entry>
@@ -590,6 +695,71 @@
       </tags>
   </entry>
   <entry>
+    <title>进程间通信-fcntl记录上锁</title>
+    <url>/2020/02/01/2020-02-01-ipc-fcntl/</url>
+    <content><![CDATA[<p>这是读写锁的一种扩展类型，可用于有亲缘关系或<strong>无亲缘关系</strong>的<strong>进程</strong>之间共享某个文件的读写。这些锁用于不同进程间的上锁，而不是用于同一进程中不同线程间的上锁。</p>
+<p>fcntl记录上锁，可以指定文件中待上锁和解锁部分的字节范围。<br>Posix记录上锁定义了一个特殊的字节范围来指定整个文件，它的起始偏移为0，长度也为0.</p>
+<a id="more"></a>
+
+<h2 id="术语-粒度"><a href="#术语-粒度" class="headerlink" title="术语-粒度"></a>术语-粒度</h2><p>用于标记能被锁住的对象的大小。对于Posix记录上锁来说，粒度就是单个字节。通常情况下粒度越小，允许同时使用的用户数就越多。</p>
+<p>记录上锁的Posix接口是fcntl函数</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fcntl</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">int</span> cmd, ... <span class="comment">/*struct flock *arg */</span>)</span></span>;</span><br><span class="line"><span class="comment">// 用于记录上锁的cmd参数有3个值。这3个cmd要求第3个参数arg是指向struct flock的指针</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">flock</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">short</span> l_type; <span class="comment">// F_RDLCK, F_WRLCK, F_UNLCK</span></span><br><span class="line">    <span class="keyword">short</span> l_whence; <span class="comment">// SEEK_SET, SEEK_CUR, SEEK_END</span></span><br><span class="line">    <span class="keyword">off_t</span> l_start; <span class="comment">// relative starting offset in bytes</span></span><br><span class="line">    <span class="keyword">off_t</span> l_len; <span class="comment">// #bytes; 0 means until end-of-file</span></span><br><span class="line">    <span class="keyword">pid_t</span> l_pid; <span class="comment">// PID returned by F_GETLK</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>F_SETLK 获取（l_type为F_RDLCK或F_WRLCK）或释放（l_type为F_UNLCK）由arg指向的flock结构所描述的锁，如果无法将该锁授予调用进程，该函数就立即返回一个EACCESS或EAGAIN错误，并<strong>不阻塞</strong></li>
+<li>F_SETLKW 该命令与上一个命令类似，不过在无法获取锁请求的锁时，调用线程将<strong>阻塞</strong></li>
+<li>F_GETLK 检查由arg指向的锁以确定是否有某个已存在的锁会妨碍将新锁授予调用线程。如果当前没有这样的锁存在，由arg指向的struct flock的l_type成员就被置为F_UNLCK。否则，关于这个已存在锁的信息将在由arg指向的struct flock中返回，中包含持有该锁的进程ID</li>
+</ul>
+<p><strong>注意：</strong></p>
+<ol>
+<li>F_GETLK完了接着F_SETLK<strong>不是一个原子操作</strong>，并不能保证F_SETLK会成功，因为在两个函数执行期间，很可能有另一个进程已经获取了我们想要的锁。<br>提供F_GETLK的原因在于：当执行F_SETLK的fcntl返回一个错误时，导致该错误的某个锁的信息可由F_GETLK来返回，从而允许我们确定是哪个进程锁住了所请求的文件区，以及上锁方式。<br>但同样有上面的原因，这两个操作<strong>不是原子操作</strong>，在F_GETLK调用之前，很可能原来持有锁的进程已经释放了锁。</li>
+<li>对于一个文件的任意字节，<strong>同一时刻，最多只能存在一种类型的锁</strong>（读出锁或写入锁），而且，一个给定字节可以有多个读出锁，但只能有一个写入锁。</li>
+<li>当一个描述符不是打开用来读时，如果对它请求一个读出锁，错误就会发生；同样，当一个描述符不是打开用来写时，如果对它请求一个写入锁，错误也会发生</li>
+<li>对于一个打开着某个文件的给定进程来说，当它关闭该文件的所有描述符或它本身终止时，与该文件关联的所有锁都被删除。锁不能通过fork由子进程继承</li>
+<li>记录上锁不应该同标准I/O函数库一起使用，因为该函数库会执行内部缓冲。当某个文件需要上锁时，为避免问题，应对它使用read和write。<br>在进程终止时由内核完成已有锁清理工作的特性，只有fcntl记录上锁完全提供了，System V信号量把它作为一个选项提供。互斥锁、条件变量、读写锁、Posix信号量，并不在进程终止时执行清理工作。</li>
+<li>锁住整个文件的两种方式<ul>
+<li>l_whence=SEEK_SET, l_start=0, l_len=0（常用，只需一个函数调用）</li>
+<li>使用lseek把读写指针定位到文件头，然后指定l_whence=SEEK_CUR, l_start=0, l_len=0</li>
+</ul>
+</li>
+</ol>
+<h2 id="劝告性上锁"><a href="#劝告性上锁" class="headerlink" title="劝告性上锁"></a>劝告性上锁</h2><p>Posix记录上锁称为劝告性上锁。其含义是内核维护着已由各个进程上锁的所有文件的正确信息，但是它不能防止一个进程写已由另一个进程读锁定的某个文件；类似的，它也不能防止一个进程读已由另一个进程写锁定的某个文件。当然，前提是该进程有读或写该文件的足够权限。</p>
+<h2 id="强制性上锁"><a href="#强制性上锁" class="headerlink" title="强制性上锁"></a>强制性上锁</h2><p>可以用chmod +l filename来对某个文件启用强制性上锁<br>强制性上锁虽然能够阻止非协作进程读一个已被锁住的文件，但是也不能保证万无一失。<br><strong>建议：</strong>如果有多个进程在更新同一个文件，那么所有进程必须使用某种上锁形式协作。</p>
+<h3 id="读出者和写入者的优先级"><a href="#读出者和写入者的优先级" class="headerlink" title="读出者和写入者的优先级"></a>读出者和写入者的优先级</h3><p>不同的系统可能有不同的实现，有的是以FIFO顺序处理上锁请求的，而不管上锁请求的类型；有的则会优先考虑读出请求</p>
+<h3 id="启动一个守护进程的唯一副本"><a href="#启动一个守护进程的唯一副本" class="headerlink" title="启动一个守护进程的唯一副本"></a>启动一个守护进程的唯一副本</h3><p>记录上锁的一个常见用途是确保某个程序（如守护程序）在任何时刻只有一个副本在运行。<br>守护进程维护一个只有1行文本的文件，其中包含它的进程ID。它打开这个文件，必要的时候创建它，然后请求整个文件的一个写入锁。如果没有取得该锁，我们就知道该程序有另一个副本在运行，于是输出一个出错信息并终止。<br>如果某个守护进程提前崩溃了，内核会<strong>自动释放</strong>它的记录锁。</p>
+<blockquote>
+<p>文中代码托管在: <a href="https://github.com/carl-wang-cn/demo/tree/master/ipc">https://github.com/carl-wang-cn/demo/tree/master/ipc</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>ipc</tag>
+        <tag>多进程</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>免密登录远程linux机器</title>
+    <url>/2020/02/01/2020-02-01-ssh-remote-linux/</url>
+    <content><![CDATA[<h3 id="为什么选择证书登陆？"><a href="#为什么选择证书登陆？" class="headerlink" title="为什么选择证书登陆？"></a>为什么选择证书登陆？</h3><p>Mac下原生及主流的ssh终端工具大多不具备保存ssh登陆密码的功能, 通过证书登陆的方式，就可以实现原生终端工具Terminal或第三方明星终端iTerm免密码登录远程系统，并且比单纯的密码验证登陆方式提高了安全性。</p>
+<a id="more"></a>
+
+<h3 id="配置过程（以下操作都在终端命令行下运行）"><a href="#配置过程（以下操作都在终端命令行下运行）" class="headerlink" title="配置过程（以下操作都在终端命令行下运行）"></a>配置过程（以下操作都在终端命令行下运行）</h3><ol>
+<li>进入系统的ssh证书目录 cd ~/.ssh/</li>
+<li>建立证书文件 ssh-keygen -t rsa 提示输入，直接回车即可。</li>
+<li>输入 ls 命令查看当前目录会发现新生成的一对秘钥文件分别是：<br>公钥：id_rsa.pub<br>私钥：id_rsa</li>
+<li>登陆到远程服务器，进入.ssh目录 cd ~/.ssh<br>将上面生成的公钥文件的内容copy进 authorized_keys 文件中</li>
+<li>在Mac终端下执行登陆命令 ssh username@server<br>即可免密码登录到远程服务器</li>
+</ol>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>ssh</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>awk怎么写?</title>
     <url>/2020/01/16/2020-01-16-awk/</url>
     <content><![CDATA[<p>本篇文章主要是参考左耳朵耗子前辈的博文整理而来, 作为自己学习备忘之用.</p>
@@ -709,212 +879,6 @@
       </tags>
   </entry>
   <entry>
-    <title>如何写好一封Email</title>
-    <url>/2020/01/29/2020-01-29-write-good-email/</url>
-    <content><![CDATA[<h3 id="接收人"><a href="#接收人" class="headerlink" title="接收人"></a>接收人</h3><ol>
-<li><p>收件人</p>
-<blockquote>
-<p>事件接棒人, 是需要对事件做出响应及跟进的人, 如果需要老板处理, 那么收件人就加上老板, 而不是抄送</p>
-</blockquote>
-</li>
-<li><p>抄送人</p>
-<blockquote>
-<p>事件知会人, 只需要知道邮件的内容就可以了, 不必要一定做出响应或去跟进</p>
-</blockquote>
-</li>
-</ol>
-<a id="more"></a>
-
-<h3 id="称呼及问候语"><a href="#称呼及问候语" class="headerlink" title="称呼及问候语"></a>称呼及问候语</h3><p>写上称呼是一种礼貌的象征, 尤其写对外邮件的时候, 是必要项.</p>
-<blockquote>
-<ul>
-<li>Dear LastName, 比较正式的场合</li>
-<li>Hi FirstName, 朋友之间比较随意的场合</li>
-<li>Dear FirstName, 如果你不知道用什么, 就用这个</li>
-</ul>
-</blockquote>
-<h3 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h3><ul>
-<li><strong>直奔主题, 言简意赅</strong>, 以下给几个例子来展示如何直奔主题</li>
-</ul>
-<blockquote>
-<ol>
-<li>I’m working on an article about xxx for yyy publication, and wondered if you had a few minutes to answer the following 3 questions.<br>我正在写一篇要交给yyy出版社的文章, 不知道您是否有时间回答下下面3个问题呢?</li>
-</ol>
-</blockquote>
-<blockquote>
-<ol start="2">
-<li>Could you supply me with a quote for the following project?<br>可否对下面的设计项目进行引证?</li>
-</ol>
-</blockquote>
-<blockquote>
-<ol start="3">
-<li>I’d like to discuss the revisions with you. Would Tuesday at 2pm be a good time?<br>我想和你谈谈修订的事情, 这周二下午2点您有空吗?</li>
-</ol>
-</blockquote>
-<blockquote>
-<ol start="4">
-<li>I’ve attached the documents you requested at our meeting yesterday.<br>昨天会议上您要求的文件已附上, 请查收.</li>
-</ol>
-</blockquote>
-<ul>
-<li><p>如果有问题需要提出, 或者需要重点突出的内容, 那么将其放到 <strong>开头</strong>. 如果问题放到最后, 收信人可能都不会留意到, 或者不会意识到你在等他的回复.</p>
-</li>
-<li><p>如果是咨询邮件, 或者说明什么产品, 那么将问题(或特性)一点点的 <strong>编号</strong> 列出来.</p>
-</li>
-</ul>
-<h3 id="常用英文邮件术语"><a href="#常用英文邮件术语" class="headerlink" title="常用英文邮件术语"></a>常用英文邮件术语</h3><ol>
-<li><p>To inform 提供信息</p>
-<blockquote>
-<p>The sender of the email wants to tell the receiver about something such as a new show coming to London. It might contain a link to the theatre. Generally speaking no reply is necessary. It can be a group email sent to a circle of friends, <strong>for example.</strong></p>
-<p>Dear all,</p>
-<p>Hope you are all well. Just to let you know that The China National Peking Opera is coming to London at the end of November to perform classical Peking Opera and the show will only be on for 3 days, so grab your tickets soon. Here is the link xxx</p>
-</blockquote>
-</li>
-<li><p>To inquire 询问</p>
-<blockquote>
-<p>The sender needs some information and is expecting a reply.</p>
-<p>Dear Sir/Madam,</p>
-<p>I am writing to inquire about the rules regarding children travelling alone. For instance, can a 15 year old child travel on Air China alone? What should we do if there is not an adult to accompany the child?</p>
-<p>I look forward to your advice.</p>
-</blockquote>
-</li>
-<li><p>To request 请求</p>
-<blockquote>
-<p>The sender is asking for permission to do something, such as an permission to leave 5 days for a trip.<br>I’m writing to see whether it is possible for me to leave 5 days from next Monday for a trip with my family.</p>
-<p>Dear xxx</p>
-<p>I would be very grateful if you could consider my request.<br>Thanks.</p>
-<p>Carl</p>
-</blockquote>
-</li>
-<li><p>Stay in touch 保持联系</p>
-<blockquote>
-<p>I’m writing to say hello for the purpose to maintain social connections, friendship, and perhaps future collaboration.</p>
-<p>Hi xxx,</p>
-<p>How are you doing in your new job? It should be perfect, for you are a superman.<br>I’m also busy these two months and have not played any sports these days.</p>
-<p>Let me know when you will be free, so we can have a game and a drink.</p>
-<p>Best<br>Carl</p>
-</blockquote>
-</li>
-</ol>
-<h3 id="校对拼写错误"><a href="#校对拼写错误" class="headerlink" title="校对拼写错误"></a>校对拼写错误</h3><p>很重要, 一定不能有错别字</p>
-<h3 id="邮件签名"><a href="#邮件签名" class="headerlink" title="邮件签名"></a>邮件签名</h3><p>写清楚</p>
-<ul>
-<li>你是谁</li>
-<li>你来自哪里</li>
-<li>你是做什么的</li>
-<li>你的联系方式(电话, 工作地址)</li>
-<li>其他(例如你的社交网络账号, 最新宣传博客等), 此条不适用与公司对公邮件</li>
-</ul>
-]]></content>
-      <categories>
-        <category>职业素养</category>
-      </categories>
-      <tags>
-        <tag>Email</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>进程间通信-fcntl记录上锁</title>
-    <url>/2020/02/01/2020-02-01-ipc-fcntl/</url>
-    <content><![CDATA[<p>这是读写锁的一种扩展类型，可用于有亲缘关系或<strong>无亲缘关系</strong>的<strong>进程</strong>之间共享某个文件的读写。这些锁用于不同进程间的上锁，而不是用于同一进程中不同线程间的上锁。</p>
-<p>fcntl记录上锁，可以指定文件中待上锁和解锁部分的字节范围。<br>Posix记录上锁定义了一个特殊的字节范围来指定整个文件，它的起始偏移为0，长度也为0.</p>
-<a id="more"></a>
-
-<h2 id="术语-粒度"><a href="#术语-粒度" class="headerlink" title="术语-粒度"></a>术语-粒度</h2><p>用于标记能被锁住的对象的大小。对于Posix记录上锁来说，粒度就是单个字节。通常情况下粒度越小，允许同时使用的用户数就越多。</p>
-<p>记录上锁的Posix接口是fcntl函数</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fcntl</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">int</span> cmd, ... <span class="comment">/*struct flock *arg */</span>)</span></span>;</span><br><span class="line"><span class="comment">// 用于记录上锁的cmd参数有3个值。这3个cmd要求第3个参数arg是指向struct flock的指针</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">flock</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">short</span> l_type; <span class="comment">// F_RDLCK, F_WRLCK, F_UNLCK</span></span><br><span class="line">    <span class="keyword">short</span> l_whence; <span class="comment">// SEEK_SET, SEEK_CUR, SEEK_END</span></span><br><span class="line">    <span class="keyword">off_t</span> l_start; <span class="comment">// relative starting offset in bytes</span></span><br><span class="line">    <span class="keyword">off_t</span> l_len; <span class="comment">// #bytes; 0 means until end-of-file</span></span><br><span class="line">    <span class="keyword">pid_t</span> l_pid; <span class="comment">// PID returned by F_GETLK</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>F_SETLK 获取（l_type为F_RDLCK或F_WRLCK）或释放（l_type为F_UNLCK）由arg指向的flock结构所描述的锁，如果无法将该锁授予调用进程，该函数就立即返回一个EACCESS或EAGAIN错误，并<strong>不阻塞</strong></li>
-<li>F_SETLKW 该命令与上一个命令类似，不过在无法获取锁请求的锁时，调用线程将<strong>阻塞</strong></li>
-<li>F_GETLK 检查由arg指向的锁以确定是否有某个已存在的锁会妨碍将新锁授予调用线程。如果当前没有这样的锁存在，由arg指向的struct flock的l_type成员就被置为F_UNLCK。否则，关于这个已存在锁的信息将在由arg指向的struct flock中返回，中包含持有该锁的进程ID</li>
-</ul>
-<p><strong>注意：</strong></p>
-<ol>
-<li>F_GETLK完了接着F_SETLK<strong>不是一个原子操作</strong>，并不能保证F_SETLK会成功，因为在两个函数执行期间，很可能有另一个进程已经获取了我们想要的锁。<br>提供F_GETLK的原因在于：当执行F_SETLK的fcntl返回一个错误时，导致该错误的某个锁的信息可由F_GETLK来返回，从而允许我们确定是哪个进程锁住了所请求的文件区，以及上锁方式。<br>但同样有上面的原因，这两个操作<strong>不是原子操作</strong>，在F_GETLK调用之前，很可能原来持有锁的进程已经释放了锁。</li>
-<li>对于一个文件的任意字节，<strong>同一时刻，最多只能存在一种类型的锁</strong>（读出锁或写入锁），而且，一个给定字节可以有多个读出锁，但只能有一个写入锁。</li>
-<li>当一个描述符不是打开用来读时，如果对它请求一个读出锁，错误就会发生；同样，当一个描述符不是打开用来写时，如果对它请求一个写入锁，错误也会发生</li>
-<li>对于一个打开着某个文件的给定进程来说，当它关闭该文件的所有描述符或它本身终止时，与该文件关联的所有锁都被删除。锁不能通过fork由子进程继承</li>
-<li>记录上锁不应该同标准I/O函数库一起使用，因为该函数库会执行内部缓冲。当某个文件需要上锁时，为避免问题，应对它使用read和write。<br>在进程终止时由内核完成已有锁清理工作的特性，只有fcntl记录上锁完全提供了，System V信号量把它作为一个选项提供。互斥锁、条件变量、读写锁、Posix信号量，并不在进程终止时执行清理工作。</li>
-<li>锁住整个文件的两种方式<ul>
-<li>l_whence=SEEK_SET, l_start=0, l_len=0（常用，只需一个函数调用）</li>
-<li>使用lseek把读写指针定位到文件头，然后指定l_whence=SEEK_CUR, l_start=0, l_len=0</li>
-</ul>
-</li>
-</ol>
-<h2 id="劝告性上锁"><a href="#劝告性上锁" class="headerlink" title="劝告性上锁"></a>劝告性上锁</h2><p>Posix记录上锁称为劝告性上锁。其含义是内核维护着已由各个进程上锁的所有文件的正确信息，但是它不能防止一个进程写已由另一个进程读锁定的某个文件；类似的，它也不能防止一个进程读已由另一个进程写锁定的某个文件。当然，前提是该进程有读或写该文件的足够权限。</p>
-<h2 id="强制性上锁"><a href="#强制性上锁" class="headerlink" title="强制性上锁"></a>强制性上锁</h2><p>可以用chmod +l filename来对某个文件启用强制性上锁<br>强制性上锁虽然能够阻止非协作进程读一个已被锁住的文件，但是也不能保证万无一失。<br><strong>建议：</strong>如果有多个进程在更新同一个文件，那么所有进程必须使用某种上锁形式协作。</p>
-<h3 id="读出者和写入者的优先级"><a href="#读出者和写入者的优先级" class="headerlink" title="读出者和写入者的优先级"></a>读出者和写入者的优先级</h3><p>不同的系统可能有不同的实现，有的是以FIFO顺序处理上锁请求的，而不管上锁请求的类型；有的则会优先考虑读出请求</p>
-<h3 id="启动一个守护进程的唯一副本"><a href="#启动一个守护进程的唯一副本" class="headerlink" title="启动一个守护进程的唯一副本"></a>启动一个守护进程的唯一副本</h3><p>记录上锁的一个常见用途是确保某个程序（如守护程序）在任何时刻只有一个副本在运行。<br>守护进程维护一个只有1行文本的文件，其中包含它的进程ID。它打开这个文件，必要的时候创建它，然后请求整个文件的一个写入锁。如果没有取得该锁，我们就知道该程序有另一个副本在运行，于是输出一个出错信息并终止。<br>如果某个守护进程提前崩溃了，内核会<strong>自动释放</strong>它的记录锁。</p>
-<blockquote>
-<p>文中代码托管在: <a href="https://github.com/carl-wang-cn/demo/tree/master/ipc">https://github.com/carl-wang-cn/demo/tree/master/ipc</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>ipc</tag>
-        <tag>多进程</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>进程间通信-读写锁</title>
-    <url>/2020/02/04/2020-02-04-ipc-read-write-lock/</url>
-    <content><![CDATA[<p>读写锁是作为pthread_rwlock_t数据类型的变量在内存中分配的。当读写锁是在单个进程内的各个线程间共享时，这些变量可以在那个进程内；<br>当读写锁是在共享某个内存区的进程间共享时，这些变量应该在该共享内存区中。</p>
-<a id="more"></a>
-
-<h3 id="读写锁的分配原则"><a href="#读写锁的分配原则" class="headerlink" title="读写锁的分配原则"></a>读写锁的分配原则</h3><ol>
-<li>只有没有线程持有某个给定的读写锁用于写，那么任意数目的线程可以持有该读写锁用于读</li>
-<li>仅当没有线程持有某个给定的读写锁用于读或写时，才能分配该读写锁用于写。</li>
-</ol>
-<p>某些应用中读数据比修改数据频繁，这些应用可以从改用读写锁代替互斥锁中获益。任意给定时刻允许多个读出者存在提供了更高的并发度，同时在某个写入者修改数据期间保护该数据，以免任何其他读出者或写入者的干扰。<br>读写锁的一个日常类比是访问银行账户。</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_rdlock</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>; <span class="comment">//获取一个读出锁</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_wrlock</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>; <span class="comment">//获取一个写入锁</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_unlock</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_tryrdlock</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_trywrlock</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>;</span><br></pre></td></tr></table></figure>
-<h3 id="读写锁属性"><a href="#读写锁属性" class="headerlink" title="读写锁属性"></a>读写锁属性</h3><ol>
-<li>静态分配的读写锁，可以用常值PTHREAD_\RWLOCK_INITIALIZER来初始化</li>
-<li>调用pthread_rwlock_init来动态初始化</li>
-<li>当一个线程不再需要某个读写锁时，可以调用pthread_rwlock_destroy来销毁它</li>
-</ol>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_init</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr, <span class="keyword">const</span> <span class="keyword">pthread_rwlockattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_destroy</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>;</span><br></pre></td></tr></table></figure>
-<p>数据类型为pthread_rwlockattr_t的某个属性对象一旦初始化，就通过调用不同的函数来启用或禁止特定属性。当前定义了的唯一属性是PTHREAD_PROCESS_SHARED。</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlockattr_getpshared</span><span class="params">(<span class="keyword">const</span> <span class="keyword">pthread_rwlockattr_t</span> *attr, <span class="keyword">int</span> *valptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlockattr_setpshared</span><span class="params">(<span class="keyword">const</span> <span class="keyword">pthread_rwlockattr_t</span> *attr, <span class="keyword">int</span> value)</span></span>;</span><br></pre></td></tr></table></figure>
-<p>value的值可以为PTHREAD_PROCESS_PRIVATE或PTHREAD_PROCESS_SHARED</p>
-<h3 id="线程清理处理程序"><a href="#线程清理处理程序" class="headerlink" title="线程清理处理程序"></a>线程清理处理程序</h3><p>有时候，线程会在持有锁期间被动（被其他线程cancel）或主动终止（主动调用pthread_exit）。为了处理这种情况，线程可以安装或删除清理处理程序</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">pthread_cleanup_push</span><span class="params">(<span class="keyword">void</span> (*function)(<span class="keyword">void</span> *), <span class="keyword">void</span> *arg)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">pthread_cleanup_pop</span><span class="params">(<span class="keyword">int</span> execute)</span></span>; <span class="comment">// 删除调用线程的取消清理栈中位于栈顶的函数。如果excute不为0，就调用该函数</span></span><br></pre></td></tr></table></figure>
-<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>与普通的互斥锁相比，当被保护数据的读访问比写访问更为频繁时，读写锁能够提供更高的并发度。</p>
-<blockquote>
-<p>文中代码托管在: <a href="https://github.com/carl-wang-cn/demo/tree/master/ipc">https://github.com/carl-wang-cn/demo/tree/master/ipc</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>ipc</tag>
-        <tag>多进程</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>免密登录远程linux机器</title>
-    <url>/2020/02/01/2020-02-01-ssh-remote-linux/</url>
-    <content><![CDATA[<h3 id="为什么选择证书登陆？"><a href="#为什么选择证书登陆？" class="headerlink" title="为什么选择证书登陆？"></a>为什么选择证书登陆？</h3><p>Mac下原生及主流的ssh终端工具大多不具备保存ssh登陆密码的功能, 通过证书登陆的方式，就可以实现原生终端工具Terminal或第三方明星终端iTerm免密码登录远程系统，并且比单纯的密码验证登陆方式提高了安全性。</p>
-<a id="more"></a>
-
-<h3 id="配置过程（以下操作都在终端命令行下运行）"><a href="#配置过程（以下操作都在终端命令行下运行）" class="headerlink" title="配置过程（以下操作都在终端命令行下运行）"></a>配置过程（以下操作都在终端命令行下运行）</h3><ol>
-<li>进入系统的ssh证书目录 cd ~/.ssh/</li>
-<li>建立证书文件 ssh-keygen -t rsa 提示输入，直接回车即可。</li>
-<li>输入 ls 命令查看当前目录会发现新生成的一对秘钥文件分别是：<br>公钥：id_rsa.pub<br>私钥：id_rsa</li>
-<li>登陆到远程服务器，进入.ssh目录 cd ~/.ssh<br>将上面生成的公钥文件的内容copy进 authorized_keys 文件中</li>
-<li>在Mac终端下执行登陆命令 ssh username@server<br>即可免密码登录到远程服务器</li>
-</ol>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>ssh</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>进程间通信-Posix信号量</title>
     <url>/2020/02/04/2020-02-04-ipc-posix-sem/</url>
     <content><![CDATA[<h5 id="信号量是一种用于提供不同进程间或一个给定进程的不同线程间同步手段的原语。"><a href="#信号量是一种用于提供不同进程间或一个给定进程的不同线程间同步手段的原语。" class="headerlink" title="信号量是一种用于提供不同进程间或一个给定进程的不同线程间同步手段的原语。"></a>信号量是一种用于提供不同进程间或一个给定进程的不同线程间同步手段的原语。</h5><ul>
@@ -1007,6 +971,42 @@
 <p>服务器可以创建一个共享内存区，在该共享内存区中初始化一个Posix基于内存的信号量，然后终止。一段时间后，一个或多个客户可打开该共享内存区，访问存放在其中的基于内存的信号量。</p>
 </blockquote>
 <p>producer_consumer02.c使用Posix基于内存的信号量，演示了生产者-消费者问题。</p>
+<blockquote>
+<p>文中代码托管在: <a href="https://github.com/carl-wang-cn/demo/tree/master/ipc">https://github.com/carl-wang-cn/demo/tree/master/ipc</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>ipc</tag>
+        <tag>多进程</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>进程间通信-读写锁</title>
+    <url>/2020/02/04/2020-02-04-ipc-read-write-lock/</url>
+    <content><![CDATA[<p>读写锁是作为pthread_rwlock_t数据类型的变量在内存中分配的。当读写锁是在单个进程内的各个线程间共享时，这些变量可以在那个进程内；<br>当读写锁是在共享某个内存区的进程间共享时，这些变量应该在该共享内存区中。</p>
+<a id="more"></a>
+
+<h3 id="读写锁的分配原则"><a href="#读写锁的分配原则" class="headerlink" title="读写锁的分配原则"></a>读写锁的分配原则</h3><ol>
+<li>只有没有线程持有某个给定的读写锁用于写，那么任意数目的线程可以持有该读写锁用于读</li>
+<li>仅当没有线程持有某个给定的读写锁用于读或写时，才能分配该读写锁用于写。</li>
+</ol>
+<p>某些应用中读数据比修改数据频繁，这些应用可以从改用读写锁代替互斥锁中获益。任意给定时刻允许多个读出者存在提供了更高的并发度，同时在某个写入者修改数据期间保护该数据，以免任何其他读出者或写入者的干扰。<br>读写锁的一个日常类比是访问银行账户。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_rdlock</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>; <span class="comment">//获取一个读出锁</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_wrlock</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>; <span class="comment">//获取一个写入锁</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_unlock</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_tryrdlock</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_trywrlock</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>;</span><br></pre></td></tr></table></figure>
+<h3 id="读写锁属性"><a href="#读写锁属性" class="headerlink" title="读写锁属性"></a>读写锁属性</h3><ol>
+<li>静态分配的读写锁，可以用常值PTHREAD_\RWLOCK_INITIALIZER来初始化</li>
+<li>调用pthread_rwlock_init来动态初始化</li>
+<li>当一个线程不再需要某个读写锁时，可以调用pthread_rwlock_destroy来销毁它</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_init</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr, <span class="keyword">const</span> <span class="keyword">pthread_rwlockattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_destroy</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>数据类型为pthread_rwlockattr_t的某个属性对象一旦初始化，就通过调用不同的函数来启用或禁止特定属性。当前定义了的唯一属性是PTHREAD_PROCESS_SHARED。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlockattr_getpshared</span><span class="params">(<span class="keyword">const</span> <span class="keyword">pthread_rwlockattr_t</span> *attr, <span class="keyword">int</span> *valptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlockattr_setpshared</span><span class="params">(<span class="keyword">const</span> <span class="keyword">pthread_rwlockattr_t</span> *attr, <span class="keyword">int</span> value)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>value的值可以为PTHREAD_PROCESS_PRIVATE或PTHREAD_PROCESS_SHARED</p>
+<h3 id="线程清理处理程序"><a href="#线程清理处理程序" class="headerlink" title="线程清理处理程序"></a>线程清理处理程序</h3><p>有时候，线程会在持有锁期间被动（被其他线程cancel）或主动终止（主动调用pthread_exit）。为了处理这种情况，线程可以安装或删除清理处理程序</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">pthread_cleanup_push</span><span class="params">(<span class="keyword">void</span> (*function)(<span class="keyword">void</span> *), <span class="keyword">void</span> *arg)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">pthread_cleanup_pop</span><span class="params">(<span class="keyword">int</span> execute)</span></span>; <span class="comment">// 删除调用线程的取消清理栈中位于栈顶的函数。如果excute不为0，就调用该函数</span></span><br></pre></td></tr></table></figure>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>与普通的互斥锁相比，当被保护数据的读访问比写访问更为频繁时，读写锁能够提供更高的并发度。</p>
 <blockquote>
 <p>文中代码托管在: <a href="https://github.com/carl-wang-cn/demo/tree/master/ipc">https://github.com/carl-wang-cn/demo/tree/master/ipc</a></p>
 </blockquote>
@@ -1273,61 +1273,6 @@
       </tags>
   </entry>
   <entry>
-    <title>进程间通信-管道</title>
-    <url>/2020/02/07/2020-02-07-ipc-pipe/</url>
-    <content><![CDATA[<h3 id="pipe匿名管道"><a href="#pipe匿名管道" class="headerlink" title="pipe匿名管道"></a>pipe匿名管道</h3><p>匿名管道由于没有名字, 因此只能由有亲缘关系的进程使用</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pipe</span><span class="params">(<span class="keyword">int</span> fd[<span class="number">2</span>])</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 出错返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">该函数返回两个文件描述符: fd[<span class="number">0</span>]和fd[<span class="number">1</span>], 前者打开来读, 后者打开来写.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-
-<p>另一个关于管道的例子, 标准I/O函数库提供了popen函数, 它创建一个管道并启动另一个进程, 该进程要么从该管道读出标准输入, 要么往该管道写入标准输出</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function">FILE *<span class="title">popen</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *command, <span class="keyword">const</span> <span class="keyword">char</span> *type)</span></span>;</span><br><span class="line">返回: 成功返回文件指针，失败返回<span class="literal">NULL</span></span><br><span class="line">注意: popen不对标准错误输出做任何处理, 只有标准输出才被重定向到由它创建的管道</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pclose</span><span class="params">(FILE *stream)</span></span>;</span><br><span class="line">返回: 成功则为shell的终止状态, 失败为<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">command是一个shell命令行, popen在调用进程和所指定的命令之间创建一个管道</span><br><span class="line"></span><br><span class="line">- 如果type为r, 调用进程读入command的标准输出</span><br><span class="line">- 如果type为w, 调用进程写到command的标准输入</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<ul>
-<li>pipe01.c演示了父子进程间通过pipe实现半双工通信</li>
-<li>pipe02.c演示了使用popen创建管道</li>
-</ul>
-<h3 id="FIFO-有名管道"><a href="#FIFO-有名管道" class="headerlink" title="FIFO 有名管道"></a>FIFO 有名管道</h3><p>每个FIFO有一个路径名与之关联, 从而允许无亲缘关系的进程访问同一个FIFO。</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mkfifo</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *pathname, <span class="keyword">mode_t</span> mode)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">mkfifo函数已经隐含指定了O_CREAT | O_EXCL, 也就是说, 它要么创建一个新的FIFO, 要么返回一个EEXIST错误(如果所指定名字的FIFO已经存在)。此处可参考示例中的正确创建FIFO的步骤</span><br><span class="line"></span><br><span class="line">- 创建出一个FIFO后, 它必须或者打开来读, 或者打开来写。不能打开来既读又写, 因为它是**半双工**的</span><br><span class="line">- 如果一个FIFO, 当前尚没有进程打开它来写, 那么此时打开该FIFO来读的进程将会阻塞</span><br><span class="line">- 对管道或FIFO的write总是往末尾添加数据, 对它们的read总是从开头返回数据。</span><br><span class="line">- 如果对管道或FIFO执行lseek, 会返回ESPIPE错误</span><br><span class="line">- 当对一个管道或FIFO的最终close发生时, 该管道或FIFO中的任何残留数据都被丢弃</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<ul>
-<li>fifo_read.c 中从文件data.txt中读取内容, 写入到FIFO中</li>
-<li>fifo_write.c 中从FIFO中读取内容, 写入到datafromfifo.txt中</li>
-<li>data.txt 是测试文件</li>
-<li>datafromfifo.txt 是fifo_write.c运行后生成的文件</li>
-</ul>
-<h3 id="管道和FIFO的区别"><a href="#管道和FIFO的区别" class="headerlink" title="管道和FIFO的区别"></a>管道和FIFO的区别</h3><ul>
-<li>创建并打开一个管道, 只需要调用pipe；创建并打开一个FIFO则需在调用mkdifo后再调用open</li>
-<li>管道在所有进程最终都关闭它之后自动消失。FIFO的名字则只有通过调用unlink才从文件系统中删除</li>
-<li>FIFO需要额外调用的好处: FIFO在文件系统中有一个名字, 该名字允许某个进程创建一个FIFO, 与它<strong>无亲缘关系</strong>的另一个进程来打开这个FIFO, 这对管道来说是不可能的(不考虑传递描述符的情况)</li>
-</ul>
-<h3 id="管道和FIFO的限制"><a href="#管道和FIFO的限制" class="headerlink" title="管道和FIFO的限制"></a>管道和FIFO的限制</h3><p>系统加于管道和FIFO的唯一限制为:</p>
-<ul>
-<li><p>OPEN_MAX 一个进程在任意时刻打开的最大描述符数</p>
-</li>
-<li><p>PIPE_BUF 可原子地写往一个管道或FIFO的最大数据量</p>
-</li>
-<li><p>get_sys_conf.c 获取当前系统的OPEN_MAX和PIPE_BUF值</p>
-</li>
-</ul>
-<h3 id="将一个描述符设为非阻塞两种方式"><a href="#将一个描述符设为非阻塞两种方式" class="headerlink" title="将一个描述符设为非阻塞两种方式"></a>将一个描述符设为非阻塞两种方式</h3><ol>
-<li>调用open的时候可指定O_NONBLOCK标志</li>
-<li>如果一个描述符已打开, 那么可以调用fcntl以启用O_NONBLOCK标志。<blockquote>
-<p>对于管道来说, 必须使用这种技术, 因为管道没有open调用, 在pipe中也无法指定O_NONBLOCK标志</p>
-</blockquote>
-</li>
-</ol>
-<p><strong>FIFO的真正优势</strong>表现在服务器可以是一个长期运行的进程（例如守护进程）, 而且与其客户可以无亲缘关系。<br>作为服务器的守护进程以某个众所周知的路径名创建一个FIFO, 并打开该FIFO来读。此后某个<br>时刻启动的客户打开该FIFO来写, 并将其命令或给守护进程的其他任何东西通过该FIFO发送出去。<br>使用FIFO很容易实现这种形式的单向通信(client-&gt;server)。如果守护进程需要向客户发送<br>回一些东西, 那就需要点技巧(例如客户需要通知守护进程要打开哪个FIFO可以给其发消息)</p>
-<blockquote>
-<p>文中代码托管在: <a href="https://github.com/carl-wang-cn/demo/tree/master/ipc">https://github.com/carl-wang-cn/demo/tree/master/ipc</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>ipc</tag>
-        <tag>多进程</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>进程间通信-共享内存</title>
     <url>/2020/02/05/2020-02-05-mmap/</url>
     <content><![CDATA[<p>共享内存区是IPC形式中<strong>最快</strong>的. 一旦这样的内存区映射到共享它的进程的地址<br>空间, 这些进程间数据的传递就不再涉及内核. 然而往该共享内存区存放信息或从<br>中取走信息的进程间通常需要某种形式的同步.</p>
@@ -1384,81 +1329,6 @@
         <tag>ipc</tag>
         <tag>多进程</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>python的finally语句中使用return要慎重!!!</title>
-    <url>/2020/02/13/2020-02-13-python-finally-hole/</url>
-    <content><![CDATA[<p>前两天, 同事踩了一个坑, python代码的一个接口抛了异常, 但是返回值是0. 这里记录一下.</p>
-<p>代码大概是这样的.</p>
-<a id="more"></a>
-
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">division</span>(<span class="params">a, b</span>):</span></span><br><span class="line">    ret = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        ret = a / b</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        print(<span class="string">&#x27;oops!&#x27;</span>)</span><br><span class="line">        <span class="keyword">raise</span> e</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        <span class="keyword">return</span> ret</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    print(division(<span class="number">1</span>, <span class="number">0</span>))</span><br><span class="line"><span class="keyword">except</span> Exception:</span><br><span class="line">    print(<span class="string">&#x27;ooops!!&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行一下, 结果如下.</span></span><br><span class="line">&gt; python3 test.py</span><br><span class="line">oops!</span><br><span class="line"><span class="number">0</span></span><br></pre></td></tr></table></figure>
-<p>是不是不符合你预期?</p>
-<p>我们来改一行, 再看看</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">division</span>(<span class="params">a, b</span>):</span></span><br><span class="line">    ret = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        ret = a / b</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        print(<span class="string">&#x27;oops!&#x27;</span>)</span><br><span class="line">        <span class="keyword">raise</span> e</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        print(<span class="string">&#x27;ops!&#x27;</span>) <span class="comment"># 这行改了哦, 不用return了</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    print(division(<span class="number">1</span>, <span class="number">0</span>))</span><br><span class="line"><span class="keyword">except</span> Exception:</span><br><span class="line">    print(<span class="string">&#x27;ooops!!&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行一下, 结果如下.</span></span><br><span class="line">&gt; python3 test.py</span><br><span class="line">oops!</span><br><span class="line">ops!</span><br><span class="line">ooops!!</span><br></pre></td></tr></table></figure>
-<p>现在的结果是不是符合预期了?</p>
-<p>从这个采坑和测试过程来看, 在finally语句中一定要注意一下return的使用, 要慎重!!!</p>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>proto buffer MergeFrom的坑</title>
-    <url>/2020/03/17/2020-03-17-donot-use-pb-mergefrom/</url>
-    <content><![CDATA[<p>pb好用, 性能虽然比不上二进制, 不过也比json在大多数情况下还是好很多. 尤其是字段的向前向后兼容, 这一点应该也是大多数同学选用pb的原因. 然后终于<strong>掉进坑</strong>了, 严重得影响了一次线上服务.<br>整理测试程序的时候发现, python的官方指南压根就没提MergeFrom这个接口, 看起来是专门用来坑c++的兄弟的啊</p>
-<a id="more"></a>
-
-<p>下面给个例子来说明</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># mergefrom_trap.proto</span></span><br><span class="line">package mergefrom_trap;</span><br><span class="line">message Person</span><br><span class="line">&#123;</span><br><span class="line">required string name = 1;</span><br><span class="line">required int32 age = 2;</span><br><span class="line">// optional int32 new1 = 3;</span><br><span class="line">// optional int32 new2 = 4[default = 0];</span><br><span class="line">&#125;</span><br><span class="line">message AddressBook</span><br><span class="line">&#123;</span><br><span class="line">required string host_name = 1;</span><br><span class="line">repeated Person person = 2;</span><br><span class="line">// optional int32 new3 = 3;</span><br><span class="line">// optional int32 new4 = 4[default = 0];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h5 id="1-先用没有new1-4字段的proto-编译出c-的bin文件"><a href="#1-先用没有new1-4字段的proto-编译出c-的bin文件" class="headerlink" title="1. 先用没有new1-4字段的proto, 编译出c++的bin文件"></a>1. 先用没有new1-4字段的proto, 编译出c++的bin文件</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[carl pb_mergefrom_trap]$ protoc -I=./ --cpp_out=./ mergefrom_trap.proto</span><br><span class="line">[carl pb_mergefrom_trap]$ g++ read_new_write_old.cpp mergefrom_trap.pb.cc -lprotobuf -o read_new_write_old.bin</span><br></pre></td></tr></table></figure>
-<h5 id="2-然后添家new1-4字段-生成-mergefrom-trap-pb2-py"><a href="#2-然后添家new1-4字段-生成-mergefrom-trap-pb2-py" class="headerlink" title="2. 然后添家new1-4字段, 生成 mergefrom_trap_pb2.py"></a>2. 然后添家new1-4字段, 生成 mergefrom_trap_pb2.py</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[carl pb_mergefrom_trap]$ protoc -I=./ --python_out=./ mergefrom_trap.proto</span><br></pre></td></tr></table></figure>
-<h5 id="3-用write-new-py程序创建一个address-book对象并写入文件-输出结果如下"><a href="#3-用write-new-py程序创建一个address-book对象并写入文件-输出结果如下" class="headerlink" title="3. 用write_new.py程序创建一个address_book对象并写入文件, 输出结果如下:"></a>3. 用write_new.py程序创建一个address_book对象并写入文件, 输出结果如下:</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[carl pb_mergefrom_trap]$ python write_new.py addressbook</span><br><span class="line">address_book: host_name: <span class="string">&quot;carl&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 30</span><br><span class="line">new1: 1</span><br><span class="line">new2: 2</span><br><span class="line">&#125;</span><br><span class="line">new3: 3</span><br><span class="line">new4: 4</span><br></pre></td></tr></table></figure>
-<h5 id="4-执行上面c-的bin文件"><a href="#4-执行上面c-的bin文件" class="headerlink" title="4. 执行上面c++的bin文件"></a>4. 执行上面c++的bin文件</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[carl pb_mergefrom_trap]$ ./read_new_write_old.bin addressbook</span><br><span class="line">book: host_name: <span class="string">&quot;carl&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 30</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_update_mergefrom&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_update_mergefrom&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_update_mergefrom&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_update_mergefrom&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_update_mergefrom&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br></pre></td></tr></table></figure>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>由上测试结果可以看出, 一个使用了旧proto的c++程序, 在调用mergefrom的时候, 那2个unknown的字段不是覆盖回原来已有的字段上, 而是<strong>新增</strong>了. 连续调用几次, 这个是指数级增长的. 这会导致serialize出来的bin文件大小指数级增长, 然后会影响到进程, 在Parse和Serialize的时候, 函数调用会阻塞几十秒甚至几分钟, 网络流量也会剧增, 这对一个生产服务器可以说是致命的, 血淋淋的教训啊.<br>以上文件托管在<br><a href="https://github.com/carl-wang-cn/demo/tree/master/testcode/pb_mergefrom_trap">github/demo/tree/master/testcode/pb_mergefrom_trap</a></p>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>记录一次因为redis aof rewrite重写导致的运维事故</title>
-    <url>/2020/03/17/2020-03-17-redis-aof-disaster/</url>
-    <content><![CDATA[<h2 id="事情起因"><a href="#事情起因" class="headerlink" title="事情起因"></a>事情起因</h2><p>redis master 所在物理机A, 物理内存16G, aof rewrite 被触发时, aof文件已达12G, redis的默认配置触发了后台的rewrite进程, 内存占用达到了50%, 已严重影响到redis的正常访问. 而此时距离美股交易开盘只剩1小时.</p>
-<a id="more"></a>
-
-<h2 id="处理过程"><a href="#处理过程" class="headerlink" title="处理过程"></a>处理过程</h2><h4 id="跟server组几名同事-carl-shilinchen-echo-jiezhao-zhiguocai-一起理清楚问题现状"><a href="#跟server组几名同事-carl-shilinchen-echo-jiezhao-zhiguocai-一起理清楚问题现状" class="headerlink" title="跟server组几名同事(carl, shilinchen, echo, jiezhao, zhiguocai)一起理清楚问题现状"></a>跟server组几名同事(carl, shilinchen, echo, jiezhao, zhiguocai)一起理清楚问题现状</h4><ol>
-<li>redis slave的数据是完整的, 1小时内不会有写入请求</li>
-<li>aof rewrite进程已运行2小时, 是否能在1小时内运行完毕不可控</li>
-<li>aof rewrite进程, 即使在1小时内运行完, 不确认是否会马上触发第2次rewrite</li>
-</ol>
-<h4 id="整理方案如下"><a href="#整理方案如下" class="headerlink" title="整理方案如下:"></a>整理方案如下:</h4><ol>
-<li>将物理机B的redis slave切换为master, 使其跟现有物理机A的redis脱离master-slave关系</li>
-<li>对生产环境的hosts文件修改, 使hosts中配置的域名指向新的master</li>
-<li>重启相关进程, 使其连接到新的redis master</li>
-<li>测试白名单账号验证服务正常</li>
-<li>stop原来物理机A上的旧master进行, 暂时保留现场不动</li>
-<li>第2天, 交易收盘后, 清理redis中的历史数据</li>
-<li>周末进一步处理<blockquote>
-<ol>
-<li>新准备好下一交易日的uinfo和margin相关数据</li>
-<li>将物理机A的redis配置为物理机B新master的slave</li>
-<li>重命名该redis配置路径的aof文件</li>
-<li>重启该redis, 使该redis从0开始从物理机A的redis master进行数据同步</li>
-<li>手动触发物理机B的redis master的aof rewrite, 此过程完成后, aof文件从10G变为1.5G</li>
-</ol>
-</blockquote>
-</li>
-<li>补齐定期删除历史数据的server逻辑</li>
-</ol>
-<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>交易系统和风控系统经过重新设计, 进行了重构, redis已经是过去时了, 不过曾经踩过的这个坑希望能记录下来, 让我们时时警示一下.</p>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
   </entry>
   <entry>
     <title>多进程通信-互斥锁和条件变量</title>
@@ -1519,58 +1389,160 @@
       </tags>
   </entry>
   <entry>
-    <title>一个小leader应该关注些什么</title>
-    <url>/2022/05/26/better-leader/</url>
-    <content><![CDATA[<p>就是单纯列一下我自己认为比较重要的几点</p>
+    <title>python的finally语句中使用return要慎重!!!</title>
+    <url>/2020/02/13/2020-02-13-python-finally-hole/</url>
+    <content><![CDATA[<p>前两天, 同事踩了一个坑, python代码的一个接口抛了异常, 但是返回值是0. 这里记录一下.</p>
+<p>代码大概是这样的.</p>
 <a id="more"></a>
 
-<ul>
-<li>明确团队todolist的轻重缓急，做好短期和中长期规划<ul>
-<li>永远要让团队知道下一步要做什么，定期同步团队未来目标<ul>
-<li>3-6个月的长期规划</li>
-<li>每个月的短期规划</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>合理的分配工作（同事能成长，事能做成，识别出优秀的同事）<ul>
-<li>要把人用好，而不是去改造。我们连自己都改变不了，凭什么去改变别人？</li>
-<li>要看到他人的长处和优点</li>
-<li>跟团队说清楚每一件事情的大背景。要讲清楚为什么要做，为什么要现在做，获取理解及认同，激发团队的动力，同时为每个任务选择能力匹配的授权对象</li>
-</ul>
-</li>
-<li>建设优秀的团队文化<ul>
-<li>信任，没有信任的团队注定一事无成</li>
-<li>坦诚，平等沟通 – leader能接受异见，组员敢说</li>
-<li>务实</li>
-<li>自驱</li>
-<li>维护团队荣誉，不做损害团队荣誉的事情</li>
-<li>团队内没有竞争，是共进退，不要变成对手，团队成绩不好，谁都好不了，也不会有更好的机会</li>
-</ul>
-</li>
-<li>维护团队的公平，按功劳分配，团队没有普惠</li>
-<li>明确哪些该授权，哪些不该授权</li>
-<li>制定务实的流程和规范，提高团队质量和效率</li>
-<li>员工被冤枉，工作不合理，要敢于发声</li>
-<li>带团队聚焦去解决问题，而不是应付领导</li>
-<li>解决问题找根本原因，而不是表明原因</li>
-<li>敢于去做一些有挑战的事情，不能总是做一些简单的事务性的事情</li>
-<li>敢决策，敢负责</li>
-<li>对过程负责，对结果也要负责</li>
-<li>对公司整体负责，而不是只对自己团队负责</li>
-<li>沟通辅导，培养新同事。</li>
-<li>保持好团队的健康度<ul>
-<li>淘汰机制</li>
-<li>团队梯队</li>
-<li>团队备份</li>
-<li>团队的持续成长</li>
-</ul>
-</li>
-<li>帮助跨团队协作沟通，尤其是协助同事去跟跨团队的leader沟通</li>
-</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">division</span>(<span class="params">a, b</span>):</span></span><br><span class="line">    ret = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        ret = a / b</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        print(<span class="string">&#x27;oops!&#x27;</span>)</span><br><span class="line">        <span class="keyword">raise</span> e</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        <span class="keyword">return</span> ret</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    print(division(<span class="number">1</span>, <span class="number">0</span>))</span><br><span class="line"><span class="keyword">except</span> Exception:</span><br><span class="line">    print(<span class="string">&#x27;ooops!!&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行一下, 结果如下.</span></span><br><span class="line">&gt; python3 test.py</span><br><span class="line">oops!</span><br><span class="line"><span class="number">0</span></span><br></pre></td></tr></table></figure>
+<p>是不是不符合你预期?</p>
+<p>我们来改一行, 再看看</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">division</span>(<span class="params">a, b</span>):</span></span><br><span class="line">    ret = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        ret = a / b</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        print(<span class="string">&#x27;oops!&#x27;</span>)</span><br><span class="line">        <span class="keyword">raise</span> e</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        print(<span class="string">&#x27;ops!&#x27;</span>) <span class="comment"># 这行改了哦, 不用return了</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    print(division(<span class="number">1</span>, <span class="number">0</span>))</span><br><span class="line"><span class="keyword">except</span> Exception:</span><br><span class="line">    print(<span class="string">&#x27;ooops!!&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行一下, 结果如下.</span></span><br><span class="line">&gt; python3 test.py</span><br><span class="line">oops!</span><br><span class="line">ops!</span><br><span class="line">ooops!!</span><br></pre></td></tr></table></figure>
+<p>现在的结果是不是符合预期了?</p>
+<p>从这个采坑和测试过程来看, 在finally语句中一定要注意一下return的使用, 要慎重!!!</p>
 ]]></content>
       <categories>
-        <category>team</category>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>proto buffer MergeFrom的坑</title>
+    <url>/2020/03/17/2020-03-17-donot-use-pb-mergefrom/</url>
+    <content><![CDATA[<p>pb好用, 性能虽然比不上二进制, 不过也比json在大多数情况下还是好很多. 尤其是字段的向前向后兼容, 这一点应该也是大多数同学选用pb的原因. 然后终于<strong>掉进坑</strong>了, 严重得影响了一次线上服务.<br>整理测试程序的时候发现, python的官方指南压根就没提MergeFrom这个接口, 看起来是专门用来坑c++的兄弟的啊</p>
+<a id="more"></a>
+
+<p>下面给个例子来说明</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># mergefrom_trap.proto</span></span><br><span class="line">package mergefrom_trap;</span><br><span class="line">message Person</span><br><span class="line">&#123;</span><br><span class="line">required string name = 1;</span><br><span class="line">required int32 age = 2;</span><br><span class="line">// optional int32 new1 = 3;</span><br><span class="line">// optional int32 new2 = 4[default = 0];</span><br><span class="line">&#125;</span><br><span class="line">message AddressBook</span><br><span class="line">&#123;</span><br><span class="line">required string host_name = 1;</span><br><span class="line">repeated Person person = 2;</span><br><span class="line">// optional int32 new3 = 3;</span><br><span class="line">// optional int32 new4 = 4[default = 0];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="1-先用没有new1-4字段的proto-编译出c-的bin文件"><a href="#1-先用没有new1-4字段的proto-编译出c-的bin文件" class="headerlink" title="1. 先用没有new1-4字段的proto, 编译出c++的bin文件"></a>1. 先用没有new1-4字段的proto, 编译出c++的bin文件</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[carl pb_mergefrom_trap]$ protoc -I=./ --cpp_out=./ mergefrom_trap.proto</span><br><span class="line">[carl pb_mergefrom_trap]$ g++ read_new_write_old.cpp mergefrom_trap.pb.cc -lprotobuf -o read_new_write_old.bin</span><br></pre></td></tr></table></figure>
+<h5 id="2-然后添家new1-4字段-生成-mergefrom-trap-pb2-py"><a href="#2-然后添家new1-4字段-生成-mergefrom-trap-pb2-py" class="headerlink" title="2. 然后添家new1-4字段, 生成 mergefrom_trap_pb2.py"></a>2. 然后添家new1-4字段, 生成 mergefrom_trap_pb2.py</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[carl pb_mergefrom_trap]$ protoc -I=./ --python_out=./ mergefrom_trap.proto</span><br></pre></td></tr></table></figure>
+<h5 id="3-用write-new-py程序创建一个address-book对象并写入文件-输出结果如下"><a href="#3-用write-new-py程序创建一个address-book对象并写入文件-输出结果如下" class="headerlink" title="3. 用write_new.py程序创建一个address_book对象并写入文件, 输出结果如下:"></a>3. 用write_new.py程序创建一个address_book对象并写入文件, 输出结果如下:</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[carl pb_mergefrom_trap]$ python write_new.py addressbook</span><br><span class="line">address_book: host_name: <span class="string">&quot;carl&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 30</span><br><span class="line">new1: 1</span><br><span class="line">new2: 2</span><br><span class="line">&#125;</span><br><span class="line">new3: 3</span><br><span class="line">new4: 4</span><br></pre></td></tr></table></figure>
+<h5 id="4-执行上面c-的bin文件"><a href="#4-执行上面c-的bin文件" class="headerlink" title="4. 执行上面c++的bin文件"></a>4. 执行上面c++的bin文件</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[carl pb_mergefrom_trap]$ ./read_new_write_old.bin addressbook</span><br><span class="line">book: host_name: <span class="string">&quot;carl&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 30</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_update_mergefrom&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_update_mergefrom&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_update_mergefrom&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_update_mergefrom&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_update_mergefrom&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br></pre></td></tr></table></figure>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>由上测试结果可以看出, 一个使用了旧proto的c++程序, 在调用mergefrom的时候, 那2个unknown的字段不是覆盖回原来已有的字段上, 而是<strong>新增</strong>了. 连续调用几次, 这个是指数级增长的. 这会导致serialize出来的bin文件大小指数级增长, 然后会影响到进程, 在Parse和Serialize的时候, 函数调用会阻塞几十秒甚至几分钟, 网络流量也会剧增, 这对一个生产服务器可以说是致命的, 血淋淋的教训啊.<br>以上文件托管在<br><a href="https://github.com/carl-wang-cn/demo/tree/master/testcode/pb_mergefrom_trap">github/demo/tree/master/testcode/pb_mergefrom_trap</a></p>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>进程间通信-管道</title>
+    <url>/2020/02/07/2020-02-07-ipc-pipe/</url>
+    <content><![CDATA[<h3 id="pipe匿名管道"><a href="#pipe匿名管道" class="headerlink" title="pipe匿名管道"></a>pipe匿名管道</h3><p>匿名管道由于没有名字, 因此只能由有亲缘关系的进程使用</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pipe</span><span class="params">(<span class="keyword">int</span> fd[<span class="number">2</span>])</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 出错返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">该函数返回两个文件描述符: fd[<span class="number">0</span>]和fd[<span class="number">1</span>], 前者打开来读, 后者打开来写.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+
+<p>另一个关于管道的例子, 标准I/O函数库提供了popen函数, 它创建一个管道并启动另一个进程, 该进程要么从该管道读出标准输入, 要么往该管道写入标准输出</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function">FILE *<span class="title">popen</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *command, <span class="keyword">const</span> <span class="keyword">char</span> *type)</span></span>;</span><br><span class="line">返回: 成功返回文件指针，失败返回<span class="literal">NULL</span></span><br><span class="line">注意: popen不对标准错误输出做任何处理, 只有标准输出才被重定向到由它创建的管道</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pclose</span><span class="params">(FILE *stream)</span></span>;</span><br><span class="line">返回: 成功则为shell的终止状态, 失败为<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">command是一个shell命令行, popen在调用进程和所指定的命令之间创建一个管道</span><br><span class="line"></span><br><span class="line">- 如果type为r, 调用进程读入command的标准输出</span><br><span class="line">- 如果type为w, 调用进程写到command的标准输入</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>pipe01.c演示了父子进程间通过pipe实现半双工通信</li>
+<li>pipe02.c演示了使用popen创建管道</li>
+</ul>
+<h3 id="FIFO-有名管道"><a href="#FIFO-有名管道" class="headerlink" title="FIFO 有名管道"></a>FIFO 有名管道</h3><p>每个FIFO有一个路径名与之关联, 从而允许无亲缘关系的进程访问同一个FIFO。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mkfifo</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *pathname, <span class="keyword">mode_t</span> mode)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">mkfifo函数已经隐含指定了O_CREAT | O_EXCL, 也就是说, 它要么创建一个新的FIFO, 要么返回一个EEXIST错误(如果所指定名字的FIFO已经存在)。此处可参考示例中的正确创建FIFO的步骤</span><br><span class="line"></span><br><span class="line">- 创建出一个FIFO后, 它必须或者打开来读, 或者打开来写。不能打开来既读又写, 因为它是**半双工**的</span><br><span class="line">- 如果一个FIFO, 当前尚没有进程打开它来写, 那么此时打开该FIFO来读的进程将会阻塞</span><br><span class="line">- 对管道或FIFO的write总是往末尾添加数据, 对它们的read总是从开头返回数据。</span><br><span class="line">- 如果对管道或FIFO执行lseek, 会返回ESPIPE错误</span><br><span class="line">- 当对一个管道或FIFO的最终close发生时, 该管道或FIFO中的任何残留数据都被丢弃</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>fifo_read.c 中从文件data.txt中读取内容, 写入到FIFO中</li>
+<li>fifo_write.c 中从FIFO中读取内容, 写入到datafromfifo.txt中</li>
+<li>data.txt 是测试文件</li>
+<li>datafromfifo.txt 是fifo_write.c运行后生成的文件</li>
+</ul>
+<h3 id="管道和FIFO的区别"><a href="#管道和FIFO的区别" class="headerlink" title="管道和FIFO的区别"></a>管道和FIFO的区别</h3><ul>
+<li>创建并打开一个管道, 只需要调用pipe；创建并打开一个FIFO则需在调用mkdifo后再调用open</li>
+<li>管道在所有进程最终都关闭它之后自动消失。FIFO的名字则只有通过调用unlink才从文件系统中删除</li>
+<li>FIFO需要额外调用的好处: FIFO在文件系统中有一个名字, 该名字允许某个进程创建一个FIFO, 与它<strong>无亲缘关系</strong>的另一个进程来打开这个FIFO, 这对管道来说是不可能的(不考虑传递描述符的情况)</li>
+</ul>
+<h3 id="管道和FIFO的限制"><a href="#管道和FIFO的限制" class="headerlink" title="管道和FIFO的限制"></a>管道和FIFO的限制</h3><p>系统加于管道和FIFO的唯一限制为:</p>
+<ul>
+<li><p>OPEN_MAX 一个进程在任意时刻打开的最大描述符数</p>
+</li>
+<li><p>PIPE_BUF 可原子地写往一个管道或FIFO的最大数据量</p>
+</li>
+<li><p>get_sys_conf.c 获取当前系统的OPEN_MAX和PIPE_BUF值</p>
+</li>
+</ul>
+<h3 id="将一个描述符设为非阻塞两种方式"><a href="#将一个描述符设为非阻塞两种方式" class="headerlink" title="将一个描述符设为非阻塞两种方式"></a>将一个描述符设为非阻塞两种方式</h3><ol>
+<li>调用open的时候可指定O_NONBLOCK标志</li>
+<li>如果一个描述符已打开, 那么可以调用fcntl以启用O_NONBLOCK标志。<blockquote>
+<p>对于管道来说, 必须使用这种技术, 因为管道没有open调用, 在pipe中也无法指定O_NONBLOCK标志</p>
+</blockquote>
+</li>
+</ol>
+<p><strong>FIFO的真正优势</strong>表现在服务器可以是一个长期运行的进程（例如守护进程）, 而且与其客户可以无亲缘关系。<br>作为服务器的守护进程以某个众所周知的路径名创建一个FIFO, 并打开该FIFO来读。此后某个<br>时刻启动的客户打开该FIFO来写, 并将其命令或给守护进程的其他任何东西通过该FIFO发送出去。<br>使用FIFO很容易实现这种形式的单向通信(client-&gt;server)。如果守护进程需要向客户发送<br>回一些东西, 那就需要点技巧(例如客户需要通知守护进程要打开哪个FIFO可以给其发消息)</p>
+<blockquote>
+<p>文中代码托管在: <a href="https://github.com/carl-wang-cn/demo/tree/master/ipc">https://github.com/carl-wang-cn/demo/tree/master/ipc</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>ipc</tag>
+        <tag>多进程</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>记录一次因为redis aof rewrite重写导致的运维事故</title>
+    <url>/2020/03/17/2020-03-17-redis-aof-disaster/</url>
+    <content><![CDATA[<h2 id="事情起因"><a href="#事情起因" class="headerlink" title="事情起因"></a>事情起因</h2><p>redis master 所在物理机A, 物理内存16G, aof rewrite 被触发时, aof文件已达12G, redis的默认配置触发了后台的rewrite进程, 内存占用达到了50%, 已严重影响到redis的正常访问. 而此时距离美股交易开盘只剩1小时.</p>
+<a id="more"></a>
+
+<h2 id="处理过程"><a href="#处理过程" class="headerlink" title="处理过程"></a>处理过程</h2><h4 id="跟server组几名同事-carl-shilinchen-echo-jiezhao-zhiguocai-一起理清楚问题现状"><a href="#跟server组几名同事-carl-shilinchen-echo-jiezhao-zhiguocai-一起理清楚问题现状" class="headerlink" title="跟server组几名同事(carl, shilinchen, echo, jiezhao, zhiguocai)一起理清楚问题现状"></a>跟server组几名同事(carl, shilinchen, echo, jiezhao, zhiguocai)一起理清楚问题现状</h4><ol>
+<li>redis slave的数据是完整的, 1小时内不会有写入请求</li>
+<li>aof rewrite进程已运行2小时, 是否能在1小时内运行完毕不可控</li>
+<li>aof rewrite进程, 即使在1小时内运行完, 不确认是否会马上触发第2次rewrite</li>
+</ol>
+<h4 id="整理方案如下"><a href="#整理方案如下" class="headerlink" title="整理方案如下:"></a>整理方案如下:</h4><ol>
+<li>将物理机B的redis slave切换为master, 使其跟现有物理机A的redis脱离master-slave关系</li>
+<li>对生产环境的hosts文件修改, 使hosts中配置的域名指向新的master</li>
+<li>重启相关进程, 使其连接到新的redis master</li>
+<li>测试白名单账号验证服务正常</li>
+<li>stop原来物理机A上的旧master进行, 暂时保留现场不动</li>
+<li>第2天, 交易收盘后, 清理redis中的历史数据</li>
+<li>周末进一步处理<blockquote>
+<ol>
+<li>新准备好下一交易日的uinfo和margin相关数据</li>
+<li>将物理机A的redis配置为物理机B新master的slave</li>
+<li>重命名该redis配置路径的aof文件</li>
+<li>重启该redis, 使该redis从0开始从物理机A的redis master进行数据同步</li>
+<li>手动触发物理机B的redis master的aof rewrite, 此过程完成后, aof文件从10G变为1.5G</li>
+</ol>
+</blockquote>
+</li>
+<li>补齐定期删除历史数据的server逻辑</li>
+</ol>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>交易系统和风控系统经过重新设计, 进行了重构, redis已经是过去时了, 不过曾经踩过的这个坑希望能记录下来, 让我们时时警示一下.</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Wash Trading</title>
+    <url>/2022/01/22/Wash-Trading/</url>
+    <content><![CDATA[<p>Wash Trading</p>
+<p>Wash Trading是交易者买卖证券向市场提供误导性信息。Wash Trading可以由交易者和经纪人相互勾结来进行，也可以是一个投资者自己同时充当证券买方和卖方来进行。根据美国法律，Wash Trading是非法的。美国国税局禁止纳税人从其应纳税收入金额中扣除因为Wash Trading造成的损失。</p>
+<p>在1936年通过《商品交易法》后，联邦政府就禁止进行Wash Trading，该法律对《谷物期货法》进行了修订，并要求所有商品交易都必须在受监管的交易所进行。在1930年代被禁止之前，Wash Trading是股票操纵者很喜欢的一个手段，去假装表示对某只股票有很大兴趣，进而试图提高股价，然后高价位的时候做空来收割韭菜们。</p>
+<p>商品期货交易委员会（CFTC）也禁止券商从Wash Trading中获利，即使券商声称不知道交易者的意图。因此，券商必须对客户进行尽职调查，以确保他们出于共同受益所有权的目的购买公司的股份。</p>
+<p>美国国税局（IRS）也有严格的禁止Wash Trading的规定，并要求纳税人不能从应纳税金额中扣除Wash Trading产生的损失。美国国税局将Wash Trading定义为购买证券后30天内出售并造成损失的交易。</p>
+<a id="more"></a>
+
+<h3 id="Wash-Trading-和-高频交易"><a href="#Wash-Trading-和-高频交易" class="headerlink" title="Wash Trading 和 高频交易"></a>Wash Trading 和 高频交易</h3><p>随着高频交易现象日益普遍，Wash Trading在2013年再次回到大家的视线内。高频交易是使用超高速计算机和高速Internet连接每秒执行数万笔交易。</p>
+<p>从2012年开始，当时的商品期货交易委员会专员 Bart Chilton 宣布，他打算调查违反Wash Trading法的高频交易行业，因为使用高频交易的公司很容易偷偷进行Wash Trading。</p>
+<p>2013年，美国证券交易委员会（SEC）指控Wedbush Securities，未能“对客户使用的交易平台保持直接和排他的控制权”，致使其一些高频交易者进行了Wash Trading和其他被禁止的操纵市场的行为。</p>
+<p>Wash Trading在加密货币交易中也起不少作用。根据区块链透明性研究所的研究，2018年加密货币交易所中，排名前25位的比特币交易对中约有80％是Wash Trading。</p>
+<h3 id="划重点"><a href="#划重点" class="headerlink" title="划重点"></a>划重点</h3><ul>
+<li>Wash Trading是一种非法交易，券商和交易者通过向市场提供误导性信息来串谋牟取暴利。</li>
+<li>高频交易公司和加密货币交易所使用Wash Trading来操纵价格。</li>
+<li>Wash Trading本质上是互相抵消且没有商业价值的交易。但是它们被用于各种交易情况。</li>
+</ul>
+<p>例如，LIBOR丑闻中，使用Wash Trading来偿还操纵日元的LIBOR提交面板的经纪人。根据英国金融当局的指控，瑞银交易员与一家经纪公司进行了9次Wash trading，产生了170,000英镑的费用，以奖励该公司在操纵伦敦银行同业拆借利率中的作用。</p>
+<p>Wash Trading还可以用于产生股票的假交易量，以催高其价格。假设交易者XYZ和经纪公司合谋快速买卖股票ABC。其他交易者如果注意到这个股票的交易量变化，就可能会将资金投入ABC以从其价格变动中获利。 XYZ然后做空股票，从而从其价格下跌中获利。</p>
+<p>英文原文： <a href="https://www.investopedia.com/terms/w/washtrading.asp">https://www.investopedia.com/terms/w/washtrading.asp</a></p>
+]]></content>
+      <categories>
+        <category>金融知识分享</category>
       </categories>
   </entry>
   <entry>
@@ -1625,33 +1597,6 @@
       </categories>
   </entry>
   <entry>
-    <title>Wash Trading</title>
-    <url>/2022/01/22/Wash-Trading/</url>
-    <content><![CDATA[<p>Wash Trading</p>
-<p>Wash Trading是交易者买卖证券向市场提供误导性信息。Wash Trading可以由交易者和经纪人相互勾结来进行，也可以是一个投资者自己同时充当证券买方和卖方来进行。根据美国法律，Wash Trading是非法的。美国国税局禁止纳税人从其应纳税收入金额中扣除因为Wash Trading造成的损失。</p>
-<p>在1936年通过《商品交易法》后，联邦政府就禁止进行Wash Trading，该法律对《谷物期货法》进行了修订，并要求所有商品交易都必须在受监管的交易所进行。在1930年代被禁止之前，Wash Trading是股票操纵者很喜欢的一个手段，去假装表示对某只股票有很大兴趣，进而试图提高股价，然后高价位的时候做空来收割韭菜们。</p>
-<p>商品期货交易委员会（CFTC）也禁止券商从Wash Trading中获利，即使券商声称不知道交易者的意图。因此，券商必须对客户进行尽职调查，以确保他们出于共同受益所有权的目的购买公司的股份。</p>
-<p>美国国税局（IRS）也有严格的禁止Wash Trading的规定，并要求纳税人不能从应纳税金额中扣除Wash Trading产生的损失。美国国税局将Wash Trading定义为购买证券后30天内出售并造成损失的交易。</p>
-<a id="more"></a>
-
-<h3 id="Wash-Trading-和-高频交易"><a href="#Wash-Trading-和-高频交易" class="headerlink" title="Wash Trading 和 高频交易"></a>Wash Trading 和 高频交易</h3><p>随着高频交易现象日益普遍，Wash Trading在2013年再次回到大家的视线内。高频交易是使用超高速计算机和高速Internet连接每秒执行数万笔交易。</p>
-<p>从2012年开始，当时的商品期货交易委员会专员 Bart Chilton 宣布，他打算调查违反Wash Trading法的高频交易行业，因为使用高频交易的公司很容易偷偷进行Wash Trading。</p>
-<p>2013年，美国证券交易委员会（SEC）指控Wedbush Securities，未能“对客户使用的交易平台保持直接和排他的控制权”，致使其一些高频交易者进行了Wash Trading和其他被禁止的操纵市场的行为。</p>
-<p>Wash Trading在加密货币交易中也起不少作用。根据区块链透明性研究所的研究，2018年加密货币交易所中，排名前25位的比特币交易对中约有80％是Wash Trading。</p>
-<h3 id="划重点"><a href="#划重点" class="headerlink" title="划重点"></a>划重点</h3><ul>
-<li>Wash Trading是一种非法交易，券商和交易者通过向市场提供误导性信息来串谋牟取暴利。</li>
-<li>高频交易公司和加密货币交易所使用Wash Trading来操纵价格。</li>
-<li>Wash Trading本质上是互相抵消且没有商业价值的交易。但是它们被用于各种交易情况。</li>
-</ul>
-<p>例如，LIBOR丑闻中，使用Wash Trading来偿还操纵日元的LIBOR提交面板的经纪人。根据英国金融当局的指控，瑞银交易员与一家经纪公司进行了9次Wash trading，产生了170,000英镑的费用，以奖励该公司在操纵伦敦银行同业拆借利率中的作用。</p>
-<p>Wash Trading还可以用于产生股票的假交易量，以催高其价格。假设交易者XYZ和经纪公司合谋快速买卖股票ABC。其他交易者如果注意到这个股票的交易量变化，就可能会将资金投入ABC以从其价格变动中获利。 XYZ然后做空股票，从而从其价格下跌中获利。</p>
-<p>英文原文： <a href="https://www.investopedia.com/terms/w/washtrading.asp">https://www.investopedia.com/terms/w/washtrading.asp</a></p>
-]]></content>
-      <categories>
-        <category>金融知识分享</category>
-      </categories>
-  </entry>
-  <entry>
     <title>When issued 预发行交易</title>
     <url>/2020/05/28/When-issued/</url>
     <content><![CDATA[<h3 id="What-Does-“When-Issued”-Mean"><a href="#What-Does-“When-Issued”-Mean" class="headerlink" title="What Does “When Issued” Mean?"></a>What Does “When Issued” Mean?</h3><p>When issued (WI) is a transaction that is made conditionally because a security has been authorized but not yet issued. Treasury securities, stock splits, and new issues of stocks and bonds are all traded on a When-issued basis. Prior to a new issue’s offering, underwriters solicit potential investors who may elect to book an order to purchase a portion of the new issue.</p>
@@ -1697,38 +1642,58 @@
       </tags>
   </entry>
   <entry>
-    <title>一些优秀的文字</title>
-    <url>/2022/06/28/good-words-01-md/</url>
-    <content><![CDATA[<p>阅读的时候，记录了一些对自己触动很大，希望还能时长翻看的文字，也会随手记下几句闪过脑子的文字。</p>
+    <title>一个小leader应该关注些什么</title>
+    <url>/2022/05/26/better-leader/</url>
+    <content><![CDATA[<p>就是单纯列一下我自己认为比较重要的几点</p>
 <a id="more"></a>
 
 <ul>
-<li>不要比拼清高，而要让自己生活得幸福。当你能自由地游走于世俗的现实与内心卓尔不群的原则之间时，你也就实现了个人修炼的圆满，成为了一个从内心里幸福的人。</li>
-<li>我们不要成为清高之人，也不要成为世俗之人，我们只要成为普通的正常人，一个外圆内方之人。</li>
-<li>处处与世俗为敌，并不会让世俗得以改变。尊重世俗，也不意味着失去尊严，失去自我。</li>
-<li>一个人的实力未必表现为在名利山上攀登, 真有实力的人还能支配自己的人生走向, 适时地退出竞赛, 省下时间来做自己喜欢做的事情, 享受生命的乐趣</li>
-<li>人生下半场，比超负荷赚钱更重要的是心脏有力的跳动；比熬夜玩乐更珍贵的是眼睛清楚看到世界的美好；比生活富裕更幸福的是身体的完好无损</li>
-<li>不嫉妒，不抱怨，不过度消费；面对什么困难，都保持乐观的心态，交靠谱的人，做本分的事……都是些简单的道理，也都是些老掉牙的道理。做到了，一生受益。</li>
-<li>“老理儿，靠谱。”所有那些传统美德，让人一生受用。</li>
-<li>我们不妨去追求最好–最好的生活, 最好的职业, 最好的婚姻, 最好的友谊等等. 但是, 能否得到最好, 取决于许多因素, 不是光靠努力就能成功的. 如果我们尽了力, 结果得到的不是最好, 而是次好, 次次好, 我们也应该坦然地接受. 人生原本就是有缺憾的, 在人生中需要妥协. 不肯妥协, 和自己过不去, 其实是一种痴愚, 是对人生的无知</li>
-<li>世上有一些东西, 是你自己支配不了的, 比如运气和机会, 舆论和毁誉, 那就不去管它们, 顺其自然吧</li>
-<li>世上有一些东西, 是你自己可以支配的, 比如兴趣和志向, 处世和做人, 那就在这些方面好好地努力, 至于努力的结果是什么, 也顺其自然吧</li>
-<li>改变不了的事，就别太纠结。牢骚满腹、怨天怨地是人生大忌。</li>
-<li>一个人成熟的标志是自我认识, 认清自己的天赋方向, 外在的虚荣心和野心被内在的目标取代</li>
-<li>要有平常心, 看人看己都能除去名利的伪饰</li>
-<li>古人讲，一命二运三风水四积德五读书。 这不是迷信。 读书改变命运，是一般人一眼可以看穿的现象；然而积德是帮我们越走越宽，逐步改变生活的，那就需要有推理能力和洞察力才可以明白了；至于风水已经不是我们人这个层面可以轻松看明白的东西了；至于运，甚至命，我们只能祈祷了，这是现在人类想理解都理解不了的。</li>
-<li>时至今日，你是否明白，“做自己”的门槛其实很高。踏上社会后，还能保持初心、任性的“做自己”，本就是一件非常奢侈的事情。因为那大体意味着，你不必为了利益而去维持无聊的人际关系、不必为了生存而去做自己不喜欢的工作、不必为了看起来不孤独而去参加那些貌合神离的聚会。而成年人的生活，通常都与“做自己”完全背道而驰，他们无时无刻不得不把自己束缚在某种“身份”之下，戴着面具和镣铐，扮演好社会赋予你的角色。甚至在社会的洗刷下，慢慢地都不知道“自己”是谁了。</li>
-<li>你无法控制生命里会发生什么，但你可以控制面对困境时你的情绪和行动，残酷的世界可以拿走你很多东西，唯独一样东西它永远拿不走，就是选择的自由    –《活出生命的意义》</li>
-<li>我们大多数人都急于求成, 过分关注眼前利益. 其实很多眼前的得失, 把时间放长远一点看, 可能你所得出的结论都会截然相反. 如果10年前我能懂得这个道理, 或许10年的坚持, 可以让我现在在某一方面做得格外突出了. 现在的我， 把锻炼身体看成是我自己优先级最高的事情， 保持健康，才能有更多的时间去做更多自己想做的事情。</li>
-<li>从什么时候开始，你的手机天气app里多了一个家乡的城市？但是我们的父母每天都在看我们所在城市的天气预报</li>
-<li>切莫在冲动之下，说出很多一些过分或过激的话，因为言语的力量是巨大的，杀伤力有时难以预估。举一个有些极端的例子。假如你和铁哥们儿吵架了，对方一气之下，打了你两拳，你很有可能过两天就忘记了。但是如果对方说了几句伤你心的话，这种伤心则有可能会持续很久很久，甚至你们可能会因此而绝交。</li>
-<li>走正道，路越走越宽</li>
-<li>少吃，多动，早睡，静心</li>
-<li>任何事情只要加上“天天”俩字，就厉害了。</li>
+<li>明确团队todolist的轻重缓急，做好短期和中长期规划<ul>
+<li>永远要让团队知道下一步要做什么，定期同步团队未来目标<ul>
+<li>3-6个月的长期规划</li>
+<li>每个月的短期规划</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>合理的分配工作（同事能成长，事能做成，识别出优秀的同事）<ul>
+<li>要把人用好，而不是去改造。我们连自己都改变不了，凭什么去改变别人？</li>
+<li>要看到他人的长处和优点</li>
+<li>跟团队说清楚每一件事情的大背景。要讲清楚为什么要做，为什么要现在做，获取理解及认同，激发团队的动力，同时为每个任务选择能力匹配的授权对象</li>
+</ul>
+</li>
+<li>建设优秀的团队文化<ul>
+<li>信任，没有信任的团队注定一事无成</li>
+<li>坦诚，平等沟通 – leader能接受异见，组员敢说</li>
+<li>务实</li>
+<li>自驱</li>
+<li>维护团队荣誉，不做损害团队荣誉的事情</li>
+<li>团队内没有竞争，是共进退，不要变成对手，团队成绩不好，谁都好不了，也不会有更好的机会</li>
+</ul>
+</li>
+<li>维护团队的公平，按功劳分配，团队没有普惠</li>
+<li>明确哪些该授权，哪些不该授权</li>
+<li>制定务实的流程和规范，提高团队质量和效率</li>
+<li>员工被冤枉，工作不合理，要敢于发声</li>
+<li>带团队聚焦去解决问题，而不是应付领导</li>
+<li>解决问题找根本原因，而不是表明原因</li>
+<li>敢于去做一些有挑战的事情，不能总是做一些简单的事务性的事情</li>
+<li>敢决策，敢负责</li>
+<li>对过程负责，对结果也要负责</li>
+<li>对公司整体负责，而不是只对自己团队负责</li>
+<li>沟通辅导，培养新同事。</li>
+<li>保持好团队的健康度<ul>
+<li>淘汰机制</li>
+<li>团队梯队</li>
+<li>团队备份</li>
+<li>团队的持续成长</li>
+</ul>
+</li>
+<li>帮助跨团队协作沟通，尤其是协助同事去跟跨团队的leader沟通</li>
 </ul>
 ]]></content>
       <categories>
-        <category>文字</category>
+        <category>team</category>
       </categories>
   </entry>
   <entry>
@@ -1850,6 +1815,41 @@
       </tags>
   </entry>
   <entry>
+    <title>一些优秀的文字</title>
+    <url>/2022/06/28/good-words-01-md/</url>
+    <content><![CDATA[<p>阅读的时候，记录了一些对自己触动很大，希望还能时长翻看的文字，也会随手记下几句闪过脑子的文字。</p>
+<a id="more"></a>
+
+<ul>
+<li>不要比拼清高，而要让自己生活得幸福。当你能自由地游走于世俗的现实与内心卓尔不群的原则之间时，你也就实现了个人修炼的圆满，成为了一个从内心里幸福的人。</li>
+<li>我们不要成为清高之人，也不要成为世俗之人，我们只要成为普通的正常人，一个外圆内方之人。</li>
+<li>处处与世俗为敌，并不会让世俗得以改变。尊重世俗，也不意味着失去尊严，失去自我。</li>
+<li>一个人的实力未必表现为在名利山上攀登, 真有实力的人还能支配自己的人生走向, 适时地退出竞赛, 省下时间来做自己喜欢做的事情, 享受生命的乐趣</li>
+<li>人生下半场，比超负荷赚钱更重要的是心脏有力的跳动；比熬夜玩乐更珍贵的是眼睛清楚看到世界的美好；比生活富裕更幸福的是身体的完好无损</li>
+<li>不嫉妒，不抱怨，不过度消费；面对什么困难，都保持乐观的心态，交靠谱的人，做本分的事……都是些简单的道理，也都是些老掉牙的道理。做到了，一生受益。</li>
+<li>“老理儿，靠谱。”所有那些传统美德，让人一生受用。</li>
+<li>我们不妨去追求最好–最好的生活, 最好的职业, 最好的婚姻, 最好的友谊等等. 但是, 能否得到最好, 取决于许多因素, 不是光靠努力就能成功的. 如果我们尽了力, 结果得到的不是最好, 而是次好, 次次好, 我们也应该坦然地接受. 人生原本就是有缺憾的, 在人生中需要妥协. 不肯妥协, 和自己过不去, 其实是一种痴愚, 是对人生的无知</li>
+<li>世上有一些东西, 是你自己支配不了的, 比如运气和机会, 舆论和毁誉, 那就不去管它们, 顺其自然吧</li>
+<li>世上有一些东西, 是你自己可以支配的, 比如兴趣和志向, 处世和做人, 那就在这些方面好好地努力, 至于努力的结果是什么, 也顺其自然吧</li>
+<li>改变不了的事，就别太纠结。牢骚满腹、怨天怨地是人生大忌。</li>
+<li>一个人成熟的标志是自我认识, 认清自己的天赋方向, 外在的虚荣心和野心被内在的目标取代</li>
+<li>要有平常心, 看人看己都能除去名利的伪饰</li>
+<li>古人讲，一命二运三风水四积德五读书。 这不是迷信。 读书改变命运，是一般人一眼可以看穿的现象；然而积德是帮我们越走越宽，逐步改变生活的，那就需要有推理能力和洞察力才可以明白了；至于风水已经不是我们人这个层面可以轻松看明白的东西了；至于运，甚至命，我们只能祈祷了，这是现在人类想理解都理解不了的。</li>
+<li>时至今日，你是否明白，“做自己”的门槛其实很高。踏上社会后，还能保持初心、任性的“做自己”，本就是一件非常奢侈的事情。因为那大体意味着，你不必为了利益而去维持无聊的人际关系、不必为了生存而去做自己不喜欢的工作、不必为了看起来不孤独而去参加那些貌合神离的聚会。而成年人的生活，通常都与“做自己”完全背道而驰，他们无时无刻不得不把自己束缚在某种“身份”之下，戴着面具和镣铐，扮演好社会赋予你的角色。甚至在社会的洗刷下，慢慢地都不知道“自己”是谁了。</li>
+<li>你无法控制生命里会发生什么，但你可以控制面对困境时你的情绪和行动，残酷的世界可以拿走你很多东西，唯独一样东西它永远拿不走，就是选择的自由    –《活出生命的意义》</li>
+<li>我们大多数人都急于求成, 过分关注眼前利益. 其实很多眼前的得失, 把时间放长远一点看, 可能你所得出的结论都会截然相反. 如果10年前我能懂得这个道理, 或许10年的坚持, 可以让我现在在某一方面做得格外突出了. 现在的我， 把锻炼身体看成是我自己优先级最高的事情， 保持健康，才能有更多的时间去做更多自己想做的事情。</li>
+<li>从什么时候开始，你的手机天气app里多了一个家乡的城市？但是我们的父母每天都在看我们所在城市的天气预报</li>
+<li>切莫在冲动之下，说出很多一些过分或过激的话，因为言语的力量是巨大的，杀伤力有时难以预估。举一个有些极端的例子。假如你和铁哥们儿吵架了，对方一气之下，打了你两拳，你很有可能过两天就忘记了。但是如果对方说了几句伤你心的话，这种伤心则有可能会持续很久很久，甚至你们可能会因此而绝交。</li>
+<li>走正道，路越走越宽</li>
+<li>少吃，多动，早睡，静心</li>
+<li>任何事情只要加上“天天”俩字，就厉害了。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>文字</category>
+      </categories>
+  </entry>
+  <entry>
     <title>crontab示例</title>
     <url>/2021/01/08/crontab-examples/</url>
     <content><![CDATA[<p>crontab -e 编辑该用户的crontab， 不存在时新建<br>crontab -l 列出该用户的crontab<br>crontab -r 删除该用户的crontab<br>crontab -u<uid> 指定要设定crontab的用户名称</p>
@@ -1861,25 +1861,6 @@
       </categories>
       <tags>
         <tag>crontab</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>四巫日</title>
-    <url>/2021/12/17/four-witching-days/</url>
-    <content><![CDATA[<p>什么是美国金融市场“四巫日”</p>
-<p>“四巫日”是美股每季度一次的金融衍生品到期日，分别发生在每年三、六、九、十二月的第三个星期五。</p>
-<a id="more"></a>
-
-<p>当日，股指期货、股指期权、个股期货与个股期权同时到期。 当日最后一个交易小时为四巫小时（Quadruple Witching Hour），即纽约时间下午三至四点。在到期时段内，交易量急剧增加，市场波动幅度加剧。</p>
-<p>在“四巫日”的最后交易时段内，投资者急于平仓，导致交易量大幅增加。因此，“四巫日”通常伴随股票和衍生品价格的大幅波动。</p>
-<p>“四巫日”当天，股票、股指的期货和期权大量交易，有时，投资者平掉的仓位可以和新建仓位抵消，金融产品不会出现过度供给或过度需求。有时，投资者采取不同的投资策略，在市场上共同起作用，制造相应的股票买卖需求，从而从波动中获利。</p>
-<p>“四巫日”对股市的影响在当天开盘和收盘的时段最为明显，这也是通常期货和期权到期的时段。投资者在该时段内买卖股票，以履行期货期权持有人的义务。但对于长期投资者而言，“四巫日”的影响微乎其微。</p>
-]]></content>
-      <categories>
-        <category>金融</category>
-      </categories>
-      <tags>
-        <tag>科普</tag>
       </tags>
   </entry>
   <entry>
@@ -1920,6 +1901,103 @@
 ]]></content>
       <categories>
         <category>金融</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>四巫日</title>
+    <url>/2021/12/17/four-witching-days/</url>
+    <content><![CDATA[<p>什么是美国金融市场“四巫日”</p>
+<p>“四巫日”是美股每季度一次的金融衍生品到期日，分别发生在每年三、六、九、十二月的第三个星期五。</p>
+<a id="more"></a>
+
+<p>当日，股指期货、股指期权、个股期货与个股期权同时到期。 当日最后一个交易小时为四巫小时（Quadruple Witching Hour），即纽约时间下午三至四点。在到期时段内，交易量急剧增加，市场波动幅度加剧。</p>
+<p>在“四巫日”的最后交易时段内，投资者急于平仓，导致交易量大幅增加。因此，“四巫日”通常伴随股票和衍生品价格的大幅波动。</p>
+<p>“四巫日”当天，股票、股指的期货和期权大量交易，有时，投资者平掉的仓位可以和新建仓位抵消，金融产品不会出现过度供给或过度需求。有时，投资者采取不同的投资策略，在市场上共同起作用，制造相应的股票买卖需求，从而从波动中获利。</p>
+<p>“四巫日”对股市的影响在当天开盘和收盘的时段最为明显，这也是通常期货和期权到期的时段。投资者在该时段内买卖股票，以履行期货期权持有人的义务。但对于长期投资者而言，“四巫日”的影响微乎其微。</p>
+]]></content>
+      <categories>
+        <category>金融</category>
+      </categories>
+      <tags>
+        <tag>科普</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>tcpdump-netstat</title>
+    <url>/2021/08/16/tcpdump-netstat/</url>
+    <content><![CDATA[<h2 id="tcpdump"><a href="#tcpdump" class="headerlink" title="tcpdump"></a>tcpdump</h2><p>底层基于libpcap，一个可移植的网络传输层C/C++库</p>
+<p>tcpdump 不加任何参数，默认监听一个默认网卡（eth0网卡），抓取经过该端口的所有的数据包 ^C停止，会显示抓了多少个包</p>
+<ul>
+<li>c 10 限制只抓10个包</li>
+<li>w filename 输出到文件，tcpdump保存的数据包文件格式，是被大部分主流抓包软件所兼容的</li>
+<li>r filename 读取之前保存到文件的数据包</li>
+<li>D 显示系统当前的网卡列表</li>
+<li>i eth0 指定只抓取eth0网卡的流量</li>
+<li>v -vv 显示抓到的流量的详细信息，v越多越详细</li>
+<li>n 源地址和目的地址用ip显示，不反解为域名</li>
+</ul>
+<a id="more"></a>
+
+<p>tcpdump tcp/udp/icmp 指定抓取某种类型的流量</p>
+<p>icmp 例如ping</p>
+<p>tcpdump port 80 指定抓取某个端口的流量（80是http的流量）</p>
+<p>tcpdump portrange 1-1024 抓取某个范围端口的流量</p>
+<p>tcpdump src/dst port 80 指定源/目标端口为80的流量</p>
+<p>tcpdump src/dst host hostname 只抓取源/目标地址的流量</p>
+<p>tcpdump host <a href="http://www.baidu.com/">www.baidu.com</a> 指定抓取来自或去到某个host（可以是域名或IP）的流量</p>
+<p>tcpdump greater 1000 只抓取大于1000bytes的流量</p>
+<p>tcpdump less 10  只抓取小于10bytes的流量</p>
+<ul>
+<li>A 以ASCII码形式显示数据包的内容</li>
+<li>X 以16进制和ASCII码形式来显示数据包内容</li>
+</ul>
+<p>支持与 或 非</p>
+<p>tcpdump tcp and src [host] 192.168.1.1 and src port 1000 抓取源地址为192.168.1.1:1000的tcp包</p>
+<p>tcpdump src 192.168.1.1 or src 192.168.1.2  抓取源地址为192.168.1.1或192.168.1.2的数据包</p>
+<p>tcpdump not port 80 抓取非80端口的流量</p>
+<h2 id="netstat"><a href="#netstat" class="headerlink" title="netstat"></a>netstat</h2><ul>
+<li>p port</li>
+<li>a all</li>
+<li>t tcp</li>
+<li>u udp</li>
+<li>l listenning</li>
+<li>n 不进行域名解析</li>
+<li>c connection status real-time</li>
+</ul>
+]]></content>
+      <categories>
+        <category>SRE</category>
+      </categories>
+      <tags>
+        <tag>tcpdump</tag>
+        <tag>netstat</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ssh终端证书方式登录远程linux系统</title>
+    <url>/2020/12/28/ssh-without-passwd/</url>
+    <content><![CDATA[<h3 id="为什么选择证书登陆？"><a href="#为什么选择证书登陆？" class="headerlink" title="为什么选择证书登陆？"></a>为什么选择证书登陆？</h3><p>Mac下原生及主流的ssh终端工具大多不具备保存ssh登陆密码的功能, 通过证书登陆的方式，就可以实现原生终端工具Terminal或第三方明星终端iTerm免密码登录远程系统，并且比单纯的密码验证登陆方式提高了安全性。</p>
+<a id="more"></a>
+
+<h3 id="配置过程（以下操作都在终端命令行下运行）"><a href="#配置过程（以下操作都在终端命令行下运行）" class="headerlink" title="配置过程（以下操作都在终端命令行下运行）"></a>配置过程（以下操作都在终端命令行下运行）</h3><ol>
+<li><p>进入系统的ssh证书目录 cd ~/.ssh/</p>
+</li>
+<li><p>建立证书文件 ssh-keygen -t rsa 提示输入，直接回车即可。</p>
+</li>
+<li><p>输入 ls 命令查看当前目录会发现新生成的一对秘钥文件分别是：</p>
+<p> 公钥：id_rsa.pub</p>
+<p> 私钥：id_rsa</p>
+</li>
+<li><p>登陆到远程服务器，进入.ssh目录 cd ~/.ssh</p>
+<p> 将上面生成的公钥文件的内容copy进 authorized_keys 文件中</p>
+</li>
+<li><p>在Mac终端下执行登陆命令 ssh username@server</p>
+<p> 即可免密码登录到远程服务器</p>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>技术</category>
       </categories>
   </entry>
   <entry>
@@ -2281,84 +2359,6 @@
       <categories>
         <category>技术</category>
       </categories>
-  </entry>
-  <entry>
-    <title>ssh终端证书方式登录远程linux系统</title>
-    <url>/2020/12/28/ssh-without-passwd/</url>
-    <content><![CDATA[<h3 id="为什么选择证书登陆？"><a href="#为什么选择证书登陆？" class="headerlink" title="为什么选择证书登陆？"></a>为什么选择证书登陆？</h3><p>Mac下原生及主流的ssh终端工具大多不具备保存ssh登陆密码的功能, 通过证书登陆的方式，就可以实现原生终端工具Terminal或第三方明星终端iTerm免密码登录远程系统，并且比单纯的密码验证登陆方式提高了安全性。</p>
-<a id="more"></a>
-
-<h3 id="配置过程（以下操作都在终端命令行下运行）"><a href="#配置过程（以下操作都在终端命令行下运行）" class="headerlink" title="配置过程（以下操作都在终端命令行下运行）"></a>配置过程（以下操作都在终端命令行下运行）</h3><ol>
-<li><p>进入系统的ssh证书目录 cd ~/.ssh/</p>
-</li>
-<li><p>建立证书文件 ssh-keygen -t rsa 提示输入，直接回车即可。</p>
-</li>
-<li><p>输入 ls 命令查看当前目录会发现新生成的一对秘钥文件分别是：</p>
-<p> 公钥：id_rsa.pub</p>
-<p> 私钥：id_rsa</p>
-</li>
-<li><p>登陆到远程服务器，进入.ssh目录 cd ~/.ssh</p>
-<p> 将上面生成的公钥文件的内容copy进 authorized_keys 文件中</p>
-</li>
-<li><p>在Mac终端下执行登陆命令 ssh username@server</p>
-<p> 即可免密码登录到远程服务器</p>
-</li>
-</ol>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>tcpdump-netstat</title>
-    <url>/2021/08/16/tcpdump-netstat/</url>
-    <content><![CDATA[<h2 id="tcpdump"><a href="#tcpdump" class="headerlink" title="tcpdump"></a>tcpdump</h2><p>底层基于libpcap，一个可移植的网络传输层C/C++库</p>
-<p>tcpdump 不加任何参数，默认监听一个默认网卡（eth0网卡），抓取经过该端口的所有的数据包 ^C停止，会显示抓了多少个包</p>
-<ul>
-<li>c 10 限制只抓10个包</li>
-<li>w filename 输出到文件，tcpdump保存的数据包文件格式，是被大部分主流抓包软件所兼容的</li>
-<li>r filename 读取之前保存到文件的数据包</li>
-<li>D 显示系统当前的网卡列表</li>
-<li>i eth0 指定只抓取eth0网卡的流量</li>
-<li>v -vv 显示抓到的流量的详细信息，v越多越详细</li>
-<li>n 源地址和目的地址用ip显示，不反解为域名</li>
-</ul>
-<a id="more"></a>
-
-<p>tcpdump tcp/udp/icmp 指定抓取某种类型的流量</p>
-<p>icmp 例如ping</p>
-<p>tcpdump port 80 指定抓取某个端口的流量（80是http的流量）</p>
-<p>tcpdump portrange 1-1024 抓取某个范围端口的流量</p>
-<p>tcpdump src/dst port 80 指定源/目标端口为80的流量</p>
-<p>tcpdump src/dst host hostname 只抓取源/目标地址的流量</p>
-<p>tcpdump host <a href="http://www.baidu.com/">www.baidu.com</a> 指定抓取来自或去到某个host（可以是域名或IP）的流量</p>
-<p>tcpdump greater 1000 只抓取大于1000bytes的流量</p>
-<p>tcpdump less 10  只抓取小于10bytes的流量</p>
-<ul>
-<li>A 以ASCII码形式显示数据包的内容</li>
-<li>X 以16进制和ASCII码形式来显示数据包内容</li>
-</ul>
-<p>支持与 或 非</p>
-<p>tcpdump tcp and src [host] 192.168.1.1 and src port 1000 抓取源地址为192.168.1.1:1000的tcp包</p>
-<p>tcpdump src 192.168.1.1 or src 192.168.1.2  抓取源地址为192.168.1.1或192.168.1.2的数据包</p>
-<p>tcpdump not port 80 抓取非80端口的流量</p>
-<h2 id="netstat"><a href="#netstat" class="headerlink" title="netstat"></a>netstat</h2><ul>
-<li>p port</li>
-<li>a all</li>
-<li>t tcp</li>
-<li>u udp</li>
-<li>l listenning</li>
-<li>n 不进行域名解析</li>
-<li>c connection status real-time</li>
-</ul>
-]]></content>
-      <categories>
-        <category>SRE</category>
-      </categories>
-      <tags>
-        <tag>tcpdump</tag>
-        <tag>netstat</tag>
-      </tags>
   </entry>
   <entry>
     <title>异地多活架构设计-概论</title>

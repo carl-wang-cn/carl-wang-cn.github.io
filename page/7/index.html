@@ -303,7 +303,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://carl-wang-cn.github.io/2020/01/16/2020-01-16-find/">
+    <link itemprop="mainEntityOfPage" href="https://carl-wang-cn.github.io/2020/01/16/2020-01-16-cmake/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/ais.jpg">
@@ -316,7 +316,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/01/16/2020-01-16-find/" class="post-title-link" itemprop="url">find命令使用技巧</a>
+          <a href="/2020/01/16/2020-01-16-cmake/" class="post-title-link" itemprop="url">cmake怎么写?</a>
         </h2>
 
         <div class="post-meta-container">
@@ -356,19 +356,24 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p><code>find &lt; path &gt; &lt; expression &gt; &lt; cmd &gt;</code></p>
-<ul>
-<li>path： 所要搜索的目录及其所有子目录。默认为当前目录。</li>
-<li>expression： 所要搜索的文件的特征。</li>
-<li>cmd： 对搜索结果进行特定的处理。</li>
+          <h3 id="cmake中一些预定义变量"><a href="#cmake中一些预定义变量" class="headerlink" title="cmake中一些预定义变量"></a>cmake中一些预定义变量</h3><ul>
+<li>PROJECT_SOURCE_DIR 工程的根目录</li>
+<li>PROJECT_BINARY_DIR 运行cmake命令的目录,通常是${PROJECT_SOURCE_DIR}/build</li>
+<li>CMAKE_INCLUDE_PATH 环境变量,非cmake变量</li>
+<li>CMAKE_LIBRARY_PATH 环境变量</li>
+<li>CMAKE_CURRENT_SOURCE_DIR 当前处理的CMakeLists.txt所在的路径</li>
+<li>CMAKE_CURRENT_BINARY_DIR target编译目录<br>使用ADD_SURDIRECTORY(src bin)可以更改此变量的值<br>SET(EXECUTABLE_OUTPUT_PATH &lt;新路径&gt;)并不会对此变量有影响,只是改变了最终目标文件的存储路径</li>
+<li>CMAKE_CURRENT_LIST_FILE 输出调用这个变量的CMakeLists.txt的完整路径</li>
+<li>CMAKE_CURRENT_LIST_LINE 输出这个变量所在的行</li>
+<li>CMAKE_MODULE_PATH 定义自己的cmake模块所在的路径<br>SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake),然后可以用INCLUDE命令来调用自己的模块</li>
+<li>EXECUTABLE_OUTPUT_PATH 重新定义目标二进制可执行文件的存放位置</li>
+<li>LIBRARY_OUTPUT_PATH 重新定义目标链接库文件的存放位置</li>
+<li>PROJECT_NAME 返回通过PROJECT指令定义的项目名称</li>
+<li>CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS 用来控制IF ELSE语句的书写方式</li>
 </ul>
-<p>如果什么参数也不加，find默认搜索当前目录及其子目录，并且不过滤任何结果（也就是返回所有文件），将它们全都显示在屏幕上。</p>
-<h4 id="find命令常用选项及实例"><a href="#find命令常用选项及实例" class="headerlink" title="find命令常用选项及实例"></a>find命令常用选项及实例</h4><ul>
-<li><p>-name 按照文件名查找文件。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">find /dir -name filename  在/dir目录及其子目录下面查找名字为filename的文件</span><br><span class="line">find . -name <span class="string">&quot;*.c&quot;</span> 在当前目录及其子目录（用“.”表示）中查找任何扩展名为“c”的文件</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/01/16/2020-01-16-find/#more" rel="contents">
+              <a class="btn" href="/2020/01/16/2020-01-16-cmake/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -496,7 +501,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://carl-wang-cn.github.io/2020/01/16/2020-01-16-cmake/">
+    <link itemprop="mainEntityOfPage" href="https://carl-wang-cn.github.io/2020/01/16/2020-01-16-find/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/ais.jpg">
@@ -509,7 +514,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/01/16/2020-01-16-cmake/" class="post-title-link" itemprop="url">cmake怎么写?</a>
+          <a href="/2020/01/16/2020-01-16-find/" class="post-title-link" itemprop="url">find命令使用技巧</a>
         </h2>
 
         <div class="post-meta-container">
@@ -549,24 +554,19 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h3 id="cmake中一些预定义变量"><a href="#cmake中一些预定义变量" class="headerlink" title="cmake中一些预定义变量"></a>cmake中一些预定义变量</h3><ul>
-<li>PROJECT_SOURCE_DIR 工程的根目录</li>
-<li>PROJECT_BINARY_DIR 运行cmake命令的目录,通常是${PROJECT_SOURCE_DIR}/build</li>
-<li>CMAKE_INCLUDE_PATH 环境变量,非cmake变量</li>
-<li>CMAKE_LIBRARY_PATH 环境变量</li>
-<li>CMAKE_CURRENT_SOURCE_DIR 当前处理的CMakeLists.txt所在的路径</li>
-<li>CMAKE_CURRENT_BINARY_DIR target编译目录<br>使用ADD_SURDIRECTORY(src bin)可以更改此变量的值<br>SET(EXECUTABLE_OUTPUT_PATH &lt;新路径&gt;)并不会对此变量有影响,只是改变了最终目标文件的存储路径</li>
-<li>CMAKE_CURRENT_LIST_FILE 输出调用这个变量的CMakeLists.txt的完整路径</li>
-<li>CMAKE_CURRENT_LIST_LINE 输出这个变量所在的行</li>
-<li>CMAKE_MODULE_PATH 定义自己的cmake模块所在的路径<br>SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake),然后可以用INCLUDE命令来调用自己的模块</li>
-<li>EXECUTABLE_OUTPUT_PATH 重新定义目标二进制可执行文件的存放位置</li>
-<li>LIBRARY_OUTPUT_PATH 重新定义目标链接库文件的存放位置</li>
-<li>PROJECT_NAME 返回通过PROJECT指令定义的项目名称</li>
-<li>CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS 用来控制IF ELSE语句的书写方式</li>
+          <p><code>find &lt; path &gt; &lt; expression &gt; &lt; cmd &gt;</code></p>
+<ul>
+<li>path： 所要搜索的目录及其所有子目录。默认为当前目录。</li>
+<li>expression： 所要搜索的文件的特征。</li>
+<li>cmd： 对搜索结果进行特定的处理。</li>
 </ul>
+<p>如果什么参数也不加，find默认搜索当前目录及其子目录，并且不过滤任何结果（也就是返回所有文件），将它们全都显示在屏幕上。</p>
+<h4 id="find命令常用选项及实例"><a href="#find命令常用选项及实例" class="headerlink" title="find命令常用选项及实例"></a>find命令常用选项及实例</h4><ul>
+<li><p>-name 按照文件名查找文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">find /dir -name filename  在/dir目录及其子目录下面查找名字为filename的文件</span><br><span class="line">find . -name <span class="string">&quot;*.c&quot;</span> 在当前目录及其子目录（用“.”表示）中查找任何扩展名为“c”的文件</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/01/16/2020-01-16-cmake/#more" rel="contents">
+              <a class="btn" href="/2020/01/16/2020-01-16-find/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
