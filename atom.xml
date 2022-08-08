@@ -6,7 +6,7 @@
   <link href="https://carl-wang-cn.github.io/atom.xml" rel="self"/>
   
   <link href="https://carl-wang-cn.github.io/"/>
-  <updated>2022-06-28T06:46:57.242Z</updated>
+  <updated>2022-08-01T14:11:17.217Z</updated>
   <id>https://carl-wang-cn.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://carl-wang-cn.github.io/2022/06/28/good-words-01-md/"/>
     <id>https://carl-wang-cn.github.io/2022/06/28/good-words-01-md/</id>
     <published>2022-06-28T06:46:13.000Z</published>
-    <updated>2022-06-28T06:46:57.242Z</updated>
+    <updated>2022-08-01T14:11:17.217Z</updated>
     
     
     <summary type="html">&lt;p&gt;阅读的时候，记录了一些对自己触动很大，希望还能时长翻看的文字，也会随手记下几句闪过脑子的文字。&lt;/p&gt;</summary>
@@ -38,7 +38,7 @@
     <link href="https://carl-wang-cn.github.io/2022/05/26/better-leader/"/>
     <id>https://carl-wang-cn.github.io/2022/05/26/better-leader/</id>
     <published>2022-05-26T12:24:39.000Z</published>
-    <updated>2022-06-06T02:56:26.256Z</updated>
+    <updated>2022-08-01T14:11:17.209Z</updated>
     
     
     <summary type="html">&lt;p&gt;就是单纯列一下我自己认为比较重要的几点&lt;/p&gt;</summary>
@@ -55,7 +55,7 @@
     <link href="https://carl-wang-cn.github.io/2022/01/24/better-sys-log/"/>
     <id>https://carl-wang-cn.github.io/2022/01/24/better-sys-log/</id>
     <published>2022-01-24T12:42:26.000Z</published>
-    <updated>2022-01-25T11:41:21.316Z</updated>
+    <updated>2022-08-01T14:11:17.209Z</updated>
     
     
     <summary type="html">&lt;p&gt;日志是每个程序员，尤其是后台服务器程序员每天都要接触的东西，但是如何把实现一个好的日志，是有很多道道在里面的。&lt;/p&gt;
@@ -87,7 +87,7 @@
     <link href="https://carl-wang-cn.github.io/2022/01/22/Wash-Trading/"/>
     <id>https://carl-wang-cn.github.io/2022/01/22/Wash-Trading/</id>
     <published>2022-01-22T08:38:54.000Z</published>
-    <updated>2022-01-24T11:42:06.058Z</updated>
+    <updated>2022-08-01T14:11:17.210Z</updated>
     
     
     <summary type="html">&lt;p&gt;Wash Trading&lt;/p&gt;
@@ -108,7 +108,7 @@
     <link href="https://carl-wang-cn.github.io/2021/12/17/four-witching-days/"/>
     <id>https://carl-wang-cn.github.io/2021/12/17/four-witching-days/</id>
     <published>2021-12-17T11:22:34.000Z</published>
-    <updated>2021-12-30T14:00:07.609Z</updated>
+    <updated>2022-08-01T14:11:17.213Z</updated>
     
     
     <summary type="html">&lt;p&gt;什么是美国金融市场“四巫日”&lt;/p&gt;
@@ -128,7 +128,7 @@
     <link href="https://carl-wang-cn.github.io/2021/08/16/tcpdump-netstat/"/>
     <id>https://carl-wang-cn.github.io/2021/08/16/tcpdump-netstat/</id>
     <published>2021-08-16T01:22:08.000Z</published>
-    <updated>2021-12-30T14:00:07.609Z</updated>
+    <updated>2022-08-01T14:11:17.214Z</updated>
     
     
     <summary type="html">&lt;h2 id=&quot;tcpdump&quot;&gt;&lt;a href=&quot;#tcpdump&quot; class=&quot;headerlink&quot; title=&quot;tcpdump&quot;&gt;&lt;/a&gt;tcpdump&lt;/h2&gt;&lt;p&gt;底层基于libpcap，一个可移植的网络传输层C/C++库&lt;/p&gt;
@@ -159,7 +159,7 @@
     <link href="https://carl-wang-cn.github.io/2021/06/03/%E5%BC%82%E5%9C%B0%E5%A4%9A%E6%B4%BB%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1-%E6%A6%82%E8%AE%BA/"/>
     <id>https://carl-wang-cn.github.io/2021/06/03/%E5%BC%82%E5%9C%B0%E5%A4%9A%E6%B4%BB%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1-%E6%A6%82%E8%AE%BA/</id>
     <published>2021-06-03T11:49:26.000Z</published>
-    <updated>2021-12-30T14:00:07.608Z</updated>
+    <updated>2022-08-01T14:11:17.212Z</updated>
     
     
     <summary type="html">&lt;p&gt;近期工作中要做一些系统的质量工作，那么多活肯定是一个避不开的事情，借此机会，系统梳理下异地多活的架构设计，为接下来的服务质量做一些准备。&lt;/p&gt;
@@ -196,7 +196,7 @@
     <link href="https://carl-wang-cn.github.io/2021/02/19/adr-vs-ads/"/>
     <id>https://carl-wang-cn.github.io/2021/02/19/adr-vs-ads/</id>
     <published>2021-02-19T14:29:40.000Z</published>
-    <updated>2021-12-30T14:00:07.609Z</updated>
+    <updated>2022-08-01T14:11:17.214Z</updated>
     
     
     <summary type="html">&lt;p&gt;&lt;strong&gt;今天发现因为持有JD被收了ADR费，但是JD不是美国上市的吗？跟TCEHY（腾讯ADR）有什么区别？&lt;/strong&gt;&lt;/p&gt;
@@ -218,7 +218,7 @@
     <link href="https://carl-wang-cn.github.io/2021/01/08/crontab-examples/"/>
     <id>https://carl-wang-cn.github.io/2021/01/08/crontab-examples/</id>
     <published>2021-01-08T06:01:53.000Z</published>
-    <updated>2021-12-30T14:00:07.608Z</updated>
+    <updated>2022-08-01T14:11:17.211Z</updated>
     
     
     <summary type="html">&lt;p&gt;crontab -e 编辑该用户的crontab， 不存在时新建&lt;br&gt;crontab -l 列出该用户的crontab&lt;br&gt;crontab -r 删除该用户的crontab&lt;br&gt;crontab -u&lt;uid&gt; 指定要设定crontab的用户名称&lt;/p&gt;</summary>
@@ -237,7 +237,7 @@
     <link href="https://carl-wang-cn.github.io/2020/12/28/ssh-without-passwd/"/>
     <id>https://carl-wang-cn.github.io/2020/12/28/ssh-without-passwd/</id>
     <published>2020-12-28T01:02:49.000Z</published>
-    <updated>2021-12-30T14:00:07.607Z</updated>
+    <updated>2022-08-01T14:11:17.210Z</updated>
     
     
     <summary type="html">&lt;h3 id=&quot;为什么选择证书登陆？&quot;&gt;&lt;a href=&quot;#为什么选择证书登陆？&quot; class=&quot;headerlink&quot; title=&quot;为什么选择证书登陆？&quot;&gt;&lt;/a&gt;为什么选择证书登陆？&lt;/h3&gt;&lt;p&gt;Mac下原生及主流的ssh终端工具大多不具备保存ssh登陆密码的功能, 通过证书登陆的方式，就可以实现原生终端工具Terminal或第三方明星终端iTerm免密码登录远程系统，并且比单纯的密码验证登陆方式提高了安全性。&lt;/p&gt;</summary>

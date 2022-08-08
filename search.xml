@@ -174,61 +174,6 @@
       </tags>
   </entry>
   <entry>
-    <title>shell脚本必知必会</title>
-    <url>/2020/01/16/2020-01-16-shell/</url>
-    <content><![CDATA[<h3 id="变量命名"><a href="#变量命名" class="headerlink" title="变量命名"></a>变量命名</h3><h4 id="规则"><a href="#规则" class="headerlink" title="规则"></a>规则</h4><ol>
-<li>首字符必须为字母</li>
-<li>中间不能有空格, 可以有下划线_</li>
-<li>不能使用标点符号</li>
-<li>不能使用bash里的关键字</li>
-</ol>
-<h4 id="代码风格建议"><a href="#代码风格建议" class="headerlink" title="代码风格建议"></a>代码风格建议</h4><ul>
-<li>全部用大写</li>
-<li>下划线分隔</li>
-<li>定义在文件的顶部</li>
-</ul>
-<a id="more"></a>
-
-<h3 id="变量赋值"><a href="#变量赋值" class="headerlink" title="变量赋值"></a>变量赋值</h3><p>变量名=值,  （注意, = 两边不能有空格）</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">var=1</span><br><span class="line">var=<span class="variable">$var</span>+1</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$var</span>+1</span><br><span class="line"><span class="comment"># 输出为1+1, 而不是2</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 可以用如下方法使其输出为2</span></span><br><span class="line"><span class="built_in">let</span> <span class="string">&quot;var+=1&quot;</span></span><br><span class="line"><span class="comment">#var=$[$var+1]</span></span><br><span class="line"><span class="comment">#var=$(($var+1))</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$var</span></span><br><span class="line">或者</span><br><span class="line">var=1</span><br><span class="line">var= expr <span class="variable">$var</span> + 1 <span class="comment">#（注意, + 两边的空格, 一定要有）</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">let</span>表示数学运算, expr用于整数值运算, 每一项用空格隔开, $[]将中括号内的表达式作为数学运算先计算结果再输出.</span><br><span class="line">在bash中, 将数学运算结果赋给某个变量,  var=$[ operation ]</span><br><span class="line"></span><br><span class="line">变量自增, 自减</span><br><span class="line"><span class="built_in">let</span> var++  <span class="built_in">let</span> var--</span><br><span class="line"><span class="built_in">let</span> var+=2</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;10.2-2&quot;</span> | bc   -- 小数运算要用bc  $[]不支持小数</span><br></pre></td></tr></table></figure>
-<h3 id="变量使用"><a href="#变量使用" class="headerlink" title="变量使用"></a>变量使用</h3><p>$var ${var}<br>双引号“ “ 中可以用$var<br>单引号‘ ‘ 中不可以用$var</p>
-<p>$(cmd) 与 `cmd` 等效, 推荐用前者</p>
-<ul>
-<li>支持内嵌</li>
-<li>不用转义</li>
-<li>有些字体, 反引号和单引号很像, 让人看着很难受</li>
-</ul>
-<h4 id="内建变量"><a href="#内建变量" class="headerlink" title="内建变量"></a>内建变量</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">- <span class="variable">$RANDOM</span>  随机数</span><br><span class="line">- 字段分隔符, IFS=$<span class="string">&#x27;n&#x27;</span></span><br><span class="line">- <span class="variable">$0</span> 程序名, <span class="variable">$1</span> … <span class="variable">$9</span> 是命令行参数, 多于9个命令行参数的话, 后面的需要<span class="variable">$&#123;10&#125;</span> <span class="variable">$&#123;11&#125;</span>这种格式</span><br><span class="line">- <span class="variable">$#</span> 表示传入的命令行参数的个数. 在&#123;&#125;中使用<span class="variable">$#</span>时, 要改用<span class="variable">$&#123;!#&#125;</span>.</span><br><span class="line">- $* 所有命令行参数当成一个单词存储</span><br><span class="line">- <span class="variable">$@</span> 所有命令行参数当成一个字符串中的多个单词</span><br><span class="line">- $$ 脚本的PID</span><br></pre></td></tr></table></figure>
-<h3 id="比较运算符"><a href="#比较运算符" class="headerlink" title="比较运算符"></a>比较运算符</h3><h4 id="文件比较运算符"><a href="#文件比较运算符" class="headerlink" title="文件比较运算符"></a>文件比较运算符</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-e filename                如果 filename 存在, 则为真               [ -e /var/<span class="built_in">log</span>/syslog ]</span><br><span class="line">-d filename                如果 filename 为目录, 则为真             [ -d /tmp/mydir ]</span><br><span class="line">-f filename                如果 filename 为常规文件, 则为真          [ -f /usr/bin/grep ]</span><br><span class="line">-L filename                如果 filename 为符号链接, 则为真          [ -L /usr/bin/grep ]</span><br><span class="line">-r filename                如果 filename 可读, 则为真               [ -r /var/<span class="built_in">log</span>/syslog ]</span><br><span class="line">-w filename                如果 filename 可写, 则为真               [ -w /var/mytmp.txt ]</span><br><span class="line">-x filename                如果 filename 可执行, 则为真             [ -L /usr/bin/grep ]</span><br><span class="line">! -e filename              如果 filename 不存在, 则为真               [ ! -e /var/<span class="built_in">log</span>/syslog ]</span><br><span class="line">filename1 -nt filename2    如果 filename1 比 filename2 新, 则为真   [ /tmp/install/etc/services -nt /etc/services ]</span><br><span class="line">filename1 -ot filename2    如果 filename1 比 filename2 旧, 则为真   [ /boot/bzImage -ot arch/i386/boot/bzImage ]</span><br></pre></td></tr></table></figure>
-<h4 id="字符串比较运算符-（请注意引号的使用-这是防止空格扰乱代码的好方法）"><a href="#字符串比较运算符-（请注意引号的使用-这是防止空格扰乱代码的好方法）" class="headerlink" title="字符串比较运算符 （请注意引号的使用, 这是防止空格扰乱代码的好方法）"></a>字符串比较运算符 （请注意引号的使用, 这是防止空格扰乱代码的好方法）</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-z string               如果 string 长度为零, 则为真            [ -z <span class="string">&quot;<span class="variable">$myvar</span>&quot;</span> ]</span><br><span class="line">-n string               如果 string 长度非零, 则为真            [ -n <span class="string">&quot;<span class="variable">$myvar</span>&quot;</span> ]</span><br><span class="line">string1 = string2       如果 string1 与 string2 相同, 则为真    [ <span class="string">&quot;<span class="variable">$myvar</span>&quot;</span> = <span class="string">&quot;one two three&quot;</span> ]</span><br><span class="line">string1 != string2      如果 string1 与 string2 不同, 则为真    [ <span class="string">&quot;<span class="variable">$myvar</span>&quot;</span> != <span class="string">&quot;one two three&quot;</span> ]</span><br></pre></td></tr></table></figure>
-<h4 id="算术比较运算符"><a href="#算术比较运算符" class="headerlink" title="算术比较运算符"></a>算术比较运算符</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">num1 -eq num2       等于            [ 3 -eq <span class="variable">$mynum</span> ]</span><br><span class="line">num1 -ne num2       不等于          [ 3 -ne <span class="variable">$mynum</span> ]</span><br><span class="line">num1 -lt num2       小于            [ 3 -lt <span class="variable">$mynum</span> ]</span><br><span class="line">num1 -le num2       小于或等于      [ 3 -le <span class="variable">$mynum</span> ]</span><br><span class="line">num1 -gt num2       大于            [ 3 -gt <span class="variable">$mynum</span> ]</span><br><span class="line">num1 -ge num2       大于或等于      [ 3 -ge <span class="variable">$mynum</span> ]</span><br></pre></td></tr></table></figure>
-<h3 id="结构语句"><a href="#结构语句" class="headerlink" title="结构语句"></a>结构语句</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="built_in">command</span></span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">    commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> command1 &amp;&amp; command2</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">    commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">command</span>; <span class="keyword">then</span>  <span class="comment">#如果then与if在同一行, if command后要加&#x27;;&#x27;</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">command</span></span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> command1</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">elif</span> command2</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 不推荐</span></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">test</span> condition</span><br><span class="line"><span class="keyword">if</span> [ condition ] 注意[]与condition之间的空格, &gt; &lt; 需要转义</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 不推荐</span></span><br><span class="line"><span class="keyword">if</span> ((expression)) &gt; &lt; 不需要转义</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 推荐用 [[ ]] 的形式</span></span><br><span class="line"><span class="comment"># 1. 避免转义问题</span></span><br><span class="line"><span class="comment"># 2. 有新功能, 包括但不限于以下</span></span><br><span class="line"><span class="comment">#    - ||: 逻辑or</span></span><br><span class="line"><span class="comment">#    - &amp;&amp;: 逻辑and</span></span><br><span class="line"><span class="comment">#    - &lt;: 字符串比较(不需要转义)</span></span><br><span class="line"><span class="comment">#    - ==: 通配符字符串比较</span></span><br><span class="line"><span class="comment">#    - =~: 正则表达式字符串比较</span></span><br><span class="line"><span class="keyword">if</span> [[ condition ]]  可以用正则表达式</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">t=<span class="string">&quot;abc123&quot;</span></span><br><span class="line"></span><br><span class="line">[[ <span class="string">&quot;<span class="variable">$t</span>&quot;</span> == abc* ]]         <span class="comment">#true</span></span><br><span class="line">[[ <span class="string">&quot;<span class="variable">$t</span>&quot;</span> == <span class="string">&quot;abc*&quot;</span> ]]       <span class="comment"># false</span></span><br><span class="line">[[ <span class="string">&quot;<span class="variable">$t</span>&quot;</span> =~ [abc]+[123]+ ]] <span class="comment"># true</span></span><br><span class="line">[[ <span class="string">&quot;<span class="variable">$t</span>&quot;</span> =~ <span class="string">&quot;abc*&quot;</span> ]]       <span class="comment"># false</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">case</span> variable <span class="keyword">in</span></span><br><span class="line">pattern1 | pattern2)</span><br><span class="line">    commands1</span><br><span class="line">    ;;</span><br><span class="line">pattern3)</span><br><span class="line">    commands2::</span><br><span class="line">    ;;</span><br><span class="line">*)</span><br><span class="line">    default commands</span><br><span class="line">    ;;</span><br><span class="line"><span class="keyword">esac</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> var <span class="keyword">in</span> list</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="built_in">test</span> <span class="built_in">command</span></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">     other commands</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line">until <span class="built_in">test</span> <span class="built_in">command</span></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">     other commands</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">break</span> n (default 1) 跳出n层循环</span><br><span class="line"><span class="built_in">continue</span> n (default 1) 继续n级循环</span><br><span class="line"></span><br><span class="line">select var <span class="keyword">in</span> list</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    commands</span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
-<h3 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h3><p>语法</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[ <span class="keyword">function</span> ] funname [()]</span><br><span class="line">&#123;</span><br><span class="line">    action;</span><br><span class="line">    [<span class="built_in">return</span> int;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>说明：</p>
-<ol>
-<li>可以带function fun()  定义, 也可以直接fun() 定义, 不带任何参数.</li>
-<li>参数返回, 可以显式return返回, return后跟数值n(0-255)；如果不加, 将以最后一条命令运行结果, 作为返回值.</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 将所有的错误信息导向STDERR</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">err</span></span>() &#123;</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;[<span class="subst">$(date +&#x27;%Y-%m-%dT%H:%M:%S%z&#x27;)</span>]: <span class="variable">$@</span>&quot;</span> &gt;&amp;2</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> ! do_something; <span class="keyword">then</span></span><br><span class="line">    err <span class="string">&quot;Unable to do_something&quot;</span></span><br><span class="line">    <span class="built_in">exit</span> <span class="string">&quot;<span class="variable">$&#123;E_DID_NOTHING&#125;</span>”</span></span><br><span class="line"><span class="string">fi</span></span><br><span class="line"><span class="string"></span></span><br></pre></td></tr></table></figure>
-<p>注意事项</p>
-<ol>
-<li>必须在调用函数地方之前, 声明函数, shell脚本是逐行运行. 不会像其它语言一样先预编译. 一次必须在使用函数前先声明函数.</li>
-<li>total=$(func 3 2);  </li>
-<li>函数返回值, 只能通过$? 系统变量获得, 直接通过=获得是空值</li>
-<li>如果需要传出其它类型函数值, 可以在函数调用之前, 定义变量（这个就是全局变量）. 在函数内部就可以直接修改, 然后在执行函数就可以读出修改过的值</li>
-<li>如果需要定义自己变量, 可以在函数中定义, local 变量=值, 这时变量就是内部变量, 它的修改, 不会影响函数外部相同变量的值.</li>
-</ol>
-<h3 id="实用技巧"><a href="#实用技巧" class="headerlink" title="实用技巧"></a>实用技巧</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#! /bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在默认情况下，遇到不存在的变量，会忽略并继续执行，而这往往不符合预期，加入该选项，可以避免恶果扩大，终止脚本的执行。</span></span><br><span class="line"><span class="built_in">set</span> -o nounset</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在默认情况下，遇到执行出错，会跳过并继续执行，而这往往不符合预期，加入该选项，可以避免恶果扩大，终止脚本的执行</span></span><br><span class="line"><span class="built_in">set</span> -o errexit</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">log</span></span>() &#123;</span><br><span class="line">    <span class="built_in">local</span> prefix=<span class="string">&quot;[<span class="subst">$(date +%Y/%m/%d\ %H:%M:%S)</span>]:&quot;</span></span><br><span class="line">    <span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$_DEBUG</span>&quot;</span> == <span class="string">&quot;true&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$&#123;prefix&#125;</span> <span class="variable">$@</span>&quot;</span> &gt;&amp;2</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">log</span> <span class="string">&quot;INFO&quot;</span> <span class="string">&quot;a message&quot;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>shell</tag>
-        <tag>通用技巧</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>find命令使用技巧</title>
     <url>/2020/01/16/2020-01-16-find/</url>
     <content><![CDATA[<p><code>find &lt; path &gt; &lt; expression &gt; &lt; cmd &gt;</code></p>
@@ -283,8 +228,63 @@
         <category>技术</category>
       </categories>
       <tags>
-        <tag>通用技巧</tag>
         <tag>find</tag>
+        <tag>通用技巧</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>shell脚本必知必会</title>
+    <url>/2020/01/16/2020-01-16-shell/</url>
+    <content><![CDATA[<h3 id="变量命名"><a href="#变量命名" class="headerlink" title="变量命名"></a>变量命名</h3><h4 id="规则"><a href="#规则" class="headerlink" title="规则"></a>规则</h4><ol>
+<li>首字符必须为字母</li>
+<li>中间不能有空格, 可以有下划线_</li>
+<li>不能使用标点符号</li>
+<li>不能使用bash里的关键字</li>
+</ol>
+<h4 id="代码风格建议"><a href="#代码风格建议" class="headerlink" title="代码风格建议"></a>代码风格建议</h4><ul>
+<li>全部用大写</li>
+<li>下划线分隔</li>
+<li>定义在文件的顶部</li>
+</ul>
+<a id="more"></a>
+
+<h3 id="变量赋值"><a href="#变量赋值" class="headerlink" title="变量赋值"></a>变量赋值</h3><p>变量名=值,  （注意, = 两边不能有空格）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">var=1</span><br><span class="line">var=<span class="variable">$var</span>+1</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$var</span>+1</span><br><span class="line"><span class="comment"># 输出为1+1, 而不是2</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 可以用如下方法使其输出为2</span></span><br><span class="line"><span class="built_in">let</span> <span class="string">&quot;var+=1&quot;</span></span><br><span class="line"><span class="comment">#var=$[$var+1]</span></span><br><span class="line"><span class="comment">#var=$(($var+1))</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$var</span></span><br><span class="line">或者</span><br><span class="line">var=1</span><br><span class="line">var= expr <span class="variable">$var</span> + 1 <span class="comment">#（注意, + 两边的空格, 一定要有）</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">let</span>表示数学运算, expr用于整数值运算, 每一项用空格隔开, $[]将中括号内的表达式作为数学运算先计算结果再输出.</span><br><span class="line">在bash中, 将数学运算结果赋给某个变量,  var=$[ operation ]</span><br><span class="line"></span><br><span class="line">变量自增, 自减</span><br><span class="line"><span class="built_in">let</span> var++  <span class="built_in">let</span> var--</span><br><span class="line"><span class="built_in">let</span> var+=2</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;10.2-2&quot;</span> | bc   -- 小数运算要用bc  $[]不支持小数</span><br></pre></td></tr></table></figure>
+<h3 id="变量使用"><a href="#变量使用" class="headerlink" title="变量使用"></a>变量使用</h3><p>$var ${var}<br>双引号“ “ 中可以用$var<br>单引号‘ ‘ 中不可以用$var</p>
+<p>$(cmd) 与 `cmd` 等效, 推荐用前者</p>
+<ul>
+<li>支持内嵌</li>
+<li>不用转义</li>
+<li>有些字体, 反引号和单引号很像, 让人看着很难受</li>
+</ul>
+<h4 id="内建变量"><a href="#内建变量" class="headerlink" title="内建变量"></a>内建变量</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">- <span class="variable">$RANDOM</span>  随机数</span><br><span class="line">- 字段分隔符, IFS=$<span class="string">&#x27;n&#x27;</span></span><br><span class="line">- <span class="variable">$0</span> 程序名, <span class="variable">$1</span> … <span class="variable">$9</span> 是命令行参数, 多于9个命令行参数的话, 后面的需要<span class="variable">$&#123;10&#125;</span> <span class="variable">$&#123;11&#125;</span>这种格式</span><br><span class="line">- <span class="variable">$#</span> 表示传入的命令行参数的个数. 在&#123;&#125;中使用<span class="variable">$#</span>时, 要改用<span class="variable">$&#123;!#&#125;</span>.</span><br><span class="line">- $* 所有命令行参数当成一个单词存储</span><br><span class="line">- <span class="variable">$@</span> 所有命令行参数当成一个字符串中的多个单词</span><br><span class="line">- $$ 脚本的PID</span><br></pre></td></tr></table></figure>
+<h3 id="比较运算符"><a href="#比较运算符" class="headerlink" title="比较运算符"></a>比较运算符</h3><h4 id="文件比较运算符"><a href="#文件比较运算符" class="headerlink" title="文件比较运算符"></a>文件比较运算符</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-e filename                如果 filename 存在, 则为真               [ -e /var/<span class="built_in">log</span>/syslog ]</span><br><span class="line">-d filename                如果 filename 为目录, 则为真             [ -d /tmp/mydir ]</span><br><span class="line">-f filename                如果 filename 为常规文件, 则为真          [ -f /usr/bin/grep ]</span><br><span class="line">-L filename                如果 filename 为符号链接, 则为真          [ -L /usr/bin/grep ]</span><br><span class="line">-r filename                如果 filename 可读, 则为真               [ -r /var/<span class="built_in">log</span>/syslog ]</span><br><span class="line">-w filename                如果 filename 可写, 则为真               [ -w /var/mytmp.txt ]</span><br><span class="line">-x filename                如果 filename 可执行, 则为真             [ -L /usr/bin/grep ]</span><br><span class="line">! -e filename              如果 filename 不存在, 则为真               [ ! -e /var/<span class="built_in">log</span>/syslog ]</span><br><span class="line">filename1 -nt filename2    如果 filename1 比 filename2 新, 则为真   [ /tmp/install/etc/services -nt /etc/services ]</span><br><span class="line">filename1 -ot filename2    如果 filename1 比 filename2 旧, 则为真   [ /boot/bzImage -ot arch/i386/boot/bzImage ]</span><br></pre></td></tr></table></figure>
+<h4 id="字符串比较运算符-（请注意引号的使用-这是防止空格扰乱代码的好方法）"><a href="#字符串比较运算符-（请注意引号的使用-这是防止空格扰乱代码的好方法）" class="headerlink" title="字符串比较运算符 （请注意引号的使用, 这是防止空格扰乱代码的好方法）"></a>字符串比较运算符 （请注意引号的使用, 这是防止空格扰乱代码的好方法）</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-z string               如果 string 长度为零, 则为真            [ -z <span class="string">&quot;<span class="variable">$myvar</span>&quot;</span> ]</span><br><span class="line">-n string               如果 string 长度非零, 则为真            [ -n <span class="string">&quot;<span class="variable">$myvar</span>&quot;</span> ]</span><br><span class="line">string1 = string2       如果 string1 与 string2 相同, 则为真    [ <span class="string">&quot;<span class="variable">$myvar</span>&quot;</span> = <span class="string">&quot;one two three&quot;</span> ]</span><br><span class="line">string1 != string2      如果 string1 与 string2 不同, 则为真    [ <span class="string">&quot;<span class="variable">$myvar</span>&quot;</span> != <span class="string">&quot;one two three&quot;</span> ]</span><br></pre></td></tr></table></figure>
+<h4 id="算术比较运算符"><a href="#算术比较运算符" class="headerlink" title="算术比较运算符"></a>算术比较运算符</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">num1 -eq num2       等于            [ 3 -eq <span class="variable">$mynum</span> ]</span><br><span class="line">num1 -ne num2       不等于          [ 3 -ne <span class="variable">$mynum</span> ]</span><br><span class="line">num1 -lt num2       小于            [ 3 -lt <span class="variable">$mynum</span> ]</span><br><span class="line">num1 -le num2       小于或等于      [ 3 -le <span class="variable">$mynum</span> ]</span><br><span class="line">num1 -gt num2       大于            [ 3 -gt <span class="variable">$mynum</span> ]</span><br><span class="line">num1 -ge num2       大于或等于      [ 3 -ge <span class="variable">$mynum</span> ]</span><br></pre></td></tr></table></figure>
+<h3 id="结构语句"><a href="#结构语句" class="headerlink" title="结构语句"></a>结构语句</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="built_in">command</span></span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">    commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> command1 &amp;&amp; command2</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">    commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">command</span>; <span class="keyword">then</span>  <span class="comment">#如果then与if在同一行, if command后要加&#x27;;&#x27;</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">command</span></span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> command1</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">elif</span> command2</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 不推荐</span></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">test</span> condition</span><br><span class="line"><span class="keyword">if</span> [ condition ] 注意[]与condition之间的空格, &gt; &lt; 需要转义</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 不推荐</span></span><br><span class="line"><span class="keyword">if</span> ((expression)) &gt; &lt; 不需要转义</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 推荐用 [[ ]] 的形式</span></span><br><span class="line"><span class="comment"># 1. 避免转义问题</span></span><br><span class="line"><span class="comment"># 2. 有新功能, 包括但不限于以下</span></span><br><span class="line"><span class="comment">#    - ||: 逻辑or</span></span><br><span class="line"><span class="comment">#    - &amp;&amp;: 逻辑and</span></span><br><span class="line"><span class="comment">#    - &lt;: 字符串比较(不需要转义)</span></span><br><span class="line"><span class="comment">#    - ==: 通配符字符串比较</span></span><br><span class="line"><span class="comment">#    - =~: 正则表达式字符串比较</span></span><br><span class="line"><span class="keyword">if</span> [[ condition ]]  可以用正则表达式</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">t=<span class="string">&quot;abc123&quot;</span></span><br><span class="line"></span><br><span class="line">[[ <span class="string">&quot;<span class="variable">$t</span>&quot;</span> == abc* ]]         <span class="comment">#true</span></span><br><span class="line">[[ <span class="string">&quot;<span class="variable">$t</span>&quot;</span> == <span class="string">&quot;abc*&quot;</span> ]]       <span class="comment"># false</span></span><br><span class="line">[[ <span class="string">&quot;<span class="variable">$t</span>&quot;</span> =~ [abc]+[123]+ ]] <span class="comment"># true</span></span><br><span class="line">[[ <span class="string">&quot;<span class="variable">$t</span>&quot;</span> =~ <span class="string">&quot;abc*&quot;</span> ]]       <span class="comment"># false</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">case</span> variable <span class="keyword">in</span></span><br><span class="line">pattern1 | pattern2)</span><br><span class="line">    commands1</span><br><span class="line">    ;;</span><br><span class="line">pattern3)</span><br><span class="line">    commands2::</span><br><span class="line">    ;;</span><br><span class="line">*)</span><br><span class="line">    default commands</span><br><span class="line">    ;;</span><br><span class="line"><span class="keyword">esac</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> var <span class="keyword">in</span> list</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="built_in">test</span> <span class="built_in">command</span></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">     other commands</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line">until <span class="built_in">test</span> <span class="built_in">command</span></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">     other commands</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">break</span> n (default 1) 跳出n层循环</span><br><span class="line"><span class="built_in">continue</span> n (default 1) 继续n级循环</span><br><span class="line"></span><br><span class="line">select var <span class="keyword">in</span> list</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    commands</span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+<h3 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h3><p>语法</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[ <span class="keyword">function</span> ] funname [()]</span><br><span class="line">&#123;</span><br><span class="line">    action;</span><br><span class="line">    [<span class="built_in">return</span> int;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>说明：</p>
+<ol>
+<li>可以带function fun()  定义, 也可以直接fun() 定义, 不带任何参数.</li>
+<li>参数返回, 可以显式return返回, return后跟数值n(0-255)；如果不加, 将以最后一条命令运行结果, 作为返回值.</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 将所有的错误信息导向STDERR</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">err</span></span>() &#123;</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;[<span class="subst">$(date +&#x27;%Y-%m-%dT%H:%M:%S%z&#x27;)</span>]: <span class="variable">$@</span>&quot;</span> &gt;&amp;2</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> ! do_something; <span class="keyword">then</span></span><br><span class="line">    err <span class="string">&quot;Unable to do_something&quot;</span></span><br><span class="line">    <span class="built_in">exit</span> <span class="string">&quot;<span class="variable">$&#123;E_DID_NOTHING&#125;</span>”</span></span><br><span class="line"><span class="string">fi</span></span><br><span class="line"><span class="string"></span></span><br></pre></td></tr></table></figure>
+<p>注意事项</p>
+<ol>
+<li>必须在调用函数地方之前, 声明函数, shell脚本是逐行运行. 不会像其它语言一样先预编译. 一次必须在使用函数前先声明函数.</li>
+<li>total=$(func 3 2);  </li>
+<li>函数返回值, 只能通过$? 系统变量获得, 直接通过=获得是空值</li>
+<li>如果需要传出其它类型函数值, 可以在函数调用之前, 定义变量（这个就是全局变量）. 在函数内部就可以直接修改, 然后在执行函数就可以读出修改过的值</li>
+<li>如果需要定义自己变量, 可以在函数中定义, local 变量=值, 这时变量就是内部变量, 它的修改, 不会影响函数外部相同变量的值.</li>
+</ol>
+<h3 id="实用技巧"><a href="#实用技巧" class="headerlink" title="实用技巧"></a>实用技巧</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#! /bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在默认情况下，遇到不存在的变量，会忽略并继续执行，而这往往不符合预期，加入该选项，可以避免恶果扩大，终止脚本的执行。</span></span><br><span class="line"><span class="built_in">set</span> -o nounset</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在默认情况下，遇到执行出错，会跳过并继续执行，而这往往不符合预期，加入该选项，可以避免恶果扩大，终止脚本的执行</span></span><br><span class="line"><span class="built_in">set</span> -o errexit</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">log</span></span>() &#123;</span><br><span class="line">    <span class="built_in">local</span> prefix=<span class="string">&quot;[<span class="subst">$(date +%Y/%m/%d\ %H:%M:%S)</span>]:&quot;</span></span><br><span class="line">    <span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$_DEBUG</span>&quot;</span> == <span class="string">&quot;true&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$&#123;prefix&#125;</span> <span class="variable">$@</span>&quot;</span> &gt;&amp;2</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">log</span> <span class="string">&quot;INFO&quot;</span> <span class="string">&quot;a message&quot;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>通用技巧</tag>
+        <tag>shell</tag>
       </tags>
   </entry>
   <entry>
@@ -367,147 +367,122 @@
       </tags>
   </entry>
   <entry>
-    <title>gdb常用技巧</title>
-    <url>/2020/01/29/2020-01-28-gdb-use/</url>
-    <content><![CDATA[<h4 id="3种启用gdb的方法"><a href="#3种启用gdb的方法" class="headerlink" title="3种启用gdb的方法"></a>3种启用gdb的方法</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1.gdb &lt;program&gt;</span><br><span class="line">2.gdb &lt;program&gt; core</span><br><span class="line">3.gdb &lt;program&gt; &lt;PID&gt;</span><br></pre></td></tr></table></figure>
+    <title>grep命令使用技巧</title>
+    <url>/2020/01/16/2020-01-16-grep/</url>
+    <content><![CDATA[<p>grep [选项] pattern [文件名]</p>
+<p>命令中的选项为：</p>
+<ul>
+<li>-? 同时显示匹配行上下的？行，如：<code>grep -2 pattern filename</code> 同时显示匹配行的上下2行。</li>
+<li>-A ? 显示匹配行和后面的?行, 如: <code>grep -A 2 pattern filename</code></li>
+<li>-B ? 显示匹配行和前面的?行</li>
+<li>-b，–byte-offset 打印匹配行前面打印该行所在的块号码。</li>
+<li>-c,–count 只打印匹配的行数，不显示匹配的内容。</li>
+<li>-f File，–file=File 从文件中提取模板。空文件中包含0个模板，所以什么都不匹配。</li>
+<li>-h，–no-filename 当搜索多个文件时，不显示匹配文件名前缀。</li>
+<li>-i，–ignore-case 忽略大小写差别。</li>
+<li>-q，–quiet 取消显示，只返回退出状态。0则表示找到了匹配的行。</li>
+<li>-l，–files-with-matches 打印匹配模板的文件清单。</li>
+<li>-L，–files-without-match 打印不匹配模板的文件清单。</li>
+<li>-n，–line-number 在匹配的行前面打印行号。</li>
+<li>-s，–silent 不显示关于不存在或者无法读取文件的错误信息。</li>
+<li>-v，–revert-match 反检索，只显示不匹配的行。</li>
+<li>-w，–word-regexp 如果被&lt;和&gt;引用，就把表达式做为一个单词搜索。</li>
+<li>-V，–version 显示软件版本信息。</li>
+</ul>
 <a id="more"></a>
 
-<h4 id="命令行参数"><a href="#命令行参数" class="headerlink" title="命令行参数"></a>命令行参数</h4><ul>
-<li>gdb命令行的 -args 参数</li>
-<li>gdb环境中 set args 命令</li>
-</ul>
-<h4 id="gdb中变量"><a href="#gdb中变量" class="headerlink" title="gdb中变量"></a>gdb中变量</h4><p>可以查看运行时的变量，也可以直接设置程序中的变量，以模拟一些很难在测试中出现的情况，比较一些出错，或是switch的分支语句。使用set命令可以修改程序中的变量。</p>
-<p>另外gdb也有变量，gdb的变量以$开头，比如打印数组中的每个元素，可以：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">(gdb) <span class="built_in">set</span> <span class="variable">$i</span> = 0</span><br><span class="line">(gdb) p a[<span class="variable">$i</span>++]</span><br><span class="line">.......</span><br></pre></td></tr></table></figure>
-<p>然后一路回车下去了。</p>
-<h4 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">r                        ============&gt;运行程序， run 命令简写</span><br><span class="line">c                        ============&gt;继续运行程序，<span class="built_in">continue</span>命令缩写</span><br><span class="line">l                        ============&gt;列出源码， list 命令简写</span><br><span class="line">b                        ============&gt;设置断点，具体请看下面一节</span><br><span class="line">info <span class="built_in">break</span>               ============&gt;查看断点信息</span><br><span class="line">n                        ============&gt;单条语句执行，不进入函数，next 命令缩写</span><br><span class="line">s                        ============&gt;单条语句执行，进入函数，step命令缩写</span><br><span class="line">p i                      ============&gt;打印变量值，<span class="built_in">print</span>命令缩写</span><br><span class="line">display i                ============&gt;显示变量值，后面每行都会显示</span><br><span class="line">bt                       ============&gt;查看函数堆栈，backtrace命令缩写</span><br><span class="line">shell &lt;<span class="built_in">command</span> string&gt;   ============&gt;在gdb中运行shell脚本</span><br><span class="line">finish                   ============&gt;退出函数</span><br><span class="line">q                        ============&gt;退出gdb</span><br><span class="line">&lt;enter&gt;                  ============&gt;重复上一条命令</span><br><span class="line">ptype                    ============&gt;显示变量的数据类型</span><br><span class="line">jump line                ============&gt;跳到指定行开始调试</span><br><span class="line"><span class="built_in">set</span> var=exp              ============&gt;设置变量var的值为exp</span><br><span class="line"><span class="built_in">kill</span>                     ============&gt;结束当前程序的调试</span><br><span class="line">x/[n][format][size]  address    ============&gt;查看内存</span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">断点相关</span><br><span class="line"><span class="built_in">break</span> func                      ===============&gt;在函数func入口处设置断点</span><br><span class="line"><span class="built_in">break</span> file.c:100                ===============&gt;在file.c第100行设置断点</span><br><span class="line"><span class="built_in">break</span> [<span class="built_in">where</span>] <span class="keyword">if</span> [condition]    ===============&gt;设置条件断点</span><br><span class="line"><span class="built_in">break</span> file.c:100 thread all     ===============&gt;在file.c文件第100行处，为所有经过这里的线程设置断点</span><br><span class="line">info <span class="built_in">break</span>                      ===============&gt;查看断点列表，会显示id号</span><br><span class="line">delete id                       ===============&gt;删除断点</span><br><span class="line">clear func                      ===============&gt;删除断点，不需要id，格式同<span class="built_in">break</span></span><br><span class="line"><span class="built_in">break</span> xxxxx <span class="keyword">if</span> a==1             ===============&gt;条件断点</span><br><span class="line">condition N COND                ===============&gt;条件断点，N为断点号码，COND为条件</span><br><span class="line">info thread                     ===============&gt;查看thread信息</span><br><span class="line">t &lt;thread id&gt;                   ===============&gt;切换到id进程，thread命令缩写</span><br><span class="line"></span><br><span class="line">在gdb中，有几种暂停方式： 断点（breakpoint），观察点（watchpoint），捕捉点（catchpoint），信号（signals），线程停止（Thread Stops）</span><br><span class="line">在gdb停住时，可以用info program来查看程序是否在运行，进程号，被暂停的原因。可以用<span class="built_in">continue</span>来恢复程序运行</span><br><span class="line"></span><br><span class="line">watch *(<span class="built_in">type</span> *) addr             ================&gt;watch地址addr的改变， <span class="built_in">type</span>为addr实际指向的数据类型</span><br><span class="line">watch  var                       ================&gt;watch变量var的改变</span><br></pre></td></tr></table></figure>
-<h4 id="多线程调试"><a href="#多线程调试" class="headerlink" title="多线程调试"></a>多线程调试</h4><p>1.调试已运行的程序<br>     1）ps查看PID，然后<code>gdb &lt;program PID&gt;</code>挂接正在运行的程序<br>     2）<code>gdb &lt;program&gt;</code>关联上源代码，并进行gdb，在gdb中用<code>attach</code>命令来挂接进程的PID, 用<code>detach</code>来取消挂接的进程。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">info thread 查看当前进程的线程</span><br><span class="line">thread &lt;id&gt; 切换调试的线程为指定id的线程，t &lt;id&gt;</span><br><span class="line"><span class="built_in">break</span> file.c:100 thread all     ===============&gt;在file.c文件第100行处，为所有经过这里的线程设置断点</span><br><span class="line"><span class="built_in">set</span> scheduler-locking off|on|step，在使用step或者<span class="built_in">continue</span>命令调试当前被调试线程的时候，其他线程也是同时执行的，怎么只让被调试线程执行呢？通过这个命令就可以实现这个需求。</span><br><span class="line">     off  不锁定任何线程，也就是所有线程都执行，这是默认值。</span><br><span class="line">     on   只有当前被调试程序会执行。</span><br><span class="line">     step 在单步的时候，除了next过一个函数的情况(熟悉情况的人可能知道，这其实是一个设置断点然后<span class="built_in">continue</span>的行为)以外，只有当前线程会执行。</span><br></pre></td></tr></table></figure>
-
-<h4 id="调试宏"><a href="#调试宏" class="headerlink" title="调试宏"></a>调试宏</h4><p>在gcc编译的时候，加上-ggdb3参数，就可以调试宏了。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">info macro - 查看这个宏在那些文件被引用了，以及宏定义是什么样子的。</span><br><span class="line">macro -      查看宏展开的样子</span><br></pre></td></tr></table></figure>
-<h4 id="自动化调试"><a href="#自动化调试" class="headerlink" title="自动化调试"></a>自动化调试</h4><p>使用command命令，简单的理解一下，其就是把一组gdb的命令打包，有点像字处理软件的“宏”。下面是一个示例：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">(gdb) <span class="built_in">break</span> func</span><br><span class="line">Breakpoint 1 at 0x3475678: file test.c, line 12.</span><br><span class="line">(gdb) commands 1  // 1 是断点号</span><br><span class="line">Type commands <span class="keyword">for</span> when breakpoint 1 is hit, one per line.</span><br><span class="line">End with a line saying just <span class="string">&quot;end&quot;</span>.</span><br><span class="line">&gt;<span class="built_in">print</span> arg1</span><br><span class="line">&gt;<span class="built_in">print</span> arg2</span><br><span class="line">&gt;<span class="built_in">print</span> arg3</span><br><span class="line">&gt;end</span><br><span class="line">(gdb)</span><br><span class="line">当我们的断点到达时，自动执行<span class="built_in">command</span>中的三个命令，把func的三个参数值打出来。</span><br></pre></td></tr></table></figure>
-
-<h4 id="gdb-server"><a href="#gdb-server" class="headerlink" title="gdb server"></a>gdb server</h4><p>这个主要是针对一些没有安装gdb的嵌入式设备</p>
-<p>1）在目标target host上开启gdbserver</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt; gdbserver &lt;target host ip&gt;:2345[这个端口可以自己根据需要设置] <span class="built_in">test</span></span><br></pre></td></tr></table></figure>
-<p>2）到host端，也就是安装有gdb的主机</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt; gdb <span class="built_in">test</span></span><br><span class="line">[&gt; <span class="built_in">set</span> solib-absolute-prefix &lt;gdb directory&gt;]</span><br><span class="line">[&gt; <span class="built_in">set</span> solib-search-path &lt;gdb directory/lib或者其他库文件的路径&gt;]</span><br><span class="line">&gt; target remote &lt;target host ip&gt;:2345</span><br></pre></td></tr></table></figure>
-<p>然后在host端来调试target上的程序</p>
-]]></content>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -l | grep <span class="string">&#x27;^a&#x27;</span> 通过管道过滤ls -l输出的内容，只显示以a开头的行。</span><br><span class="line">grep <span class="string">&#x27;test&#x27;</span> d* 显示所有以d开头的文件中包含<span class="built_in">test</span>的行。</span><br><span class="line">grep <span class="string">&#x27;test&#x27;</span> aa bb cc 显示在aa，bb，cc文件中匹配<span class="built_in">test</span>的行。</span><br><span class="line">grep <span class="string">&#x27;[a-z]&#x27;</span> aa 显示所有包含每个字符串至少有5个连续小写字符的字符串的行。</span><br><span class="line">grep <span class="string">&#x27;w(es)t.*&#x27;</span> aa 如果west被匹配，则es就被存储到内存中，并标记为1，然后搜索任意个字符(.*)，这些字符后面紧跟着另外一个es()，找到就显示该行。如果用egrep或grep -E，就不用<span class="string">&quot;&quot;</span>号进行转义，直接写成<span class="string">&#x27;w(es)t.*&#x27;</span>就可以了。</span><br><span class="line">grep -i pattern files ：不区分大小写地搜索。默认情况区分大小写</span><br><span class="line">grep -l pattern files ：只列出匹配的文件名，</span><br><span class="line">grep -L pattern files ：列出不匹配的文件名，</span><br><span class="line">grep -w pattern files ：只匹配整个单词，而不是字符串的一部分(如匹配‘magic’，而不是‘magical’)，</span><br><span class="line">grep -C number pattern files ：匹配的上下文分别显示[number]行，</span><br><span class="line">grep pattern1 | pattern2 files ：显示匹配 pattern1 或 pattern2 的行，</span><br><span class="line">grep pattern1 files | grep pattern2 ：显示既匹配 pattern1 又匹配 pattern2 的行。</span><br></pre></td></tr></table></figure>
+<p>pattern为所要匹配的字符串，可使用下列模式</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">. 匹配任意一个字符</span><br><span class="line">* 匹配0 个或多个*前的字符</span><br><span class="line">^ 匹配行开头</span><br><span class="line">$ 匹配行结尾</span><br><span class="line">[] 匹配[ ]中的任意一个字符，[]中可用 - 表示范围，</span><br><span class="line">例如[a-z]表示字母a 至z 中的任意一个</span><br><span class="line">\ 转意字符</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>技术</category>
       </categories>
       <tags>
-        <tag>gdb</tag>
-        <tag>linux</tag>
-        <tag>debug</tag>
+        <tag>通用技巧</tag>
+        <tag>grep</tag>
       </tags>
   </entry>
   <entry>
-    <title>如何写好一封Email</title>
-    <url>/2020/01/29/2020-01-29-write-good-email/</url>
-    <content><![CDATA[<h3 id="接收人"><a href="#接收人" class="headerlink" title="接收人"></a>接收人</h3><ol>
-<li><p>收件人</p>
-<blockquote>
-<p>事件接棒人, 是需要对事件做出响应及跟进的人, 如果需要老板处理, 那么收件人就加上老板, 而不是抄送</p>
-</blockquote>
-</li>
-<li><p>抄送人</p>
-<blockquote>
-<p>事件知会人, 只需要知道邮件的内容就可以了, 不必要一定做出响应或去跟进</p>
-</blockquote>
-</li>
-</ol>
+    <title>awk怎么写?</title>
+    <url>/2020/01/16/2020-01-16-awk/</url>
+    <content><![CDATA[<p>本篇文章主要是参考左耳朵耗子前辈的博文整理而来, 作为自己学习备忘之用.</p>
+<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>awk是一个强大的文本分析工具, 相对于grep的查找, sed的编辑, awk在其对数据分析并生成报告时, 显得尤为强大. 简单来说awk就是把文件逐行的读入, 以空格为默认分隔符将每行切片, 切开的部分再进行各种分析处理.</p>
+<p>awk有3个不同版本: awk, nawk和gawk, 未作特别说明, 一般指gawk, gawk是AWK的GNU版本.</p>
+<p>awk其名称得自于它的创始人Alfred Aho, Peter Weinberger和Brian Kernighan姓氏的首个字母. 实际上 AWK 的确拥有自己的语言: AWK 程序设计语言, 三位创建者已将它正式定义为”样式扫描和处理语言”. 它允许您创建简短的程序, 这些程序读取输入文件, 为数据排序, 处理数据, 对输入执行计算以及生成报表, 还有无数其他的功能.</p>
 <a id="more"></a>
 
-<h3 id="称呼及问候语"><a href="#称呼及问候语" class="headerlink" title="称呼及问候语"></a>称呼及问候语</h3><p>写上称呼是一种礼貌的象征, 尤其写对外邮件的时候, 是必要项.</p>
-<blockquote>
-<ul>
-<li>Dear LastName, 比较正式的场合</li>
-<li>Hi FirstName, 朋友之间比较随意的场合</li>
-<li>Dear FirstName, 如果你不知道用什么, 就用这个</li>
-</ul>
-</blockquote>
-<h3 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h3><ul>
-<li><strong>直奔主题, 言简意赅</strong>, 以下给几个例子来展示如何直奔主题</li>
-</ul>
-<blockquote>
-<ol>
-<li>I’m working on an article about xxx for yyy publication, and wondered if you had a few minutes to answer the following 3 questions.<br>我正在写一篇要交给yyy出版社的文章, 不知道您是否有时间回答下下面3个问题呢?</li>
+<h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">awk <span class="string">&#x27;pattern + &#123;action&#125;&#x27;</span> &#123;filenames&#125;</span><br></pre></td></tr></table></figure>
+<p>尽管操作可能会很复杂, 但语法总是这样, 其中 pattern 表示 AWK 在数据中查找的内容, 而 action 是在找到匹配内容时所执行的一系列命令.花括号（{}）不需要在程序中始终出现, 但它们用于根据特定的模式对一系列指令进行分组. pattern就是要表示的正则表达式, 用斜杠括起来.</p>
+<p>awk语言的最基本功能是在文件或者字符串中基于指定规则浏览和抽取信息, awk抽取信息后, 才能进行其他文本操作.完整的awk脚本通常用来格式化文本文件中的信息.<br>通常, awk是以文件的一行为处理单位的.awk每接收文件的一行, 然后执行相应的命令, 来处理文本.</p>
+<h3 id="调用awk有三种方式调用awk"><a href="#调用awk有三种方式调用awk" class="headerlink" title="调用awk有三种方式调用awk"></a>调用awk有三种方式调用awk</h3><ol>
+<li>命令行方式awk [-F  field-separator]  ‘commands’  input-file(s)其中, commands 是真正awk命令, [-F域分隔符]是可选的. input-file(s) 是待处理的文件.在awk中, 文件的每一行中, 由域分隔符分开的每一项称为一个域.通常, 在不指名-F域分隔符的情况下, 默认的域分隔符是空格.</li>
+<li>shell脚本方式将所有的awk命令插入一个文件, 并使awk程序可执行, 然后awk命令解释器作为脚本的首行, 以便通过键入脚本名称来调用.相当于shell脚本首行的：#!/bin/sh可以换成：#!/bin/awk</li>
+<li>将所有的awk命令插入一个单独文件, 然后调用：awk -f awk-script-file input-file(s)其中, -f选项加载awk-script-file中的awk脚本, input-file(s)跟上面的是一样的.</li>
 </ol>
-</blockquote>
-<blockquote>
-<ol start="2">
-<li>Could you supply me with a quote for the following project?<br>可否对下面的设计项目进行引证?</li>
-</ol>
-</blockquote>
-<blockquote>
-<ol start="3">
-<li>I’d like to discuss the revisions with you. Would Tuesday at 2pm be a good time?<br>我想和你谈谈修订的事情, 这周二下午2点您有空吗?</li>
-</ol>
-</blockquote>
-<blockquote>
-<ol start="4">
-<li>I’ve attached the documents you requested at our meeting yesterday.<br>昨天会议上您要求的文件已附上, 请查收.</li>
-</ol>
-</blockquote>
-<ul>
-<li><p>如果有问题需要提出, 或者需要重点突出的内容, 那么将其放到 <strong>开头</strong>. 如果问题放到最后, 收信人可能都不会留意到, 或者不会意识到你在等他的回复.</p>
-</li>
-<li><p>如果是咨询邮件, 或者说明什么产品, 那么将问题(或特性)一点点的 <strong>编号</strong> 列出来.</p>
-</li>
-</ul>
-<h3 id="常用英文邮件术语"><a href="#常用英文邮件术语" class="headerlink" title="常用英文邮件术语"></a>常用英文邮件术语</h3><ol>
-<li><p>To inform 提供信息</p>
-<blockquote>
-<p>The sender of the email wants to tell the receiver about something such as a new show coming to London. It might contain a link to the theatre. Generally speaking no reply is necessary. It can be a group email sent to a circle of friends, <strong>for example.</strong></p>
-<p>Dear all,</p>
-<p>Hope you are all well. Just to let you know that The China National Peking Opera is coming to London at the end of November to perform classical Peking Opera and the show will only be on for 3 days, so grab your tickets soon. Here is the link xxx</p>
-</blockquote>
-</li>
-<li><p>To inquire 询问</p>
-<blockquote>
-<p>The sender needs some information and is expecting a reply.</p>
-<p>Dear Sir/Madam,</p>
-<p>I am writing to inquire about the rules regarding children travelling alone. For instance, can a 15 year old child travel on Air China alone? What should we do if there is not an adult to accompany the child?</p>
-<p>I look forward to your advice.</p>
-</blockquote>
-</li>
-<li><p>To request 请求</p>
-<blockquote>
-<p>The sender is asking for permission to do something, such as an permission to leave 5 days for a trip.<br>I’m writing to see whether it is possible for me to leave 5 days from next Monday for a trip with my family.</p>
-<p>Dear xxx</p>
-<p>I would be very grateful if you could consider my request.<br>Thanks.</p>
-<p>Carl</p>
-</blockquote>
-</li>
-<li><p>Stay in touch 保持联系</p>
-<blockquote>
-<p>I’m writing to say hello for the purpose to maintain social connections, friendship, and perhaps future collaboration.</p>
-<p>Hi xxx,</p>
-<p>How are you doing in your new job? It should be perfect, for you are a superman.<br>I’m also busy these two months and have not played any sports these days.</p>
-<p>Let me know when you will be free, so we can have a game and a drink.</p>
-<p>Best<br>Carl</p>
-</blockquote>
-</li>
-</ol>
-<h3 id="校对拼写错误"><a href="#校对拼写错误" class="headerlink" title="校对拼写错误"></a>校对拼写错误</h3><p>很重要, 一定不能有错别字</p>
-<h3 id="邮件签名"><a href="#邮件签名" class="headerlink" title="邮件签名"></a>邮件签名</h3><p>写清楚</p>
-<ul>
-<li>你是谁</li>
-<li>你来自哪里</li>
-<li>你是做什么的</li>
-<li>你的联系方式(电话, 工作地址)</li>
-<li>其他(例如你的社交网络账号, 最新宣传博客等), 此条不适用与公司对公邮件</li>
-</ul>
-]]></content>
+<h4 id="入门实例"><a href="#入门实例" class="headerlink" title="入门实例"></a>入门实例</h4><p>假设last -n 5的输出如下</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ last -n 5 &lt;==仅取出前五行</span><br><span class="line">root     pts/1   192.168.1.100  Tue Feb 10 11:21   still logged <span class="keyword">in</span></span><br><span class="line">root     pts/1   192.168.1.100  Tue Feb 10 00:46 - 02:28  (01:41)</span><br><span class="line">root     pts/1   192.168.1.100  Mon Feb  9 11:41 - 18:30  (06:48)</span><br><span class="line">dmtsai   pts/1   192.168.1.100  Mon Feb  9 11:41 - 11:41  (00:00)</span><br><span class="line">root     tty1                   Fri Sep  5 14:09 - 14:10  (00:01)</span><br></pre></td></tr></table></figure>
+<p>如果只是显示最近登录的5个帐号</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ last -n 5 | awk  <span class="string">&#x27;&#123;print $1&#125;&#x27;</span>  -- 必须是单引号<span class="string">&#x27; &#x27;</span>,<span class="string">&quot; &quot;</span>不生效的</span><br><span class="line">root</span><br><span class="line">root</span><br><span class="line">root</span><br><span class="line">dmtsai</span><br><span class="line">root</span><br></pre></td></tr></table></figure>
+<p>awk工作流程是这样的：读入有’\n’换行符分割的一条记录, 然后将记录按指定的域分隔符划分域, 填充域, $0则表示所有域, $1表示第一个域, $n表示第n个域. 默认域分隔符是”空白键” 或 “[tab]键”, 所以$1表示登录用户, $3表示登录用户ip,以此类推.<br>字符串匹配的示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ awk <span class="string">&#x27;$6 ~ /FIN/ || NR==1 &#123;print NR,$4,$5,$6&#125;&#x27;</span> OFS=<span class="string">&quot;\t&quot;</span> netstat.txt</span><br><span class="line">1       Local-Address   Foreign-Address State</span><br><span class="line">6       coolshell.cn:80 61.140.101.185:37538    FIN_WAIT2</span><br><span class="line">9       coolshell.cn:80 116.234.127.77:11502    FIN_WAIT2</span><br><span class="line">13      coolshell.cn:80 124.152.181.209:26825   FIN_WAIT1</span><br><span class="line">18      coolshell.cn:80 117.136.20.85:50025     FIN_WAIT2</span><br><span class="line"></span><br><span class="line">$ awk <span class="string">&#x27;$6 ~ /WAIT/ || NR==1 &#123;print NR,$4,$5,$6&#125;&#x27;</span> OFS=<span class="string">&quot;\t&quot;</span> netstat.txt</span><br><span class="line">1       Local-Address   Foreign-Address State</span><br><span class="line">5       coolshell.cn:80 124.205.5.146:18245     TIME_WAIT</span><br><span class="line">6       coolshell.cn:80 61.140.101.185:37538    FIN_WAIT2</span><br><span class="line">9       coolshell.cn:80 116.234.127.77:11502    FIN_WAIT2</span><br><span class="line">11      coolshell.cn:80 183.60.215.36:36970     TIME_WAIT</span><br><span class="line">13      coolshell.cn:80 124.152.181.209:26825   FIN_WAIT1</span><br><span class="line">15      coolshell.cn:80 183.60.212.163:51082    TIME_WAIT</span><br><span class="line">18      coolshell.cn:80 117.136.20.85:50025     FIN_WAIT2</span><br></pre></td></tr></table></figure>
+<p>上面的第一个示例匹配FIN状态,  第二个示例匹配WAIT字样的状态.其实 ~ 表示模式开始./ /中是模式.其实就是一个正则表达式的匹配.<br>可以使用 “/FIN|TIME/“ 来匹配 FIN 或者 TIME :</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ awk <span class="string">&#x27;$6 ~ /FIN|TIME/ || NR==1 &#123;print NR,$4,$5,$6&#125;&#x27;</span> OFS=<span class="string">&quot;\t&quot;</span> netstat.txt</span><br><span class="line">1       Local-Address   Foreign-Address State</span><br><span class="line">5       coolshell.cn:80 124.205.5.146:18245     TIME_WAIT</span><br><span class="line">6       coolshell.cn:80 61.140.101.185:37538    FIN_WAIT2</span><br><span class="line">9       coolshell.cn:80 116.234.127.77:11502    FIN_WAIT2</span><br><span class="line">11      coolshell.cn:80 183.60.215.36:36970     TIME_WAIT</span><br><span class="line">13      coolshell.cn:80 124.152.181.209:26825   FIN_WAIT1</span><br><span class="line">15      coolshell.cn:80 183.60.212.163:51082    TIME_WAIT</span><br><span class="line">18      coolshell.cn:80 117.136.20.85:50025     FIN_WAIT2</span><br></pre></td></tr></table></figure>
+<p>再来看看模式取反的例子：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ awk <span class="string">&#x27;$6 !~ /WAIT/ || NR==1 &#123;print NR,$4,$5,$6&#125;&#x27;</span> OFS=<span class="string">&quot;\t&quot;</span> netstat.txt</span><br><span class="line">1       Local-Address   Foreign-Address State</span><br><span class="line">2       0.0.0.0:3306    0.0.0.0:*       LISTEN</span><br><span class="line">3       0.0.0.0:80      0.0.0.0:*       LISTEN</span><br><span class="line">4       127.0.0.1:9000  0.0.0.0:*       LISTEN</span><br><span class="line">7       coolshell.cn:80 110.194.134.189:1032    ESTABLISHED</span><br><span class="line">8       coolshell.cn:80 123.169.124.111:49809   ESTABLISHED</span><br><span class="line">10      coolshell.cn:80 123.169.124.111:49829   ESTABLISHED</span><br><span class="line">12      coolshell.cn:80 61.148.242.38:30901     ESTABLISHED</span><br><span class="line">14      coolshell.cn:80 110.194.134.189:4796    ESTABLISHED</span><br><span class="line">16      coolshell.cn:80 208.115.113.92:50601    LAST_ACK</span><br><span class="line">17      coolshell.cn:80 123.169.124.111:49840   ESTABLISHED</span><br><span class="line">19      :::22   :::*    LISTEN</span><br></pre></td></tr></table></figure>
+<p>或是：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">awk <span class="string">&#x27;!/WAIT/&#x27;</span> netstat.txt</span><br></pre></td></tr></table></figure>
+<p>如果只是显示/etc/passwd的账户</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cat /etc/passwd |awk  -F <span class="string">&#x27;:&#x27;</span>  <span class="string">&#x27;&#123;print $1&#125;&#x27;</span></span><br><span class="line">rootdaemonbinsys</span><br></pre></td></tr></table></figure>
+<p>这种是awk+action的示例, 每行都会执行action {print $1}.</p>
+<p>-F指定域分隔符为’:’.<br>如果只是显示/etc/passwd的账户和账户对应的shell,而账户与shell之间以tab键分割</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cat /etc/passwd |awk  -F <span class="string">&#x27;:&#x27;</span>  <span class="string">&#x27;&#123;print $1&quot;\t&quot;$7&#125;&#x27;</span></span><br><span class="line">root    /bin/bash</span><br><span class="line">daemon  /bin/sh</span><br><span class="line">bin     /bin/sh</span><br><span class="line">sys     /bin/sh</span><br></pre></td></tr></table></figure>
+<p>如果只是显示/etc/passwd的账户和账户对应的shell, 而账户与shell之间以逗号分割, 而且在所有行添加列名name, shell, 在最后一行添加”blue,/bin/nosh”.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cat /etc/passwd |awk  -F <span class="string">&#x27;:&#x27;</span>  <span class="string">&#x27;BEGIN &#123;print &quot;name,shell&quot;&#125;  &#123;print $1&quot;,&quot;$7&#125; END &#123;print &quot;blue,/bin/nosh&quot;&#125;&#x27;</span></span><br><span class="line">name,shell</span><br><span class="line">root,/bin/bash</span><br><span class="line">daemon,/bin/sh</span><br><span class="line">bin,/bin/sh</span><br><span class="line">sys,/bin/sh</span><br><span class="line">....</span><br><span class="line">blue,/bin/nosh</span><br></pre></td></tr></table></figure>
+<p>awk工作流程是这样的：先执行BEGIN, 然后读取文件, 读入有/n换行符分割的一条记录, 然后将记录按指定的域分隔符划分域, 填充域, $0则表示所有域,$1表示第一个域,$n表示第n个域,随后开始执行模式所对应的动作action.接着开始读入第二条记录······直到所有的记录都读完, 最后执行END操作.<br>搜索/etc/passwd有root关键字的所有行</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ awk -F: <span class="string">&#x27;/root/&#x27;</span> /etc/passwd</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br></pre></td></tr></table></figure>
+<p>这种是pattern的使用示例, 匹配了pattern(这里是root)的行才会执行action(没有指定action, 默认输出每行的内容).<br>搜索支持正则, 例如找root开头的: awk -F: ‘/^root/‘ /etc/passwd<br>搜索/etc/passwd有root关键字的所有行, 并显示对应的shell</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ awk -F: <span class="string">&#x27;/root/ &#123;print $7&#125;&#x27;</span> /etc/passwd</span><br><span class="line">/bin/bash</span><br></pre></td></tr></table></figure>
+<p>这里指定了action{print $7}<br>awk内置变量awk有许多内置变量用来设置环境信息, 这些变量可以被改变, 下面给出了最常用的一些变量.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ARGC               命令行参数个数</span><br><span class="line">ARGV               命令行参数排列</span><br><span class="line">ENVIRON            支持队列中系统环境变量的使用</span><br><span class="line">FILENAME           awk浏览的文件名</span><br><span class="line">FNR                浏览文件的记录数</span><br><span class="line">FS                 设置输入域分隔符, 等价于命令行 -F选项</span><br><span class="line">NF                 浏览记录的域的个数</span><br><span class="line">NR                 已读的记录数</span><br><span class="line">OFS                输出域分隔符   默认空格</span><br><span class="line">ORS                输出记录分隔符 默认换行符</span><br><span class="line">RS                 控制记录分隔符 默认换行符</span><br><span class="line">此外,<span class="variable">$0</span>变量是指整条记录.<span class="variable">$1</span>表示当前行的第一个域,<span class="variable">$2</span>表示当前行的第二个域,......以此类推.</span><br></pre></td></tr></table></figure>
+<p>统计/etc/passwd:文件名, 每行的行号, 每行的列数, 对应的完整行内容:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ awk  -F <span class="string">&#x27;:&#x27;</span>  <span class="string">&#x27;&#123;print &quot;filename:&quot; FILENAME &quot;,linenumber:&quot; NR &quot;,columns:&quot; NF &quot;,linecontent:&quot;$0&#125;&#x27;</span> /etc/passwd</span><br><span class="line">filename:/etc/passwd,linenumber:1,columns:7,linecontent:root:x:0:0:root:/root:/bin/bash</span><br><span class="line">filename:/etc/passwd,linenumber:2,columns:7,linecontent:daemon:x:1:1:daemon:/usr/sbin:/bin/sh</span><br><span class="line">filename:/etc/passwd,linenumber:3,columns:7,linecontent:bin:x:2:2:bin:/bin:/bin/sh</span><br><span class="line">filename:/etc/passwd,linenumber:4,columns:7,linecontent:sys:x:3:3:sys:/dev:/bin/sh</span><br></pre></td></tr></table></figure>
+<p>使用printf替代print,可以让代码更加简洁, 易读</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">awk  -F <span class="string">&#x27;:&#x27;</span>  <span class="string">&#x27;&#123;printf(&quot;filename:%10s,linenumber:%s,columns:%s,linecontent:%s\n&quot;,FILENAME,NR,NF,$0)&#125;&#x27;</span> /etc/passwd</span><br></pre></td></tr></table></figure>
+<h4 id="print和printf"><a href="#print和printf" class="headerlink" title="print和printf"></a>print和printf</h4><p>awk中同时提供了print和printf两种打印输出的函数.</p>
+<p>其中print函数的参数可以是变量, 数值或者字符串. 字符串必须用双引号引用, 参数用逗号分隔. 如果没有逗号, 参数就串联在一起而无法区分. 这里, 逗号的作用与输出文件的分隔符的作用是一样的, 只是后者是空格而已.<br>printf函数, 其用法和c语言中printf基本相似, 可以格式化字符串, 输出复杂时, printf更加好用, 代码更易懂.</p>
+<h3 id="awk编程"><a href="#awk编程" class="headerlink" title="awk编程"></a>awk编程</h3><h4 id="变量和赋值"><a href="#变量和赋值" class="headerlink" title="变量和赋值"></a>变量和赋值</h4><p>除了awk的内置变量, awk还可以自定义变量.</p>
+<p>下面统计/etc/passwd的账户人数</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">awk <span class="string">&#x27;&#123;count++;print $0;&#125; END&#123;print &quot;user count is &quot;, count&#125;&#x27;</span> /etc/passwd</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">......</span><br><span class="line">user count is  40</span><br></pre></td></tr></table></figure>
+<p>count是自定义变量. 之前的action{}里都是只有一个print, 其实print只是一个语句, 而action{}可以有多个语句, 以;号隔开.<br>这里没有初始化count, 虽然默认是0, 但是妥当的做法还是初始化为0:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">awk <span class="string">&#x27;BEGIN &#123;count=0;print &quot;[start]user count is &quot;, count&#125; &#123;count=count+1;print $0;&#125; END&#123;print &quot;[end]user count is &quot;, count&#125;&#x27;</span> /etc/passwd</span><br><span class="line">[start]user count is  0</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">...</span><br><span class="line">[end]user count is  40</span><br></pre></td></tr></table></figure>
+<p>统计某个文件夹下的文件占用的字节数</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -l |awk <span class="string">&#x27;BEGIN &#123;size=0;&#125; &#123;size=size+$5;&#125; END&#123;print &quot;[end]size is &quot;, size&#125;&#x27;</span></span><br><span class="line">[end]size is  8657198</span><br></pre></td></tr></table></figure>
+<p>如果以M为单位显示:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -l |awk <span class="string">&#x27;BEGIN &#123;size=0;&#125; &#123;size=size+$5;&#125; END&#123;print &quot;[end]size is &quot;, size/1024/1024,&quot;M&quot;&#125;&#x27;</span></span><br><span class="line">[end]size is  8.25889 M</span><br></pre></td></tr></table></figure>
+<p>注意, 统计不包括文件夹的子目录.</p>
+<h4 id="条件语句"><a href="#条件语句" class="headerlink" title="条件语句"></a>条件语句</h4><p>awk中的条件语句是从C语言中借鉴来的, 见如下声明方式：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (expression)</span><br><span class="line">&#123;</span><br><span class="line">    statement;</span><br><span class="line">    statement;</span><br><span class="line">    ... ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (expression)</span><br><span class="line">&#123;</span><br><span class="line">    statement;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    statement2;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (expression)</span><br><span class="line">&#123;</span><br><span class="line">    statement1;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (expression1)</span><br><span class="line">&#123;</span><br><span class="line">    statement2;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    statement3;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>统计某个文件夹下的文件占用的字节数,过滤4096大小的文件(一般都是文件夹):</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -l |awk <span class="string">&#x27;BEGIN &#123;size=0;print &quot;[start]size is &quot;, size&#125; &#123;if($5!=4096)&#123;size=size+$5;&#125;&#125; END&#123;print &quot;[end]size is &quot;, size/1024/1024,&quot;M&quot;&#125;&#x27;</span></span><br><span class="line">[end]size is  8.22339 M</span><br></pre></td></tr></table></figure>
+<p>统计下面的命令计算所有的C文件, CPP文件和H文件的文件大小总和.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ls -l  *.cpp *.c *.h | awk <span class="string">&#x27;&#123;sum+=$5&#125; END &#123;print sum&#125;&#x27;</span></span><br><span class="line">2511401</span><br></pre></td></tr></table></figure>
+<p>我们再来看一个统计各个connection状态的用法：（我们可以看到一些编程的影子了, 大家都是程序员我就不解释了）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ awk <span class="string">&#x27;NR!=1&#123;a[$6]++;&#125; END &#123;for (i in a) print i &quot;, &quot; a[i];&#125;&#x27;</span> netstat.txt</span><br><span class="line">TIME_WAIT, 3</span><br><span class="line">FIN_WAIT1, 1</span><br><span class="line">ESTABLISHED, 6</span><br><span class="line">FIN_WAIT2, 3</span><br><span class="line">LAST_ACK, 1</span><br><span class="line">LISTEN, 4</span><br></pre></td></tr></table></figure>
+<p>再来看看统计每个用户的进程的占了多少内存（注：sum的RSS那一列）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ps aux | awk <span class="string">&#x27;NR!=1&#123;a[$1]+=$6;&#125; END &#123; for(i in a) print i &quot;, &quot; a[i]&quot;KB&quot;;&#125;&#x27;</span></span><br><span class="line">dbus, 540KB</span><br><span class="line">mysql, 99928KB</span><br><span class="line">www, 3264924KB</span><br><span class="line">root, 63644KB</span><br><span class="line">hchen, 6020KB</span><br></pre></td></tr></table></figure>
+<p>环境变量即然说到了脚本, 我们来看看怎么和环境变量交互：（使用-v参数和ENVIRON, 使用ENVIRON的环境变量需要export）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt; x=5</span><br><span class="line"></span><br><span class="line">&gt; y=10</span><br><span class="line">&gt; <span class="built_in">export</span> y</span><br><span class="line"></span><br><span class="line">&gt; <span class="built_in">echo</span> <span class="variable">$x</span> <span class="variable">$y</span></span><br><span class="line">5 10</span><br><span class="line"></span><br><span class="line">$ awk -v val=<span class="variable">$x</span> <span class="string">&#x27;&#123;print $1, $2, $3, $4+val, $5+ENVIRON[&quot;y&quot;]&#125;&#x27;</span> OFS=<span class="string">&quot;\t&quot;</span> score.txt</span><br><span class="line">Marry   2143    78      89      87</span><br><span class="line">Jack    2321    66      83      55</span><br><span class="line">Tom     2122    48      82      81</span><br><span class="line">Mike    2537    87      102     105</span><br><span class="line">Bob     2415    40      62      72</span><br></pre></td></tr></table></figure>
+<h4 id="循环语句"><a href="#循环语句" class="headerlink" title="循环语句"></a>循环语句</h4><p>awk中的循环语句同样借鉴于C语言, 支持while, do/while, for, break, continue, 这些关键字的语义和C语言中的语义完全相同.</p>
+<p>数组</p>
+<p>  因为awk中数组的下标可以是数字和字母, 数组的下标通常被称为关键字(key). 值和关键字都存储在内部的一张针对key/value应用hash的表格里.由于hash不是顺序存储, 因此在显示数组内容时会发现, 它们并不是按照你预料的顺序显示出来的. 数组和变量一样, 都是在使用时自动创建的, awk也同样会自动判断其存储的是数字还是字符串.一般而言, awk中的数组用来从记录中收集信息, 可以用于计算总和, 统计单词以及跟踪模板被匹配的次数等等.</p>
+<p>显示/etc/passwd的账户</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 这里使用for循环遍历数组</span></span><br><span class="line"></span><br><span class="line">awk -F <span class="string">&#x27;:&#x27;</span> <span class="string">&#x27;BEGIN &#123;count=0;&#125; &#123;name[count] = $1;count++;&#125;; END&#123;for (i = 0; i &lt; NR; i++) print i, name[i]&#125;&#x27;</span> /etc/passwd</span><br><span class="line">0 root</span><br><span class="line">1 daemon</span><br><span class="line">2 bin</span><br><span class="line">3 sys</span><br><span class="line">4 sync</span><br><span class="line">5 games</span><br><span class="line">......</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
-        <category>职业素养</category>
+        <category>技术</category>
       </categories>
       <tags>
-        <tag>Email</tag>
+        <tag>通用技巧</tag>
+        <tag>awk</tag>
       </tags>
   </entry>
   <entry>
@@ -695,6 +670,150 @@
       </tags>
   </entry>
   <entry>
+    <title>gdb常用技巧</title>
+    <url>/2020/01/29/2020-01-28-gdb-use/</url>
+    <content><![CDATA[<h4 id="3种启用gdb的方法"><a href="#3种启用gdb的方法" class="headerlink" title="3种启用gdb的方法"></a>3种启用gdb的方法</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1.gdb &lt;program&gt;</span><br><span class="line">2.gdb &lt;program&gt; core</span><br><span class="line">3.gdb &lt;program&gt; &lt;PID&gt;</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+
+<h4 id="命令行参数"><a href="#命令行参数" class="headerlink" title="命令行参数"></a>命令行参数</h4><ul>
+<li>gdb命令行的 -args 参数</li>
+<li>gdb环境中 set args 命令</li>
+</ul>
+<h4 id="gdb中变量"><a href="#gdb中变量" class="headerlink" title="gdb中变量"></a>gdb中变量</h4><p>可以查看运行时的变量，也可以直接设置程序中的变量，以模拟一些很难在测试中出现的情况，比较一些出错，或是switch的分支语句。使用set命令可以修改程序中的变量。</p>
+<p>另外gdb也有变量，gdb的变量以$开头，比如打印数组中的每个元素，可以：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">(gdb) <span class="built_in">set</span> <span class="variable">$i</span> = 0</span><br><span class="line">(gdb) p a[<span class="variable">$i</span>++]</span><br><span class="line">.......</span><br></pre></td></tr></table></figure>
+<p>然后一路回车下去了。</p>
+<h4 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">r                        ============&gt;运行程序， run 命令简写</span><br><span class="line">c                        ============&gt;继续运行程序，<span class="built_in">continue</span>命令缩写</span><br><span class="line">l                        ============&gt;列出源码， list 命令简写</span><br><span class="line">b                        ============&gt;设置断点，具体请看下面一节</span><br><span class="line">info <span class="built_in">break</span>               ============&gt;查看断点信息</span><br><span class="line">n                        ============&gt;单条语句执行，不进入函数，next 命令缩写</span><br><span class="line">s                        ============&gt;单条语句执行，进入函数，step命令缩写</span><br><span class="line">p i                      ============&gt;打印变量值，<span class="built_in">print</span>命令缩写</span><br><span class="line">display i                ============&gt;显示变量值，后面每行都会显示</span><br><span class="line">bt                       ============&gt;查看函数堆栈，backtrace命令缩写</span><br><span class="line">shell &lt;<span class="built_in">command</span> string&gt;   ============&gt;在gdb中运行shell脚本</span><br><span class="line">finish                   ============&gt;退出函数</span><br><span class="line">q                        ============&gt;退出gdb</span><br><span class="line">&lt;enter&gt;                  ============&gt;重复上一条命令</span><br><span class="line">ptype                    ============&gt;显示变量的数据类型</span><br><span class="line">jump line                ============&gt;跳到指定行开始调试</span><br><span class="line"><span class="built_in">set</span> var=exp              ============&gt;设置变量var的值为exp</span><br><span class="line"><span class="built_in">kill</span>                     ============&gt;结束当前程序的调试</span><br><span class="line">x/[n][format][size]  address    ============&gt;查看内存</span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">断点相关</span><br><span class="line"><span class="built_in">break</span> func                      ===============&gt;在函数func入口处设置断点</span><br><span class="line"><span class="built_in">break</span> file.c:100                ===============&gt;在file.c第100行设置断点</span><br><span class="line"><span class="built_in">break</span> [<span class="built_in">where</span>] <span class="keyword">if</span> [condition]    ===============&gt;设置条件断点</span><br><span class="line"><span class="built_in">break</span> file.c:100 thread all     ===============&gt;在file.c文件第100行处，为所有经过这里的线程设置断点</span><br><span class="line">info <span class="built_in">break</span>                      ===============&gt;查看断点列表，会显示id号</span><br><span class="line">delete id                       ===============&gt;删除断点</span><br><span class="line">clear func                      ===============&gt;删除断点，不需要id，格式同<span class="built_in">break</span></span><br><span class="line"><span class="built_in">break</span> xxxxx <span class="keyword">if</span> a==1             ===============&gt;条件断点</span><br><span class="line">condition N COND                ===============&gt;条件断点，N为断点号码，COND为条件</span><br><span class="line">info thread                     ===============&gt;查看thread信息</span><br><span class="line">t &lt;thread id&gt;                   ===============&gt;切换到id进程，thread命令缩写</span><br><span class="line"></span><br><span class="line">在gdb中，有几种暂停方式： 断点（breakpoint），观察点（watchpoint），捕捉点（catchpoint），信号（signals），线程停止（Thread Stops）</span><br><span class="line">在gdb停住时，可以用info program来查看程序是否在运行，进程号，被暂停的原因。可以用<span class="built_in">continue</span>来恢复程序运行</span><br><span class="line"></span><br><span class="line">watch *(<span class="built_in">type</span> *) addr             ================&gt;watch地址addr的改变， <span class="built_in">type</span>为addr实际指向的数据类型</span><br><span class="line">watch  var                       ================&gt;watch变量var的改变</span><br></pre></td></tr></table></figure>
+<h4 id="多线程调试"><a href="#多线程调试" class="headerlink" title="多线程调试"></a>多线程调试</h4><p>1.调试已运行的程序<br>     1）ps查看PID，然后<code>gdb &lt;program PID&gt;</code>挂接正在运行的程序<br>     2）<code>gdb &lt;program&gt;</code>关联上源代码，并进行gdb，在gdb中用<code>attach</code>命令来挂接进程的PID, 用<code>detach</code>来取消挂接的进程。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">info thread 查看当前进程的线程</span><br><span class="line">thread &lt;id&gt; 切换调试的线程为指定id的线程，t &lt;id&gt;</span><br><span class="line"><span class="built_in">break</span> file.c:100 thread all     ===============&gt;在file.c文件第100行处，为所有经过这里的线程设置断点</span><br><span class="line"><span class="built_in">set</span> scheduler-locking off|on|step，在使用step或者<span class="built_in">continue</span>命令调试当前被调试线程的时候，其他线程也是同时执行的，怎么只让被调试线程执行呢？通过这个命令就可以实现这个需求。</span><br><span class="line">     off  不锁定任何线程，也就是所有线程都执行，这是默认值。</span><br><span class="line">     on   只有当前被调试程序会执行。</span><br><span class="line">     step 在单步的时候，除了next过一个函数的情况(熟悉情况的人可能知道，这其实是一个设置断点然后<span class="built_in">continue</span>的行为)以外，只有当前线程会执行。</span><br></pre></td></tr></table></figure>
+
+<h4 id="调试宏"><a href="#调试宏" class="headerlink" title="调试宏"></a>调试宏</h4><p>在gcc编译的时候，加上-ggdb3参数，就可以调试宏了。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">info macro - 查看这个宏在那些文件被引用了，以及宏定义是什么样子的。</span><br><span class="line">macro -      查看宏展开的样子</span><br></pre></td></tr></table></figure>
+<h4 id="自动化调试"><a href="#自动化调试" class="headerlink" title="自动化调试"></a>自动化调试</h4><p>使用command命令，简单的理解一下，其就是把一组gdb的命令打包，有点像字处理软件的“宏”。下面是一个示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">(gdb) <span class="built_in">break</span> func</span><br><span class="line">Breakpoint 1 at 0x3475678: file test.c, line 12.</span><br><span class="line">(gdb) commands 1  // 1 是断点号</span><br><span class="line">Type commands <span class="keyword">for</span> when breakpoint 1 is hit, one per line.</span><br><span class="line">End with a line saying just <span class="string">&quot;end&quot;</span>.</span><br><span class="line">&gt;<span class="built_in">print</span> arg1</span><br><span class="line">&gt;<span class="built_in">print</span> arg2</span><br><span class="line">&gt;<span class="built_in">print</span> arg3</span><br><span class="line">&gt;end</span><br><span class="line">(gdb)</span><br><span class="line">当我们的断点到达时，自动执行<span class="built_in">command</span>中的三个命令，把func的三个参数值打出来。</span><br></pre></td></tr></table></figure>
+
+<h4 id="gdb-server"><a href="#gdb-server" class="headerlink" title="gdb server"></a>gdb server</h4><p>这个主要是针对一些没有安装gdb的嵌入式设备</p>
+<p>1）在目标target host上开启gdbserver</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt; gdbserver &lt;target host ip&gt;:2345[这个端口可以自己根据需要设置] <span class="built_in">test</span></span><br></pre></td></tr></table></figure>
+<p>2）到host端，也就是安装有gdb的主机</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt; gdb <span class="built_in">test</span></span><br><span class="line">[&gt; <span class="built_in">set</span> solib-absolute-prefix &lt;gdb directory&gt;]</span><br><span class="line">[&gt; <span class="built_in">set</span> solib-search-path &lt;gdb directory/lib或者其他库文件的路径&gt;]</span><br><span class="line">&gt; target remote &lt;target host ip&gt;:2345</span><br></pre></td></tr></table></figure>
+<p>然后在host端来调试target上的程序</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>gdb</tag>
+        <tag>linux</tag>
+        <tag>debug</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>如何写好一封Email</title>
+    <url>/2020/01/29/2020-01-29-write-good-email/</url>
+    <content><![CDATA[<h3 id="接收人"><a href="#接收人" class="headerlink" title="接收人"></a>接收人</h3><ol>
+<li><p>收件人</p>
+<blockquote>
+<p>事件接棒人, 是需要对事件做出响应及跟进的人, 如果需要老板处理, 那么收件人就加上老板, 而不是抄送</p>
+</blockquote>
+</li>
+<li><p>抄送人</p>
+<blockquote>
+<p>事件知会人, 只需要知道邮件的内容就可以了, 不必要一定做出响应或去跟进</p>
+</blockquote>
+</li>
+</ol>
+<a id="more"></a>
+
+<h3 id="称呼及问候语"><a href="#称呼及问候语" class="headerlink" title="称呼及问候语"></a>称呼及问候语</h3><p>写上称呼是一种礼貌的象征, 尤其写对外邮件的时候, 是必要项.</p>
+<blockquote>
+<ul>
+<li>Dear LastName, 比较正式的场合</li>
+<li>Hi FirstName, 朋友之间比较随意的场合</li>
+<li>Dear FirstName, 如果你不知道用什么, 就用这个</li>
+</ul>
+</blockquote>
+<h3 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h3><ul>
+<li><strong>直奔主题, 言简意赅</strong>, 以下给几个例子来展示如何直奔主题</li>
+</ul>
+<blockquote>
+<ol>
+<li>I’m working on an article about xxx for yyy publication, and wondered if you had a few minutes to answer the following 3 questions.<br>我正在写一篇要交给yyy出版社的文章, 不知道您是否有时间回答下下面3个问题呢?</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol start="2">
+<li>Could you supply me with a quote for the following project?<br>可否对下面的设计项目进行引证?</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol start="3">
+<li>I’d like to discuss the revisions with you. Would Tuesday at 2pm be a good time?<br>我想和你谈谈修订的事情, 这周二下午2点您有空吗?</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol start="4">
+<li>I’ve attached the documents you requested at our meeting yesterday.<br>昨天会议上您要求的文件已附上, 请查收.</li>
+</ol>
+</blockquote>
+<ul>
+<li><p>如果有问题需要提出, 或者需要重点突出的内容, 那么将其放到 <strong>开头</strong>. 如果问题放到最后, 收信人可能都不会留意到, 或者不会意识到你在等他的回复.</p>
+</li>
+<li><p>如果是咨询邮件, 或者说明什么产品, 那么将问题(或特性)一点点的 <strong>编号</strong> 列出来.</p>
+</li>
+</ul>
+<h3 id="常用英文邮件术语"><a href="#常用英文邮件术语" class="headerlink" title="常用英文邮件术语"></a>常用英文邮件术语</h3><ol>
+<li><p>To inform 提供信息</p>
+<blockquote>
+<p>The sender of the email wants to tell the receiver about something such as a new show coming to London. It might contain a link to the theatre. Generally speaking no reply is necessary. It can be a group email sent to a circle of friends, <strong>for example.</strong></p>
+<p>Dear all,</p>
+<p>Hope you are all well. Just to let you know that The China National Peking Opera is coming to London at the end of November to perform classical Peking Opera and the show will only be on for 3 days, so grab your tickets soon. Here is the link xxx</p>
+</blockquote>
+</li>
+<li><p>To inquire 询问</p>
+<blockquote>
+<p>The sender needs some information and is expecting a reply.</p>
+<p>Dear Sir/Madam,</p>
+<p>I am writing to inquire about the rules regarding children travelling alone. For instance, can a 15 year old child travel on Air China alone? What should we do if there is not an adult to accompany the child?</p>
+<p>I look forward to your advice.</p>
+</blockquote>
+</li>
+<li><p>To request 请求</p>
+<blockquote>
+<p>The sender is asking for permission to do something, such as an permission to leave 5 days for a trip.<br>I’m writing to see whether it is possible for me to leave 5 days from next Monday for a trip with my family.</p>
+<p>Dear xxx</p>
+<p>I would be very grateful if you could consider my request.<br>Thanks.</p>
+<p>Carl</p>
+</blockquote>
+</li>
+<li><p>Stay in touch 保持联系</p>
+<blockquote>
+<p>I’m writing to say hello for the purpose to maintain social connections, friendship, and perhaps future collaboration.</p>
+<p>Hi xxx,</p>
+<p>How are you doing in your new job? It should be perfect, for you are a superman.<br>I’m also busy these two months and have not played any sports these days.</p>
+<p>Let me know when you will be free, so we can have a game and a drink.</p>
+<p>Best<br>Carl</p>
+</blockquote>
+</li>
+</ol>
+<h3 id="校对拼写错误"><a href="#校对拼写错误" class="headerlink" title="校对拼写错误"></a>校对拼写错误</h3><p>很重要, 一定不能有错别字</p>
+<h3 id="邮件签名"><a href="#邮件签名" class="headerlink" title="邮件签名"></a>邮件签名</h3><p>写清楚</p>
+<ul>
+<li>你是谁</li>
+<li>你来自哪里</li>
+<li>你是做什么的</li>
+<li>你的联系方式(电话, 工作地址)</li>
+<li>其他(例如你的社交网络账号, 最新宣传博客等), 此条不适用与公司对公邮件</li>
+</ul>
+]]></content>
+      <categories>
+        <category>职业素养</category>
+      </categories>
+      <tags>
+        <tag>Email</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>进程间通信-fcntl记录上锁</title>
     <url>/2020/02/01/2020-02-01-ipc-fcntl/</url>
     <content><![CDATA[<p>这是读写锁的一种扩展类型，可用于有亲缘关系或<strong>无亲缘关系</strong>的<strong>进程</strong>之间共享某个文件的读写。这些锁用于不同进程间的上锁，而不是用于同一进程中不同线程间的上锁。</p>
@@ -757,125 +876,6 @@
       </categories>
       <tags>
         <tag>ssh</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>awk怎么写?</title>
-    <url>/2020/01/16/2020-01-16-awk/</url>
-    <content><![CDATA[<p>本篇文章主要是参考左耳朵耗子前辈的博文整理而来, 作为自己学习备忘之用.</p>
-<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>awk是一个强大的文本分析工具, 相对于grep的查找, sed的编辑, awk在其对数据分析并生成报告时, 显得尤为强大. 简单来说awk就是把文件逐行的读入, 以空格为默认分隔符将每行切片, 切开的部分再进行各种分析处理.</p>
-<p>awk有3个不同版本: awk, nawk和gawk, 未作特别说明, 一般指gawk, gawk是AWK的GNU版本.</p>
-<p>awk其名称得自于它的创始人Alfred Aho, Peter Weinberger和Brian Kernighan姓氏的首个字母. 实际上 AWK 的确拥有自己的语言: AWK 程序设计语言, 三位创建者已将它正式定义为”样式扫描和处理语言”. 它允许您创建简短的程序, 这些程序读取输入文件, 为数据排序, 处理数据, 对输入执行计算以及生成报表, 还有无数其他的功能.</p>
-<a id="more"></a>
-
-<h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">awk <span class="string">&#x27;pattern + &#123;action&#125;&#x27;</span> &#123;filenames&#125;</span><br></pre></td></tr></table></figure>
-<p>尽管操作可能会很复杂, 但语法总是这样, 其中 pattern 表示 AWK 在数据中查找的内容, 而 action 是在找到匹配内容时所执行的一系列命令.花括号（{}）不需要在程序中始终出现, 但它们用于根据特定的模式对一系列指令进行分组. pattern就是要表示的正则表达式, 用斜杠括起来.</p>
-<p>awk语言的最基本功能是在文件或者字符串中基于指定规则浏览和抽取信息, awk抽取信息后, 才能进行其他文本操作.完整的awk脚本通常用来格式化文本文件中的信息.<br>通常, awk是以文件的一行为处理单位的.awk每接收文件的一行, 然后执行相应的命令, 来处理文本.</p>
-<h3 id="调用awk有三种方式调用awk"><a href="#调用awk有三种方式调用awk" class="headerlink" title="调用awk有三种方式调用awk"></a>调用awk有三种方式调用awk</h3><ol>
-<li>命令行方式awk [-F  field-separator]  ‘commands’  input-file(s)其中, commands 是真正awk命令, [-F域分隔符]是可选的. input-file(s) 是待处理的文件.在awk中, 文件的每一行中, 由域分隔符分开的每一项称为一个域.通常, 在不指名-F域分隔符的情况下, 默认的域分隔符是空格.</li>
-<li>shell脚本方式将所有的awk命令插入一个文件, 并使awk程序可执行, 然后awk命令解释器作为脚本的首行, 以便通过键入脚本名称来调用.相当于shell脚本首行的：#!/bin/sh可以换成：#!/bin/awk</li>
-<li>将所有的awk命令插入一个单独文件, 然后调用：awk -f awk-script-file input-file(s)其中, -f选项加载awk-script-file中的awk脚本, input-file(s)跟上面的是一样的.</li>
-</ol>
-<h4 id="入门实例"><a href="#入门实例" class="headerlink" title="入门实例"></a>入门实例</h4><p>假设last -n 5的输出如下</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ last -n 5 &lt;==仅取出前五行</span><br><span class="line">root     pts/1   192.168.1.100  Tue Feb 10 11:21   still logged <span class="keyword">in</span></span><br><span class="line">root     pts/1   192.168.1.100  Tue Feb 10 00:46 - 02:28  (01:41)</span><br><span class="line">root     pts/1   192.168.1.100  Mon Feb  9 11:41 - 18:30  (06:48)</span><br><span class="line">dmtsai   pts/1   192.168.1.100  Mon Feb  9 11:41 - 11:41  (00:00)</span><br><span class="line">root     tty1                   Fri Sep  5 14:09 - 14:10  (00:01)</span><br></pre></td></tr></table></figure>
-<p>如果只是显示最近登录的5个帐号</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ last -n 5 | awk  <span class="string">&#x27;&#123;print $1&#125;&#x27;</span>  -- 必须是单引号<span class="string">&#x27; &#x27;</span>,<span class="string">&quot; &quot;</span>不生效的</span><br><span class="line">root</span><br><span class="line">root</span><br><span class="line">root</span><br><span class="line">dmtsai</span><br><span class="line">root</span><br></pre></td></tr></table></figure>
-<p>awk工作流程是这样的：读入有’\n’换行符分割的一条记录, 然后将记录按指定的域分隔符划分域, 填充域, $0则表示所有域, $1表示第一个域, $n表示第n个域. 默认域分隔符是”空白键” 或 “[tab]键”, 所以$1表示登录用户, $3表示登录用户ip,以此类推.<br>字符串匹配的示例：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ awk <span class="string">&#x27;$6 ~ /FIN/ || NR==1 &#123;print NR,$4,$5,$6&#125;&#x27;</span> OFS=<span class="string">&quot;\t&quot;</span> netstat.txt</span><br><span class="line">1       Local-Address   Foreign-Address State</span><br><span class="line">6       coolshell.cn:80 61.140.101.185:37538    FIN_WAIT2</span><br><span class="line">9       coolshell.cn:80 116.234.127.77:11502    FIN_WAIT2</span><br><span class="line">13      coolshell.cn:80 124.152.181.209:26825   FIN_WAIT1</span><br><span class="line">18      coolshell.cn:80 117.136.20.85:50025     FIN_WAIT2</span><br><span class="line"></span><br><span class="line">$ awk <span class="string">&#x27;$6 ~ /WAIT/ || NR==1 &#123;print NR,$4,$5,$6&#125;&#x27;</span> OFS=<span class="string">&quot;\t&quot;</span> netstat.txt</span><br><span class="line">1       Local-Address   Foreign-Address State</span><br><span class="line">5       coolshell.cn:80 124.205.5.146:18245     TIME_WAIT</span><br><span class="line">6       coolshell.cn:80 61.140.101.185:37538    FIN_WAIT2</span><br><span class="line">9       coolshell.cn:80 116.234.127.77:11502    FIN_WAIT2</span><br><span class="line">11      coolshell.cn:80 183.60.215.36:36970     TIME_WAIT</span><br><span class="line">13      coolshell.cn:80 124.152.181.209:26825   FIN_WAIT1</span><br><span class="line">15      coolshell.cn:80 183.60.212.163:51082    TIME_WAIT</span><br><span class="line">18      coolshell.cn:80 117.136.20.85:50025     FIN_WAIT2</span><br></pre></td></tr></table></figure>
-<p>上面的第一个示例匹配FIN状态,  第二个示例匹配WAIT字样的状态.其实 ~ 表示模式开始./ /中是模式.其实就是一个正则表达式的匹配.<br>可以使用 “/FIN|TIME/“ 来匹配 FIN 或者 TIME :</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ awk <span class="string">&#x27;$6 ~ /FIN|TIME/ || NR==1 &#123;print NR,$4,$5,$6&#125;&#x27;</span> OFS=<span class="string">&quot;\t&quot;</span> netstat.txt</span><br><span class="line">1       Local-Address   Foreign-Address State</span><br><span class="line">5       coolshell.cn:80 124.205.5.146:18245     TIME_WAIT</span><br><span class="line">6       coolshell.cn:80 61.140.101.185:37538    FIN_WAIT2</span><br><span class="line">9       coolshell.cn:80 116.234.127.77:11502    FIN_WAIT2</span><br><span class="line">11      coolshell.cn:80 183.60.215.36:36970     TIME_WAIT</span><br><span class="line">13      coolshell.cn:80 124.152.181.209:26825   FIN_WAIT1</span><br><span class="line">15      coolshell.cn:80 183.60.212.163:51082    TIME_WAIT</span><br><span class="line">18      coolshell.cn:80 117.136.20.85:50025     FIN_WAIT2</span><br></pre></td></tr></table></figure>
-<p>再来看看模式取反的例子：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ awk <span class="string">&#x27;$6 !~ /WAIT/ || NR==1 &#123;print NR,$4,$5,$6&#125;&#x27;</span> OFS=<span class="string">&quot;\t&quot;</span> netstat.txt</span><br><span class="line">1       Local-Address   Foreign-Address State</span><br><span class="line">2       0.0.0.0:3306    0.0.0.0:*       LISTEN</span><br><span class="line">3       0.0.0.0:80      0.0.0.0:*       LISTEN</span><br><span class="line">4       127.0.0.1:9000  0.0.0.0:*       LISTEN</span><br><span class="line">7       coolshell.cn:80 110.194.134.189:1032    ESTABLISHED</span><br><span class="line">8       coolshell.cn:80 123.169.124.111:49809   ESTABLISHED</span><br><span class="line">10      coolshell.cn:80 123.169.124.111:49829   ESTABLISHED</span><br><span class="line">12      coolshell.cn:80 61.148.242.38:30901     ESTABLISHED</span><br><span class="line">14      coolshell.cn:80 110.194.134.189:4796    ESTABLISHED</span><br><span class="line">16      coolshell.cn:80 208.115.113.92:50601    LAST_ACK</span><br><span class="line">17      coolshell.cn:80 123.169.124.111:49840   ESTABLISHED</span><br><span class="line">19      :::22   :::*    LISTEN</span><br></pre></td></tr></table></figure>
-<p>或是：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">awk <span class="string">&#x27;!/WAIT/&#x27;</span> netstat.txt</span><br></pre></td></tr></table></figure>
-<p>如果只是显示/etc/passwd的账户</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cat /etc/passwd |awk  -F <span class="string">&#x27;:&#x27;</span>  <span class="string">&#x27;&#123;print $1&#125;&#x27;</span></span><br><span class="line">rootdaemonbinsys</span><br></pre></td></tr></table></figure>
-<p>这种是awk+action的示例, 每行都会执行action {print $1}.</p>
-<p>-F指定域分隔符为’:’.<br>如果只是显示/etc/passwd的账户和账户对应的shell,而账户与shell之间以tab键分割</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cat /etc/passwd |awk  -F <span class="string">&#x27;:&#x27;</span>  <span class="string">&#x27;&#123;print $1&quot;\t&quot;$7&#125;&#x27;</span></span><br><span class="line">root    /bin/bash</span><br><span class="line">daemon  /bin/sh</span><br><span class="line">bin     /bin/sh</span><br><span class="line">sys     /bin/sh</span><br></pre></td></tr></table></figure>
-<p>如果只是显示/etc/passwd的账户和账户对应的shell, 而账户与shell之间以逗号分割, 而且在所有行添加列名name, shell, 在最后一行添加”blue,/bin/nosh”.</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cat /etc/passwd |awk  -F <span class="string">&#x27;:&#x27;</span>  <span class="string">&#x27;BEGIN &#123;print &quot;name,shell&quot;&#125;  &#123;print $1&quot;,&quot;$7&#125; END &#123;print &quot;blue,/bin/nosh&quot;&#125;&#x27;</span></span><br><span class="line">name,shell</span><br><span class="line">root,/bin/bash</span><br><span class="line">daemon,/bin/sh</span><br><span class="line">bin,/bin/sh</span><br><span class="line">sys,/bin/sh</span><br><span class="line">....</span><br><span class="line">blue,/bin/nosh</span><br></pre></td></tr></table></figure>
-<p>awk工作流程是这样的：先执行BEGIN, 然后读取文件, 读入有/n换行符分割的一条记录, 然后将记录按指定的域分隔符划分域, 填充域, $0则表示所有域,$1表示第一个域,$n表示第n个域,随后开始执行模式所对应的动作action.接着开始读入第二条记录······直到所有的记录都读完, 最后执行END操作.<br>搜索/etc/passwd有root关键字的所有行</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ awk -F: <span class="string">&#x27;/root/&#x27;</span> /etc/passwd</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br></pre></td></tr></table></figure>
-<p>这种是pattern的使用示例, 匹配了pattern(这里是root)的行才会执行action(没有指定action, 默认输出每行的内容).<br>搜索支持正则, 例如找root开头的: awk -F: ‘/^root/‘ /etc/passwd<br>搜索/etc/passwd有root关键字的所有行, 并显示对应的shell</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ awk -F: <span class="string">&#x27;/root/ &#123;print $7&#125;&#x27;</span> /etc/passwd</span><br><span class="line">/bin/bash</span><br></pre></td></tr></table></figure>
-<p>这里指定了action{print $7}<br>awk内置变量awk有许多内置变量用来设置环境信息, 这些变量可以被改变, 下面给出了最常用的一些变量.</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ARGC               命令行参数个数</span><br><span class="line">ARGV               命令行参数排列</span><br><span class="line">ENVIRON            支持队列中系统环境变量的使用</span><br><span class="line">FILENAME           awk浏览的文件名</span><br><span class="line">FNR                浏览文件的记录数</span><br><span class="line">FS                 设置输入域分隔符, 等价于命令行 -F选项</span><br><span class="line">NF                 浏览记录的域的个数</span><br><span class="line">NR                 已读的记录数</span><br><span class="line">OFS                输出域分隔符   默认空格</span><br><span class="line">ORS                输出记录分隔符 默认换行符</span><br><span class="line">RS                 控制记录分隔符 默认换行符</span><br><span class="line">此外,<span class="variable">$0</span>变量是指整条记录.<span class="variable">$1</span>表示当前行的第一个域,<span class="variable">$2</span>表示当前行的第二个域,......以此类推.</span><br></pre></td></tr></table></figure>
-<p>统计/etc/passwd:文件名, 每行的行号, 每行的列数, 对应的完整行内容:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ awk  -F <span class="string">&#x27;:&#x27;</span>  <span class="string">&#x27;&#123;print &quot;filename:&quot; FILENAME &quot;,linenumber:&quot; NR &quot;,columns:&quot; NF &quot;,linecontent:&quot;$0&#125;&#x27;</span> /etc/passwd</span><br><span class="line">filename:/etc/passwd,linenumber:1,columns:7,linecontent:root:x:0:0:root:/root:/bin/bash</span><br><span class="line">filename:/etc/passwd,linenumber:2,columns:7,linecontent:daemon:x:1:1:daemon:/usr/sbin:/bin/sh</span><br><span class="line">filename:/etc/passwd,linenumber:3,columns:7,linecontent:bin:x:2:2:bin:/bin:/bin/sh</span><br><span class="line">filename:/etc/passwd,linenumber:4,columns:7,linecontent:sys:x:3:3:sys:/dev:/bin/sh</span><br></pre></td></tr></table></figure>
-<p>使用printf替代print,可以让代码更加简洁, 易读</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">awk  -F <span class="string">&#x27;:&#x27;</span>  <span class="string">&#x27;&#123;printf(&quot;filename:%10s,linenumber:%s,columns:%s,linecontent:%s\n&quot;,FILENAME,NR,NF,$0)&#125;&#x27;</span> /etc/passwd</span><br></pre></td></tr></table></figure>
-<h4 id="print和printf"><a href="#print和printf" class="headerlink" title="print和printf"></a>print和printf</h4><p>awk中同时提供了print和printf两种打印输出的函数.</p>
-<p>其中print函数的参数可以是变量, 数值或者字符串. 字符串必须用双引号引用, 参数用逗号分隔. 如果没有逗号, 参数就串联在一起而无法区分. 这里, 逗号的作用与输出文件的分隔符的作用是一样的, 只是后者是空格而已.<br>printf函数, 其用法和c语言中printf基本相似, 可以格式化字符串, 输出复杂时, printf更加好用, 代码更易懂.</p>
-<h3 id="awk编程"><a href="#awk编程" class="headerlink" title="awk编程"></a>awk编程</h3><h4 id="变量和赋值"><a href="#变量和赋值" class="headerlink" title="变量和赋值"></a>变量和赋值</h4><p>除了awk的内置变量, awk还可以自定义变量.</p>
-<p>下面统计/etc/passwd的账户人数</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">awk <span class="string">&#x27;&#123;count++;print $0;&#125; END&#123;print &quot;user count is &quot;, count&#125;&#x27;</span> /etc/passwd</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">......</span><br><span class="line">user count is  40</span><br></pre></td></tr></table></figure>
-<p>count是自定义变量. 之前的action{}里都是只有一个print, 其实print只是一个语句, 而action{}可以有多个语句, 以;号隔开.<br>这里没有初始化count, 虽然默认是0, 但是妥当的做法还是初始化为0:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">awk <span class="string">&#x27;BEGIN &#123;count=0;print &quot;[start]user count is &quot;, count&#125; &#123;count=count+1;print $0;&#125; END&#123;print &quot;[end]user count is &quot;, count&#125;&#x27;</span> /etc/passwd</span><br><span class="line">[start]user count is  0</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">...</span><br><span class="line">[end]user count is  40</span><br></pre></td></tr></table></figure>
-<p>统计某个文件夹下的文件占用的字节数</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -l |awk <span class="string">&#x27;BEGIN &#123;size=0;&#125; &#123;size=size+$5;&#125; END&#123;print &quot;[end]size is &quot;, size&#125;&#x27;</span></span><br><span class="line">[end]size is  8657198</span><br></pre></td></tr></table></figure>
-<p>如果以M为单位显示:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -l |awk <span class="string">&#x27;BEGIN &#123;size=0;&#125; &#123;size=size+$5;&#125; END&#123;print &quot;[end]size is &quot;, size/1024/1024,&quot;M&quot;&#125;&#x27;</span></span><br><span class="line">[end]size is  8.25889 M</span><br></pre></td></tr></table></figure>
-<p>注意, 统计不包括文件夹的子目录.</p>
-<h4 id="条件语句"><a href="#条件语句" class="headerlink" title="条件语句"></a>条件语句</h4><p>awk中的条件语句是从C语言中借鉴来的, 见如下声明方式：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (expression)</span><br><span class="line">&#123;</span><br><span class="line">    statement;</span><br><span class="line">    statement;</span><br><span class="line">    ... ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (expression)</span><br><span class="line">&#123;</span><br><span class="line">    statement;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    statement2;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (expression)</span><br><span class="line">&#123;</span><br><span class="line">    statement1;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (expression1)</span><br><span class="line">&#123;</span><br><span class="line">    statement2;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    statement3;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>统计某个文件夹下的文件占用的字节数,过滤4096大小的文件(一般都是文件夹):</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -l |awk <span class="string">&#x27;BEGIN &#123;size=0;print &quot;[start]size is &quot;, size&#125; &#123;if($5!=4096)&#123;size=size+$5;&#125;&#125; END&#123;print &quot;[end]size is &quot;, size/1024/1024,&quot;M&quot;&#125;&#x27;</span></span><br><span class="line">[end]size is  8.22339 M</span><br></pre></td></tr></table></figure>
-<p>统计下面的命令计算所有的C文件, CPP文件和H文件的文件大小总和.</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ls -l  *.cpp *.c *.h | awk <span class="string">&#x27;&#123;sum+=$5&#125; END &#123;print sum&#125;&#x27;</span></span><br><span class="line">2511401</span><br></pre></td></tr></table></figure>
-<p>我们再来看一个统计各个connection状态的用法：（我们可以看到一些编程的影子了, 大家都是程序员我就不解释了）</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ awk <span class="string">&#x27;NR!=1&#123;a[$6]++;&#125; END &#123;for (i in a) print i &quot;, &quot; a[i];&#125;&#x27;</span> netstat.txt</span><br><span class="line">TIME_WAIT, 3</span><br><span class="line">FIN_WAIT1, 1</span><br><span class="line">ESTABLISHED, 6</span><br><span class="line">FIN_WAIT2, 3</span><br><span class="line">LAST_ACK, 1</span><br><span class="line">LISTEN, 4</span><br></pre></td></tr></table></figure>
-<p>再来看看统计每个用户的进程的占了多少内存（注：sum的RSS那一列）</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ps aux | awk <span class="string">&#x27;NR!=1&#123;a[$1]+=$6;&#125; END &#123; for(i in a) print i &quot;, &quot; a[i]&quot;KB&quot;;&#125;&#x27;</span></span><br><span class="line">dbus, 540KB</span><br><span class="line">mysql, 99928KB</span><br><span class="line">www, 3264924KB</span><br><span class="line">root, 63644KB</span><br><span class="line">hchen, 6020KB</span><br></pre></td></tr></table></figure>
-<p>环境变量即然说到了脚本, 我们来看看怎么和环境变量交互：（使用-v参数和ENVIRON, 使用ENVIRON的环境变量需要export）</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt; x=5</span><br><span class="line"></span><br><span class="line">&gt; y=10</span><br><span class="line">&gt; <span class="built_in">export</span> y</span><br><span class="line"></span><br><span class="line">&gt; <span class="built_in">echo</span> <span class="variable">$x</span> <span class="variable">$y</span></span><br><span class="line">5 10</span><br><span class="line"></span><br><span class="line">$ awk -v val=<span class="variable">$x</span> <span class="string">&#x27;&#123;print $1, $2, $3, $4+val, $5+ENVIRON[&quot;y&quot;]&#125;&#x27;</span> OFS=<span class="string">&quot;\t&quot;</span> score.txt</span><br><span class="line">Marry   2143    78      89      87</span><br><span class="line">Jack    2321    66      83      55</span><br><span class="line">Tom     2122    48      82      81</span><br><span class="line">Mike    2537    87      102     105</span><br><span class="line">Bob     2415    40      62      72</span><br></pre></td></tr></table></figure>
-<h4 id="循环语句"><a href="#循环语句" class="headerlink" title="循环语句"></a>循环语句</h4><p>awk中的循环语句同样借鉴于C语言, 支持while, do/while, for, break, continue, 这些关键字的语义和C语言中的语义完全相同.</p>
-<p>数组</p>
-<p>  因为awk中数组的下标可以是数字和字母, 数组的下标通常被称为关键字(key). 值和关键字都存储在内部的一张针对key/value应用hash的表格里.由于hash不是顺序存储, 因此在显示数组内容时会发现, 它们并不是按照你预料的顺序显示出来的. 数组和变量一样, 都是在使用时自动创建的, awk也同样会自动判断其存储的是数字还是字符串.一般而言, awk中的数组用来从记录中收集信息, 可以用于计算总和, 统计单词以及跟踪模板被匹配的次数等等.</p>
-<p>显示/etc/passwd的账户</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 这里使用for循环遍历数组</span></span><br><span class="line"></span><br><span class="line">awk -F <span class="string">&#x27;:&#x27;</span> <span class="string">&#x27;BEGIN &#123;count=0;&#125; &#123;name[count] = $1;count++;&#125;; END&#123;for (i = 0; i &lt; NR; i++) print i, name[i]&#125;&#x27;</span> /etc/passwd</span><br><span class="line">0 root</span><br><span class="line">1 daemon</span><br><span class="line">2 bin</span><br><span class="line">3 sys</span><br><span class="line">4 sync</span><br><span class="line">5 games</span><br><span class="line">......</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>通用技巧</tag>
-        <tag>awk</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>grep命令使用技巧</title>
-    <url>/2020/01/16/2020-01-16-grep/</url>
-    <content><![CDATA[<p>grep [选项] pattern [文件名]</p>
-<p>命令中的选项为：</p>
-<ul>
-<li>-? 同时显示匹配行上下的？行，如：<code>grep -2 pattern filename</code> 同时显示匹配行的上下2行。</li>
-<li>-A ? 显示匹配行和后面的?行, 如: <code>grep -A 2 pattern filename</code></li>
-<li>-B ? 显示匹配行和前面的?行</li>
-<li>-b，–byte-offset 打印匹配行前面打印该行所在的块号码。</li>
-<li>-c,–count 只打印匹配的行数，不显示匹配的内容。</li>
-<li>-f File，–file=File 从文件中提取模板。空文件中包含0个模板，所以什么都不匹配。</li>
-<li>-h，–no-filename 当搜索多个文件时，不显示匹配文件名前缀。</li>
-<li>-i，–ignore-case 忽略大小写差别。</li>
-<li>-q，–quiet 取消显示，只返回退出状态。0则表示找到了匹配的行。</li>
-<li>-l，–files-with-matches 打印匹配模板的文件清单。</li>
-<li>-L，–files-without-match 打印不匹配模板的文件清单。</li>
-<li>-n，–line-number 在匹配的行前面打印行号。</li>
-<li>-s，–silent 不显示关于不存在或者无法读取文件的错误信息。</li>
-<li>-v，–revert-match 反检索，只显示不匹配的行。</li>
-<li>-w，–word-regexp 如果被&lt;和&gt;引用，就把表达式做为一个单词搜索。</li>
-<li>-V，–version 显示软件版本信息。</li>
-</ul>
-<a id="more"></a>
-
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -l | grep <span class="string">&#x27;^a&#x27;</span> 通过管道过滤ls -l输出的内容，只显示以a开头的行。</span><br><span class="line">grep <span class="string">&#x27;test&#x27;</span> d* 显示所有以d开头的文件中包含<span class="built_in">test</span>的行。</span><br><span class="line">grep <span class="string">&#x27;test&#x27;</span> aa bb cc 显示在aa，bb，cc文件中匹配<span class="built_in">test</span>的行。</span><br><span class="line">grep <span class="string">&#x27;[a-z]&#x27;</span> aa 显示所有包含每个字符串至少有5个连续小写字符的字符串的行。</span><br><span class="line">grep <span class="string">&#x27;w(es)t.*&#x27;</span> aa 如果west被匹配，则es就被存储到内存中，并标记为1，然后搜索任意个字符(.*)，这些字符后面紧跟着另外一个es()，找到就显示该行。如果用egrep或grep -E，就不用<span class="string">&quot;&quot;</span>号进行转义，直接写成<span class="string">&#x27;w(es)t.*&#x27;</span>就可以了。</span><br><span class="line">grep -i pattern files ：不区分大小写地搜索。默认情况区分大小写</span><br><span class="line">grep -l pattern files ：只列出匹配的文件名，</span><br><span class="line">grep -L pattern files ：列出不匹配的文件名，</span><br><span class="line">grep -w pattern files ：只匹配整个单词，而不是字符串的一部分(如匹配‘magic’，而不是‘magical’)，</span><br><span class="line">grep -C number pattern files ：匹配的上下文分别显示[number]行，</span><br><span class="line">grep pattern1 | pattern2 files ：显示匹配 pattern1 或 pattern2 的行，</span><br><span class="line">grep pattern1 files | grep pattern2 ：显示既匹配 pattern1 又匹配 pattern2 的行。</span><br></pre></td></tr></table></figure>
-<p>pattern为所要匹配的字符串，可使用下列模式</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">. 匹配任意一个字符</span><br><span class="line">* 匹配0 个或多个*前的字符</span><br><span class="line">^ 匹配行开头</span><br><span class="line">$ 匹配行结尾</span><br><span class="line">[] 匹配[ ]中的任意一个字符，[]中可用 - 表示范围，</span><br><span class="line">例如[a-z]表示字母a 至z 中的任意一个</span><br><span class="line">\ 转意字符</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>通用技巧</tag>
-        <tag>grep</tag>
       </tags>
   </entry>
   <entry>
@@ -1007,6 +1007,61 @@
 <h3 id="线程清理处理程序"><a href="#线程清理处理程序" class="headerlink" title="线程清理处理程序"></a>线程清理处理程序</h3><p>有时候，线程会在持有锁期间被动（被其他线程cancel）或主动终止（主动调用pthread_exit）。为了处理这种情况，线程可以安装或删除清理处理程序</p>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">pthread_cleanup_push</span><span class="params">(<span class="keyword">void</span> (*function)(<span class="keyword">void</span> *), <span class="keyword">void</span> *arg)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">pthread_cleanup_pop</span><span class="params">(<span class="keyword">int</span> execute)</span></span>; <span class="comment">// 删除调用线程的取消清理栈中位于栈顶的函数。如果excute不为0，就调用该函数</span></span><br></pre></td></tr></table></figure>
 <h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>与普通的互斥锁相比，当被保护数据的读访问比写访问更为频繁时，读写锁能够提供更高的并发度。</p>
+<blockquote>
+<p>文中代码托管在: <a href="https://github.com/carl-wang-cn/demo/tree/master/ipc">https://github.com/carl-wang-cn/demo/tree/master/ipc</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>ipc</tag>
+        <tag>多进程</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>进程间通信-管道</title>
+    <url>/2020/02/07/2020-02-07-ipc-pipe/</url>
+    <content><![CDATA[<h3 id="pipe匿名管道"><a href="#pipe匿名管道" class="headerlink" title="pipe匿名管道"></a>pipe匿名管道</h3><p>匿名管道由于没有名字, 因此只能由有亲缘关系的进程使用</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pipe</span><span class="params">(<span class="keyword">int</span> fd[<span class="number">2</span>])</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 出错返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">该函数返回两个文件描述符: fd[<span class="number">0</span>]和fd[<span class="number">1</span>], 前者打开来读, 后者打开来写.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+
+<p>另一个关于管道的例子, 标准I/O函数库提供了popen函数, 它创建一个管道并启动另一个进程, 该进程要么从该管道读出标准输入, 要么往该管道写入标准输出</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function">FILE *<span class="title">popen</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *command, <span class="keyword">const</span> <span class="keyword">char</span> *type)</span></span>;</span><br><span class="line">返回: 成功返回文件指针，失败返回<span class="literal">NULL</span></span><br><span class="line">注意: popen不对标准错误输出做任何处理, 只有标准输出才被重定向到由它创建的管道</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pclose</span><span class="params">(FILE *stream)</span></span>;</span><br><span class="line">返回: 成功则为shell的终止状态, 失败为<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">command是一个shell命令行, popen在调用进程和所指定的命令之间创建一个管道</span><br><span class="line"></span><br><span class="line">- 如果type为r, 调用进程读入command的标准输出</span><br><span class="line">- 如果type为w, 调用进程写到command的标准输入</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>pipe01.c演示了父子进程间通过pipe实现半双工通信</li>
+<li>pipe02.c演示了使用popen创建管道</li>
+</ul>
+<h3 id="FIFO-有名管道"><a href="#FIFO-有名管道" class="headerlink" title="FIFO 有名管道"></a>FIFO 有名管道</h3><p>每个FIFO有一个路径名与之关联, 从而允许无亲缘关系的进程访问同一个FIFO。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mkfifo</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *pathname, <span class="keyword">mode_t</span> mode)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">mkfifo函数已经隐含指定了O_CREAT | O_EXCL, 也就是说, 它要么创建一个新的FIFO, 要么返回一个EEXIST错误(如果所指定名字的FIFO已经存在)。此处可参考示例中的正确创建FIFO的步骤</span><br><span class="line"></span><br><span class="line">- 创建出一个FIFO后, 它必须或者打开来读, 或者打开来写。不能打开来既读又写, 因为它是**半双工**的</span><br><span class="line">- 如果一个FIFO, 当前尚没有进程打开它来写, 那么此时打开该FIFO来读的进程将会阻塞</span><br><span class="line">- 对管道或FIFO的write总是往末尾添加数据, 对它们的read总是从开头返回数据。</span><br><span class="line">- 如果对管道或FIFO执行lseek, 会返回ESPIPE错误</span><br><span class="line">- 当对一个管道或FIFO的最终close发生时, 该管道或FIFO中的任何残留数据都被丢弃</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>fifo_read.c 中从文件data.txt中读取内容, 写入到FIFO中</li>
+<li>fifo_write.c 中从FIFO中读取内容, 写入到datafromfifo.txt中</li>
+<li>data.txt 是测试文件</li>
+<li>datafromfifo.txt 是fifo_write.c运行后生成的文件</li>
+</ul>
+<h3 id="管道和FIFO的区别"><a href="#管道和FIFO的区别" class="headerlink" title="管道和FIFO的区别"></a>管道和FIFO的区别</h3><ul>
+<li>创建并打开一个管道, 只需要调用pipe；创建并打开一个FIFO则需在调用mkdifo后再调用open</li>
+<li>管道在所有进程最终都关闭它之后自动消失。FIFO的名字则只有通过调用unlink才从文件系统中删除</li>
+<li>FIFO需要额外调用的好处: FIFO在文件系统中有一个名字, 该名字允许某个进程创建一个FIFO, 与它<strong>无亲缘关系</strong>的另一个进程来打开这个FIFO, 这对管道来说是不可能的(不考虑传递描述符的情况)</li>
+</ul>
+<h3 id="管道和FIFO的限制"><a href="#管道和FIFO的限制" class="headerlink" title="管道和FIFO的限制"></a>管道和FIFO的限制</h3><p>系统加于管道和FIFO的唯一限制为:</p>
+<ul>
+<li><p>OPEN_MAX 一个进程在任意时刻打开的最大描述符数</p>
+</li>
+<li><p>PIPE_BUF 可原子地写往一个管道或FIFO的最大数据量</p>
+</li>
+<li><p>get_sys_conf.c 获取当前系统的OPEN_MAX和PIPE_BUF值</p>
+</li>
+</ul>
+<h3 id="将一个描述符设为非阻塞两种方式"><a href="#将一个描述符设为非阻塞两种方式" class="headerlink" title="将一个描述符设为非阻塞两种方式"></a>将一个描述符设为非阻塞两种方式</h3><ol>
+<li>调用open的时候可指定O_NONBLOCK标志</li>
+<li>如果一个描述符已打开, 那么可以调用fcntl以启用O_NONBLOCK标志。<blockquote>
+<p>对于管道来说, 必须使用这种技术, 因为管道没有open调用, 在pipe中也无法指定O_NONBLOCK标志</p>
+</blockquote>
+</li>
+</ol>
+<p><strong>FIFO的真正优势</strong>表现在服务器可以是一个长期运行的进程（例如守护进程）, 而且与其客户可以无亲缘关系。<br>作为服务器的守护进程以某个众所周知的路径名创建一个FIFO, 并打开该FIFO来读。此后某个<br>时刻启动的客户打开该FIFO来写, 并将其命令或给守护进程的其他任何东西通过该FIFO发送出去。<br>使用FIFO很容易实现这种形式的单向通信(client-&gt;server)。如果守护进程需要向客户发送<br>回一些东西, 那就需要点技巧(例如客户需要通知守护进程要打开哪个FIFO可以给其发消息)</p>
 <blockquote>
 <p>文中代码托管在: <a href="https://github.com/carl-wang-cn/demo/tree/master/ipc">https://github.com/carl-wang-cn/demo/tree/master/ipc</a></p>
 </blockquote>
@@ -1273,64 +1328,6 @@
       </tags>
   </entry>
   <entry>
-    <title>进程间通信-共享内存</title>
-    <url>/2020/02/05/2020-02-05-mmap/</url>
-    <content><![CDATA[<p>共享内存区是IPC形式中<strong>最快</strong>的. 一旦这样的内存区映射到共享它的进程的地址<br>空间, 这些进程间数据的传递就不再涉及内核. 然而往该共享内存区存放信息或从<br>中取走信息的进程间通常需要某种形式的同步.</p>
-<a id="more"></a>
-
-<p><strong>再次强调</strong>: 默认情况下fork派生的子进程并不与其父进程共享内存区.</p>
-<p>mmap函数把一个文件或一个Posix共享内存区对象映射到调用进程的地址空间. 使用该<br>函数的3个目的:</p>
-<ol>
-<li>使用普通文件以提供内存映射I/O</li>
-<li>使用特殊文件以提供匿名内存映射</li>
-<li>使用shm_open以提供无亲缘关系进程间的Posix共享内存区</li>
-</ol>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/mman.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">mmap</span><span class="params">(<span class="keyword">void</span> *addr, <span class="keyword">size_t</span> len, <span class="keyword">int</span> prot, <span class="keyword">int</span> flags, <span class="keyword">int</span> fd, <span class="keyword">off_t</span> offset)</span></span>;</span><br><span class="line">返回: 成功返回被映射区的起始地址, 失败返回MAP_FAILED</span><br><span class="line"></span><br><span class="line">addr 可以指定描述符fd应被映射到的进程内空间的起始地址. 它通常被设为<span class="literal">NULL</span>, 这</span><br><span class="line">     样告诉内核自己去选择起始地址</span><br><span class="line"></span><br><span class="line">len 映射到调用进程地址空间中的字节数, 它从被映射文件开头起第offset个字节处</span><br><span class="line">    开始算. 通常被设置为<span class="number">0</span></span><br><span class="line"></span><br><span class="line">prot 指定内存映射区的保护, 常见值是 PROT_READ | PROT_WRITE</span><br><span class="line">     prot        说明</span><br><span class="line">     PROT_READ   数据可读</span><br><span class="line">     PROT_WRITE  数据可写</span><br><span class="line">     PROT_EXEC   数据可执行</span><br><span class="line">     PROT_NONE   数据不可访问</span><br><span class="line"></span><br><span class="line">flags MAP_SHARED或MAP_PRIVATE这两个标志必须指定一个, 并有选择地 | MAP_FIXED. </span><br><span class="line">      MAP_PRIVATE 调用进程对被映射数据所做的修改只对本进程可见, 而不改变底层</span><br><span class="line">                  支撑对象</span><br><span class="line">      MAP_SHARED  调用进程对被映射数据所做的修改对于共享该对象的所有进程都可</span><br><span class="line">                  见, 而且确实改变了其底层支撑对象</span><br><span class="line">     </span><br><span class="line">      Flags         说明</span><br><span class="line">      MAP_PRIVATE   变动是私自的</span><br><span class="line">      MAP_SHARED    变动是共享的</span><br><span class="line">      MAP_FIXED     准确的解释addr参数</span><br><span class="line"></span><br><span class="line">      从移植性上考虑, MAP_FIXED不应被指定. 可移植性的代码应该把addr置为<span class="literal">NULL</span>,</span><br><span class="line">      不指定MAP_FIXED</span><br><span class="line"></span><br><span class="line">父子进程之间共享内存区的方法之一: 父进程在调用fork之前先指定MAP_SHARED调用mmap.</span><br><span class="line">Posix<span class="number">.1</span>保证父进程中的内存映射关系存留到子进程中.</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">munmap</span><span class="params">(<span class="keyword">void</span> *addr, <span class="keyword">size_t</span> len)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">从某个进程的地址空间删除一个映射关系. munmap后再访问这些地址将会导致想调用进程</span><br><span class="line">产生一个SIGSEGV信号</span><br><span class="line"></span><br><span class="line">如果被映射区是使用MAP_PRIVATE标志映射的, 那么调用进程对它所做的变动都会被丢弃掉.</span><br><span class="line"></span><br><span class="line">addr mmap返回的地址</span><br><span class="line">len  映射区的大小</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">msync</span><span class="params">(<span class="keyword">void</span> *addr, <span class="keyword">size_t</span> len, <span class="keyword">int</span> flags)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">内核的虚拟内存算法保持内存映射文件(一般在硬盘上)与内存映射区(在内存中)的同步,</span><br><span class="line">前提是它是一个MAP_SHARED内存区. 如果我们修改了处于内存映射到某个文件的内存区中</span><br><span class="line">某个位置的内容, 那么内核将在稍后某个时刻相应的更新文件. 然而有时候希望确信硬盘</span><br><span class="line">上的文件内容与内存映射区中的内容一致, 这就需要调用msync来执行这种同步</span><br><span class="line"></span><br><span class="line">addr和len通常指代内存中的整个内存映射区, 不过也可以指定该内存区的一个子集.</span><br><span class="line">flags参数: MS_ASYNC和MS_SYNC必须指定一个, 但不能同时指定</span><br><span class="line">- MS_ASYNC  执行异步写, 一旦写操作由内核排入队列, 立即返回</span><br><span class="line">- MS_SYNC   执行同步写, ........................, 等到写操作完成后才返回</span><br><span class="line">- MS_INVALIDATE 使高速缓存的数据失效. 指定了该flag, 那么与其最终副本不一致的文</span><br><span class="line">            件数据的所有内存中副本都失效, 后续的引用将从文件中取得数据.</span><br><span class="line"></span><br><span class="line">Posix还定义了处理内存管理的<span class="number">4</span>个额外函数</span><br><span class="line">- mlockall会使调用进程的整个内存空间常驻内存. munlockall则撤销这种锁定</span><br><span class="line">- mlcok会是调用进程地址空间的某个指定范围常驻内存, 该函数的参数指定了这个范围的</span><br><span class="line">  起始地址以及从该地址算起的字节数. munlock则撤销某个指定内存区的锁定.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>使用mmap的好处:</p>
-<p>使用内存映射文件所得到的奇妙特性是, 所有的I/O都在内核的掩盖下完成, 我们只需编<br>写存取内存映射区中各个值的代码. 我们决不调用read, write, lseek, 把显示的文件<br>I/O操作变换成存取内存单元, 这样可以简化我们的代码, 有时候还能改善性能</p>
-<p>mmap的另一个用途是在无亲缘关系的进程间提供共享内存区(需指定MAP_SHARED标志).这<br>种情形下, 所映射文件的实际内容成了被共享内存区的初始内容, 而且这些进程对该共享<br>内存区所做的任何变动都复制回所映射的文件(以提供随文件系统的持续性).</p>
-<ul>
-<li>count01.c 父子进程给共享内存区的一个计数器加1, 使用有名信号量</li>
-<li>count02.c 父子进程给共享内存区的一个计数器加1, 使用基于内存的信号量</li>
-</ul>
-<p>内存映射一个普通文件时, 内存映射区的大小(mmap的第二个参数)通常等于该文件的大小.<br>但是文件大小和内存映射区大小可以不同. 我们总是能够访问在当前文件大小以内又在内<br>存映射区以内的那些字节.</p>
-<ul>
-<li>SIGBUS  内存映射区大小 &gt; 文件大小, 访问了超出文件大小的位置但是未超出内存映射区</li>
-<li>SIGSEGV 越界访问内存映射区</li>
-</ul>
-<h3 id="Posix共享内存区"><a href="#Posix共享内存区" class="headerlink" title="Posix共享内存区"></a>Posix共享内存区</h3><hr>
-<p>两者无亲缘关系进程间共享内存区的方法</p>
-<ol>
-<li>内存映射文件. 由open函数打开, 由mmap函数把所得到的描述符映射到当前进程地址空<br>间中的一个文件</li>
-<li>共享内存区对象. 由shm_open打开一个Posix.1 IPC名字, 所返回的描述符由mmap函数<br>映射到当前进程地址空间</li>
-</ol>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/mman.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">shm_open</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *name, <span class="keyword">int</span> oflag, <span class="keyword">mode_t</span> mode)</span></span>;</span><br><span class="line">返回: 成功返回非负描述符, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">oflag  必须含有O_RDONLY或O_RDWR之一, 还可以有O_CREAT, O_EXCL. 如果 O_RDWR | O_TRUNC,</span><br><span class="line">       而且所需的共享内存区对象已经存在, 那么它将被截断为<span class="number">0</span>长度.</span><br><span class="line">mode   指定权限位, 在O_CREAT时必须指定mode, 未指定O_CREAT时可以mode设为<span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">shm_unlink</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *name)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">shm_unlink删除一个共享内存区对象的名字. 跟所有其他unlink函数(删除文件系统中一个路径名</span><br><span class="line">的unlink, 删除一个Posix消息队列的mq_unlink, 以及删除一个Posix有名信号量的sem_unlink)</span><br><span class="line">一样, 删除一个名字不会影响对于底层支撑对象的现有引用, 知道对于该对象的引用全部关闭为</span><br><span class="line">止. 删除一个名字仅仅防止后续的open, mq_open或sem_open调用取得成功.</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ftruncate</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">off_t</span> length)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">调用ftruncate来指定新创建的共享内存区对象的大小, 或者修改已存在的对象的大小.</span><br><span class="line"></span><br><span class="line">- 对于普通文件: 如果该文件大小大于length, 额外的数据就被丢弃掉, 如果该文件的大小小于</span><br><span class="line">  length, 那么该文件是否修改以及其大小是否增长是未定义的. </span><br><span class="line">  实际上对于一个普通文件, 把它的大小扩展到length字节的可移植办法是:先lseek到偏移为</span><br><span class="line">  length<span class="number">-1</span>处, 然后write <span class="number">1</span>个字节的数据</span><br><span class="line">- 对于共享内存区对象: 把该对象的大小设置成length字节.</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fstat</span><span class="params">(<span class="keyword">int</span> fd, struct stat *buf)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stat</span>有12个或以上的成员, 但是当<span class="title">fd</span>指代一个共享内存区对象时, 只有4个成员含有信息</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stat</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">mode_t</span> st_mode;  <span class="comment">// mode: S_I&#123;RW&#125;&#123;USR, GRP, OTH&#125;</span></span><br><span class="line">    <span class="keyword">uid_t</span>  st_uid;   <span class="comment">// user id of owner</span></span><br><span class="line">    <span class="keyword">gid_t</span>  st_gid;   <span class="comment">// group id of owner</span></span><br><span class="line">    <span class="keyword">off_t</span>  st_size;  <span class="comment">// size in bytes</span></span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<ul>
-<li>shmcreate.c 创建一个具有指定大小的Posix共享内存区对象</li>
-<li>shmunlink.c 删除一个共享内存区对象的名字</li>
-<li>shmwrite.c  打开一个共享内存区对象, 填写一个数据模式</li>
-<li>shmread.c   打开一个共享内存区对象, 验证其数据模式</li>
-</ul>
-<p>同一个共享内存区对象内存映射到不同进程的地址空间时, 起始地址可以不同.</p>
-<ul>
-<li>count03_server.c 创建并初始化共享内存区和信号量的程序</li>
-<li>count03_client.c 给存放在共享内存区中的一个计数器加1, 测试的时候可以启动多个client来观察效果</li>
-<li>cosumer.c 从共享内存区中取得并输出消息</li>
-<li>producer.c 在共享内存区存放消息</li>
-</ul>
-<blockquote>
-<p>文中代码托管在: <a href="https://github.com/carl-wang-cn/demo/tree/master/ipc">https://github.com/carl-wang-cn/demo/tree/master/ipc</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>ipc</tag>
-        <tag>多进程</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>多进程通信-互斥锁和条件变量</title>
     <url>/2020/02/07/2020-02-07-mutex-cond/</url>
     <content><![CDATA[<h2 id="互斥锁"><a href="#互斥锁" class="headerlink" title="互斥锁"></a>互斥锁</h2><p>互斥锁和条件变量总是可用来同步一个进程内的各个线程。但是如果一个互斥锁或条件变量是<br>存放在多个进程间共享的某个内存区内，那么它还可以被用来同步这几个进程。</p>
@@ -1410,6 +1407,64 @@
       </tags>
   </entry>
   <entry>
+    <title>进程间通信-共享内存</title>
+    <url>/2020/02/05/2020-02-05-mmap/</url>
+    <content><![CDATA[<p>共享内存区是IPC形式中<strong>最快</strong>的. 一旦这样的内存区映射到共享它的进程的地址<br>空间, 这些进程间数据的传递就不再涉及内核. 然而往该共享内存区存放信息或从<br>中取走信息的进程间通常需要某种形式的同步.</p>
+<a id="more"></a>
+
+<p><strong>再次强调</strong>: 默认情况下fork派生的子进程并不与其父进程共享内存区.</p>
+<p>mmap函数把一个文件或一个Posix共享内存区对象映射到调用进程的地址空间. 使用该<br>函数的3个目的:</p>
+<ol>
+<li>使用普通文件以提供内存映射I/O</li>
+<li>使用特殊文件以提供匿名内存映射</li>
+<li>使用shm_open以提供无亲缘关系进程间的Posix共享内存区</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/mman.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">mmap</span><span class="params">(<span class="keyword">void</span> *addr, <span class="keyword">size_t</span> len, <span class="keyword">int</span> prot, <span class="keyword">int</span> flags, <span class="keyword">int</span> fd, <span class="keyword">off_t</span> offset)</span></span>;</span><br><span class="line">返回: 成功返回被映射区的起始地址, 失败返回MAP_FAILED</span><br><span class="line"></span><br><span class="line">addr 可以指定描述符fd应被映射到的进程内空间的起始地址. 它通常被设为<span class="literal">NULL</span>, 这</span><br><span class="line">     样告诉内核自己去选择起始地址</span><br><span class="line"></span><br><span class="line">len 映射到调用进程地址空间中的字节数, 它从被映射文件开头起第offset个字节处</span><br><span class="line">    开始算. 通常被设置为<span class="number">0</span></span><br><span class="line"></span><br><span class="line">prot 指定内存映射区的保护, 常见值是 PROT_READ | PROT_WRITE</span><br><span class="line">     prot        说明</span><br><span class="line">     PROT_READ   数据可读</span><br><span class="line">     PROT_WRITE  数据可写</span><br><span class="line">     PROT_EXEC   数据可执行</span><br><span class="line">     PROT_NONE   数据不可访问</span><br><span class="line"></span><br><span class="line">flags MAP_SHARED或MAP_PRIVATE这两个标志必须指定一个, 并有选择地 | MAP_FIXED. </span><br><span class="line">      MAP_PRIVATE 调用进程对被映射数据所做的修改只对本进程可见, 而不改变底层</span><br><span class="line">                  支撑对象</span><br><span class="line">      MAP_SHARED  调用进程对被映射数据所做的修改对于共享该对象的所有进程都可</span><br><span class="line">                  见, 而且确实改变了其底层支撑对象</span><br><span class="line">     </span><br><span class="line">      Flags         说明</span><br><span class="line">      MAP_PRIVATE   变动是私自的</span><br><span class="line">      MAP_SHARED    变动是共享的</span><br><span class="line">      MAP_FIXED     准确的解释addr参数</span><br><span class="line"></span><br><span class="line">      从移植性上考虑, MAP_FIXED不应被指定. 可移植性的代码应该把addr置为<span class="literal">NULL</span>,</span><br><span class="line">      不指定MAP_FIXED</span><br><span class="line"></span><br><span class="line">父子进程之间共享内存区的方法之一: 父进程在调用fork之前先指定MAP_SHARED调用mmap.</span><br><span class="line">Posix<span class="number">.1</span>保证父进程中的内存映射关系存留到子进程中.</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">munmap</span><span class="params">(<span class="keyword">void</span> *addr, <span class="keyword">size_t</span> len)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">从某个进程的地址空间删除一个映射关系. munmap后再访问这些地址将会导致想调用进程</span><br><span class="line">产生一个SIGSEGV信号</span><br><span class="line"></span><br><span class="line">如果被映射区是使用MAP_PRIVATE标志映射的, 那么调用进程对它所做的变动都会被丢弃掉.</span><br><span class="line"></span><br><span class="line">addr mmap返回的地址</span><br><span class="line">len  映射区的大小</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">msync</span><span class="params">(<span class="keyword">void</span> *addr, <span class="keyword">size_t</span> len, <span class="keyword">int</span> flags)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">内核的虚拟内存算法保持内存映射文件(一般在硬盘上)与内存映射区(在内存中)的同步,</span><br><span class="line">前提是它是一个MAP_SHARED内存区. 如果我们修改了处于内存映射到某个文件的内存区中</span><br><span class="line">某个位置的内容, 那么内核将在稍后某个时刻相应的更新文件. 然而有时候希望确信硬盘</span><br><span class="line">上的文件内容与内存映射区中的内容一致, 这就需要调用msync来执行这种同步</span><br><span class="line"></span><br><span class="line">addr和len通常指代内存中的整个内存映射区, 不过也可以指定该内存区的一个子集.</span><br><span class="line">flags参数: MS_ASYNC和MS_SYNC必须指定一个, 但不能同时指定</span><br><span class="line">- MS_ASYNC  执行异步写, 一旦写操作由内核排入队列, 立即返回</span><br><span class="line">- MS_SYNC   执行同步写, ........................, 等到写操作完成后才返回</span><br><span class="line">- MS_INVALIDATE 使高速缓存的数据失效. 指定了该flag, 那么与其最终副本不一致的文</span><br><span class="line">            件数据的所有内存中副本都失效, 后续的引用将从文件中取得数据.</span><br><span class="line"></span><br><span class="line">Posix还定义了处理内存管理的<span class="number">4</span>个额外函数</span><br><span class="line">- mlockall会使调用进程的整个内存空间常驻内存. munlockall则撤销这种锁定</span><br><span class="line">- mlcok会是调用进程地址空间的某个指定范围常驻内存, 该函数的参数指定了这个范围的</span><br><span class="line">  起始地址以及从该地址算起的字节数. munlock则撤销某个指定内存区的锁定.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>使用mmap的好处:</p>
+<p>使用内存映射文件所得到的奇妙特性是, 所有的I/O都在内核的掩盖下完成, 我们只需编<br>写存取内存映射区中各个值的代码. 我们决不调用read, write, lseek, 把显示的文件<br>I/O操作变换成存取内存单元, 这样可以简化我们的代码, 有时候还能改善性能</p>
+<p>mmap的另一个用途是在无亲缘关系的进程间提供共享内存区(需指定MAP_SHARED标志).这<br>种情形下, 所映射文件的实际内容成了被共享内存区的初始内容, 而且这些进程对该共享<br>内存区所做的任何变动都复制回所映射的文件(以提供随文件系统的持续性).</p>
+<ul>
+<li>count01.c 父子进程给共享内存区的一个计数器加1, 使用有名信号量</li>
+<li>count02.c 父子进程给共享内存区的一个计数器加1, 使用基于内存的信号量</li>
+</ul>
+<p>内存映射一个普通文件时, 内存映射区的大小(mmap的第二个参数)通常等于该文件的大小.<br>但是文件大小和内存映射区大小可以不同. 我们总是能够访问在当前文件大小以内又在内<br>存映射区以内的那些字节.</p>
+<ul>
+<li>SIGBUS  内存映射区大小 &gt; 文件大小, 访问了超出文件大小的位置但是未超出内存映射区</li>
+<li>SIGSEGV 越界访问内存映射区</li>
+</ul>
+<h3 id="Posix共享内存区"><a href="#Posix共享内存区" class="headerlink" title="Posix共享内存区"></a>Posix共享内存区</h3><hr>
+<p>两者无亲缘关系进程间共享内存区的方法</p>
+<ol>
+<li>内存映射文件. 由open函数打开, 由mmap函数把所得到的描述符映射到当前进程地址空<br>间中的一个文件</li>
+<li>共享内存区对象. 由shm_open打开一个Posix.1 IPC名字, 所返回的描述符由mmap函数<br>映射到当前进程地址空间</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/mman.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">shm_open</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *name, <span class="keyword">int</span> oflag, <span class="keyword">mode_t</span> mode)</span></span>;</span><br><span class="line">返回: 成功返回非负描述符, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">oflag  必须含有O_RDONLY或O_RDWR之一, 还可以有O_CREAT, O_EXCL. 如果 O_RDWR | O_TRUNC,</span><br><span class="line">       而且所需的共享内存区对象已经存在, 那么它将被截断为<span class="number">0</span>长度.</span><br><span class="line">mode   指定权限位, 在O_CREAT时必须指定mode, 未指定O_CREAT时可以mode设为<span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">shm_unlink</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *name)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">shm_unlink删除一个共享内存区对象的名字. 跟所有其他unlink函数(删除文件系统中一个路径名</span><br><span class="line">的unlink, 删除一个Posix消息队列的mq_unlink, 以及删除一个Posix有名信号量的sem_unlink)</span><br><span class="line">一样, 删除一个名字不会影响对于底层支撑对象的现有引用, 知道对于该对象的引用全部关闭为</span><br><span class="line">止. 删除一个名字仅仅防止后续的open, mq_open或sem_open调用取得成功.</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ftruncate</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">off_t</span> length)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">调用ftruncate来指定新创建的共享内存区对象的大小, 或者修改已存在的对象的大小.</span><br><span class="line"></span><br><span class="line">- 对于普通文件: 如果该文件大小大于length, 额外的数据就被丢弃掉, 如果该文件的大小小于</span><br><span class="line">  length, 那么该文件是否修改以及其大小是否增长是未定义的. </span><br><span class="line">  实际上对于一个普通文件, 把它的大小扩展到length字节的可移植办法是:先lseek到偏移为</span><br><span class="line">  length<span class="number">-1</span>处, 然后write <span class="number">1</span>个字节的数据</span><br><span class="line">- 对于共享内存区对象: 把该对象的大小设置成length字节.</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fstat</span><span class="params">(<span class="keyword">int</span> fd, struct stat *buf)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stat</span>有12个或以上的成员, 但是当<span class="title">fd</span>指代一个共享内存区对象时, 只有4个成员含有信息</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stat</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">mode_t</span> st_mode;  <span class="comment">// mode: S_I&#123;RW&#125;&#123;USR, GRP, OTH&#125;</span></span><br><span class="line">    <span class="keyword">uid_t</span>  st_uid;   <span class="comment">// user id of owner</span></span><br><span class="line">    <span class="keyword">gid_t</span>  st_gid;   <span class="comment">// group id of owner</span></span><br><span class="line">    <span class="keyword">off_t</span>  st_size;  <span class="comment">// size in bytes</span></span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>shmcreate.c 创建一个具有指定大小的Posix共享内存区对象</li>
+<li>shmunlink.c 删除一个共享内存区对象的名字</li>
+<li>shmwrite.c  打开一个共享内存区对象, 填写一个数据模式</li>
+<li>shmread.c   打开一个共享内存区对象, 验证其数据模式</li>
+</ul>
+<p>同一个共享内存区对象内存映射到不同进程的地址空间时, 起始地址可以不同.</p>
+<ul>
+<li>count03_server.c 创建并初始化共享内存区和信号量的程序</li>
+<li>count03_client.c 给存放在共享内存区中的一个计数器加1, 测试的时候可以启动多个client来观察效果</li>
+<li>cosumer.c 从共享内存区中取得并输出消息</li>
+<li>producer.c 在共享内存区存放消息</li>
+</ul>
+<blockquote>
+<p>文中代码托管在: <a href="https://github.com/carl-wang-cn/demo/tree/master/ipc">https://github.com/carl-wang-cn/demo/tree/master/ipc</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>ipc</tag>
+        <tag>多进程</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>proto buffer MergeFrom的坑</title>
     <url>/2020/03/17/2020-03-17-donot-use-pb-mergefrom/</url>
     <content><![CDATA[<p>pb好用, 性能虽然比不上二进制, 不过也比json在大多数情况下还是好很多. 尤其是字段的向前向后兼容, 这一点应该也是大多数同学选用pb的原因. 然后终于<strong>掉进坑</strong>了, 严重得影响了一次线上服务.<br>整理测试程序的时候发现, python的官方指南压根就没提MergeFrom这个接口, 看起来是专门用来坑c++的兄弟的啊</p>
@@ -1425,124 +1480,6 @@
 ]]></content>
       <categories>
         <category>技术</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>进程间通信-管道</title>
-    <url>/2020/02/07/2020-02-07-ipc-pipe/</url>
-    <content><![CDATA[<h3 id="pipe匿名管道"><a href="#pipe匿名管道" class="headerlink" title="pipe匿名管道"></a>pipe匿名管道</h3><p>匿名管道由于没有名字, 因此只能由有亲缘关系的进程使用</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pipe</span><span class="params">(<span class="keyword">int</span> fd[<span class="number">2</span>])</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 出错返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">该函数返回两个文件描述符: fd[<span class="number">0</span>]和fd[<span class="number">1</span>], 前者打开来读, 后者打开来写.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-
-<p>另一个关于管道的例子, 标准I/O函数库提供了popen函数, 它创建一个管道并启动另一个进程, 该进程要么从该管道读出标准输入, 要么往该管道写入标准输出</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function">FILE *<span class="title">popen</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *command, <span class="keyword">const</span> <span class="keyword">char</span> *type)</span></span>;</span><br><span class="line">返回: 成功返回文件指针，失败返回<span class="literal">NULL</span></span><br><span class="line">注意: popen不对标准错误输出做任何处理, 只有标准输出才被重定向到由它创建的管道</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pclose</span><span class="params">(FILE *stream)</span></span>;</span><br><span class="line">返回: 成功则为shell的终止状态, 失败为<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">command是一个shell命令行, popen在调用进程和所指定的命令之间创建一个管道</span><br><span class="line"></span><br><span class="line">- 如果type为r, 调用进程读入command的标准输出</span><br><span class="line">- 如果type为w, 调用进程写到command的标准输入</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<ul>
-<li>pipe01.c演示了父子进程间通过pipe实现半双工通信</li>
-<li>pipe02.c演示了使用popen创建管道</li>
-</ul>
-<h3 id="FIFO-有名管道"><a href="#FIFO-有名管道" class="headerlink" title="FIFO 有名管道"></a>FIFO 有名管道</h3><p>每个FIFO有一个路径名与之关联, 从而允许无亲缘关系的进程访问同一个FIFO。</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mkfifo</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *pathname, <span class="keyword">mode_t</span> mode)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">mkfifo函数已经隐含指定了O_CREAT | O_EXCL, 也就是说, 它要么创建一个新的FIFO, 要么返回一个EEXIST错误(如果所指定名字的FIFO已经存在)。此处可参考示例中的正确创建FIFO的步骤</span><br><span class="line"></span><br><span class="line">- 创建出一个FIFO后, 它必须或者打开来读, 或者打开来写。不能打开来既读又写, 因为它是**半双工**的</span><br><span class="line">- 如果一个FIFO, 当前尚没有进程打开它来写, 那么此时打开该FIFO来读的进程将会阻塞</span><br><span class="line">- 对管道或FIFO的write总是往末尾添加数据, 对它们的read总是从开头返回数据。</span><br><span class="line">- 如果对管道或FIFO执行lseek, 会返回ESPIPE错误</span><br><span class="line">- 当对一个管道或FIFO的最终close发生时, 该管道或FIFO中的任何残留数据都被丢弃</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<ul>
-<li>fifo_read.c 中从文件data.txt中读取内容, 写入到FIFO中</li>
-<li>fifo_write.c 中从FIFO中读取内容, 写入到datafromfifo.txt中</li>
-<li>data.txt 是测试文件</li>
-<li>datafromfifo.txt 是fifo_write.c运行后生成的文件</li>
-</ul>
-<h3 id="管道和FIFO的区别"><a href="#管道和FIFO的区别" class="headerlink" title="管道和FIFO的区别"></a>管道和FIFO的区别</h3><ul>
-<li>创建并打开一个管道, 只需要调用pipe；创建并打开一个FIFO则需在调用mkdifo后再调用open</li>
-<li>管道在所有进程最终都关闭它之后自动消失。FIFO的名字则只有通过调用unlink才从文件系统中删除</li>
-<li>FIFO需要额外调用的好处: FIFO在文件系统中有一个名字, 该名字允许某个进程创建一个FIFO, 与它<strong>无亲缘关系</strong>的另一个进程来打开这个FIFO, 这对管道来说是不可能的(不考虑传递描述符的情况)</li>
-</ul>
-<h3 id="管道和FIFO的限制"><a href="#管道和FIFO的限制" class="headerlink" title="管道和FIFO的限制"></a>管道和FIFO的限制</h3><p>系统加于管道和FIFO的唯一限制为:</p>
-<ul>
-<li><p>OPEN_MAX 一个进程在任意时刻打开的最大描述符数</p>
-</li>
-<li><p>PIPE_BUF 可原子地写往一个管道或FIFO的最大数据量</p>
-</li>
-<li><p>get_sys_conf.c 获取当前系统的OPEN_MAX和PIPE_BUF值</p>
-</li>
-</ul>
-<h3 id="将一个描述符设为非阻塞两种方式"><a href="#将一个描述符设为非阻塞两种方式" class="headerlink" title="将一个描述符设为非阻塞两种方式"></a>将一个描述符设为非阻塞两种方式</h3><ol>
-<li>调用open的时候可指定O_NONBLOCK标志</li>
-<li>如果一个描述符已打开, 那么可以调用fcntl以启用O_NONBLOCK标志。<blockquote>
-<p>对于管道来说, 必须使用这种技术, 因为管道没有open调用, 在pipe中也无法指定O_NONBLOCK标志</p>
-</blockquote>
-</li>
-</ol>
-<p><strong>FIFO的真正优势</strong>表现在服务器可以是一个长期运行的进程（例如守护进程）, 而且与其客户可以无亲缘关系。<br>作为服务器的守护进程以某个众所周知的路径名创建一个FIFO, 并打开该FIFO来读。此后某个<br>时刻启动的客户打开该FIFO来写, 并将其命令或给守护进程的其他任何东西通过该FIFO发送出去。<br>使用FIFO很容易实现这种形式的单向通信(client-&gt;server)。如果守护进程需要向客户发送<br>回一些东西, 那就需要点技巧(例如客户需要通知守护进程要打开哪个FIFO可以给其发消息)</p>
-<blockquote>
-<p>文中代码托管在: <a href="https://github.com/carl-wang-cn/demo/tree/master/ipc">https://github.com/carl-wang-cn/demo/tree/master/ipc</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>ipc</tag>
-        <tag>多进程</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>记录一次因为redis aof rewrite重写导致的运维事故</title>
-    <url>/2020/03/17/2020-03-17-redis-aof-disaster/</url>
-    <content><![CDATA[<h2 id="事情起因"><a href="#事情起因" class="headerlink" title="事情起因"></a>事情起因</h2><p>redis master 所在物理机A, 物理内存16G, aof rewrite 被触发时, aof文件已达12G, redis的默认配置触发了后台的rewrite进程, 内存占用达到了50%, 已严重影响到redis的正常访问. 而此时距离美股交易开盘只剩1小时.</p>
-<a id="more"></a>
-
-<h2 id="处理过程"><a href="#处理过程" class="headerlink" title="处理过程"></a>处理过程</h2><h4 id="跟server组几名同事-carl-shilinchen-echo-jiezhao-zhiguocai-一起理清楚问题现状"><a href="#跟server组几名同事-carl-shilinchen-echo-jiezhao-zhiguocai-一起理清楚问题现状" class="headerlink" title="跟server组几名同事(carl, shilinchen, echo, jiezhao, zhiguocai)一起理清楚问题现状"></a>跟server组几名同事(carl, shilinchen, echo, jiezhao, zhiguocai)一起理清楚问题现状</h4><ol>
-<li>redis slave的数据是完整的, 1小时内不会有写入请求</li>
-<li>aof rewrite进程已运行2小时, 是否能在1小时内运行完毕不可控</li>
-<li>aof rewrite进程, 即使在1小时内运行完, 不确认是否会马上触发第2次rewrite</li>
-</ol>
-<h4 id="整理方案如下"><a href="#整理方案如下" class="headerlink" title="整理方案如下:"></a>整理方案如下:</h4><ol>
-<li>将物理机B的redis slave切换为master, 使其跟现有物理机A的redis脱离master-slave关系</li>
-<li>对生产环境的hosts文件修改, 使hosts中配置的域名指向新的master</li>
-<li>重启相关进程, 使其连接到新的redis master</li>
-<li>测试白名单账号验证服务正常</li>
-<li>stop原来物理机A上的旧master进行, 暂时保留现场不动</li>
-<li>第2天, 交易收盘后, 清理redis中的历史数据</li>
-<li>周末进一步处理<blockquote>
-<ol>
-<li>新准备好下一交易日的uinfo和margin相关数据</li>
-<li>将物理机A的redis配置为物理机B新master的slave</li>
-<li>重命名该redis配置路径的aof文件</li>
-<li>重启该redis, 使该redis从0开始从物理机A的redis master进行数据同步</li>
-<li>手动触发物理机B的redis master的aof rewrite, 此过程完成后, aof文件从10G变为1.5G</li>
-</ol>
-</blockquote>
-</li>
-<li>补齐定期删除历史数据的server逻辑</li>
-</ol>
-<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>交易系统和风控系统经过重新设计, 进行了重构, redis已经是过去时了, 不过曾经踩过的这个坑希望能记录下来, 让我们时时警示一下.</p>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Wash Trading</title>
-    <url>/2022/01/22/Wash-Trading/</url>
-    <content><![CDATA[<p>Wash Trading</p>
-<p>Wash Trading是交易者买卖证券向市场提供误导性信息。Wash Trading可以由交易者和经纪人相互勾结来进行，也可以是一个投资者自己同时充当证券买方和卖方来进行。根据美国法律，Wash Trading是非法的。美国国税局禁止纳税人从其应纳税收入金额中扣除因为Wash Trading造成的损失。</p>
-<p>在1936年通过《商品交易法》后，联邦政府就禁止进行Wash Trading，该法律对《谷物期货法》进行了修订，并要求所有商品交易都必须在受监管的交易所进行。在1930年代被禁止之前，Wash Trading是股票操纵者很喜欢的一个手段，去假装表示对某只股票有很大兴趣，进而试图提高股价，然后高价位的时候做空来收割韭菜们。</p>
-<p>商品期货交易委员会（CFTC）也禁止券商从Wash Trading中获利，即使券商声称不知道交易者的意图。因此，券商必须对客户进行尽职调查，以确保他们出于共同受益所有权的目的购买公司的股份。</p>
-<p>美国国税局（IRS）也有严格的禁止Wash Trading的规定，并要求纳税人不能从应纳税金额中扣除Wash Trading产生的损失。美国国税局将Wash Trading定义为购买证券后30天内出售并造成损失的交易。</p>
-<a id="more"></a>
-
-<h3 id="Wash-Trading-和-高频交易"><a href="#Wash-Trading-和-高频交易" class="headerlink" title="Wash Trading 和 高频交易"></a>Wash Trading 和 高频交易</h3><p>随着高频交易现象日益普遍，Wash Trading在2013年再次回到大家的视线内。高频交易是使用超高速计算机和高速Internet连接每秒执行数万笔交易。</p>
-<p>从2012年开始，当时的商品期货交易委员会专员 Bart Chilton 宣布，他打算调查违反Wash Trading法的高频交易行业，因为使用高频交易的公司很容易偷偷进行Wash Trading。</p>
-<p>2013年，美国证券交易委员会（SEC）指控Wedbush Securities，未能“对客户使用的交易平台保持直接和排他的控制权”，致使其一些高频交易者进行了Wash Trading和其他被禁止的操纵市场的行为。</p>
-<p>Wash Trading在加密货币交易中也起不少作用。根据区块链透明性研究所的研究，2018年加密货币交易所中，排名前25位的比特币交易对中约有80％是Wash Trading。</p>
-<h3 id="划重点"><a href="#划重点" class="headerlink" title="划重点"></a>划重点</h3><ul>
-<li>Wash Trading是一种非法交易，券商和交易者通过向市场提供误导性信息来串谋牟取暴利。</li>
-<li>高频交易公司和加密货币交易所使用Wash Trading来操纵价格。</li>
-<li>Wash Trading本质上是互相抵消且没有商业价值的交易。但是它们被用于各种交易情况。</li>
-</ul>
-<p>例如，LIBOR丑闻中，使用Wash Trading来偿还操纵日元的LIBOR提交面板的经纪人。根据英国金融当局的指控，瑞银交易员与一家经纪公司进行了9次Wash trading，产生了170,000英镑的费用，以奖励该公司在操纵伦敦银行同业拆借利率中的作用。</p>
-<p>Wash Trading还可以用于产生股票的假交易量，以催高其价格。假设交易者XYZ和经纪公司合谋快速买卖股票ABC。其他交易者如果注意到这个股票的交易量变化，就可能会将资金投入ABC以从其价格变动中获利。 XYZ然后做空股票，从而从其价格下跌中获利。</p>
-<p>英文原文： <a href="https://www.investopedia.com/terms/w/washtrading.asp">https://www.investopedia.com/terms/w/washtrading.asp</a></p>
-]]></content>
-      <categories>
-        <category>金融知识分享</category>
       </categories>
   </entry>
   <entry>
@@ -1597,6 +1534,42 @@
       </categories>
   </entry>
   <entry>
+    <title>记录一次因为redis aof rewrite重写导致的运维事故</title>
+    <url>/2020/03/17/2020-03-17-redis-aof-disaster/</url>
+    <content><![CDATA[<h2 id="事情起因"><a href="#事情起因" class="headerlink" title="事情起因"></a>事情起因</h2><p>redis master 所在物理机A, 物理内存16G, aof rewrite 被触发时, aof文件已达12G, redis的默认配置触发了后台的rewrite进程, 内存占用达到了50%, 已严重影响到redis的正常访问. 而此时距离美股交易开盘只剩1小时.</p>
+<a id="more"></a>
+
+<h2 id="处理过程"><a href="#处理过程" class="headerlink" title="处理过程"></a>处理过程</h2><h4 id="跟server组几名同事-carl-shilinchen-echo-jiezhao-zhiguocai-一起理清楚问题现状"><a href="#跟server组几名同事-carl-shilinchen-echo-jiezhao-zhiguocai-一起理清楚问题现状" class="headerlink" title="跟server组几名同事(carl, shilinchen, echo, jiezhao, zhiguocai)一起理清楚问题现状"></a>跟server组几名同事(carl, shilinchen, echo, jiezhao, zhiguocai)一起理清楚问题现状</h4><ol>
+<li>redis slave的数据是完整的, 1小时内不会有写入请求</li>
+<li>aof rewrite进程已运行2小时, 是否能在1小时内运行完毕不可控</li>
+<li>aof rewrite进程, 即使在1小时内运行完, 不确认是否会马上触发第2次rewrite</li>
+</ol>
+<h4 id="整理方案如下"><a href="#整理方案如下" class="headerlink" title="整理方案如下:"></a>整理方案如下:</h4><ol>
+<li>将物理机B的redis slave切换为master, 使其跟现有物理机A的redis脱离master-slave关系</li>
+<li>对生产环境的hosts文件修改, 使hosts中配置的域名指向新的master</li>
+<li>重启相关进程, 使其连接到新的redis master</li>
+<li>测试白名单账号验证服务正常</li>
+<li>stop原来物理机A上的旧master进行, 暂时保留现场不动</li>
+<li>第2天, 交易收盘后, 清理redis中的历史数据</li>
+<li>周末进一步处理<blockquote>
+<ol>
+<li>新准备好下一交易日的uinfo和margin相关数据</li>
+<li>将物理机A的redis配置为物理机B新master的slave</li>
+<li>重命名该redis配置路径的aof文件</li>
+<li>重启该redis, 使该redis从0开始从物理机A的redis master进行数据同步</li>
+<li>手动触发物理机B的redis master的aof rewrite, 此过程完成后, aof文件从10G变为1.5G</li>
+</ol>
+</blockquote>
+</li>
+<li>补齐定期删除历史数据的server逻辑</li>
+</ol>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>交易系统和风控系统经过重新设计, 进行了重构, redis已经是过去时了, 不过曾经踩过的这个坑希望能记录下来, 让我们时时警示一下.</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+  </entry>
+  <entry>
     <title>When issued 预发行交易</title>
     <url>/2020/05/28/When-issued/</url>
     <content><![CDATA[<h3 id="What-Does-“When-Issued”-Mean"><a href="#What-Does-“When-Issued”-Mean" class="headerlink" title="What Does “When Issued” Mean?"></a>What Does “When Issued” Mean?</h3><p>When issued (WI) is a transaction that is made conditionally because a security has been authorized but not yet issued. Treasury securities, stock splits, and new issues of stocks and bonds are all traded on a When-issued basis. Prior to a new issue’s offering, underwriters solicit potential investors who may elect to book an order to purchase a portion of the new issue.</p>
@@ -1614,6 +1587,33 @@
 ]]></content>
       <categories>
         <category>金融</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Wash Trading</title>
+    <url>/2022/01/22/Wash-Trading/</url>
+    <content><![CDATA[<p>Wash Trading</p>
+<p>Wash Trading是交易者买卖证券向市场提供误导性信息。Wash Trading可以由交易者和经纪人相互勾结来进行，也可以是一个投资者自己同时充当证券买方和卖方来进行。根据美国法律，Wash Trading是非法的。美国国税局禁止纳税人从其应纳税收入金额中扣除因为Wash Trading造成的损失。</p>
+<p>在1936年通过《商品交易法》后，联邦政府就禁止进行Wash Trading，该法律对《谷物期货法》进行了修订，并要求所有商品交易都必须在受监管的交易所进行。在1930年代被禁止之前，Wash Trading是股票操纵者很喜欢的一个手段，去假装表示对某只股票有很大兴趣，进而试图提高股价，然后高价位的时候做空来收割韭菜们。</p>
+<p>商品期货交易委员会（CFTC）也禁止券商从Wash Trading中获利，即使券商声称不知道交易者的意图。因此，券商必须对客户进行尽职调查，以确保他们出于共同受益所有权的目的购买公司的股份。</p>
+<p>美国国税局（IRS）也有严格的禁止Wash Trading的规定，并要求纳税人不能从应纳税金额中扣除Wash Trading产生的损失。美国国税局将Wash Trading定义为购买证券后30天内出售并造成损失的交易。</p>
+<a id="more"></a>
+
+<h3 id="Wash-Trading-和-高频交易"><a href="#Wash-Trading-和-高频交易" class="headerlink" title="Wash Trading 和 高频交易"></a>Wash Trading 和 高频交易</h3><p>随着高频交易现象日益普遍，Wash Trading在2013年再次回到大家的视线内。高频交易是使用超高速计算机和高速Internet连接每秒执行数万笔交易。</p>
+<p>从2012年开始，当时的商品期货交易委员会专员 Bart Chilton 宣布，他打算调查违反Wash Trading法的高频交易行业，因为使用高频交易的公司很容易偷偷进行Wash Trading。</p>
+<p>2013年，美国证券交易委员会（SEC）指控Wedbush Securities，未能“对客户使用的交易平台保持直接和排他的控制权”，致使其一些高频交易者进行了Wash Trading和其他被禁止的操纵市场的行为。</p>
+<p>Wash Trading在加密货币交易中也起不少作用。根据区块链透明性研究所的研究，2018年加密货币交易所中，排名前25位的比特币交易对中约有80％是Wash Trading。</p>
+<h3 id="划重点"><a href="#划重点" class="headerlink" title="划重点"></a>划重点</h3><ul>
+<li>Wash Trading是一种非法交易，券商和交易者通过向市场提供误导性信息来串谋牟取暴利。</li>
+<li>高频交易公司和加密货币交易所使用Wash Trading来操纵价格。</li>
+<li>Wash Trading本质上是互相抵消且没有商业价值的交易。但是它们被用于各种交易情况。</li>
+</ul>
+<p>例如，LIBOR丑闻中，使用Wash Trading来偿还操纵日元的LIBOR提交面板的经纪人。根据英国金融当局的指控，瑞银交易员与一家经纪公司进行了9次Wash trading，产生了170,000英镑的费用，以奖励该公司在操纵伦敦银行同业拆借利率中的作用。</p>
+<p>Wash Trading还可以用于产生股票的假交易量，以催高其价格。假设交易者XYZ和经纪公司合谋快速买卖股票ABC。其他交易者如果注意到这个股票的交易量变化，就可能会将资金投入ABC以从其价格变动中获利。 XYZ然后做空股票，从而从其价格下跌中获利。</p>
+<p>英文原文： <a href="https://www.investopedia.com/terms/w/washtrading.asp">https://www.investopedia.com/terms/w/washtrading.asp</a></p>
+]]></content>
+      <categories>
+        <category>金融知识分享</category>
       </categories>
   </entry>
   <entry>
@@ -1815,6 +1815,20 @@
       </tags>
   </entry>
   <entry>
+    <title>crontab示例</title>
+    <url>/2021/01/08/crontab-examples/</url>
+    <content><![CDATA[<p>crontab -e 编辑该用户的crontab， 不存在时新建<br>crontab -l 列出该用户的crontab<br>crontab -r 删除该用户的crontab<br>crontab -u<uid> 指定要设定crontab的用户名称</p>
+<a id="more"></a>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">30 08 10 06 *     /path/to/script      <span class="comment"># 在6月10日上午8：30运行该脚本。 *表示一周的任何一天</span></span><br><span class="line">00 11,16 * * *    /path/to/script      <span class="comment"># 每天于11:00 16:00 各执行一次。</span></span><br><span class="line">00 09-18 * * *    /path/to/script      <span class="comment"># 每天9-18点的整点 各执行一次。</span></span><br><span class="line">00 09-18 * * 1-5  /path/to/script      <span class="comment"># 只在周一到周五的9-18点的整点各执行一次</span></span><br><span class="line">* * * * *         /path/to/script      <span class="comment"># 每分钟执行一次</span></span><br><span class="line">*/5 * * * *       /path/to/script      <span class="comment"># 每5分钟执行一次</span></span><br><span class="line">0-10/2 * * * *    /path/to/script      <span class="comment"># 在前10分钟的每2分钟</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>crontab</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>一些优秀的文字</title>
     <url>/2022/06/28/good-words-01-md/</url>
     <content><![CDATA[<p>阅读的时候，记录了一些对自己触动很大，希望还能时长翻看的文字，也会随手记下几句闪过脑子的文字。</p>
@@ -1848,20 +1862,6 @@
       <categories>
         <category>文字</category>
       </categories>
-  </entry>
-  <entry>
-    <title>crontab示例</title>
-    <url>/2021/01/08/crontab-examples/</url>
-    <content><![CDATA[<p>crontab -e 编辑该用户的crontab， 不存在时新建<br>crontab -l 列出该用户的crontab<br>crontab -r 删除该用户的crontab<br>crontab -u<uid> 指定要设定crontab的用户名称</p>
-<a id="more"></a>
-
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">30 08 10 06 *     /path/to/script      <span class="comment"># 在6月10日上午8：30运行该脚本。 *表示一周的任何一天</span></span><br><span class="line">00 11,16 * * *    /path/to/script      <span class="comment"># 每天于11:00 16:00 各执行一次。</span></span><br><span class="line">00 09-18 * * *    /path/to/script      <span class="comment"># 每天9-18点的整点 各执行一次。</span></span><br><span class="line">00 09-18 * * 1-5  /path/to/script      <span class="comment"># 只在周一到周五的9-18点的整点各执行一次</span></span><br><span class="line">* * * * *         /path/to/script      <span class="comment"># 每分钟执行一次</span></span><br><span class="line">*/5 * * * *       /path/to/script      <span class="comment"># 每5分钟执行一次</span></span><br><span class="line">0-10/2 * * * *    /path/to/script      <span class="comment"># 在前10分钟的每2分钟</span></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>crontab</tag>
-      </tags>
   </entry>
   <entry>
     <title>hard-to-borrow list 股市卖空--难借股票列表</title>
@@ -1920,57 +1920,6 @@
       </categories>
       <tags>
         <tag>科普</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>tcpdump-netstat</title>
-    <url>/2021/08/16/tcpdump-netstat/</url>
-    <content><![CDATA[<h2 id="tcpdump"><a href="#tcpdump" class="headerlink" title="tcpdump"></a>tcpdump</h2><p>底层基于libpcap，一个可移植的网络传输层C/C++库</p>
-<p>tcpdump 不加任何参数，默认监听一个默认网卡（eth0网卡），抓取经过该端口的所有的数据包 ^C停止，会显示抓了多少个包</p>
-<ul>
-<li>c 10 限制只抓10个包</li>
-<li>w filename 输出到文件，tcpdump保存的数据包文件格式，是被大部分主流抓包软件所兼容的</li>
-<li>r filename 读取之前保存到文件的数据包</li>
-<li>D 显示系统当前的网卡列表</li>
-<li>i eth0 指定只抓取eth0网卡的流量</li>
-<li>v -vv 显示抓到的流量的详细信息，v越多越详细</li>
-<li>n 源地址和目的地址用ip显示，不反解为域名</li>
-</ul>
-<a id="more"></a>
-
-<p>tcpdump tcp/udp/icmp 指定抓取某种类型的流量</p>
-<p>icmp 例如ping</p>
-<p>tcpdump port 80 指定抓取某个端口的流量（80是http的流量）</p>
-<p>tcpdump portrange 1-1024 抓取某个范围端口的流量</p>
-<p>tcpdump src/dst port 80 指定源/目标端口为80的流量</p>
-<p>tcpdump src/dst host hostname 只抓取源/目标地址的流量</p>
-<p>tcpdump host <a href="http://www.baidu.com/">www.baidu.com</a> 指定抓取来自或去到某个host（可以是域名或IP）的流量</p>
-<p>tcpdump greater 1000 只抓取大于1000bytes的流量</p>
-<p>tcpdump less 10  只抓取小于10bytes的流量</p>
-<ul>
-<li>A 以ASCII码形式显示数据包的内容</li>
-<li>X 以16进制和ASCII码形式来显示数据包内容</li>
-</ul>
-<p>支持与 或 非</p>
-<p>tcpdump tcp and src [host] 192.168.1.1 and src port 1000 抓取源地址为192.168.1.1:1000的tcp包</p>
-<p>tcpdump src 192.168.1.1 or src 192.168.1.2  抓取源地址为192.168.1.1或192.168.1.2的数据包</p>
-<p>tcpdump not port 80 抓取非80端口的流量</p>
-<h2 id="netstat"><a href="#netstat" class="headerlink" title="netstat"></a>netstat</h2><ul>
-<li>p port</li>
-<li>a all</li>
-<li>t tcp</li>
-<li>u udp</li>
-<li>l listenning</li>
-<li>n 不进行域名解析</li>
-<li>c connection status real-time</li>
-</ul>
-]]></content>
-      <categories>
-        <category>SRE</category>
-      </categories>
-      <tags>
-        <tag>tcpdump</tag>
-        <tag>netstat</tag>
       </tags>
   </entry>
   <entry>
@@ -2359,6 +2308,57 @@
       <categories>
         <category>技术</category>
       </categories>
+  </entry>
+  <entry>
+    <title>tcpdump-netstat</title>
+    <url>/2021/08/16/tcpdump-netstat/</url>
+    <content><![CDATA[<h2 id="tcpdump"><a href="#tcpdump" class="headerlink" title="tcpdump"></a>tcpdump</h2><p>底层基于libpcap，一个可移植的网络传输层C/C++库</p>
+<p>tcpdump 不加任何参数，默认监听一个默认网卡（eth0网卡），抓取经过该端口的所有的数据包 ^C停止，会显示抓了多少个包</p>
+<ul>
+<li>c 10 限制只抓10个包</li>
+<li>w filename 输出到文件，tcpdump保存的数据包文件格式，是被大部分主流抓包软件所兼容的</li>
+<li>r filename 读取之前保存到文件的数据包</li>
+<li>D 显示系统当前的网卡列表</li>
+<li>i eth0 指定只抓取eth0网卡的流量</li>
+<li>v -vv 显示抓到的流量的详细信息，v越多越详细</li>
+<li>n 源地址和目的地址用ip显示，不反解为域名</li>
+</ul>
+<a id="more"></a>
+
+<p>tcpdump tcp/udp/icmp 指定抓取某种类型的流量</p>
+<p>icmp 例如ping</p>
+<p>tcpdump port 80 指定抓取某个端口的流量（80是http的流量）</p>
+<p>tcpdump portrange 1-1024 抓取某个范围端口的流量</p>
+<p>tcpdump src/dst port 80 指定源/目标端口为80的流量</p>
+<p>tcpdump src/dst host hostname 只抓取源/目标地址的流量</p>
+<p>tcpdump host <a href="http://www.baidu.com/">www.baidu.com</a> 指定抓取来自或去到某个host（可以是域名或IP）的流量</p>
+<p>tcpdump greater 1000 只抓取大于1000bytes的流量</p>
+<p>tcpdump less 10  只抓取小于10bytes的流量</p>
+<ul>
+<li>A 以ASCII码形式显示数据包的内容</li>
+<li>X 以16进制和ASCII码形式来显示数据包内容</li>
+</ul>
+<p>支持与 或 非</p>
+<p>tcpdump tcp and src [host] 192.168.1.1 and src port 1000 抓取源地址为192.168.1.1:1000的tcp包</p>
+<p>tcpdump src 192.168.1.1 or src 192.168.1.2  抓取源地址为192.168.1.1或192.168.1.2的数据包</p>
+<p>tcpdump not port 80 抓取非80端口的流量</p>
+<h2 id="netstat"><a href="#netstat" class="headerlink" title="netstat"></a>netstat</h2><ul>
+<li>p port</li>
+<li>a all</li>
+<li>t tcp</li>
+<li>u udp</li>
+<li>l listenning</li>
+<li>n 不进行域名解析</li>
+<li>c connection status real-time</li>
+</ul>
+]]></content>
+      <categories>
+        <category>SRE</category>
+      </categories>
+      <tags>
+        <tag>tcpdump</tag>
+        <tag>netstat</tag>
+      </tags>
   </entry>
   <entry>
     <title>异地多活架构设计-概论</title>
