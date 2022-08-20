@@ -6,7 +6,7 @@
   <link href="https://carl-wang-cn.github.io/atom.xml" rel="self"/>
   
   <link href="https://carl-wang-cn.github.io/"/>
-  <updated>2022-08-01T14:11:17.217Z</updated>
+  <updated>2022-08-20T14:12:48.120Z</updated>
   <id>https://carl-wang-cn.github.io/</id>
   
   <author>
@@ -15,6 +15,23 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>一个leader要少对团队说“你这样是不对的”</title>
+    <link href="https://carl-wang-cn.github.io/2022/08/20/what-a-leader/"/>
+    <id>https://carl-wang-cn.github.io/2022/08/20/what-a-leader/</id>
+    <published>2022-08-20T14:11:15.000Z</published>
+    <updated>2022-08-20T14:12:48.120Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;有的leader，经常听团队汇报问题的时候，刚听了两句就打断说”你这样是不对的“。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="team" scheme="https://carl-wang-cn.github.io/categories/team/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>一些优秀的文字</title>
@@ -229,23 +246,6 @@
     
     
     <category term="crontab" scheme="https://carl-wang-cn.github.io/tags/crontab/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>ssh终端证书方式登录远程linux系统</title>
-    <link href="https://carl-wang-cn.github.io/2020/12/28/ssh-without-passwd/"/>
-    <id>https://carl-wang-cn.github.io/2020/12/28/ssh-without-passwd/</id>
-    <published>2020-12-28T01:02:49.000Z</published>
-    <updated>2022-08-01T14:11:17.210Z</updated>
-    
-    
-    <summary type="html">&lt;h3 id=&quot;为什么选择证书登陆？&quot;&gt;&lt;a href=&quot;#为什么选择证书登陆？&quot; class=&quot;headerlink&quot; title=&quot;为什么选择证书登陆？&quot;&gt;&lt;/a&gt;为什么选择证书登陆？&lt;/h3&gt;&lt;p&gt;Mac下原生及主流的ssh终端工具大多不具备保存ssh登陆密码的功能, 通过证书登陆的方式，就可以实现原生终端工具Terminal或第三方明星终端iTerm免密码登录远程系统，并且比单纯的密码验证登陆方式提高了安全性。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="技术" scheme="https://carl-wang-cn.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    
     
   </entry>
   
