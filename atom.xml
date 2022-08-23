@@ -6,7 +6,7 @@
   <link href="https://carl-wang-cn.github.io/atom.xml" rel="self"/>
   
   <link href="https://carl-wang-cn.github.io/"/>
-  <updated>2022-08-20T14:12:48.120Z</updated>
+  <updated>2022-08-23T11:19:58.668Z</updated>
   <id>https://carl-wang-cn.github.io/</id>
   
   <author>
@@ -17,14 +17,33 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>绩效考核聊2块钱</title>
+    <link href="https://carl-wang-cn.github.io/2022/08/23/talk-kpi/"/>
+    <id>https://carl-wang-cn.github.io/2022/08/23/talk-kpi/</id>
+    <published>2022-08-23T11:17:33.000Z</published>
+    <updated>2022-08-23T11:19:58.668Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;以下都是我个人的真实想法，不一定对，但我现在认为是对的。我努力朝着这个方向做，但是阻力不少。可能是有一些我认知达不到导致的见识浅薄，但是目前还没有人说服我哪里认知不对！希望有人能指出我以下写的不对的地方，让我少走点弯路，让团队少付出一些代价来获得更多的成长。&lt;/p&gt;
+&lt;p&gt;我们定绩效的目的是啥？&lt;/p&gt;
+&lt;p&gt;第一，肯定为了达成公司的整体目标，然后把员工的目标和公司的目标对齐；&lt;br&gt;第二，是通过绩效管理来实现目标，完成业绩，而不是为了逼走员工。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="team" scheme="https://carl-wang-cn.github.io/categories/team/"/>
+    
+    
+  </entry>
+  
+  <entry>
     <title>一个leader要少对团队说“你这样是不对的”</title>
     <link href="https://carl-wang-cn.github.io/2022/08/20/what-a-leader/"/>
     <id>https://carl-wang-cn.github.io/2022/08/20/what-a-leader/</id>
     <published>2022-08-20T14:11:15.000Z</published>
-    <updated>2022-08-20T14:12:48.120Z</updated>
+    <updated>2022-08-20T14:25:15.402Z</updated>
     
     
-    <summary type="html">&lt;p&gt;有的leader，经常听团队汇报问题的时候，刚听了两句就打断说”你这样是不对的“。&lt;/p&gt;</summary>
+    <summary type="html">&lt;p&gt;有的leader，经常听团队汇报问题的时候，刚听了两句就打断说“你这样是不对的”，甚至连听完全部的耐心都没有。&lt;/p&gt;</summary>
     
     
     
@@ -227,25 +246,6 @@
     
     
     <category term="ADR" scheme="https://carl-wang-cn.github.io/tags/ADR/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>crontab示例</title>
-    <link href="https://carl-wang-cn.github.io/2021/01/08/crontab-examples/"/>
-    <id>https://carl-wang-cn.github.io/2021/01/08/crontab-examples/</id>
-    <published>2021-01-08T06:01:53.000Z</published>
-    <updated>2022-08-01T14:11:17.211Z</updated>
-    
-    
-    <summary type="html">&lt;p&gt;crontab -e 编辑该用户的crontab， 不存在时新建&lt;br&gt;crontab -l 列出该用户的crontab&lt;br&gt;crontab -r 删除该用户的crontab&lt;br&gt;crontab -u&lt;uid&gt; 指定要设定crontab的用户名称&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="技术" scheme="https://carl-wang-cn.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-    
-    <category term="crontab" scheme="https://carl-wang-cn.github.io/tags/crontab/"/>
     
   </entry>
   
