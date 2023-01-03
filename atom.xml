@@ -6,7 +6,7 @@
   <link href="https://carl-wang-cn.github.io/atom.xml" rel="self"/>
   
   <link href="https://carl-wang-cn.github.io/"/>
-  <updated>2022-08-23T11:19:58.668Z</updated>
+  <updated>2022-09-08T09:00:18.565Z</updated>
   <id>https://carl-wang-cn.github.io/</id>
   
   <author>
@@ -15,6 +15,24 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>懂，但是如何做？</title>
+    <link href="https://carl-wang-cn.github.io/2022/09/08/thinkvsdo/"/>
+    <id>https://carl-wang-cn.github.io/2022/09/08/thinkvsdo/</id>
+    <published>2022-09-08T05:28:42.000Z</published>
+    <updated>2022-09-08T09:00:18.565Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;很多道理，懂的人很多，但是能否在行动上对齐，每个人的水平可就差得远了去了。&lt;/p&gt;
+&lt;p&gt;有权力的时候，可以更少阻力去尝试一些事情，成了当然效用巨大，但是失败了，成本也巨大，有的人就经常为了一些尝试一些理论，不计成本，或者他任务这个成本是别人帮他承担，甚至造成了一些伤害后，脚底抹油，这种行为最让人看不起。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="架构/编程语言/金融" scheme="https://carl-wang-cn.github.io/categories/%E6%9E%B6%E6%9E%84-%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80-%E9%87%91%E8%9E%8D/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>绩效考核聊2块钱</title>
@@ -195,7 +213,7 @@
     <link href="https://carl-wang-cn.github.io/2021/06/03/%E5%BC%82%E5%9C%B0%E5%A4%9A%E6%B4%BB%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1-%E6%A6%82%E8%AE%BA/"/>
     <id>https://carl-wang-cn.github.io/2021/06/03/%E5%BC%82%E5%9C%B0%E5%A4%9A%E6%B4%BB%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1-%E6%A6%82%E8%AE%BA/</id>
     <published>2021-06-03T11:49:26.000Z</published>
-    <updated>2022-08-01T14:11:17.212Z</updated>
+    <updated>2022-09-03T12:03:22.337Z</updated>
     
     
     <summary type="html">&lt;p&gt;近期工作中要做一些系统的质量工作，那么多活肯定是一个避不开的事情，借此机会，系统梳理下异地多活的架构设计，为接下来的服务质量做一些准备。&lt;/p&gt;
@@ -224,28 +242,6 @@
     <category term="架构设计" scheme="https://carl-wang-cn.github.io/tags/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/"/>
     
     <category term="异地多活" scheme="https://carl-wang-cn.github.io/tags/%E5%BC%82%E5%9C%B0%E5%A4%9A%E6%B4%BB/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>我被收了ADR费</title>
-    <link href="https://carl-wang-cn.github.io/2021/02/19/adr-vs-ads/"/>
-    <id>https://carl-wang-cn.github.io/2021/02/19/adr-vs-ads/</id>
-    <published>2021-02-19T14:29:40.000Z</published>
-    <updated>2022-08-01T14:11:17.214Z</updated>
-    
-    
-    <summary type="html">&lt;p&gt;&lt;strong&gt;今天发现因为持有JD被收了ADR费，但是JD不是美国上市的吗？跟TCEHY（腾讯ADR）有什么区别？&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;ADR: American Depositary Receipts&lt;/p&gt;
-&lt;p&gt;ADS: American Depositary Shares&lt;/p&gt;
-&lt;p&gt;从以上ADR和ADS的英文全写其实大概就能理解二者的区别了。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="金融" scheme="https://carl-wang-cn.github.io/categories/%E9%87%91%E8%9E%8D/"/>
-    
-    
-    <category term="ADR" scheme="https://carl-wang-cn.github.io/tags/ADR/"/>
     
   </entry>
   
