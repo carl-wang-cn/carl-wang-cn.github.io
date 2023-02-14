@@ -174,101 +174,6 @@
       </tags>
   </entry>
   <entry>
-    <title>find命令使用技巧</title>
-    <url>/2020/01/16/2020-01-16-find/</url>
-    <content><![CDATA[<p><code>find &lt; path &gt; &lt; expression &gt; &lt; cmd &gt;</code></p>
-<ul>
-<li>path： 所要搜索的目录及其所有子目录。默认为当前目录。</li>
-<li>expression： 所要搜索的文件的特征。</li>
-<li>cmd： 对搜索结果进行特定的处理。</li>
-</ul>
-<p>如果什么参数也不加，find默认搜索当前目录及其子目录，并且不过滤任何结果（也就是返回所有文件），将它们全都显示在屏幕上。</p>
-<h4 id="find命令常用选项及实例"><a href="#find命令常用选项及实例" class="headerlink" title="find命令常用选项及实例"></a>find命令常用选项及实例</h4><ul>
-<li><p>-name 按照文件名查找文件。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /dir -name filename  在/dir目录及其子目录下面查找名字为filename的文件</span><br><span class="line">find . -name <span class="string">&quot;*.c&quot;</span> 在当前目录及其子目录（用“.”表示）中查找任何扩展名为“c”的文件</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-</li>
-<li><p>-perm 按照文件权限来查找文件。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -perm 755 –<span class="built_in">print</span> 在当前目录下查找文件权限位为755的文件，即文件属主可以读、写、执行，其他用户可以读、执行的文件</span><br></pre></td></tr></table></figure></li>
-<li><p>-prune 使用这一选项可以使find命令不在当前指定的目录中查找，如果同时使用-depth选项，那么-prune将被find命令忽略。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /apps -path <span class="string">&quot;/apps/bin&quot;</span> -prune -o –<span class="built_in">print</span> 在/apps目录下查找文件，但不希望在/apps/bin目录下查找</span><br><span class="line">find /usr/sam -path <span class="string">&quot;/usr/sam/dir1&quot;</span> -prune -o –<span class="built_in">print</span> 在/usr/sam目录下查找不在dir1子目录之内的所有文件</span><br></pre></td></tr></table></figure></li>
-<li><p>-depth：在查找文件时，首先查找当前目录中的文件，然后再在其子目录中查找。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / -name <span class="string">&quot;CON.FILE&quot;</span> -depth –<span class="built_in">print</span> 它将首先匹配所有的文件然后再进入子目录中查找</span><br></pre></td></tr></table></figure></li>
-<li><p>-user 按照文件属主来查找文件。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find ~ -user sam –<span class="built_in">print</span> 在<span class="variable">$HOME</span>目录中查找文件属主为sam的文件</span><br></pre></td></tr></table></figure></li>
-<li><p>-group 按照文件所属的组来查找文件。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /apps -group gem –<span class="built_in">print</span> 在/apps目录下查找属于gem用户组的文件</span><br></pre></td></tr></table></figure></li>
-<li><p>-mtime -n +n 按照文件的更改时间来查找文件， -n表示文件更改时间距现在n天以内，+n表示文件更改时间距现在n天以前。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / -mtime -5 –<span class="built_in">print</span> 在系统根目录下查找更改时间在5日以内的文件</span><br><span class="line">find /var/adm -mtime +3 –<span class="built_in">print</span> 在/var/adm目录下查找更改时间在3日以前的文件</span><br></pre></td></tr></table></figure></li>
-<li><p>-nogroup 查找无有效所属组的文件，即该文件所属的组在/etc/groups中不存在。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / –nogroup -<span class="built_in">print</span></span><br></pre></td></tr></table></figure></li>
-<li><p>-nouser 查找无有效属主的文件，即该文件的属主在/etc/passwd中不存在。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /home -nouser –<span class="built_in">print</span></span><br></pre></td></tr></table></figure></li>
-<li><p>-newer file1 ! file2 查找更改时间比文件file1新但比文件file2旧的文件。</p>
-</li>
-<li><p>-type 查找某一类型的文件，<br>诸如：<br>b - 块设备文件。<br>d - 目录。<br>c - 字符设备文件。<br>p - 管道文件。<br>l - 符号链接文件。<br>f - 普通文件。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /etc -<span class="built_in">type</span> d –<span class="built_in">print</span> 在/etc目录下查找所有的目录</span><br><span class="line">find . ! -<span class="built_in">type</span> d –<span class="built_in">print</span> 在当前目录下查找除目录以外的所有类型的文件</span><br><span class="line">find /etc -<span class="built_in">type</span> l –<span class="built_in">print</span> 在/etc目录下查找所有的符号链接文件</span><br></pre></td></tr></table></figure></li>
-<li><p>-size n[c] 查找文件长度为n块的文件，带有c时表示文件长度以字节计。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -size +1000000c –<span class="built_in">print</span> 在当前目录下查找文件长度大于1 M字节的文件</span><br><span class="line">find /home/apache -size 100c –<span class="built_in">print</span> 在/home/apache目录下查找文件长度恰好为100字节的文件</span><br><span class="line">find . -size +10 –<span class="built_in">print</span> 在当前目录下查找长度超过10块的文件（一块等于512字节）</span><br></pre></td></tr></table></figure></li>
-<li><p>-mount：在查找文件时不跨越文件系统mount点。<br><code>find . -name “*.XC” -mount –print 从当前目录开始查找位于本文件系统中文件名以XC结尾的文件（不进入其他文件系统）</code></p>
-</li>
-<li><p>-follow：如果find命令遇到符号链接文件，就跟踪至链接所指向的文件</p>
-</li>
-<li><p>-exec，find命令对匹配的文件执行该参数所给出的shell命令。相应命令的形式为’command’ {} ;，注意{}和;之间的空格</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt; find ./ -size 0 -<span class="built_in">exec</span> rm &#123;&#125; \; 删除文件大小为零的文件</span><br><span class="line">&gt; rm -i `find ./ -size 0`</span><br><span class="line">&gt; find ./ -size 0 | xargs rm -f &amp;</span><br></pre></td></tr></table></figure>
-<p>为了用ls -l命令列出所匹配到的文件，可以把ls -l命令放在find命令的-exec选项中：<br><code>$ find . -type f -exec ls -l &#123;&#125; \;</code><br>在/logs目录中查找更改时间在5日以前的文件并删除它们：<br><code>find /logs -type f -mtime +5 -exec rm &#123;&#125; \;</code></p>
-</li>
-<li><p>-ok，和-exec的作用相同，只不过以一种更为安全的模式来执行该参数所给出的shell命令，在执行每一个命令之前，都会给出提示，让用户来确定是否执行。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -name <span class="string">&quot;*.conf&quot;</span>  -mtime +5 -ok rm &#123;  &#125; \; 在当前目录中查找所有文件名以.LOG结尾、更改时间在5日以上的文件，并删除它们，只不  过在删除之前先给出提示</span><br></pre></td></tr></table></figure>
-<p>说明： 如果你要寻找一个档案的话，那么使用 find 会是一个不错的主意。不过，由于 find 在寻找数据的时候相当的耗硬盘，所以没事情不要使用 find 啦！有更棒的指令可以取代呦，那就是 whereis 与 locate 咯~</p>
-</li>
-</ul>
-<h4 id="一些常用命令"><a href="#一些常用命令" class="headerlink" title="一些常用命令"></a>一些常用命令</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1. find . -<span class="built_in">type</span> f -<span class="built_in">exec</span> ls -l &#123;&#125; \;</span><br><span class="line">查找当前路径下的所有普通文件，并把它们列出来。</span><br><span class="line">2. find logs -<span class="built_in">type</span> f -mtime +5 -<span class="built_in">exec</span> rm &#123;&#125; \;</span><br><span class="line">删除logs目录下更新时间为5日以上的文件。</span><br><span class="line">3.find . -name <span class="string">&quot;*.log&quot;</span> -mtime +5 -ok rm &#123;&#125; \;</span><br><span class="line">删除当前路径下以。<span class="built_in">log</span>结尾的五日以上的文件，删除之前要确认。</span><br><span class="line">4. find ~ -<span class="built_in">type</span> f -perm 4755 -<span class="built_in">print</span></span><br><span class="line">查找<span class="variable">$HOME</span>目录下suid位被设置，文件属性为755的文件打印出来。</span><br><span class="line">说明： find在有点系统中会一次性得到将匹配到的文件都传给<span class="built_in">exec</span>，但是有的系统对<span class="built_in">exec</span>的命令长度做限制，就会报：”参数列太长“，这就需要使用xargs。xargs是部分取传来的文件。</span><br><span class="line">5. find / -<span class="built_in">type</span> f -<span class="built_in">print</span> |xargs file</span><br><span class="line">xargs测试文件分类</span><br><span class="line">6. find . -name <span class="string">&quot;core*&quot;</span> -<span class="built_in">print</span>|xargs <span class="built_in">echo</span> <span class="string">&quot; &quot;</span>&gt;/tmp/core.log</span><br><span class="line">将core文件信息查询结果报存到core。<span class="built_in">log</span>日志。</span><br><span class="line">7. find / -<span class="built_in">type</span> f -<span class="built_in">print</span> | xargs chmod o -w</span><br><span class="line">8. find . -name * -<span class="built_in">print</span> |xargs grep <span class="string">&quot;DBO&quot;</span></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>find</tag>
-        <tag>通用技巧</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>grep命令使用技巧</title>
-    <url>/2020/01/16/2020-01-16-grep/</url>
-    <content><![CDATA[<p>grep [选项] pattern [文件名]</p>
-<p>命令中的选项为：</p>
-<ul>
-<li>-? 同时显示匹配行上下的？行，如：<code>grep -2 pattern filename</code> 同时显示匹配行的上下2行。</li>
-<li>-A ? 显示匹配行和后面的?行, 如: <code>grep -A 2 pattern filename</code></li>
-<li>-B ? 显示匹配行和前面的?行</li>
-<li>-b，–byte-offset 打印匹配行前面打印该行所在的块号码。</li>
-<li>-c,–count 只打印匹配的行数，不显示匹配的内容。</li>
-<li>-f File，–file=File 从文件中提取模板。空文件中包含0个模板，所以什么都不匹配。</li>
-<li>-h，–no-filename 当搜索多个文件时，不显示匹配文件名前缀。</li>
-<li>-i，–ignore-case 忽略大小写差别。</li>
-<li>-q，–quiet 取消显示，只返回退出状态。0则表示找到了匹配的行。</li>
-<li>-l，–files-with-matches 打印匹配模板的文件清单。</li>
-<li>-L，–files-without-match 打印不匹配模板的文件清单。</li>
-<li>-n，–line-number 在匹配的行前面打印行号。</li>
-<li>-s，–silent 不显示关于不存在或者无法读取文件的错误信息。</li>
-<li>-v，–revert-match 反检索，只显示不匹配的行。</li>
-<li>-w，–word-regexp 如果被&lt;和&gt;引用，就把表达式做为一个单词搜索。</li>
-<li>-V，–version 显示软件版本信息。</li>
-</ul>
-<a id="more"></a>
-
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -l | grep <span class="string">&#x27;^a&#x27;</span> 通过管道过滤ls -l输出的内容，只显示以a开头的行。</span><br><span class="line">grep <span class="string">&#x27;test&#x27;</span> d* 显示所有以d开头的文件中包含<span class="built_in">test</span>的行。</span><br><span class="line">grep <span class="string">&#x27;test&#x27;</span> aa bb cc 显示在aa，bb，cc文件中匹配<span class="built_in">test</span>的行。</span><br><span class="line">grep <span class="string">&#x27;[a-z]&#x27;</span> aa 显示所有包含每个字符串至少有5个连续小写字符的字符串的行。</span><br><span class="line">grep <span class="string">&#x27;w(es)t.*&#x27;</span> aa 如果west被匹配，则es就被存储到内存中，并标记为1，然后搜索任意个字符(.*)，这些字符后面紧跟着另外一个es()，找到就显示该行。如果用egrep或grep -E，就不用<span class="string">&quot;&quot;</span>号进行转义，直接写成<span class="string">&#x27;w(es)t.*&#x27;</span>就可以了。</span><br><span class="line">grep -i pattern files ：不区分大小写地搜索。默认情况区分大小写</span><br><span class="line">grep -l pattern files ：只列出匹配的文件名，</span><br><span class="line">grep -L pattern files ：列出不匹配的文件名，</span><br><span class="line">grep -w pattern files ：只匹配整个单词，而不是字符串的一部分(如匹配‘magic’，而不是‘magical’)，</span><br><span class="line">grep -C number pattern files ：匹配的上下文分别显示[number]行，</span><br><span class="line">grep pattern1 | pattern2 files ：显示匹配 pattern1 或 pattern2 的行，</span><br><span class="line">grep pattern1 files | grep pattern2 ：显示既匹配 pattern1 又匹配 pattern2 的行。</span><br></pre></td></tr></table></figure>
-<p>pattern为所要匹配的字符串，可使用下列模式</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">. 匹配任意一个字符</span><br><span class="line">* 匹配0 个或多个*前的字符</span><br><span class="line">^ 匹配行开头</span><br><span class="line">$ 匹配行结尾</span><br><span class="line">[] 匹配[ ]中的任意一个字符，[]中可用 - 表示范围，</span><br><span class="line">例如[a-z]表示字母a 至z 中的任意一个</span><br><span class="line">\ 转意字符</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>通用技巧</tag>
-        <tag>grep</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>awk怎么写?</title>
     <url>/2020/01/16/2020-01-16-awk/</url>
     <content><![CDATA[<p>本篇文章主要是参考左耳朵耗子前辈的博文整理而来, 作为自己学习备忘之用.</p>
@@ -347,8 +252,44 @@
         <category>技术</category>
       </categories>
       <tags>
-        <tag>通用技巧</tag>
         <tag>awk</tag>
+        <tag>通用技巧</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>grep命令使用技巧</title>
+    <url>/2020/01/16/2020-01-16-grep/</url>
+    <content><![CDATA[<p>grep [选项] pattern [文件名]</p>
+<p>命令中的选项为：</p>
+<ul>
+<li>-? 同时显示匹配行上下的？行，如：<code>grep -2 pattern filename</code> 同时显示匹配行的上下2行。</li>
+<li>-A ? 显示匹配行和后面的?行, 如: <code>grep -A 2 pattern filename</code></li>
+<li>-B ? 显示匹配行和前面的?行</li>
+<li>-b，–byte-offset 打印匹配行前面打印该行所在的块号码。</li>
+<li>-c,–count 只打印匹配的行数，不显示匹配的内容。</li>
+<li>-f File，–file=File 从文件中提取模板。空文件中包含0个模板，所以什么都不匹配。</li>
+<li>-h，–no-filename 当搜索多个文件时，不显示匹配文件名前缀。</li>
+<li>-i，–ignore-case 忽略大小写差别。</li>
+<li>-q，–quiet 取消显示，只返回退出状态。0则表示找到了匹配的行。</li>
+<li>-l，–files-with-matches 打印匹配模板的文件清单。</li>
+<li>-L，–files-without-match 打印不匹配模板的文件清单。</li>
+<li>-n，–line-number 在匹配的行前面打印行号。</li>
+<li>-s，–silent 不显示关于不存在或者无法读取文件的错误信息。</li>
+<li>-v，–revert-match 反检索，只显示不匹配的行。</li>
+<li>-w，–word-regexp 如果被&lt;和&gt;引用，就把表达式做为一个单词搜索。</li>
+<li>-V，–version 显示软件版本信息。</li>
+</ul>
+<a id="more"></a>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -l | grep <span class="string">&#x27;^a&#x27;</span> 通过管道过滤ls -l输出的内容，只显示以a开头的行。</span><br><span class="line">grep <span class="string">&#x27;test&#x27;</span> d* 显示所有以d开头的文件中包含<span class="built_in">test</span>的行。</span><br><span class="line">grep <span class="string">&#x27;test&#x27;</span> aa bb cc 显示在aa，bb，cc文件中匹配<span class="built_in">test</span>的行。</span><br><span class="line">grep <span class="string">&#x27;[a-z]&#x27;</span> aa 显示所有包含每个字符串至少有5个连续小写字符的字符串的行。</span><br><span class="line">grep <span class="string">&#x27;w(es)t.*&#x27;</span> aa 如果west被匹配，则es就被存储到内存中，并标记为1，然后搜索任意个字符(.*)，这些字符后面紧跟着另外一个es()，找到就显示该行。如果用egrep或grep -E，就不用<span class="string">&quot;&quot;</span>号进行转义，直接写成<span class="string">&#x27;w(es)t.*&#x27;</span>就可以了。</span><br><span class="line">grep -i pattern files ：不区分大小写地搜索。默认情况区分大小写</span><br><span class="line">grep -l pattern files ：只列出匹配的文件名，</span><br><span class="line">grep -L pattern files ：列出不匹配的文件名，</span><br><span class="line">grep -w pattern files ：只匹配整个单词，而不是字符串的一部分(如匹配‘magic’，而不是‘magical’)，</span><br><span class="line">grep -C number pattern files ：匹配的上下文分别显示[number]行，</span><br><span class="line">grep pattern1 | pattern2 files ：显示匹配 pattern1 或 pattern2 的行，</span><br><span class="line">grep pattern1 files | grep pattern2 ：显示既匹配 pattern1 又匹配 pattern2 的行。</span><br></pre></td></tr></table></figure>
+<p>pattern为所要匹配的字符串，可使用下列模式</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">. 匹配任意一个字符</span><br><span class="line">* 匹配0 个或多个*前的字符</span><br><span class="line">^ 匹配行开头</span><br><span class="line">$ 匹配行结尾</span><br><span class="line">[] 匹配[ ]中的任意一个字符，[]中可用 - 表示范围，</span><br><span class="line">例如[a-z]表示字母a 至z 中的任意一个</span><br><span class="line">\ 转意字符</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>通用技巧</tag>
+        <tag>grep</tag>
       </tags>
   </entry>
   <entry>
@@ -404,6 +345,65 @@
       <tags>
         <tag>通用技巧</tag>
         <tag>shell</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>find命令使用技巧</title>
+    <url>/2020/01/16/2020-01-16-find/</url>
+    <content><![CDATA[<p><code>find &lt; path &gt; &lt; expression &gt; &lt; cmd &gt;</code></p>
+<ul>
+<li>path： 所要搜索的目录及其所有子目录。默认为当前目录。</li>
+<li>expression： 所要搜索的文件的特征。</li>
+<li>cmd： 对搜索结果进行特定的处理。</li>
+</ul>
+<p>如果什么参数也不加，find默认搜索当前目录及其子目录，并且不过滤任何结果（也就是返回所有文件），将它们全都显示在屏幕上。</p>
+<h4 id="find命令常用选项及实例"><a href="#find命令常用选项及实例" class="headerlink" title="find命令常用选项及实例"></a>find命令常用选项及实例</h4><ul>
+<li><p>-name 按照文件名查找文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /dir -name filename  在/dir目录及其子目录下面查找名字为filename的文件</span><br><span class="line">find . -name <span class="string">&quot;*.c&quot;</span> 在当前目录及其子目录（用“.”表示）中查找任何扩展名为“c”的文件</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+</li>
+<li><p>-perm 按照文件权限来查找文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -perm 755 –<span class="built_in">print</span> 在当前目录下查找文件权限位为755的文件，即文件属主可以读、写、执行，其他用户可以读、执行的文件</span><br></pre></td></tr></table></figure></li>
+<li><p>-prune 使用这一选项可以使find命令不在当前指定的目录中查找，如果同时使用-depth选项，那么-prune将被find命令忽略。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /apps -path <span class="string">&quot;/apps/bin&quot;</span> -prune -o –<span class="built_in">print</span> 在/apps目录下查找文件，但不希望在/apps/bin目录下查找</span><br><span class="line">find /usr/sam -path <span class="string">&quot;/usr/sam/dir1&quot;</span> -prune -o –<span class="built_in">print</span> 在/usr/sam目录下查找不在dir1子目录之内的所有文件</span><br></pre></td></tr></table></figure></li>
+<li><p>-depth：在查找文件时，首先查找当前目录中的文件，然后再在其子目录中查找。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / -name <span class="string">&quot;CON.FILE&quot;</span> -depth –<span class="built_in">print</span> 它将首先匹配所有的文件然后再进入子目录中查找</span><br></pre></td></tr></table></figure></li>
+<li><p>-user 按照文件属主来查找文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find ~ -user sam –<span class="built_in">print</span> 在<span class="variable">$HOME</span>目录中查找文件属主为sam的文件</span><br></pre></td></tr></table></figure></li>
+<li><p>-group 按照文件所属的组来查找文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /apps -group gem –<span class="built_in">print</span> 在/apps目录下查找属于gem用户组的文件</span><br></pre></td></tr></table></figure></li>
+<li><p>-mtime -n +n 按照文件的更改时间来查找文件， -n表示文件更改时间距现在n天以内，+n表示文件更改时间距现在n天以前。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / -mtime -5 –<span class="built_in">print</span> 在系统根目录下查找更改时间在5日以内的文件</span><br><span class="line">find /var/adm -mtime +3 –<span class="built_in">print</span> 在/var/adm目录下查找更改时间在3日以前的文件</span><br></pre></td></tr></table></figure></li>
+<li><p>-nogroup 查找无有效所属组的文件，即该文件所属的组在/etc/groups中不存在。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / –nogroup -<span class="built_in">print</span></span><br></pre></td></tr></table></figure></li>
+<li><p>-nouser 查找无有效属主的文件，即该文件的属主在/etc/passwd中不存在。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /home -nouser –<span class="built_in">print</span></span><br></pre></td></tr></table></figure></li>
+<li><p>-newer file1 ! file2 查找更改时间比文件file1新但比文件file2旧的文件。</p>
+</li>
+<li><p>-type 查找某一类型的文件，<br>诸如：<br>b - 块设备文件。<br>d - 目录。<br>c - 字符设备文件。<br>p - 管道文件。<br>l - 符号链接文件。<br>f - 普通文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /etc -<span class="built_in">type</span> d –<span class="built_in">print</span> 在/etc目录下查找所有的目录</span><br><span class="line">find . ! -<span class="built_in">type</span> d –<span class="built_in">print</span> 在当前目录下查找除目录以外的所有类型的文件</span><br><span class="line">find /etc -<span class="built_in">type</span> l –<span class="built_in">print</span> 在/etc目录下查找所有的符号链接文件</span><br></pre></td></tr></table></figure></li>
+<li><p>-size n[c] 查找文件长度为n块的文件，带有c时表示文件长度以字节计。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -size +1000000c –<span class="built_in">print</span> 在当前目录下查找文件长度大于1 M字节的文件</span><br><span class="line">find /home/apache -size 100c –<span class="built_in">print</span> 在/home/apache目录下查找文件长度恰好为100字节的文件</span><br><span class="line">find . -size +10 –<span class="built_in">print</span> 在当前目录下查找长度超过10块的文件（一块等于512字节）</span><br></pre></td></tr></table></figure></li>
+<li><p>-mount：在查找文件时不跨越文件系统mount点。<br><code>find . -name “*.XC” -mount –print 从当前目录开始查找位于本文件系统中文件名以XC结尾的文件（不进入其他文件系统）</code></p>
+</li>
+<li><p>-follow：如果find命令遇到符号链接文件，就跟踪至链接所指向的文件</p>
+</li>
+<li><p>-exec，find命令对匹配的文件执行该参数所给出的shell命令。相应命令的形式为’command’ {} ;，注意{}和;之间的空格</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt; find ./ -size 0 -<span class="built_in">exec</span> rm &#123;&#125; \; 删除文件大小为零的文件</span><br><span class="line">&gt; rm -i `find ./ -size 0`</span><br><span class="line">&gt; find ./ -size 0 | xargs rm -f &amp;</span><br></pre></td></tr></table></figure>
+<p>为了用ls -l命令列出所匹配到的文件，可以把ls -l命令放在find命令的-exec选项中：<br><code>$ find . -type f -exec ls -l &#123;&#125; \;</code><br>在/logs目录中查找更改时间在5日以前的文件并删除它们：<br><code>find /logs -type f -mtime +5 -exec rm &#123;&#125; \;</code></p>
+</li>
+<li><p>-ok，和-exec的作用相同，只不过以一种更为安全的模式来执行该参数所给出的shell命令，在执行每一个命令之前，都会给出提示，让用户来确定是否执行。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -name <span class="string">&quot;*.conf&quot;</span>  -mtime +5 -ok rm &#123;  &#125; \; 在当前目录中查找所有文件名以.LOG结尾、更改时间在5日以上的文件，并删除它们，只不  过在删除之前先给出提示</span><br></pre></td></tr></table></figure>
+<p>说明： 如果你要寻找一个档案的话，那么使用 find 会是一个不错的主意。不过，由于 find 在寻找数据的时候相当的耗硬盘，所以没事情不要使用 find 啦！有更棒的指令可以取代呦，那就是 whereis 与 locate 咯~</p>
+</li>
+</ul>
+<h4 id="一些常用命令"><a href="#一些常用命令" class="headerlink" title="一些常用命令"></a>一些常用命令</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1. find . -<span class="built_in">type</span> f -<span class="built_in">exec</span> ls -l &#123;&#125; \;</span><br><span class="line">查找当前路径下的所有普通文件，并把它们列出来。</span><br><span class="line">2. find logs -<span class="built_in">type</span> f -mtime +5 -<span class="built_in">exec</span> rm &#123;&#125; \;</span><br><span class="line">删除logs目录下更新时间为5日以上的文件。</span><br><span class="line">3.find . -name <span class="string">&quot;*.log&quot;</span> -mtime +5 -ok rm &#123;&#125; \;</span><br><span class="line">删除当前路径下以。<span class="built_in">log</span>结尾的五日以上的文件，删除之前要确认。</span><br><span class="line">4. find ~ -<span class="built_in">type</span> f -perm 4755 -<span class="built_in">print</span></span><br><span class="line">查找<span class="variable">$HOME</span>目录下suid位被设置，文件属性为755的文件打印出来。</span><br><span class="line">说明： find在有点系统中会一次性得到将匹配到的文件都传给<span class="built_in">exec</span>，但是有的系统对<span class="built_in">exec</span>的命令长度做限制，就会报：”参数列太长“，这就需要使用xargs。xargs是部分取传来的文件。</span><br><span class="line">5. find / -<span class="built_in">type</span> f -<span class="built_in">print</span> |xargs file</span><br><span class="line">xargs测试文件分类</span><br><span class="line">6. find . -name <span class="string">&quot;core*&quot;</span> -<span class="built_in">print</span>|xargs <span class="built_in">echo</span> <span class="string">&quot; &quot;</span>&gt;/tmp/core.log</span><br><span class="line">将core文件信息查询结果报存到core。<span class="built_in">log</span>日志。</span><br><span class="line">7. find / -<span class="built_in">type</span> f -<span class="built_in">print</span> | xargs chmod o -w</span><br><span class="line">8. find . -name * -<span class="built_in">print</span> |xargs grep <span class="string">&quot;DBO&quot;</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>通用技巧</tag>
+        <tag>find</tag>
       </tags>
   </entry>
   <entry>
@@ -483,45 +483,6 @@
       </categories>
       <tags>
         <tag>架构</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>gdb常用技巧</title>
-    <url>/2020/01/29/2020-01-28-gdb-use/</url>
-    <content><![CDATA[<h4 id="3种启用gdb的方法"><a href="#3种启用gdb的方法" class="headerlink" title="3种启用gdb的方法"></a>3种启用gdb的方法</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1.gdb &lt;program&gt;</span><br><span class="line">2.gdb &lt;program&gt; core</span><br><span class="line">3.gdb &lt;program&gt; &lt;PID&gt;</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-
-<h4 id="命令行参数"><a href="#命令行参数" class="headerlink" title="命令行参数"></a>命令行参数</h4><ul>
-<li>gdb命令行的 -args 参数</li>
-<li>gdb环境中 set args 命令</li>
-</ul>
-<h4 id="gdb中变量"><a href="#gdb中变量" class="headerlink" title="gdb中变量"></a>gdb中变量</h4><p>可以查看运行时的变量，也可以直接设置程序中的变量，以模拟一些很难在测试中出现的情况，比较一些出错，或是switch的分支语句。使用set命令可以修改程序中的变量。</p>
-<p>另外gdb也有变量，gdb的变量以$开头，比如打印数组中的每个元素，可以：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">(gdb) <span class="built_in">set</span> <span class="variable">$i</span> = 0</span><br><span class="line">(gdb) p a[<span class="variable">$i</span>++]</span><br><span class="line">.......</span><br></pre></td></tr></table></figure>
-<p>然后一路回车下去了。</p>
-<h4 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">r                        ============&gt;运行程序， run 命令简写</span><br><span class="line">c                        ============&gt;继续运行程序，<span class="built_in">continue</span>命令缩写</span><br><span class="line">l                        ============&gt;列出源码， list 命令简写</span><br><span class="line">b                        ============&gt;设置断点，具体请看下面一节</span><br><span class="line">info <span class="built_in">break</span>               ============&gt;查看断点信息</span><br><span class="line">n                        ============&gt;单条语句执行，不进入函数，next 命令缩写</span><br><span class="line">s                        ============&gt;单条语句执行，进入函数，step命令缩写</span><br><span class="line">p i                      ============&gt;打印变量值，<span class="built_in">print</span>命令缩写</span><br><span class="line">display i                ============&gt;显示变量值，后面每行都会显示</span><br><span class="line">bt                       ============&gt;查看函数堆栈，backtrace命令缩写</span><br><span class="line">shell &lt;<span class="built_in">command</span> string&gt;   ============&gt;在gdb中运行shell脚本</span><br><span class="line">finish                   ============&gt;退出函数</span><br><span class="line">q                        ============&gt;退出gdb</span><br><span class="line">&lt;enter&gt;                  ============&gt;重复上一条命令</span><br><span class="line">ptype                    ============&gt;显示变量的数据类型</span><br><span class="line">jump line                ============&gt;跳到指定行开始调试</span><br><span class="line"><span class="built_in">set</span> var=exp              ============&gt;设置变量var的值为exp</span><br><span class="line"><span class="built_in">kill</span>                     ============&gt;结束当前程序的调试</span><br><span class="line">x/[n][format][size]  address    ============&gt;查看内存</span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">断点相关</span><br><span class="line"><span class="built_in">break</span> func                      ===============&gt;在函数func入口处设置断点</span><br><span class="line"><span class="built_in">break</span> file.c:100                ===============&gt;在file.c第100行设置断点</span><br><span class="line"><span class="built_in">break</span> [<span class="built_in">where</span>] <span class="keyword">if</span> [condition]    ===============&gt;设置条件断点</span><br><span class="line"><span class="built_in">break</span> file.c:100 thread all     ===============&gt;在file.c文件第100行处，为所有经过这里的线程设置断点</span><br><span class="line">info <span class="built_in">break</span>                      ===============&gt;查看断点列表，会显示id号</span><br><span class="line">delete id                       ===============&gt;删除断点</span><br><span class="line">clear func                      ===============&gt;删除断点，不需要id，格式同<span class="built_in">break</span></span><br><span class="line"><span class="built_in">break</span> xxxxx <span class="keyword">if</span> a==1             ===============&gt;条件断点</span><br><span class="line">condition N COND                ===============&gt;条件断点，N为断点号码，COND为条件</span><br><span class="line">info thread                     ===============&gt;查看thread信息</span><br><span class="line">t &lt;thread id&gt;                   ===============&gt;切换到id进程，thread命令缩写</span><br><span class="line"></span><br><span class="line">在gdb中，有几种暂停方式： 断点（breakpoint），观察点（watchpoint），捕捉点（catchpoint），信号（signals），线程停止（Thread Stops）</span><br><span class="line">在gdb停住时，可以用info program来查看程序是否在运行，进程号，被暂停的原因。可以用<span class="built_in">continue</span>来恢复程序运行</span><br><span class="line"></span><br><span class="line">watch *(<span class="built_in">type</span> *) addr             ================&gt;watch地址addr的改变， <span class="built_in">type</span>为addr实际指向的数据类型</span><br><span class="line">watch  var                       ================&gt;watch变量var的改变</span><br></pre></td></tr></table></figure>
-<h4 id="多线程调试"><a href="#多线程调试" class="headerlink" title="多线程调试"></a>多线程调试</h4><p>1.调试已运行的程序<br>     1）ps查看PID，然后<code>gdb &lt;program PID&gt;</code>挂接正在运行的程序<br>     2）<code>gdb &lt;program&gt;</code>关联上源代码，并进行gdb，在gdb中用<code>attach</code>命令来挂接进程的PID, 用<code>detach</code>来取消挂接的进程。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">info thread 查看当前进程的线程</span><br><span class="line">thread &lt;id&gt; 切换调试的线程为指定id的线程，t &lt;id&gt;</span><br><span class="line"><span class="built_in">break</span> file.c:100 thread all     ===============&gt;在file.c文件第100行处，为所有经过这里的线程设置断点</span><br><span class="line"><span class="built_in">set</span> scheduler-locking off|on|step，在使用step或者<span class="built_in">continue</span>命令调试当前被调试线程的时候，其他线程也是同时执行的，怎么只让被调试线程执行呢？通过这个命令就可以实现这个需求。</span><br><span class="line">     off  不锁定任何线程，也就是所有线程都执行，这是默认值。</span><br><span class="line">     on   只有当前被调试程序会执行。</span><br><span class="line">     step 在单步的时候，除了next过一个函数的情况(熟悉情况的人可能知道，这其实是一个设置断点然后<span class="built_in">continue</span>的行为)以外，只有当前线程会执行。</span><br></pre></td></tr></table></figure>
-
-<h4 id="调试宏"><a href="#调试宏" class="headerlink" title="调试宏"></a>调试宏</h4><p>在gcc编译的时候，加上-ggdb3参数，就可以调试宏了。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">info macro - 查看这个宏在那些文件被引用了，以及宏定义是什么样子的。</span><br><span class="line">macro -      查看宏展开的样子</span><br></pre></td></tr></table></figure>
-<h4 id="自动化调试"><a href="#自动化调试" class="headerlink" title="自动化调试"></a>自动化调试</h4><p>使用command命令，简单的理解一下，其就是把一组gdb的命令打包，有点像字处理软件的“宏”。下面是一个示例：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">(gdb) <span class="built_in">break</span> func</span><br><span class="line">Breakpoint 1 at 0x3475678: file test.c, line 12.</span><br><span class="line">(gdb) commands 1  // 1 是断点号</span><br><span class="line">Type commands <span class="keyword">for</span> when breakpoint 1 is hit, one per line.</span><br><span class="line">End with a line saying just <span class="string">&quot;end&quot;</span>.</span><br><span class="line">&gt;<span class="built_in">print</span> arg1</span><br><span class="line">&gt;<span class="built_in">print</span> arg2</span><br><span class="line">&gt;<span class="built_in">print</span> arg3</span><br><span class="line">&gt;end</span><br><span class="line">(gdb)</span><br><span class="line">当我们的断点到达时，自动执行<span class="built_in">command</span>中的三个命令，把func的三个参数值打出来。</span><br></pre></td></tr></table></figure>
-
-<h4 id="gdb-server"><a href="#gdb-server" class="headerlink" title="gdb server"></a>gdb server</h4><p>这个主要是针对一些没有安装gdb的嵌入式设备</p>
-<p>1）在目标target host上开启gdbserver</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt; gdbserver &lt;target host ip&gt;:2345[这个端口可以自己根据需要设置] <span class="built_in">test</span></span><br></pre></td></tr></table></figure>
-<p>2）到host端，也就是安装有gdb的主机</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt; gdb <span class="built_in">test</span></span><br><span class="line">[&gt; <span class="built_in">set</span> solib-absolute-prefix &lt;gdb directory&gt;]</span><br><span class="line">[&gt; <span class="built_in">set</span> solib-search-path &lt;gdb directory/lib或者其他库文件的路径&gt;]</span><br><span class="line">&gt; target remote &lt;target host ip&gt;:2345</span><br></pre></td></tr></table></figure>
-<p>然后在host端来调试target上的程序</p>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>gdb</tag>
-        <tag>linux</tag>
-        <tag>debug</tag>
       </tags>
   </entry>
   <entry>
@@ -709,6 +670,45 @@
       </tags>
   </entry>
   <entry>
+    <title>gdb常用技巧</title>
+    <url>/2020/01/29/2020-01-28-gdb-use/</url>
+    <content><![CDATA[<h4 id="3种启用gdb的方法"><a href="#3种启用gdb的方法" class="headerlink" title="3种启用gdb的方法"></a>3种启用gdb的方法</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1.gdb &lt;program&gt;</span><br><span class="line">2.gdb &lt;program&gt; core</span><br><span class="line">3.gdb &lt;program&gt; &lt;PID&gt;</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+
+<h4 id="命令行参数"><a href="#命令行参数" class="headerlink" title="命令行参数"></a>命令行参数</h4><ul>
+<li>gdb命令行的 -args 参数</li>
+<li>gdb环境中 set args 命令</li>
+</ul>
+<h4 id="gdb中变量"><a href="#gdb中变量" class="headerlink" title="gdb中变量"></a>gdb中变量</h4><p>可以查看运行时的变量，也可以直接设置程序中的变量，以模拟一些很难在测试中出现的情况，比较一些出错，或是switch的分支语句。使用set命令可以修改程序中的变量。</p>
+<p>另外gdb也有变量，gdb的变量以$开头，比如打印数组中的每个元素，可以：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">(gdb) <span class="built_in">set</span> <span class="variable">$i</span> = 0</span><br><span class="line">(gdb) p a[<span class="variable">$i</span>++]</span><br><span class="line">.......</span><br></pre></td></tr></table></figure>
+<p>然后一路回车下去了。</p>
+<h4 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">r                        ============&gt;运行程序， run 命令简写</span><br><span class="line">c                        ============&gt;继续运行程序，<span class="built_in">continue</span>命令缩写</span><br><span class="line">l                        ============&gt;列出源码， list 命令简写</span><br><span class="line">b                        ============&gt;设置断点，具体请看下面一节</span><br><span class="line">info <span class="built_in">break</span>               ============&gt;查看断点信息</span><br><span class="line">n                        ============&gt;单条语句执行，不进入函数，next 命令缩写</span><br><span class="line">s                        ============&gt;单条语句执行，进入函数，step命令缩写</span><br><span class="line">p i                      ============&gt;打印变量值，<span class="built_in">print</span>命令缩写</span><br><span class="line">display i                ============&gt;显示变量值，后面每行都会显示</span><br><span class="line">bt                       ============&gt;查看函数堆栈，backtrace命令缩写</span><br><span class="line">shell &lt;<span class="built_in">command</span> string&gt;   ============&gt;在gdb中运行shell脚本</span><br><span class="line">finish                   ============&gt;退出函数</span><br><span class="line">q                        ============&gt;退出gdb</span><br><span class="line">&lt;enter&gt;                  ============&gt;重复上一条命令</span><br><span class="line">ptype                    ============&gt;显示变量的数据类型</span><br><span class="line">jump line                ============&gt;跳到指定行开始调试</span><br><span class="line"><span class="built_in">set</span> var=exp              ============&gt;设置变量var的值为exp</span><br><span class="line"><span class="built_in">kill</span>                     ============&gt;结束当前程序的调试</span><br><span class="line">x/[n][format][size]  address    ============&gt;查看内存</span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">断点相关</span><br><span class="line"><span class="built_in">break</span> func                      ===============&gt;在函数func入口处设置断点</span><br><span class="line"><span class="built_in">break</span> file.c:100                ===============&gt;在file.c第100行设置断点</span><br><span class="line"><span class="built_in">break</span> [<span class="built_in">where</span>] <span class="keyword">if</span> [condition]    ===============&gt;设置条件断点</span><br><span class="line"><span class="built_in">break</span> file.c:100 thread all     ===============&gt;在file.c文件第100行处，为所有经过这里的线程设置断点</span><br><span class="line">info <span class="built_in">break</span>                      ===============&gt;查看断点列表，会显示id号</span><br><span class="line">delete id                       ===============&gt;删除断点</span><br><span class="line">clear func                      ===============&gt;删除断点，不需要id，格式同<span class="built_in">break</span></span><br><span class="line"><span class="built_in">break</span> xxxxx <span class="keyword">if</span> a==1             ===============&gt;条件断点</span><br><span class="line">condition N COND                ===============&gt;条件断点，N为断点号码，COND为条件</span><br><span class="line">info thread                     ===============&gt;查看thread信息</span><br><span class="line">t &lt;thread id&gt;                   ===============&gt;切换到id进程，thread命令缩写</span><br><span class="line"></span><br><span class="line">在gdb中，有几种暂停方式： 断点（breakpoint），观察点（watchpoint），捕捉点（catchpoint），信号（signals），线程停止（Thread Stops）</span><br><span class="line">在gdb停住时，可以用info program来查看程序是否在运行，进程号，被暂停的原因。可以用<span class="built_in">continue</span>来恢复程序运行</span><br><span class="line"></span><br><span class="line">watch *(<span class="built_in">type</span> *) addr             ================&gt;watch地址addr的改变， <span class="built_in">type</span>为addr实际指向的数据类型</span><br><span class="line">watch  var                       ================&gt;watch变量var的改变</span><br></pre></td></tr></table></figure>
+<h4 id="多线程调试"><a href="#多线程调试" class="headerlink" title="多线程调试"></a>多线程调试</h4><p>1.调试已运行的程序<br>     1）ps查看PID，然后<code>gdb &lt;program PID&gt;</code>挂接正在运行的程序<br>     2）<code>gdb &lt;program&gt;</code>关联上源代码，并进行gdb，在gdb中用<code>attach</code>命令来挂接进程的PID, 用<code>detach</code>来取消挂接的进程。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">info thread 查看当前进程的线程</span><br><span class="line">thread &lt;id&gt; 切换调试的线程为指定id的线程，t &lt;id&gt;</span><br><span class="line"><span class="built_in">break</span> file.c:100 thread all     ===============&gt;在file.c文件第100行处，为所有经过这里的线程设置断点</span><br><span class="line"><span class="built_in">set</span> scheduler-locking off|on|step，在使用step或者<span class="built_in">continue</span>命令调试当前被调试线程的时候，其他线程也是同时执行的，怎么只让被调试线程执行呢？通过这个命令就可以实现这个需求。</span><br><span class="line">     off  不锁定任何线程，也就是所有线程都执行，这是默认值。</span><br><span class="line">     on   只有当前被调试程序会执行。</span><br><span class="line">     step 在单步的时候，除了next过一个函数的情况(熟悉情况的人可能知道，这其实是一个设置断点然后<span class="built_in">continue</span>的行为)以外，只有当前线程会执行。</span><br></pre></td></tr></table></figure>
+
+<h4 id="调试宏"><a href="#调试宏" class="headerlink" title="调试宏"></a>调试宏</h4><p>在gcc编译的时候，加上-ggdb3参数，就可以调试宏了。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">info macro - 查看这个宏在那些文件被引用了，以及宏定义是什么样子的。</span><br><span class="line">macro -      查看宏展开的样子</span><br></pre></td></tr></table></figure>
+<h4 id="自动化调试"><a href="#自动化调试" class="headerlink" title="自动化调试"></a>自动化调试</h4><p>使用command命令，简单的理解一下，其就是把一组gdb的命令打包，有点像字处理软件的“宏”。下面是一个示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">(gdb) <span class="built_in">break</span> func</span><br><span class="line">Breakpoint 1 at 0x3475678: file test.c, line 12.</span><br><span class="line">(gdb) commands 1  // 1 是断点号</span><br><span class="line">Type commands <span class="keyword">for</span> when breakpoint 1 is hit, one per line.</span><br><span class="line">End with a line saying just <span class="string">&quot;end&quot;</span>.</span><br><span class="line">&gt;<span class="built_in">print</span> arg1</span><br><span class="line">&gt;<span class="built_in">print</span> arg2</span><br><span class="line">&gt;<span class="built_in">print</span> arg3</span><br><span class="line">&gt;end</span><br><span class="line">(gdb)</span><br><span class="line">当我们的断点到达时，自动执行<span class="built_in">command</span>中的三个命令，把func的三个参数值打出来。</span><br></pre></td></tr></table></figure>
+
+<h4 id="gdb-server"><a href="#gdb-server" class="headerlink" title="gdb server"></a>gdb server</h4><p>这个主要是针对一些没有安装gdb的嵌入式设备</p>
+<p>1）在目标target host上开启gdbserver</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt; gdbserver &lt;target host ip&gt;:2345[这个端口可以自己根据需要设置] <span class="built_in">test</span></span><br></pre></td></tr></table></figure>
+<p>2）到host端，也就是安装有gdb的主机</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt; gdb <span class="built_in">test</span></span><br><span class="line">[&gt; <span class="built_in">set</span> solib-absolute-prefix &lt;gdb directory&gt;]</span><br><span class="line">[&gt; <span class="built_in">set</span> solib-search-path &lt;gdb directory/lib或者其他库文件的路径&gt;]</span><br><span class="line">&gt; target remote &lt;target host ip&gt;:2345</span><br></pre></td></tr></table></figure>
+<p>然后在host端来调试target上的程序</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>gdb</tag>
+        <tag>linux</tag>
+        <tag>debug</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>如何写好一封Email</title>
     <url>/2020/01/29/2020-01-29-write-good-email/</url>
     <content><![CDATA[<h3 id="接收人"><a href="#接收人" class="headerlink" title="接收人"></a>接收人</h3><ol>
@@ -879,42 +879,6 @@
       </tags>
   </entry>
   <entry>
-    <title>进程间通信-读写锁</title>
-    <url>/2020/02/04/2020-02-04-ipc-read-write-lock/</url>
-    <content><![CDATA[<p>读写锁是作为pthread_rwlock_t数据类型的变量在内存中分配的。当读写锁是在单个进程内的各个线程间共享时，这些变量可以在那个进程内；<br>当读写锁是在共享某个内存区的进程间共享时，这些变量应该在该共享内存区中。</p>
-<a id="more"></a>
-
-<h3 id="读写锁的分配原则"><a href="#读写锁的分配原则" class="headerlink" title="读写锁的分配原则"></a>读写锁的分配原则</h3><ol>
-<li>只有没有线程持有某个给定的读写锁用于写，那么任意数目的线程可以持有该读写锁用于读</li>
-<li>仅当没有线程持有某个给定的读写锁用于读或写时，才能分配该读写锁用于写。</li>
-</ol>
-<p>某些应用中读数据比修改数据频繁，这些应用可以从改用读写锁代替互斥锁中获益。任意给定时刻允许多个读出者存在提供了更高的并发度，同时在某个写入者修改数据期间保护该数据，以免任何其他读出者或写入者的干扰。<br>读写锁的一个日常类比是访问银行账户。</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_rdlock</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>; <span class="comment">//获取一个读出锁</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_wrlock</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>; <span class="comment">//获取一个写入锁</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_unlock</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_tryrdlock</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_trywrlock</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>;</span><br></pre></td></tr></table></figure>
-<h3 id="读写锁属性"><a href="#读写锁属性" class="headerlink" title="读写锁属性"></a>读写锁属性</h3><ol>
-<li>静态分配的读写锁，可以用常值PTHREAD_\RWLOCK_INITIALIZER来初始化</li>
-<li>调用pthread_rwlock_init来动态初始化</li>
-<li>当一个线程不再需要某个读写锁时，可以调用pthread_rwlock_destroy来销毁它</li>
-</ol>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_init</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr, <span class="keyword">const</span> <span class="keyword">pthread_rwlockattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_destroy</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>;</span><br></pre></td></tr></table></figure>
-<p>数据类型为pthread_rwlockattr_t的某个属性对象一旦初始化，就通过调用不同的函数来启用或禁止特定属性。当前定义了的唯一属性是PTHREAD_PROCESS_SHARED。</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlockattr_getpshared</span><span class="params">(<span class="keyword">const</span> <span class="keyword">pthread_rwlockattr_t</span> *attr, <span class="keyword">int</span> *valptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlockattr_setpshared</span><span class="params">(<span class="keyword">const</span> <span class="keyword">pthread_rwlockattr_t</span> *attr, <span class="keyword">int</span> value)</span></span>;</span><br></pre></td></tr></table></figure>
-<p>value的值可以为PTHREAD_PROCESS_PRIVATE或PTHREAD_PROCESS_SHARED</p>
-<h3 id="线程清理处理程序"><a href="#线程清理处理程序" class="headerlink" title="线程清理处理程序"></a>线程清理处理程序</h3><p>有时候，线程会在持有锁期间被动（被其他线程cancel）或主动终止（主动调用pthread_exit）。为了处理这种情况，线程可以安装或删除清理处理程序</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">pthread_cleanup_push</span><span class="params">(<span class="keyword">void</span> (*function)(<span class="keyword">void</span> *), <span class="keyword">void</span> *arg)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">pthread_cleanup_pop</span><span class="params">(<span class="keyword">int</span> execute)</span></span>; <span class="comment">// 删除调用线程的取消清理栈中位于栈顶的函数。如果excute不为0，就调用该函数</span></span><br></pre></td></tr></table></figure>
-<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>与普通的互斥锁相比，当被保护数据的读访问比写访问更为频繁时，读写锁能够提供更高的并发度。</p>
-<blockquote>
-<p>文中代码托管在: <a href="https://github.com/carl-wang-cn/demo/tree/master/ipc">https://github.com/carl-wang-cn/demo/tree/master/ipc</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>ipc</tag>
-        <tag>多进程</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>进程间通信-Posix信号量</title>
     <url>/2020/02/04/2020-02-04-ipc-posix-sem/</url>
     <content><![CDATA[<h5 id="信号量是一种用于提供不同进程间或一个给定进程的不同线程间同步手段的原语。"><a href="#信号量是一种用于提供不同进程间或一个给定进程的不同线程间同步手段的原语。" class="headerlink" title="信号量是一种用于提供不同进程间或一个给定进程的不同线程间同步手段的原语。"></a>信号量是一种用于提供不同进程间或一个给定进程的不同线程间同步手段的原语。</h5><ul>
@@ -1007,6 +971,100 @@
 <p>服务器可以创建一个共享内存区，在该共享内存区中初始化一个Posix基于内存的信号量，然后终止。一段时间后，一个或多个客户可打开该共享内存区，访问存放在其中的基于内存的信号量。</p>
 </blockquote>
 <p>producer_consumer02.c使用Posix基于内存的信号量，演示了生产者-消费者问题。</p>
+<blockquote>
+<p>文中代码托管在: <a href="https://github.com/carl-wang-cn/demo/tree/master/ipc">https://github.com/carl-wang-cn/demo/tree/master/ipc</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>ipc</tag>
+        <tag>多进程</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>进程间通信-读写锁</title>
+    <url>/2020/02/04/2020-02-04-ipc-read-write-lock/</url>
+    <content><![CDATA[<p>读写锁是作为pthread_rwlock_t数据类型的变量在内存中分配的。当读写锁是在单个进程内的各个线程间共享时，这些变量可以在那个进程内；<br>当读写锁是在共享某个内存区的进程间共享时，这些变量应该在该共享内存区中。</p>
+<a id="more"></a>
+
+<h3 id="读写锁的分配原则"><a href="#读写锁的分配原则" class="headerlink" title="读写锁的分配原则"></a>读写锁的分配原则</h3><ol>
+<li>只有没有线程持有某个给定的读写锁用于写，那么任意数目的线程可以持有该读写锁用于读</li>
+<li>仅当没有线程持有某个给定的读写锁用于读或写时，才能分配该读写锁用于写。</li>
+</ol>
+<p>某些应用中读数据比修改数据频繁，这些应用可以从改用读写锁代替互斥锁中获益。任意给定时刻允许多个读出者存在提供了更高的并发度，同时在某个写入者修改数据期间保护该数据，以免任何其他读出者或写入者的干扰。<br>读写锁的一个日常类比是访问银行账户。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_rdlock</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>; <span class="comment">//获取一个读出锁</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_wrlock</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>; <span class="comment">//获取一个写入锁</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_unlock</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_tryrdlock</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_trywrlock</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>;</span><br></pre></td></tr></table></figure>
+<h3 id="读写锁属性"><a href="#读写锁属性" class="headerlink" title="读写锁属性"></a>读写锁属性</h3><ol>
+<li>静态分配的读写锁，可以用常值PTHREAD_\RWLOCK_INITIALIZER来初始化</li>
+<li>调用pthread_rwlock_init来动态初始化</li>
+<li>当一个线程不再需要某个读写锁时，可以调用pthread_rwlock_destroy来销毁它</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_init</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr, <span class="keyword">const</span> <span class="keyword">pthread_rwlockattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlock_destroy</span><span class="params">(<span class="keyword">pthread_rwlock_t</span> *rwptr)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>数据类型为pthread_rwlockattr_t的某个属性对象一旦初始化，就通过调用不同的函数来启用或禁止特定属性。当前定义了的唯一属性是PTHREAD_PROCESS_SHARED。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlockattr_getpshared</span><span class="params">(<span class="keyword">const</span> <span class="keyword">pthread_rwlockattr_t</span> *attr, <span class="keyword">int</span> *valptr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_rwlockattr_setpshared</span><span class="params">(<span class="keyword">const</span> <span class="keyword">pthread_rwlockattr_t</span> *attr, <span class="keyword">int</span> value)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>value的值可以为PTHREAD_PROCESS_PRIVATE或PTHREAD_PROCESS_SHARED</p>
+<h3 id="线程清理处理程序"><a href="#线程清理处理程序" class="headerlink" title="线程清理处理程序"></a>线程清理处理程序</h3><p>有时候，线程会在持有锁期间被动（被其他线程cancel）或主动终止（主动调用pthread_exit）。为了处理这种情况，线程可以安装或删除清理处理程序</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">pthread_cleanup_push</span><span class="params">(<span class="keyword">void</span> (*function)(<span class="keyword">void</span> *), <span class="keyword">void</span> *arg)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">pthread_cleanup_pop</span><span class="params">(<span class="keyword">int</span> execute)</span></span>; <span class="comment">// 删除调用线程的取消清理栈中位于栈顶的函数。如果excute不为0，就调用该函数</span></span><br></pre></td></tr></table></figure>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>与普通的互斥锁相比，当被保护数据的读访问比写访问更为频繁时，读写锁能够提供更高的并发度。</p>
+<blockquote>
+<p>文中代码托管在: <a href="https://github.com/carl-wang-cn/demo/tree/master/ipc">https://github.com/carl-wang-cn/demo/tree/master/ipc</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>ipc</tag>
+        <tag>多进程</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>进程间通信-共享内存</title>
+    <url>/2020/02/05/2020-02-05-mmap/</url>
+    <content><![CDATA[<p>共享内存区是IPC形式中<strong>最快</strong>的. 一旦这样的内存区映射到共享它的进程的地址<br>空间, 这些进程间数据的传递就不再涉及内核. 然而往该共享内存区存放信息或从<br>中取走信息的进程间通常需要某种形式的同步.</p>
+<a id="more"></a>
+
+<p><strong>再次强调</strong>: 默认情况下fork派生的子进程并不与其父进程共享内存区.</p>
+<p>mmap函数把一个文件或一个Posix共享内存区对象映射到调用进程的地址空间. 使用该<br>函数的3个目的:</p>
+<ol>
+<li>使用普通文件以提供内存映射I/O</li>
+<li>使用特殊文件以提供匿名内存映射</li>
+<li>使用shm_open以提供无亲缘关系进程间的Posix共享内存区</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/mman.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">mmap</span><span class="params">(<span class="keyword">void</span> *addr, <span class="keyword">size_t</span> len, <span class="keyword">int</span> prot, <span class="keyword">int</span> flags, <span class="keyword">int</span> fd, <span class="keyword">off_t</span> offset)</span></span>;</span><br><span class="line">返回: 成功返回被映射区的起始地址, 失败返回MAP_FAILED</span><br><span class="line"></span><br><span class="line">addr 可以指定描述符fd应被映射到的进程内空间的起始地址. 它通常被设为<span class="literal">NULL</span>, 这</span><br><span class="line">     样告诉内核自己去选择起始地址</span><br><span class="line"></span><br><span class="line">len 映射到调用进程地址空间中的字节数, 它从被映射文件开头起第offset个字节处</span><br><span class="line">    开始算. 通常被设置为<span class="number">0</span></span><br><span class="line"></span><br><span class="line">prot 指定内存映射区的保护, 常见值是 PROT_READ | PROT_WRITE</span><br><span class="line">     prot        说明</span><br><span class="line">     PROT_READ   数据可读</span><br><span class="line">     PROT_WRITE  数据可写</span><br><span class="line">     PROT_EXEC   数据可执行</span><br><span class="line">     PROT_NONE   数据不可访问</span><br><span class="line"></span><br><span class="line">flags MAP_SHARED或MAP_PRIVATE这两个标志必须指定一个, 并有选择地 | MAP_FIXED. </span><br><span class="line">      MAP_PRIVATE 调用进程对被映射数据所做的修改只对本进程可见, 而不改变底层</span><br><span class="line">                  支撑对象</span><br><span class="line">      MAP_SHARED  调用进程对被映射数据所做的修改对于共享该对象的所有进程都可</span><br><span class="line">                  见, 而且确实改变了其底层支撑对象</span><br><span class="line">     </span><br><span class="line">      Flags         说明</span><br><span class="line">      MAP_PRIVATE   变动是私自的</span><br><span class="line">      MAP_SHARED    变动是共享的</span><br><span class="line">      MAP_FIXED     准确的解释addr参数</span><br><span class="line"></span><br><span class="line">      从移植性上考虑, MAP_FIXED不应被指定. 可移植性的代码应该把addr置为<span class="literal">NULL</span>,</span><br><span class="line">      不指定MAP_FIXED</span><br><span class="line"></span><br><span class="line">父子进程之间共享内存区的方法之一: 父进程在调用fork之前先指定MAP_SHARED调用mmap.</span><br><span class="line">Posix<span class="number">.1</span>保证父进程中的内存映射关系存留到子进程中.</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">munmap</span><span class="params">(<span class="keyword">void</span> *addr, <span class="keyword">size_t</span> len)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">从某个进程的地址空间删除一个映射关系. munmap后再访问这些地址将会导致想调用进程</span><br><span class="line">产生一个SIGSEGV信号</span><br><span class="line"></span><br><span class="line">如果被映射区是使用MAP_PRIVATE标志映射的, 那么调用进程对它所做的变动都会被丢弃掉.</span><br><span class="line"></span><br><span class="line">addr mmap返回的地址</span><br><span class="line">len  映射区的大小</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">msync</span><span class="params">(<span class="keyword">void</span> *addr, <span class="keyword">size_t</span> len, <span class="keyword">int</span> flags)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">内核的虚拟内存算法保持内存映射文件(一般在硬盘上)与内存映射区(在内存中)的同步,</span><br><span class="line">前提是它是一个MAP_SHARED内存区. 如果我们修改了处于内存映射到某个文件的内存区中</span><br><span class="line">某个位置的内容, 那么内核将在稍后某个时刻相应的更新文件. 然而有时候希望确信硬盘</span><br><span class="line">上的文件内容与内存映射区中的内容一致, 这就需要调用msync来执行这种同步</span><br><span class="line"></span><br><span class="line">addr和len通常指代内存中的整个内存映射区, 不过也可以指定该内存区的一个子集.</span><br><span class="line">flags参数: MS_ASYNC和MS_SYNC必须指定一个, 但不能同时指定</span><br><span class="line">- MS_ASYNC  执行异步写, 一旦写操作由内核排入队列, 立即返回</span><br><span class="line">- MS_SYNC   执行同步写, ........................, 等到写操作完成后才返回</span><br><span class="line">- MS_INVALIDATE 使高速缓存的数据失效. 指定了该flag, 那么与其最终副本不一致的文</span><br><span class="line">            件数据的所有内存中副本都失效, 后续的引用将从文件中取得数据.</span><br><span class="line"></span><br><span class="line">Posix还定义了处理内存管理的<span class="number">4</span>个额外函数</span><br><span class="line">- mlockall会使调用进程的整个内存空间常驻内存. munlockall则撤销这种锁定</span><br><span class="line">- mlcok会是调用进程地址空间的某个指定范围常驻内存, 该函数的参数指定了这个范围的</span><br><span class="line">  起始地址以及从该地址算起的字节数. munlock则撤销某个指定内存区的锁定.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>使用mmap的好处:</p>
+<p>使用内存映射文件所得到的奇妙特性是, 所有的I/O都在内核的掩盖下完成, 我们只需编<br>写存取内存映射区中各个值的代码. 我们决不调用read, write, lseek, 把显示的文件<br>I/O操作变换成存取内存单元, 这样可以简化我们的代码, 有时候还能改善性能</p>
+<p>mmap的另一个用途是在无亲缘关系的进程间提供共享内存区(需指定MAP_SHARED标志).这<br>种情形下, 所映射文件的实际内容成了被共享内存区的初始内容, 而且这些进程对该共享<br>内存区所做的任何变动都复制回所映射的文件(以提供随文件系统的持续性).</p>
+<ul>
+<li>count01.c 父子进程给共享内存区的一个计数器加1, 使用有名信号量</li>
+<li>count02.c 父子进程给共享内存区的一个计数器加1, 使用基于内存的信号量</li>
+</ul>
+<p>内存映射一个普通文件时, 内存映射区的大小(mmap的第二个参数)通常等于该文件的大小.<br>但是文件大小和内存映射区大小可以不同. 我们总是能够访问在当前文件大小以内又在内<br>存映射区以内的那些字节.</p>
+<ul>
+<li>SIGBUS  内存映射区大小 &gt; 文件大小, 访问了超出文件大小的位置但是未超出内存映射区</li>
+<li>SIGSEGV 越界访问内存映射区</li>
+</ul>
+<h3 id="Posix共享内存区"><a href="#Posix共享内存区" class="headerlink" title="Posix共享内存区"></a>Posix共享内存区</h3><hr>
+<p>两者无亲缘关系进程间共享内存区的方法</p>
+<ol>
+<li>内存映射文件. 由open函数打开, 由mmap函数把所得到的描述符映射到当前进程地址空<br>间中的一个文件</li>
+<li>共享内存区对象. 由shm_open打开一个Posix.1 IPC名字, 所返回的描述符由mmap函数<br>映射到当前进程地址空间</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/mman.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">shm_open</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *name, <span class="keyword">int</span> oflag, <span class="keyword">mode_t</span> mode)</span></span>;</span><br><span class="line">返回: 成功返回非负描述符, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">oflag  必须含有O_RDONLY或O_RDWR之一, 还可以有O_CREAT, O_EXCL. 如果 O_RDWR | O_TRUNC,</span><br><span class="line">       而且所需的共享内存区对象已经存在, 那么它将被截断为<span class="number">0</span>长度.</span><br><span class="line">mode   指定权限位, 在O_CREAT时必须指定mode, 未指定O_CREAT时可以mode设为<span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">shm_unlink</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *name)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">shm_unlink删除一个共享内存区对象的名字. 跟所有其他unlink函数(删除文件系统中一个路径名</span><br><span class="line">的unlink, 删除一个Posix消息队列的mq_unlink, 以及删除一个Posix有名信号量的sem_unlink)</span><br><span class="line">一样, 删除一个名字不会影响对于底层支撑对象的现有引用, 知道对于该对象的引用全部关闭为</span><br><span class="line">止. 删除一个名字仅仅防止后续的open, mq_open或sem_open调用取得成功.</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ftruncate</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">off_t</span> length)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">调用ftruncate来指定新创建的共享内存区对象的大小, 或者修改已存在的对象的大小.</span><br><span class="line"></span><br><span class="line">- 对于普通文件: 如果该文件大小大于length, 额外的数据就被丢弃掉, 如果该文件的大小小于</span><br><span class="line">  length, 那么该文件是否修改以及其大小是否增长是未定义的. </span><br><span class="line">  实际上对于一个普通文件, 把它的大小扩展到length字节的可移植办法是:先lseek到偏移为</span><br><span class="line">  length<span class="number">-1</span>处, 然后write <span class="number">1</span>个字节的数据</span><br><span class="line">- 对于共享内存区对象: 把该对象的大小设置成length字节.</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fstat</span><span class="params">(<span class="keyword">int</span> fd, struct stat *buf)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stat</span>有12个或以上的成员, 但是当<span class="title">fd</span>指代一个共享内存区对象时, 只有4个成员含有信息</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stat</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">mode_t</span> st_mode;  <span class="comment">// mode: S_I&#123;RW&#125;&#123;USR, GRP, OTH&#125;</span></span><br><span class="line">    <span class="keyword">uid_t</span>  st_uid;   <span class="comment">// user id of owner</span></span><br><span class="line">    <span class="keyword">gid_t</span>  st_gid;   <span class="comment">// group id of owner</span></span><br><span class="line">    <span class="keyword">off_t</span>  st_size;  <span class="comment">// size in bytes</span></span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>shmcreate.c 创建一个具有指定大小的Posix共享内存区对象</li>
+<li>shmunlink.c 删除一个共享内存区对象的名字</li>
+<li>shmwrite.c  打开一个共享内存区对象, 填写一个数据模式</li>
+<li>shmread.c   打开一个共享内存区对象, 验证其数据模式</li>
+</ul>
+<p>同一个共享内存区对象内存映射到不同进程的地址空间时, 起始地址可以不同.</p>
+<ul>
+<li>count03_server.c 创建并初始化共享内存区和信号量的程序</li>
+<li>count03_client.c 给存放在共享内存区中的一个计数器加1, 测试的时候可以启动多个client来观察效果</li>
+<li>cosumer.c 从共享内存区中取得并输出消息</li>
+<li>producer.c 在共享内存区存放消息</li>
+</ul>
 <blockquote>
 <p>文中代码托管在: <a href="https://github.com/carl-wang-cn/demo/tree/master/ipc">https://github.com/carl-wang-cn/demo/tree/master/ipc</a></p>
 </blockquote>
@@ -1407,64 +1465,6 @@
       </tags>
   </entry>
   <entry>
-    <title>进程间通信-共享内存</title>
-    <url>/2020/02/05/2020-02-05-mmap/</url>
-    <content><![CDATA[<p>共享内存区是IPC形式中<strong>最快</strong>的. 一旦这样的内存区映射到共享它的进程的地址<br>空间, 这些进程间数据的传递就不再涉及内核. 然而往该共享内存区存放信息或从<br>中取走信息的进程间通常需要某种形式的同步.</p>
-<a id="more"></a>
-
-<p><strong>再次强调</strong>: 默认情况下fork派生的子进程并不与其父进程共享内存区.</p>
-<p>mmap函数把一个文件或一个Posix共享内存区对象映射到调用进程的地址空间. 使用该<br>函数的3个目的:</p>
-<ol>
-<li>使用普通文件以提供内存映射I/O</li>
-<li>使用特殊文件以提供匿名内存映射</li>
-<li>使用shm_open以提供无亲缘关系进程间的Posix共享内存区</li>
-</ol>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/mman.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">mmap</span><span class="params">(<span class="keyword">void</span> *addr, <span class="keyword">size_t</span> len, <span class="keyword">int</span> prot, <span class="keyword">int</span> flags, <span class="keyword">int</span> fd, <span class="keyword">off_t</span> offset)</span></span>;</span><br><span class="line">返回: 成功返回被映射区的起始地址, 失败返回MAP_FAILED</span><br><span class="line"></span><br><span class="line">addr 可以指定描述符fd应被映射到的进程内空间的起始地址. 它通常被设为<span class="literal">NULL</span>, 这</span><br><span class="line">     样告诉内核自己去选择起始地址</span><br><span class="line"></span><br><span class="line">len 映射到调用进程地址空间中的字节数, 它从被映射文件开头起第offset个字节处</span><br><span class="line">    开始算. 通常被设置为<span class="number">0</span></span><br><span class="line"></span><br><span class="line">prot 指定内存映射区的保护, 常见值是 PROT_READ | PROT_WRITE</span><br><span class="line">     prot        说明</span><br><span class="line">     PROT_READ   数据可读</span><br><span class="line">     PROT_WRITE  数据可写</span><br><span class="line">     PROT_EXEC   数据可执行</span><br><span class="line">     PROT_NONE   数据不可访问</span><br><span class="line"></span><br><span class="line">flags MAP_SHARED或MAP_PRIVATE这两个标志必须指定一个, 并有选择地 | MAP_FIXED. </span><br><span class="line">      MAP_PRIVATE 调用进程对被映射数据所做的修改只对本进程可见, 而不改变底层</span><br><span class="line">                  支撑对象</span><br><span class="line">      MAP_SHARED  调用进程对被映射数据所做的修改对于共享该对象的所有进程都可</span><br><span class="line">                  见, 而且确实改变了其底层支撑对象</span><br><span class="line">     </span><br><span class="line">      Flags         说明</span><br><span class="line">      MAP_PRIVATE   变动是私自的</span><br><span class="line">      MAP_SHARED    变动是共享的</span><br><span class="line">      MAP_FIXED     准确的解释addr参数</span><br><span class="line"></span><br><span class="line">      从移植性上考虑, MAP_FIXED不应被指定. 可移植性的代码应该把addr置为<span class="literal">NULL</span>,</span><br><span class="line">      不指定MAP_FIXED</span><br><span class="line"></span><br><span class="line">父子进程之间共享内存区的方法之一: 父进程在调用fork之前先指定MAP_SHARED调用mmap.</span><br><span class="line">Posix<span class="number">.1</span>保证父进程中的内存映射关系存留到子进程中.</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">munmap</span><span class="params">(<span class="keyword">void</span> *addr, <span class="keyword">size_t</span> len)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">从某个进程的地址空间删除一个映射关系. munmap后再访问这些地址将会导致想调用进程</span><br><span class="line">产生一个SIGSEGV信号</span><br><span class="line"></span><br><span class="line">如果被映射区是使用MAP_PRIVATE标志映射的, 那么调用进程对它所做的变动都会被丢弃掉.</span><br><span class="line"></span><br><span class="line">addr mmap返回的地址</span><br><span class="line">len  映射区的大小</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">msync</span><span class="params">(<span class="keyword">void</span> *addr, <span class="keyword">size_t</span> len, <span class="keyword">int</span> flags)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">内核的虚拟内存算法保持内存映射文件(一般在硬盘上)与内存映射区(在内存中)的同步,</span><br><span class="line">前提是它是一个MAP_SHARED内存区. 如果我们修改了处于内存映射到某个文件的内存区中</span><br><span class="line">某个位置的内容, 那么内核将在稍后某个时刻相应的更新文件. 然而有时候希望确信硬盘</span><br><span class="line">上的文件内容与内存映射区中的内容一致, 这就需要调用msync来执行这种同步</span><br><span class="line"></span><br><span class="line">addr和len通常指代内存中的整个内存映射区, 不过也可以指定该内存区的一个子集.</span><br><span class="line">flags参数: MS_ASYNC和MS_SYNC必须指定一个, 但不能同时指定</span><br><span class="line">- MS_ASYNC  执行异步写, 一旦写操作由内核排入队列, 立即返回</span><br><span class="line">- MS_SYNC   执行同步写, ........................, 等到写操作完成后才返回</span><br><span class="line">- MS_INVALIDATE 使高速缓存的数据失效. 指定了该flag, 那么与其最终副本不一致的文</span><br><span class="line">            件数据的所有内存中副本都失效, 后续的引用将从文件中取得数据.</span><br><span class="line"></span><br><span class="line">Posix还定义了处理内存管理的<span class="number">4</span>个额外函数</span><br><span class="line">- mlockall会使调用进程的整个内存空间常驻内存. munlockall则撤销这种锁定</span><br><span class="line">- mlcok会是调用进程地址空间的某个指定范围常驻内存, 该函数的参数指定了这个范围的</span><br><span class="line">  起始地址以及从该地址算起的字节数. munlock则撤销某个指定内存区的锁定.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>使用mmap的好处:</p>
-<p>使用内存映射文件所得到的奇妙特性是, 所有的I/O都在内核的掩盖下完成, 我们只需编<br>写存取内存映射区中各个值的代码. 我们决不调用read, write, lseek, 把显示的文件<br>I/O操作变换成存取内存单元, 这样可以简化我们的代码, 有时候还能改善性能</p>
-<p>mmap的另一个用途是在无亲缘关系的进程间提供共享内存区(需指定MAP_SHARED标志).这<br>种情形下, 所映射文件的实际内容成了被共享内存区的初始内容, 而且这些进程对该共享<br>内存区所做的任何变动都复制回所映射的文件(以提供随文件系统的持续性).</p>
-<ul>
-<li>count01.c 父子进程给共享内存区的一个计数器加1, 使用有名信号量</li>
-<li>count02.c 父子进程给共享内存区的一个计数器加1, 使用基于内存的信号量</li>
-</ul>
-<p>内存映射一个普通文件时, 内存映射区的大小(mmap的第二个参数)通常等于该文件的大小.<br>但是文件大小和内存映射区大小可以不同. 我们总是能够访问在当前文件大小以内又在内<br>存映射区以内的那些字节.</p>
-<ul>
-<li>SIGBUS  内存映射区大小 &gt; 文件大小, 访问了超出文件大小的位置但是未超出内存映射区</li>
-<li>SIGSEGV 越界访问内存映射区</li>
-</ul>
-<h3 id="Posix共享内存区"><a href="#Posix共享内存区" class="headerlink" title="Posix共享内存区"></a>Posix共享内存区</h3><hr>
-<p>两者无亲缘关系进程间共享内存区的方法</p>
-<ol>
-<li>内存映射文件. 由open函数打开, 由mmap函数把所得到的描述符映射到当前进程地址空<br>间中的一个文件</li>
-<li>共享内存区对象. 由shm_open打开一个Posix.1 IPC名字, 所返回的描述符由mmap函数<br>映射到当前进程地址空间</li>
-</ol>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/mman.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">shm_open</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *name, <span class="keyword">int</span> oflag, <span class="keyword">mode_t</span> mode)</span></span>;</span><br><span class="line">返回: 成功返回非负描述符, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">oflag  必须含有O_RDONLY或O_RDWR之一, 还可以有O_CREAT, O_EXCL. 如果 O_RDWR | O_TRUNC,</span><br><span class="line">       而且所需的共享内存区对象已经存在, 那么它将被截断为<span class="number">0</span>长度.</span><br><span class="line">mode   指定权限位, 在O_CREAT时必须指定mode, 未指定O_CREAT时可以mode设为<span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">shm_unlink</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *name)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">shm_unlink删除一个共享内存区对象的名字. 跟所有其他unlink函数(删除文件系统中一个路径名</span><br><span class="line">的unlink, 删除一个Posix消息队列的mq_unlink, 以及删除一个Posix有名信号量的sem_unlink)</span><br><span class="line">一样, 删除一个名字不会影响对于底层支撑对象的现有引用, 知道对于该对象的引用全部关闭为</span><br><span class="line">止. 删除一个名字仅仅防止后续的open, mq_open或sem_open调用取得成功.</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ftruncate</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">off_t</span> length)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">调用ftruncate来指定新创建的共享内存区对象的大小, 或者修改已存在的对象的大小.</span><br><span class="line"></span><br><span class="line">- 对于普通文件: 如果该文件大小大于length, 额外的数据就被丢弃掉, 如果该文件的大小小于</span><br><span class="line">  length, 那么该文件是否修改以及其大小是否增长是未定义的. </span><br><span class="line">  实际上对于一个普通文件, 把它的大小扩展到length字节的可移植办法是:先lseek到偏移为</span><br><span class="line">  length<span class="number">-1</span>处, 然后write <span class="number">1</span>个字节的数据</span><br><span class="line">- 对于共享内存区对象: 把该对象的大小设置成length字节.</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fstat</span><span class="params">(<span class="keyword">int</span> fd, struct stat *buf)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>, 失败返回<span class="number">-1</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stat</span>有12个或以上的成员, 但是当<span class="title">fd</span>指代一个共享内存区对象时, 只有4个成员含有信息</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stat</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">mode_t</span> st_mode;  <span class="comment">// mode: S_I&#123;RW&#125;&#123;USR, GRP, OTH&#125;</span></span><br><span class="line">    <span class="keyword">uid_t</span>  st_uid;   <span class="comment">// user id of owner</span></span><br><span class="line">    <span class="keyword">gid_t</span>  st_gid;   <span class="comment">// group id of owner</span></span><br><span class="line">    <span class="keyword">off_t</span>  st_size;  <span class="comment">// size in bytes</span></span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<ul>
-<li>shmcreate.c 创建一个具有指定大小的Posix共享内存区对象</li>
-<li>shmunlink.c 删除一个共享内存区对象的名字</li>
-<li>shmwrite.c  打开一个共享内存区对象, 填写一个数据模式</li>
-<li>shmread.c   打开一个共享内存区对象, 验证其数据模式</li>
-</ul>
-<p>同一个共享内存区对象内存映射到不同进程的地址空间时, 起始地址可以不同.</p>
-<ul>
-<li>count03_server.c 创建并初始化共享内存区和信号量的程序</li>
-<li>count03_client.c 给存放在共享内存区中的一个计数器加1, 测试的时候可以启动多个client来观察效果</li>
-<li>cosumer.c 从共享内存区中取得并输出消息</li>
-<li>producer.c 在共享内存区存放消息</li>
-</ul>
-<blockquote>
-<p>文中代码托管在: <a href="https://github.com/carl-wang-cn/demo/tree/master/ipc">https://github.com/carl-wang-cn/demo/tree/master/ipc</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>ipc</tag>
-        <tag>多进程</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>proto buffer MergeFrom的坑</title>
     <url>/2020/03/17/2020-03-17-donot-use-pb-mergefrom/</url>
     <content><![CDATA[<p>pb好用, 性能虽然比不上二进制, 不过也比json在大多数情况下还是好很多. 尤其是字段的向前向后兼容, 这一点应该也是大多数同学选用pb的原因. 然后终于<strong>掉进坑</strong>了, 严重得影响了一次线上服务.<br>整理测试程序的时候发现, python的官方指南压根就没提MergeFrom这个接口, 看起来是专门用来坑c++的兄弟的啊</p>
@@ -1477,6 +1477,42 @@
 <h5 id="3-用write-new-py程序创建一个address-book对象并写入文件-输出结果如下"><a href="#3-用write-new-py程序创建一个address-book对象并写入文件-输出结果如下" class="headerlink" title="3. 用write_new.py程序创建一个address_book对象并写入文件, 输出结果如下:"></a>3. 用write_new.py程序创建一个address_book对象并写入文件, 输出结果如下:</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[carl pb_mergefrom_trap]$ python write_new.py addressbook</span><br><span class="line">address_book: host_name: <span class="string">&quot;carl&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 30</span><br><span class="line">new1: 1</span><br><span class="line">new2: 2</span><br><span class="line">&#125;</span><br><span class="line">new3: 3</span><br><span class="line">new4: 4</span><br></pre></td></tr></table></figure>
 <h5 id="4-执行上面c-的bin文件"><a href="#4-执行上面c-的bin文件" class="headerlink" title="4. 执行上面c++的bin文件"></a>4. 执行上面c++的bin文件</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[carl pb_mergefrom_trap]$ ./read_new_write_old.bin addressbook</span><br><span class="line">book: host_name: <span class="string">&quot;carl&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 30</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_update_mergefrom&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_update_mergefrom&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_update_mergefrom&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_update_mergefrom&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_update_mergefrom&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br></pre></td></tr></table></figure>
 <h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>由上测试结果可以看出, 一个使用了旧proto的c++程序, 在调用mergefrom的时候, 那2个unknown的字段不是覆盖回原来已有的字段上, 而是<strong>新增</strong>了. 连续调用几次, 这个是指数级增长的. 这会导致serialize出来的bin文件大小指数级增长, 然后会影响到进程, 在Parse和Serialize的时候, 函数调用会阻塞几十秒甚至几分钟, 网络流量也会剧增, 这对一个生产服务器可以说是致命的, 血淋淋的教训啊.<br>以上文件托管在<br><a href="https://github.com/carl-wang-cn/demo/tree/master/testcode/pb_mergefrom_trap">github/demo/tree/master/testcode/pb_mergefrom_trap</a></p>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>记录一次因为redis aof rewrite重写导致的运维事故</title>
+    <url>/2020/03/17/2020-03-17-redis-aof-disaster/</url>
+    <content><![CDATA[<h2 id="事情起因"><a href="#事情起因" class="headerlink" title="事情起因"></a>事情起因</h2><p>redis master 所在物理机A, 物理内存16G, aof rewrite 被触发时, aof文件已达12G, redis的默认配置触发了后台的rewrite进程, 内存占用达到了50%, 已严重影响到redis的正常访问. 而此时距离美股交易开盘只剩1小时.</p>
+<a id="more"></a>
+
+<h2 id="处理过程"><a href="#处理过程" class="headerlink" title="处理过程"></a>处理过程</h2><h4 id="跟server组几名同事-carl-shilinchen-echo-jiezhao-zhiguocai-一起理清楚问题现状"><a href="#跟server组几名同事-carl-shilinchen-echo-jiezhao-zhiguocai-一起理清楚问题现状" class="headerlink" title="跟server组几名同事(carl, shilinchen, echo, jiezhao, zhiguocai)一起理清楚问题现状"></a>跟server组几名同事(carl, shilinchen, echo, jiezhao, zhiguocai)一起理清楚问题现状</h4><ol>
+<li>redis slave的数据是完整的, 1小时内不会有写入请求</li>
+<li>aof rewrite进程已运行2小时, 是否能在1小时内运行完毕不可控</li>
+<li>aof rewrite进程, 即使在1小时内运行完, 不确认是否会马上触发第2次rewrite</li>
+</ol>
+<h4 id="整理方案如下"><a href="#整理方案如下" class="headerlink" title="整理方案如下:"></a>整理方案如下:</h4><ol>
+<li>将物理机B的redis slave切换为master, 使其跟现有物理机A的redis脱离master-slave关系</li>
+<li>对生产环境的hosts文件修改, 使hosts中配置的域名指向新的master</li>
+<li>重启相关进程, 使其连接到新的redis master</li>
+<li>测试白名单账号验证服务正常</li>
+<li>stop原来物理机A上的旧master进行, 暂时保留现场不动</li>
+<li>第2天, 交易收盘后, 清理redis中的历史数据</li>
+<li>周末进一步处理<blockquote>
+<ol>
+<li>新准备好下一交易日的uinfo和margin相关数据</li>
+<li>将物理机A的redis配置为物理机B新master的slave</li>
+<li>重命名该redis配置路径的aof文件</li>
+<li>重启该redis, 使该redis从0开始从物理机A的redis master进行数据同步</li>
+<li>手动触发物理机B的redis master的aof rewrite, 此过程完成后, aof文件从10G变为1.5G</li>
+</ol>
+</blockquote>
+</li>
+<li>补齐定期删除历史数据的server逻辑</li>
+</ol>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>交易系统和风控系统经过重新设计, 进行了重构, redis已经是过去时了, 不过曾经踩过的这个坑希望能记录下来, 让我们时时警示一下.</p>
 ]]></content>
       <categories>
         <category>技术</category>
@@ -1534,62 +1570,6 @@
       </categories>
   </entry>
   <entry>
-    <title>记录一次因为redis aof rewrite重写导致的运维事故</title>
-    <url>/2020/03/17/2020-03-17-redis-aof-disaster/</url>
-    <content><![CDATA[<h2 id="事情起因"><a href="#事情起因" class="headerlink" title="事情起因"></a>事情起因</h2><p>redis master 所在物理机A, 物理内存16G, aof rewrite 被触发时, aof文件已达12G, redis的默认配置触发了后台的rewrite进程, 内存占用达到了50%, 已严重影响到redis的正常访问. 而此时距离美股交易开盘只剩1小时.</p>
-<a id="more"></a>
-
-<h2 id="处理过程"><a href="#处理过程" class="headerlink" title="处理过程"></a>处理过程</h2><h4 id="跟server组几名同事-carl-shilinchen-echo-jiezhao-zhiguocai-一起理清楚问题现状"><a href="#跟server组几名同事-carl-shilinchen-echo-jiezhao-zhiguocai-一起理清楚问题现状" class="headerlink" title="跟server组几名同事(carl, shilinchen, echo, jiezhao, zhiguocai)一起理清楚问题现状"></a>跟server组几名同事(carl, shilinchen, echo, jiezhao, zhiguocai)一起理清楚问题现状</h4><ol>
-<li>redis slave的数据是完整的, 1小时内不会有写入请求</li>
-<li>aof rewrite进程已运行2小时, 是否能在1小时内运行完毕不可控</li>
-<li>aof rewrite进程, 即使在1小时内运行完, 不确认是否会马上触发第2次rewrite</li>
-</ol>
-<h4 id="整理方案如下"><a href="#整理方案如下" class="headerlink" title="整理方案如下:"></a>整理方案如下:</h4><ol>
-<li>将物理机B的redis slave切换为master, 使其跟现有物理机A的redis脱离master-slave关系</li>
-<li>对生产环境的hosts文件修改, 使hosts中配置的域名指向新的master</li>
-<li>重启相关进程, 使其连接到新的redis master</li>
-<li>测试白名单账号验证服务正常</li>
-<li>stop原来物理机A上的旧master进行, 暂时保留现场不动</li>
-<li>第2天, 交易收盘后, 清理redis中的历史数据</li>
-<li>周末进一步处理<blockquote>
-<ol>
-<li>新准备好下一交易日的uinfo和margin相关数据</li>
-<li>将物理机A的redis配置为物理机B新master的slave</li>
-<li>重命名该redis配置路径的aof文件</li>
-<li>重启该redis, 使该redis从0开始从物理机A的redis master进行数据同步</li>
-<li>手动触发物理机B的redis master的aof rewrite, 此过程完成后, aof文件从10G变为1.5G</li>
-</ol>
-</blockquote>
-</li>
-<li>补齐定期删除历史数据的server逻辑</li>
-</ol>
-<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>交易系统和风控系统经过重新设计, 进行了重构, redis已经是过去时了, 不过曾经踩过的这个坑希望能记录下来, 让我们时时警示一下.</p>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>When issued 预发行交易</title>
-    <url>/2020/05/28/When-issued/</url>
-    <content><![CDATA[<h3 id="What-Does-“When-Issued”-Mean"><a href="#What-Does-“When-Issued”-Mean" class="headerlink" title="What Does “When Issued” Mean?"></a>What Does “When Issued” Mean?</h3><p>When issued (WI) is a transaction that is made conditionally because a security has been authorized but not yet issued. Treasury securities, stock splits, and new issues of stocks and bonds are all traded on a When-issued basis. Prior to a new issue’s offering, underwriters solicit potential investors who may elect to book an order to purchase a portion of the new issue.</p>
-<p>WI是有条件的交易，因为证券已被授权但尚未发行。短期国库券，股票拆合股以及股票和债券的新发行都是基于WI来进行交易。在发行新股（IPO）之前，承销商会招募潜在的投资者，他们可能会选择购买一点新发行的证券。</p>
-<a id="more"></a>
-
-<h3 id="Understanding-When-Issued"><a href="#Understanding-When-Issued" class="headerlink" title="Understanding When Issued"></a>Understanding When Issued</h3><p>When-issued orders are made conditionally because they may not be completed, particularly in the event the offering is canceled. Orders, when issued, are sometimes called orders “with ice” or orders “when distributed.” The term is short for “when, as and if issued.”</p>
-<p>Securities trade on a When-issued basis when they have been announced but not yet issued. The transaction is settled only after the security has been issued. A When-issued market exists where When-issued instruments are traded. When-issued markets can provide an indication regarding the level of interest that a new issue may attract. When-issued transactions are dependent upon the actual security being issued and the exchange or National Association of Securities Dealers ruling that the transaction is settled.</p>
-<p>When-issued订单之所有<strong>有条件</strong>是由于它们可能不会完成，特别是发行（例如IPO）被取消的情况下。When-issued订单有时也被称为“with ice”订单或“when distributed”订单。该术语是“when, as and if issued”的缩写。</p>
-<p>宣布但是还未发行的证券，是要基于When-issued来交易的。这些交易只有在证券被发行后才会被结算。存在一个专门用来交易When-issued产品的所谓的When-issued市场，这个市场可以给一个信号，看一下这个新发行的证券在市场上对投资者有多大的吸引力。When-issued交易取决于实际发行的证券，以及决定这笔交易可结算的交易所或国际证券商协会（这句话英文好像很别扭）。</p>
-<h3 id="Benefits-of-When-Issued"><a href="#Benefits-of-When-Issued" class="headerlink" title="Benefits of When Issued"></a>Benefits of When Issued</h3><p>When issued sheds light on the demand for securities and can, therefore, attract investors who would otherwise sit out bidding for the securities for fear of a volatile market. Thus, when issued can decrease volatility when the securities are actually issued because investors have confidence in the level of demand for the securities in question. When issued helps develop the market for a new security by attracting investors, and it also offers investors liquidity prior to the actual distribution of the securities in question, allowing them to monetize financial assets more readily.</p>
-<p>When-issued阐明了对证券的需求，因此也能够吸引到那些因担心市场动荡而原本会竞购证券的投资者。因此，由于投资者对证券的需求量水平有信心（不担心IPO时股票卖不出去呗），When-issued可以减少证券真正发行时的波动性。When-issued通过吸引投资者来开拓信证券的市场，也可以在证券真正发行之前给投资者优先提供流动性，使他们更容易将金融资产货币化。</p>
-<h3 id="Example-of-When-Issued"><a href="#Example-of-When-Issued" class="headerlink" title="Example of When Issued"></a>Example of When Issued</h3><p>An industrial conglomerate wants to spin off its chemicals division due to its drag on earnings and low margins. In order to effectuate the spinoff, the conglomerate plans to pay its shareholders a dividend in the form of stock of the new chemicals divisions company. After the record date, the date on which holders of the conglomerate’s stock are entitled to receive stock in the spinoff, the conglomerate’s shareholders can effectively begin trading the right to receive shares in the spinoff on a When-issued basis. Those shareholders who buy the rights but do not hold shares of the conglomerate on the distribution date, the date in which the actual shares in the spinoff are issued and begin trading, receive their shares in the spinoff, and the When-issued market ceases.</p>
-<p>一家工业企业集团化学品部门因为拖累了集团的利润，因此集团决定剥离这个部门。为了完成剥离，该企业集团计划用新化学部门的股票向其股东支付股息。在登记日期（就是我找个小本本记一下你有权利分得这个股息了，我记小本本的这天，不是真正给你股票那天）之后，集团的股东就可以基于When-issued交易获得分拆股票的权利。那些买了这些权利，但是在实际发股票并开始股票交易那天，不实际持有集团股票的股东，会收到他们的股票，同时，When-issued市场停止交易。</p>
-]]></content>
-      <categories>
-        <category>金融</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Wash Trading</title>
     <url>/2022/01/22/Wash-Trading/</url>
     <content><![CDATA[<p>Wash Trading</p>
@@ -1614,6 +1594,26 @@
 ]]></content>
       <categories>
         <category>金融知识分享</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>When issued 预发行交易</title>
+    <url>/2020/05/28/When-issued/</url>
+    <content><![CDATA[<h3 id="What-Does-“When-Issued”-Mean"><a href="#What-Does-“When-Issued”-Mean" class="headerlink" title="What Does “When Issued” Mean?"></a>What Does “When Issued” Mean?</h3><p>When issued (WI) is a transaction that is made conditionally because a security has been authorized but not yet issued. Treasury securities, stock splits, and new issues of stocks and bonds are all traded on a When-issued basis. Prior to a new issue’s offering, underwriters solicit potential investors who may elect to book an order to purchase a portion of the new issue.</p>
+<p>WI是有条件的交易，因为证券已被授权但尚未发行。短期国库券，股票拆合股以及股票和债券的新发行都是基于WI来进行交易。在发行新股（IPO）之前，承销商会招募潜在的投资者，他们可能会选择购买一点新发行的证券。</p>
+<a id="more"></a>
+
+<h3 id="Understanding-When-Issued"><a href="#Understanding-When-Issued" class="headerlink" title="Understanding When Issued"></a>Understanding When Issued</h3><p>When-issued orders are made conditionally because they may not be completed, particularly in the event the offering is canceled. Orders, when issued, are sometimes called orders “with ice” or orders “when distributed.” The term is short for “when, as and if issued.”</p>
+<p>Securities trade on a When-issued basis when they have been announced but not yet issued. The transaction is settled only after the security has been issued. A When-issued market exists where When-issued instruments are traded. When-issued markets can provide an indication regarding the level of interest that a new issue may attract. When-issued transactions are dependent upon the actual security being issued and the exchange or National Association of Securities Dealers ruling that the transaction is settled.</p>
+<p>When-issued订单之所有<strong>有条件</strong>是由于它们可能不会完成，特别是发行（例如IPO）被取消的情况下。When-issued订单有时也被称为“with ice”订单或“when distributed”订单。该术语是“when, as and if issued”的缩写。</p>
+<p>宣布但是还未发行的证券，是要基于When-issued来交易的。这些交易只有在证券被发行后才会被结算。存在一个专门用来交易When-issued产品的所谓的When-issued市场，这个市场可以给一个信号，看一下这个新发行的证券在市场上对投资者有多大的吸引力。When-issued交易取决于实际发行的证券，以及决定这笔交易可结算的交易所或国际证券商协会（这句话英文好像很别扭）。</p>
+<h3 id="Benefits-of-When-Issued"><a href="#Benefits-of-When-Issued" class="headerlink" title="Benefits of When Issued"></a>Benefits of When Issued</h3><p>When issued sheds light on the demand for securities and can, therefore, attract investors who would otherwise sit out bidding for the securities for fear of a volatile market. Thus, when issued can decrease volatility when the securities are actually issued because investors have confidence in the level of demand for the securities in question. When issued helps develop the market for a new security by attracting investors, and it also offers investors liquidity prior to the actual distribution of the securities in question, allowing them to monetize financial assets more readily.</p>
+<p>When-issued阐明了对证券的需求，因此也能够吸引到那些因担心市场动荡而原本会竞购证券的投资者。因此，由于投资者对证券的需求量水平有信心（不担心IPO时股票卖不出去呗），When-issued可以减少证券真正发行时的波动性。When-issued通过吸引投资者来开拓信证券的市场，也可以在证券真正发行之前给投资者优先提供流动性，使他们更容易将金融资产货币化。</p>
+<h3 id="Example-of-When-Issued"><a href="#Example-of-When-Issued" class="headerlink" title="Example of When Issued"></a>Example of When Issued</h3><p>An industrial conglomerate wants to spin off its chemicals division due to its drag on earnings and low margins. In order to effectuate the spinoff, the conglomerate plans to pay its shareholders a dividend in the form of stock of the new chemicals divisions company. After the record date, the date on which holders of the conglomerate’s stock are entitled to receive stock in the spinoff, the conglomerate’s shareholders can effectively begin trading the right to receive shares in the spinoff on a When-issued basis. Those shareholders who buy the rights but do not hold shares of the conglomerate on the distribution date, the date in which the actual shares in the spinoff are issued and begin trading, receive their shares in the spinoff, and the When-issued market ceases.</p>
+<p>一家工业企业集团化学品部门因为拖累了集团的利润，因此集团决定剥离这个部门。为了完成剥离，该企业集团计划用新化学部门的股票向其股东支付股息。在登记日期（就是我找个小本本记一下你有权利分得这个股息了，我记小本本的这天，不是真正给你股票那天）之后，集团的股东就可以基于When-issued交易获得分拆股票的权利。那些买了这些权利，但是在实际发股票并开始股票交易那天，不实际持有集团股票的股东，会收到他们的股票，同时，When-issued市场停止交易。</p>
+]]></content>
+      <categories>
+        <category>金融</category>
       </categories>
   </entry>
   <entry>
@@ -1695,6 +1695,28 @@
       <categories>
         <category>team</category>
       </categories>
+  </entry>
+  <entry>
+    <title>对确定性，你怎么理解？</title>
+    <url>/2023/02/14/certainty/</url>
+    <content><![CDATA[<h1 id="对确定性，你怎么理解？"><a href="#对确定性，你怎么理解？" class="headerlink" title="对确定性，你怎么理解？"></a>对确定性，你怎么理解？</h1><p>如果你100%确定未来1周某股票会拉升50%，那么你会毫不犹豫加满杠杆，把能借到的钱全都借来，满仓等涨发财。但是如果这个确定性只有75%呢，你会怎么做？恐怕不加杠杆，只是把手头的现金全部买入都会犹豫半天吧。</p>
+<a id="more"></a>
+
+<p>如果社会的某个政策会维持10年不变，或者这个政策在10年内会有不断调整甚至掉头，假设你是个企业家，<strong>针对这两种不确定性，你会分别怎么做</strong>？你会押上身家性命去在这个行业做一家企业吗？（先不说创业是九死一生的事情）如果你是个VC，针对这两种确定性，你又会怎么去做投资？你会去重金投资这个赛道吗？</p>
+<p>然而，我们当今的社会，我们所处的行业，我们要遵守的行业规条，我们面对的营商环境甚至生活环境，<strong>统统都不是100%确定不变的</strong>。所有的东西，都是活在概率论这个逻辑的下面，这也是澳门菠菜行业赖以生存的底层规律。我们唯一可以100%确定的，就是不确定性的存在，我们必须学着去<strong>在各种不确定中去寻找一些概率高的确定性</strong>，再去做出一些应对的行为。</p>
+<p>那我们又能把哪些事情当成是确定性来对待呢？</p>
+<p>在服务器领域，那么服务器是<strong>一定会</strong>有概率发生断电，坏硬盘，断网等各种稀奇古怪的故障的，今天不发生，明天不发生，过几天总是会发生的，这就是不确定性中的确定性，它<strong>确定会发生，不确定的只是发生的时间</strong>。那么针对这类事情，我们就可以根据故障成本做一些提前的预案设计。</p>
+<p>厨房家电使用上，有多少人经历过忘关火烧干锅的情况，我不信有任何人是故意干这事的，一定是因为种种原因忘了还开着火了。那么怎么解决呢，用有定时控制的厨具（先不要考虑这类厨具也有概率出故障），这样你就算忘了，它也会自己关。家电厂家帮我们想好了各种危险场景，防干烧功能基本是标配了。作为一名IT从业者，定时这种功能，我也更倾向于机械旋钮的，因为我相信所有的程序都会有bug的，不要信程序员说的“我写的代码没bug”，他都是瞎扯。</p>
+<p>我们再往大了说，我们国人对于买房这件事，贷款30年，这是对未来30年内，家庭收入的稳定性和增长性的确定性的前提下才敢做的决定，我们得确认在未来30年，每个月都有钱还给银行。如果对未来的确定性丢失了，没有信心自己的收入会一直稳定甚至增长，那么我认为没几个人敢真的去给自己背上几十年的贷款的，起码我不敢，你敢吗？</p>
+<p>3年大yi，太多的出行需求被压抑，不论是旅游还是公务，不敢出去的原因，我仔细思考过，于我来讲就是2点，一点是那个xx码在不同的地方不互认，没有一个全国统一的标准给出来；第二点就是下面的执行层各种加码高层的政策，以及早上晚上的政策规定可能会变化，让到达出行目的地可能发生的事情充满了不确定性。如果这两点能解决，根本就不存在什么不敢出去。只要有确定性的要求和处理方式，都是可以提前准备好的，就像大家去深圳的各个政府机关办事一样，网上提前查出来要准备的材料，带齐了，按照预订的时间到达，办理时间和结果基本都是可预期的，这就是确定性，也是深圳速度和效率的体现。</p>
+<p>当下时间，你的信心恢复了吗？你思考清楚了你即将面对的确定性和不确定性了吗？</p>
+]]></content>
+      <categories>
+        <category>胡思乱想</category>
+      </categories>
+      <tags>
+        <tag>概率论</tag>
+      </tags>
   </entry>
   <entry>
     <title>系统日志实践</title>
@@ -1920,6 +1942,33 @@
 ]]></content>
       <categories>
         <category>金融</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>ssh终端证书方式登录远程linux系统</title>
+    <url>/2020/12/28/ssh-without-passwd/</url>
+    <content><![CDATA[<h3 id="为什么选择证书登陆？"><a href="#为什么选择证书登陆？" class="headerlink" title="为什么选择证书登陆？"></a>为什么选择证书登陆？</h3><p>Mac下原生及主流的ssh终端工具大多不具备保存ssh登陆密码的功能, 通过证书登陆的方式，就可以实现原生终端工具Terminal或第三方明星终端iTerm免密码登录远程系统，并且比单纯的密码验证登陆方式提高了安全性。</p>
+<a id="more"></a>
+
+<h3 id="配置过程（以下操作都在终端命令行下运行）"><a href="#配置过程（以下操作都在终端命令行下运行）" class="headerlink" title="配置过程（以下操作都在终端命令行下运行）"></a>配置过程（以下操作都在终端命令行下运行）</h3><ol>
+<li><p>进入系统的ssh证书目录 cd ~/.ssh/</p>
+</li>
+<li><p>建立证书文件 ssh-keygen -t rsa 提示输入，直接回车即可。</p>
+</li>
+<li><p>输入 ls 命令查看当前目录会发现新生成的一对秘钥文件分别是：</p>
+<p> 公钥：id_rsa.pub</p>
+<p> 私钥：id_rsa</p>
+</li>
+<li><p>登陆到远程服务器，进入.ssh目录 cd ~/.ssh</p>
+<p> 将上面生成的公钥文件的内容copy进 authorized_keys 文件中</p>
+</li>
+<li><p>在Mac终端下执行登陆命令 ssh username@server</p>
+<p> 即可免密码登录到远程服务器</p>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>技术</category>
       </categories>
   </entry>
   <entry>
@@ -2283,30 +2332,44 @@
       </categories>
   </entry>
   <entry>
-    <title>ssh终端证书方式登录远程linux系统</title>
-    <url>/2020/12/28/ssh-without-passwd/</url>
-    <content><![CDATA[<h3 id="为什么选择证书登陆？"><a href="#为什么选择证书登陆？" class="headerlink" title="为什么选择证书登陆？"></a>为什么选择证书登陆？</h3><p>Mac下原生及主流的ssh终端工具大多不具备保存ssh登陆密码的功能, 通过证书登陆的方式，就可以实现原生终端工具Terminal或第三方明星终端iTerm免密码登录远程系统，并且比单纯的密码验证登陆方式提高了安全性。</p>
+    <title>绩效考核聊2块钱</title>
+    <url>/2022/08/23/talk-kpi/</url>
+    <content><![CDATA[<p>以下都是我个人的真实想法，不一定对，但我现在认为是对的。我努力朝着这个方向做，但是阻力不少。可能是有一些我认知达不到导致的见识浅薄，但是目前还没有人说服我哪里认知不对！希望有人能指出我以下写的不对的地方，让我少走点弯路，让团队少付出一些代价来获得更多的成长。</p>
+<p>我们定绩效的目的是啥？</p>
+<p>第一，肯定为了达成公司的整体目标，然后把员工的目标和公司的目标对齐；<br>第二，是通过绩效管理来实现目标，完成业绩，而不是为了逼走员工。</p>
 <a id="more"></a>
 
-<h3 id="配置过程（以下操作都在终端命令行下运行）"><a href="#配置过程（以下操作都在终端命令行下运行）" class="headerlink" title="配置过程（以下操作都在终端命令行下运行）"></a>配置过程（以下操作都在终端命令行下运行）</h3><ol>
-<li><p>进入系统的ssh证书目录 cd ~/.ssh/</p>
+<h2 id="那绩效目标如何定好，以及绩效考核如何做好，就有很多需要考虑的点"><a href="#那绩效目标如何定好，以及绩效考核如何做好，就有很多需要考虑的点" class="headerlink" title="那绩效目标如何定好，以及绩效考核如何做好，就有很多需要考虑的点"></a>那绩效目标如何定好，以及绩效考核如何做好，就有很多需要考虑的点</h2><ul>
+<li>目标和结果是否合理？</li>
+<li>激励有没有做到位？<ul>
+<li>有没有向奋斗者倾斜？</li>
+<li>有没有让雷锋吃亏？</li>
+<li>抑或是吃的大锅饭，大家干得好、干得差都是一个样子？</li>
+</ul>
 </li>
-<li><p>建立证书文件 ssh-keygen -t rsa 提示输入，直接回车即可。</p>
-</li>
-<li><p>输入 ls 命令查看当前目录会发现新生成的一对秘钥文件分别是：</p>
-<p> 公钥：id_rsa.pub</p>
-<p> 私钥：id_rsa</p>
-</li>
-<li><p>登陆到远程服务器，进入.ssh目录 cd ~/.ssh</p>
-<p> 将上面生成的公钥文件的内容copy进 authorized_keys 文件中</p>
-</li>
-<li><p>在Mac终端下执行登陆命令 ssh username@server</p>
-<p> 即可免密码登录到远程服务器</p>
-</li>
-</ol>
+</ul>
+<h3 id="那绩效考核怎么才算做得好呢？"><a href="#那绩效考核怎么才算做得好呢？" class="headerlink" title="那绩效考核怎么才算做得好呢？"></a>那绩效考核怎么才算做得好呢？</h3><p>我认为就很简单一句话，<strong>让优秀的同事得到正向激励，让差劲的同事得到负向激励甚至淘汰，最终让团队不断地正向循环，更加优秀。</strong></p>
+<p>我们围绕绩效考核做的所有的事情，都应该是促使团队不断地迭代到更优秀的状态，最起码也应该不向更差的方向迭代，维持好当下的水准。有任何影响团队士气，导致团队退步的行为，都应该是需要反思的！团队如果氛围不好，战斗力长期低下，那么有问题的一定是leader，绝不可能是团队。反过来，团队战斗力高企，各种攻城略地，并不一定是leader的功劳，例如创业初期的富途，是叶子哥把大家凝聚到一起，大家都相信这个事情能成，那个阶段的团队，leader有没有可能都没那么重要，大家都会斗志昂扬。</p>
+<h3 id="团队在不同的阶段，想要变得更好，需要鼓励的行为是不同"><a href="#团队在不同的阶段，想要变得更好，需要鼓励的行为是不同" class="headerlink" title="团队在不同的阶段，想要变得更好，需要鼓励的行为是不同"></a>团队在不同的阶段，想要变得更好，需要鼓励的行为是不同</h3><p>这个可能是最不容易被大家理解的，也是很容易因为这个原因导致有很多优秀的同事觉得自己做得很好却只拿到了普通考核。</p>
+<p>例如，一些难点攻坚，搞定了就迈过一个大台阶继续高速前进，搞不定就卡着，这个时候就需要鼓励那种能够沉下心研究钻研的行为；团队新人较多，需要老同事积极传导团队文化，帮助新同事更快融入团队，那么这个时候团队鼓励的就是传道的精神；团队同事多个大项目并行，人力不足，那这个时候更需要关注的就是能否闭环带好一个项目。</p>
+<blockquote>
+<p>这几个例子可能不太恰当，希望朋友们能领会到我想表达的意思</p>
+</blockquote>
+<p>到这里为止，我相信大家应该基本还是有共识的，那么接下来可能就是一些可能有争议的话题了。</p>
+<p>考核也许是管理的一种手段或方法，曾经有位上级说，管理是无情/残酷的。对于这个观点，我目前的认知还是不能认同，我们可以说无情在某些时候或场景下能达到管理的目的，有一些管理行为可能看起来是残酷的，但不能说管理是无情的。有情有义，尊重人性，才是这个社会长期向前发展的基调。</p>
+<p>还有位上级说，我们无法做到绝对的公平，但是我们尽量做到程序公平，有一个很好的办法就是要有比例，每个团队有比例，比例的意思是：假设10个人，1个优秀，4个良好，1-2个差评（该比例举例用，不要对号到自己团队的实际情况）。乍一听，好像没啥问题啊，但是我认为经不起推敲。</p>
+<p>假设A团队是个很优秀的团队，B团队是个很一般的团队或者因为某些原因没有发挥出已有能量的团队，单看一段时间的成果和表现，如果AB团队对比，A的末位齐平B的中位的，如果还要求A和B都保持上面说的比例，是不是很不公平？古人都说，不患贫患不均，如果按照这种逻辑考核AB两个团队，那么A接下来会有2种演进方向，一种是继续努力，然后优秀的人离职去找愿意肯定自己的地方；一种是适当摆烂，以前用120%的精力做事，现在用80%，省下来的40%用来提高自己或者娱乐，间接后果也是，被人挖走或者主动离开。B团队也会觉得好像不发挥权力或者糊弄一下，也不会有啥后果，那就继续磨下去，到时效率低下，进而影响到其他团队。</p>
+<p>以上AB团队，改成2个人，在一个组里，就会很自然的绩效有所区分。那么为什么AB作为2个团队放在一个中心，做法就是另一番情况了呢？</p>
+<p><strong>又有人说了，公司发展好，同事们不会舍得离开的</strong>。对，这种说法没毛病，谁都希望跟着公司一起发展，早日实现财务自由，这叫看长期利益，可以适当牺牲短期利益。但是如果短期连考核都做不到公平公正，那么长期利益有何可期盼的呢，为什么会觉得长期会得到公平的对待呢，甚至为什么会觉得这样的团队会成就一家伟大的公司呢？<br>诚如优秀的公司和团队不缺对人才的吸引力，优秀的人也从来不缺好的offer。经历过招聘的leader都有这种体验，你面试了100个人，发了10个offer，接受offer的人可能只有5个，还有3个会报到前放鸽子。通常拿了我们offer的人，手上不会缺其他公司的offer，这种现象从大学毕业开始找工作开始就一直存在。大家都会拿多几个offer做下对比，对比下薪酬，公司文化，公司前景，所在行业景气度，甚至00后们已经开始在脉脉等app上反向背调公司了。</p>
+<p><strong>还有人说，现在大环境不好，同事们不敢轻易动的</strong>。说这种话的leader，我觉得你应该就地打报告立刻马上辞职。leader是带着团队成事的，不是让你驯兽的。另外，我们也要照照自己，自己是否有资格去评价别人。我们可以评价别人的前提是，对方要认可自己，我们不一定各方面都比对方做得好，但起码得有一个方面让对方认可甚至佩服。换位思考下，一个你自己不认可的人说你这做得不对，那做得不对，你内心肯定想的是“你踏马煞笔吧，你也配指点老子？” 国羽第一人林丹曾说“只有陶菲克有资格评价我”，陶菲克是印尼羽毛球国手，2004年雅典奥运会羽毛球男单冠军，号称“天下第一反手”，是林丹的羽坛王朝前的世界巅峰，举这个例子也只是为了说明前面那句，我们想评价别人，并且希望对方能听得进去，那么起码得先赢得对方的认可，而不是靠组织给我们的行政职位。</p>
+<p>也许有人说，反正员工也不知道我们咋考核的。我只能说你是个煞笔，以为别人都是傻子，眼睛都是看不见的？谁做的好谁做的差，哪个团队给力高效，哪个团队整天到处打太极玩办公室政治，大家都看的清清楚楚的。</p>
+<p><strong>还有人说，我跟团队面谈的时候，他接受了啊，没有异议啊</strong>。你还是个煞笔，那是人家懒得跟你讲，不说出来的问题难道就认为没问题吗？相反，这才是最大的问题，因为你的团队成员已经不信任你了，不愿意跟你说真话了，内心不知已跑过多少只草泥马了吧。我还很庆幸我的团队的同事还算愿意跟我去吐槽一些工作中的问题，如果哪一天大家不愿意跟我说了，那我真的觉得我作为一个小leader是失败的。</p>
+<p>通过”程序公平“尽可能做到公平，这个思路肯定是没问题的，程序起码避免一些个人感情上的偏好，也会有一些很明确的规则，会尽可能的做到公平，但是我们也需要多思考如何让这个程序不断地优化，真的变成一个”公平的程序“呢？</p>
+<p>最后，在想明白整个思路后，那最重要的是什么呢？言行要一致，不能说的非常好听，对事不对人，公平，促进团队往更好的方向发展，然后做出的事情都是往相反的方向激励团队，让好的人寒心，让差的人没有任何惩罚。</p>
+<p>希望大家能多给我提一些建议，避免我走进死胡同，谢谢<br>​</p>
 ]]></content>
       <categories>
-        <category>技术</category>
+        <category>team</category>
       </categories>
   </entry>
   <entry>
@@ -2361,44 +2424,13 @@
       </tags>
   </entry>
   <entry>
-    <title>绩效考核聊2块钱</title>
-    <url>/2022/08/23/talk-kpi/</url>
-    <content><![CDATA[<p>以下都是我个人的真实想法，不一定对，但我现在认为是对的。我努力朝着这个方向做，但是阻力不少。可能是有一些我认知达不到导致的见识浅薄，但是目前还没有人说服我哪里认知不对！希望有人能指出我以下写的不对的地方，让我少走点弯路，让团队少付出一些代价来获得更多的成长。</p>
-<p>我们定绩效的目的是啥？</p>
-<p>第一，肯定为了达成公司的整体目标，然后把员工的目标和公司的目标对齐；<br>第二，是通过绩效管理来实现目标，完成业绩，而不是为了逼走员工。</p>
-<a id="more"></a>
-
-<h2 id="那绩效目标如何定好，以及绩效考核如何做好，就有很多需要考虑的点"><a href="#那绩效目标如何定好，以及绩效考核如何做好，就有很多需要考虑的点" class="headerlink" title="那绩效目标如何定好，以及绩效考核如何做好，就有很多需要考虑的点"></a>那绩效目标如何定好，以及绩效考核如何做好，就有很多需要考虑的点</h2><ul>
-<li>目标和结果是否合理？</li>
-<li>激励有没有做到位？<ul>
-<li>有没有向奋斗者倾斜？</li>
-<li>有没有让雷锋吃亏？</li>
-<li>抑或是吃的大锅饭，大家干得好、干得差都是一个样子？</li>
-</ul>
-</li>
-</ul>
-<h3 id="那绩效考核怎么才算做得好呢？"><a href="#那绩效考核怎么才算做得好呢？" class="headerlink" title="那绩效考核怎么才算做得好呢？"></a>那绩效考核怎么才算做得好呢？</h3><p>我认为就很简单一句话，<strong>让优秀的同事得到正向激励，让差劲的同事得到负向激励甚至淘汰，最终让团队不断地正向循环，更加优秀。</strong></p>
-<p>我们围绕绩效考核做的所有的事情，都应该是促使团队不断地迭代到更优秀的状态，最起码也应该不向更差的方向迭代，维持好当下的水准。有任何影响团队士气，导致团队退步的行为，都应该是需要反思的！团队如果氛围不好，战斗力长期低下，那么有问题的一定是leader，绝不可能是团队。反过来，团队战斗力高企，各种攻城略地，并不一定是leader的功劳，例如创业初期的富途，是叶子哥把大家凝聚到一起，大家都相信这个事情能成，那个阶段的团队，leader有没有可能都没那么重要，大家都会斗志昂扬。</p>
-<h3 id="团队在不同的阶段，想要变得更好，需要鼓励的行为是不同"><a href="#团队在不同的阶段，想要变得更好，需要鼓励的行为是不同" class="headerlink" title="团队在不同的阶段，想要变得更好，需要鼓励的行为是不同"></a>团队在不同的阶段，想要变得更好，需要鼓励的行为是不同</h3><p>这个可能是最不容易被大家理解的，也是很容易因为这个原因导致有很多优秀的同事觉得自己做得很好却只拿到了普通考核。</p>
-<p>例如，一些难点攻坚，搞定了就迈过一个大台阶继续高速前进，搞不定就卡着，这个时候就需要鼓励那种能够沉下心研究钻研的行为；团队新人较多，需要老同事积极传导团队文化，帮助新同事更快融入团队，那么这个时候团队鼓励的就是传道的精神；团队同事多个大项目并行，人力不足，那这个时候更需要关注的就是能否闭环带好一个项目。</p>
-<blockquote>
-<p>这几个例子可能不太恰当，希望朋友们能领会到我想表达的意思</p>
-</blockquote>
-<p>到这里为止，我相信大家应该基本还是有共识的，那么接下来可能就是一些可能有争议的话题了。</p>
-<p>考核也许是管理的一种手段或方法，曾经有位上级说，管理是无情/残酷的。对于这个观点，我目前的认知还是不能认同，我们可以说无情在某些时候或场景下能达到管理的目的，有一些管理行为可能看起来是残酷的，但不能说管理是无情的。有情有义，尊重人性，才是这个社会长期向前发展的基调。</p>
-<p>还有位上级说，我们无法做到绝对的公平，但是我们尽量做到程序公平，有一个很好的办法就是要有比例，每个团队有比例，比例的意思是：假设10个人，1个优秀，4个良好，1-2个差评（该比例举例用，不要对号到自己团队的实际情况）。乍一听，好像没啥问题啊，但是我认为经不起推敲。</p>
-<p>假设A团队是个很优秀的团队，B团队是个很一般的团队或者因为某些原因没有发挥出已有能量的团队，单看一段时间的成果和表现，如果AB团队对比，A的末位齐平B的中位的，如果还要求A和B都保持上面说的比例，是不是很不公平？古人都说，不患贫患不均，如果按照这种逻辑考核AB两个团队，那么A接下来会有2种演进方向，一种是继续努力，然后优秀的人离职去找愿意肯定自己的地方；一种是适当摆烂，以前用120%的精力做事，现在用80%，省下来的40%用来提高自己或者娱乐，间接后果也是，被人挖走或者主动离开。B团队也会觉得好像不发挥权力或者糊弄一下，也不会有啥后果，那就继续磨下去，到时效率低下，进而影响到其他团队。</p>
-<p>以上AB团队，改成2个人，在一个组里，就会很自然的绩效有所区分。那么为什么AB作为2个团队放在一个中心，做法就是另一番情况了呢？</p>
-<p><strong>又有人说了，公司发展好，同事们不会舍得离开的</strong>。对，这种说法没毛病，谁都希望跟着公司一起发展，早日实现财务自由，这叫看长期利益，可以适当牺牲短期利益。但是如果短期连考核都做不到公平公正，那么长期利益有何可期盼的呢，为什么会觉得长期会得到公平的对待呢，甚至为什么会觉得这样的团队会成就一家伟大的公司呢？<br>诚如优秀的公司和团队不缺对人才的吸引力，优秀的人也从来不缺好的offer。经历过招聘的leader都有这种体验，你面试了100个人，发了10个offer，接受offer的人可能只有5个，还有3个会报到前放鸽子。通常拿了我们offer的人，手上不会缺其他公司的offer，这种现象从大学毕业开始找工作开始就一直存在。大家都会拿多几个offer做下对比，对比下薪酬，公司文化，公司前景，所在行业景气度，甚至00后们已经开始在脉脉等app上反向背调公司了。</p>
-<p><strong>还有人说，现在大环境不好，同事们不敢轻易动的</strong>。说这种话的leader，我觉得你应该就地打报告立刻马上辞职。leader是带着团队成事的，不是让你驯兽的。另外，我们也要照照自己，自己是否有资格去评价别人。我们可以评价别人的前提是，对方要认可自己，我们不一定各方面都比对方做得好，但起码得有一个方面让对方认可甚至佩服。换位思考下，一个你自己不认可的人说你这做得不对，那做得不对，你内心肯定想的是“你踏马煞笔吧，你也配指点老子？” 国羽第一人林丹曾说“只有陶菲克有资格评价我”，陶菲克是印尼羽毛球国手，2004年雅典奥运会羽毛球男单冠军，号称“天下第一反手”，是林丹的羽坛王朝前的世界巅峰，举这个例子也只是为了说明前面那句，我们想评价别人，并且希望对方能听得进去，那么起码得先赢得对方的认可，而不是靠组织给我们的行政职位。</p>
-<p>也许有人说，反正员工也不知道我们咋考核的。我只能说你是个煞笔，以为别人都是傻子，眼睛都是看不见的？谁做的好谁做的差，哪个团队给力高效，哪个团队整天到处打太极玩办公室政治，大家都看的清清楚楚的。</p>
-<p><strong>还有人说，我跟团队面谈的时候，他接受了啊，没有异议啊</strong>。你还是个煞笔，那是人家懒得跟你讲，不说出来的问题难道就认为没问题吗？相反，这才是最大的问题，因为你的团队成员已经不信任你了，不愿意跟你说真话了，内心不知已跑过多少只草泥马了吧。我还很庆幸我的团队的同事还算愿意跟我去吐槽一些工作中的问题，如果哪一天大家不愿意跟我说了，那我真的觉得我作为一个小leader是失败的。</p>
-<p>通过”程序公平“尽可能做到公平，这个思路肯定是没问题的，程序起码避免一些个人感情上的偏好，也会有一些很明确的规则，会尽可能的做到公平，但是我们也需要多思考如何让这个程序不断地优化，真的变成一个”公平的程序“呢？</p>
-<p>最后，在想明白整个思路后，那最重要的是什么呢？言行要一致，不能说的非常好听，对事不对人，公平，促进团队往更好的方向发展，然后做出的事情都是往相反的方向激励团队，让好的人寒心，让差的人没有任何惩罚。</p>
-<p>希望大家能多给我提一些建议，避免我走进死胡同，谢谢<br>​</p>
-]]></content>
+    <title>懂，但是如何做？</title>
+    <url>/2022/09/08/thinkvsdo/</url>
+    <content><![CDATA[<p>很多道理，懂的人很多，但是能否在行动上对齐，每个人的水平可就差得远了去了。</p>
+<p>有权力的时候，可以更少阻力去尝试一些事情，成了当然效用巨大，但是失败了，成本也巨大，有的人就经常为了一些尝试一些理论，不计成本，或者他认为这个成本是别人帮他承担，甚至造成了一些伤害后，脚底抹油，这种行为最让人看不起。</p>
+<a id="more"></a>]]></content>
       <categories>
-        <category>team</category>
+        <category>架构/编程语言/金融</category>
       </categories>
   </entry>
   <entry>
@@ -2591,15 +2623,5 @@
         <tag>架构设计</tag>
         <tag>异地多活</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>懂，但是如何做？</title>
-    <url>/2022/09/08/thinkvsdo/</url>
-    <content><![CDATA[<p>很多道理，懂的人很多，但是能否在行动上对齐，每个人的水平可就差得远了去了。</p>
-<p>有权力的时候，可以更少阻力去尝试一些事情，成了当然效用巨大，但是失败了，成本也巨大，有的人就经常为了一些尝试一些理论，不计成本，或者他任务这个成本是别人帮他承担，甚至造成了一些伤害后，脚底抹油，这种行为最让人看不起。</p>
-<a id="more"></a>]]></content>
-      <categories>
-        <category>架构/编程语言/金融</category>
-      </categories>
   </entry>
 </search>

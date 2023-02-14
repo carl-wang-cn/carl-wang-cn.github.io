@@ -231,20 +231,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives">
         
-          <span class="site-state-item-count">39</span>
+          <span class="site-state-item-count">40</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories">
           
-        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags">
           
-        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-count">29</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -294,6 +294,109 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://carl-wang-cn.github.io/2021/06/03/%E5%BC%82%E5%9C%B0%E5%A4%9A%E6%B4%BB%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1-%E6%A6%82%E8%AE%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/ais.jpg">
+      <meta itemprop="name" content="carl">
+      <meta itemprop="description" content="金融程序员">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="carl的修行">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/06/03/%E5%BC%82%E5%9C%B0%E5%A4%9A%E6%B4%BB%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1-%E6%A6%82%E8%AE%BA/" class="post-title-link" itemprop="url">异地多活架构设计-概论</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-06-03 19:49:26" itemprop="dateCreated datePublished" datetime="2021-06-03T19:49:26+08:00">2021-06-03</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2022-09-03 20:03:22" itemprop="dateModified" datetime="2022-09-03T20:03:22+08:00">2022-09-03</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>近期工作中要做一些系统的质量工作，那么多活肯定是一个避不开的事情，借此机会，系统梳理下异地多活的架构设计，为接下来的服务质量做一些准备。</p>
+<h2 id="0-预设"><a href="#0-预设" class="headerlink" title="0 预设"></a>0 预设</h2><p>本文预设读到的同学是对服务器开发领域有一定的认知的，对一些比较基础的认知类的东西，不会去做太多的科普。</p>
+<h2 id="1-几个概念解释"><a href="#1-几个概念解释" class="headerlink" title="1 几个概念解释"></a>1 几个概念解释</h2><ul>
+<li><p>冷备：备份全量数据，<strong>平时不支撑业务需求，即不接受服务通信请求</strong>，只有在主机房出现故障的时候才会切换到备用机房，通常切换完成后提供的也是<strong>有损服务</strong>。</p>
+<blockquote>
+<p>冷备的方案主要有下面几点问题:</p>
+<ol>
+<li>成本高，平常不跑业务，干晾着。</li>
+<li>因为平时不接收流量，真的出问题了，你敢把流量切过去吗？ 我反正还是有点怂的。</li>
+<li>接2，即使你敢切，切换到冷备系统，也不一定能成功把业务接管过来，说不定根本就跑不起来。</li>
+<li>接3，运气再好一点，冷备系统有能力接管，在接收流量后能马上正常提供服务。可能整个切换动作花费的时间也会比较长。</li>
+</ol>
+</blockquote>
+</li>
+<li><p>活：是相对于冷备而言的，在日常的业务中要有流量，做业务支撑。</p>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/06/03/%E5%BC%82%E5%9C%B0%E5%A4%9A%E6%B4%BB%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1-%E6%A6%82%E8%AE%BA/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -631,93 +734,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/12/27/RSA/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://carl-wang-cn.github.io/2020/12/27/mysql-manual/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/ais.jpg">
-      <meta itemprop="name" content="carl">
-      <meta itemprop="description" content="金融程序员">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="carl的修行">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/12/27/mysql-manual/" class="post-title-link" itemprop="url">我的MySQL速查手册</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-12-27 16:02:49" itemprop="dateCreated datePublished" datetime="2020-12-27T16:02:49+08:00">2020-12-27</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2022-08-01 22:11:17" itemprop="dateModified" datetime="2022-08-01T22:11:17+08:00">2022-08-01</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h5 id="查看已存在的数据库"><a href="#查看已存在的数据库" class="headerlink" title="查看已存在的数据库"></a>查看已存在的数据库</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">MariaDB [carltest]&gt; show databases;</span><br><span class="line">+-------------------------+</span><br><span class="line">| Database                |</span><br><span class="line">+-------------------------+</span><br><span class="line">| carltest                |</span><br><span class="line">| <span class="built_in">test</span>                    |</span><br><span class="line">| test2                   |</span><br><span class="line">| test3                   |</span><br><span class="line">| test_insert             |</span><br><span class="line">+-------------------------+</span><br><span class="line">5 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br><span class="line"></span><br><span class="line">MariaDB [carltest]&gt; show databases like <span class="string">&#x27;carl%&#x27;</span>;</span><br><span class="line">+------------------+</span><br><span class="line">| Database (carl%) |</span><br><span class="line">+------------------+</span><br><span class="line">| carltest         |</span><br><span class="line">+------------------+</span><br><span class="line">1 row <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/12/27/mysql-manual/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>

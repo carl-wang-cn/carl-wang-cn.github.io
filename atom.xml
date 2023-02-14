@@ -6,7 +6,7 @@
   <link href="https://carl-wang-cn.github.io/atom.xml" rel="self"/>
   
   <link href="https://carl-wang-cn.github.io/"/>
-  <updated>2022-09-08T09:00:18.565Z</updated>
+  <updated>2023-02-14T06:18:09.773Z</updated>
   <id>https://carl-wang-cn.github.io/</id>
   
   <author>
@@ -17,15 +17,34 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>对确定性，你怎么理解？</title>
+    <link href="https://carl-wang-cn.github.io/2023/02/14/certainty/"/>
+    <id>https://carl-wang-cn.github.io/2023/02/14/certainty/</id>
+    <published>2023-02-14T06:14:22.000Z</published>
+    <updated>2023-02-14T06:18:09.773Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;对确定性，你怎么理解？&quot;&gt;&lt;a href=&quot;#对确定性，你怎么理解？&quot; class=&quot;headerlink&quot; title=&quot;对确定性，你怎么理解？&quot;&gt;&lt;/a&gt;对确定性，你怎么理解？&lt;/h1&gt;&lt;p&gt;如果你100%确定未来1周某股票会拉升50%，那么你会毫不犹豫加满杠杆，把能借到的钱全都借来，满仓等涨发财。但是如果这个确定性只有75%呢，你会怎么做？恐怕不加杠杆，只是把手头的现金全部买入都会犹豫半天吧。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="胡思乱想" scheme="https://carl-wang-cn.github.io/categories/%E8%83%A1%E6%80%9D%E4%B9%B1%E6%83%B3/"/>
+    
+    
+    <category term="概率论" scheme="https://carl-wang-cn.github.io/tags/%E6%A6%82%E7%8E%87%E8%AE%BA/"/>
+    
+  </entry>
+  
+  <entry>
     <title>懂，但是如何做？</title>
     <link href="https://carl-wang-cn.github.io/2022/09/08/thinkvsdo/"/>
     <id>https://carl-wang-cn.github.io/2022/09/08/thinkvsdo/</id>
     <published>2022-09-08T05:28:42.000Z</published>
-    <updated>2022-09-08T09:00:18.565Z</updated>
+    <updated>2023-01-03T02:16:31.213Z</updated>
     
     
     <summary type="html">&lt;p&gt;很多道理，懂的人很多，但是能否在行动上对齐，每个人的水平可就差得远了去了。&lt;/p&gt;
-&lt;p&gt;有权力的时候，可以更少阻力去尝试一些事情，成了当然效用巨大，但是失败了，成本也巨大，有的人就经常为了一些尝试一些理论，不计成本，或者他任务这个成本是别人帮他承担，甚至造成了一些伤害后，脚底抹油，这种行为最让人看不起。&lt;/p&gt;</summary>
+&lt;p&gt;有权力的时候，可以更少阻力去尝试一些事情，成了当然效用巨大，但是失败了，成本也巨大，有的人就经常为了一些尝试一些理论，不计成本，或者他认为这个成本是别人帮他承担，甚至造成了一些伤害后，脚底抹油，这种行为最让人看不起。&lt;/p&gt;</summary>
     
     
     
@@ -205,43 +224,6 @@
     <category term="tcpdump" scheme="https://carl-wang-cn.github.io/tags/tcpdump/"/>
     
     <category term="netstat" scheme="https://carl-wang-cn.github.io/tags/netstat/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>异地多活架构设计-概论</title>
-    <link href="https://carl-wang-cn.github.io/2021/06/03/%E5%BC%82%E5%9C%B0%E5%A4%9A%E6%B4%BB%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1-%E6%A6%82%E8%AE%BA/"/>
-    <id>https://carl-wang-cn.github.io/2021/06/03/%E5%BC%82%E5%9C%B0%E5%A4%9A%E6%B4%BB%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1-%E6%A6%82%E8%AE%BA/</id>
-    <published>2021-06-03T11:49:26.000Z</published>
-    <updated>2022-09-03T12:03:22.337Z</updated>
-    
-    
-    <summary type="html">&lt;p&gt;近期工作中要做一些系统的质量工作，那么多活肯定是一个避不开的事情，借此机会，系统梳理下异地多活的架构设计，为接下来的服务质量做一些准备。&lt;/p&gt;
-&lt;h2 id=&quot;0-预设&quot;&gt;&lt;a href=&quot;#0-预设&quot; class=&quot;headerlink&quot; title=&quot;0 预设&quot;&gt;&lt;/a&gt;0 预设&lt;/h2&gt;&lt;p&gt;本文预设读到的同学是对服务器开发领域有一定的认知的，对一些比较基础的认知类的东西，不会去做太多的科普。&lt;/p&gt;
-&lt;h2 id=&quot;1-几个概念解释&quot;&gt;&lt;a href=&quot;#1-几个概念解释&quot; class=&quot;headerlink&quot; title=&quot;1 几个概念解释&quot;&gt;&lt;/a&gt;1 几个概念解释&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;冷备：备份全量数据，&lt;strong&gt;平时不支撑业务需求，即不接受服务通信请求&lt;/strong&gt;，只有在主机房出现故障的时候才会切换到备用机房，通常切换完成后提供的也是&lt;strong&gt;有损服务&lt;/strong&gt;。&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;冷备的方案主要有下面几点问题:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;成本高，平常不跑业务，干晾着。&lt;/li&gt;
-&lt;li&gt;因为平时不接收流量，真的出问题了，你敢把流量切过去吗？ 我反正还是有点怂的。&lt;/li&gt;
-&lt;li&gt;接2，即使你敢切，切换到冷备系统，也不一定能成功把业务接管过来，说不定根本就跑不起来。&lt;/li&gt;
-&lt;li&gt;接3，运气再好一点，冷备系统有能力接管，在接收流量后能马上正常提供服务。可能整个切换动作花费的时间也会比较长。&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/blockquote&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;活：是相对于冷备而言的，在日常的业务中要有流量，做业务支撑。&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;</summary>
-    
-    
-    
-    <category term="技术" scheme="https://carl-wang-cn.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-    
-    <category term="架构设计" scheme="https://carl-wang-cn.github.io/tags/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/"/>
-    
-    <category term="异地多活" scheme="https://carl-wang-cn.github.io/tags/%E5%BC%82%E5%9C%B0%E5%A4%9A%E6%B4%BB/"/>
     
   </entry>
   
