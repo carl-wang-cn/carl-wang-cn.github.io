@@ -6,7 +6,7 @@
   <link href="https://carl-wang-cn.github.io/atom.xml" rel="self"/>
   
   <link href="https://carl-wang-cn.github.io/"/>
-  <updated>2023-02-14T06:18:09.773Z</updated>
+  <updated>2023-04-07T07:24:26.646Z</updated>
   <id>https://carl-wang-cn.github.io/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>信任在团队中的重要性</title>
+    <link href="https://carl-wang-cn.github.io/2023/04/07/why-u-need-believeness/"/>
+    <id>https://carl-wang-cn.github.io/2023/04/07/why-u-need-believeness/</id>
+    <published>2023-04-07T06:52:58.000Z</published>
+    <updated>2023-04-07T07:24:26.646Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;我跟团队的每一个人都说过一句话，“没有信任基础的团队注定一事无成”，为什么要这么强调“信任”的重要性？&lt;/p&gt;
+&lt;p&gt;信任需要维护，且极容易失去&lt;/p&gt;
+&lt;p&gt;信用非常强大却非常脆弱，需要花很大的成本维护，如果不愿意花这个成本，只想着用朝令夕改来赚短线，那会死得非常快&lt;/p&gt;
+&lt;p&gt;没有手机支付的时候，早餐摊顾客自己找零。有了手机支付后，顾客自己扫码支付。&lt;/p&gt;
+&lt;p&gt;所有套路，都是一时的术，不可持续，诚实守信才是道&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="管理" scheme="https://carl-wang-cn.github.io/categories/%E7%AE%A1%E7%90%86/"/>
+    
+    
+    <category term="管理" scheme="https://carl-wang-cn.github.io/tags/%E7%AE%A1%E7%90%86/"/>
+    
+  </entry>
   
   <entry>
     <title>对确定性，你怎么理解？</title>
@@ -40,7 +63,7 @@
     <link href="https://carl-wang-cn.github.io/2022/09/08/thinkvsdo/"/>
     <id>https://carl-wang-cn.github.io/2022/09/08/thinkvsdo/</id>
     <published>2022-09-08T05:28:42.000Z</published>
-    <updated>2023-01-03T02:16:31.213Z</updated>
+    <updated>2023-02-14T06:21:07.410Z</updated>
     
     
     <summary type="html">&lt;p&gt;很多道理，懂的人很多，但是能否在行动上对齐，每个人的水平可就差得远了去了。&lt;/p&gt;
@@ -48,7 +71,7 @@
     
     
     
-    <category term="架构/编程语言/金融" scheme="https://carl-wang-cn.github.io/categories/%E6%9E%B6%E6%9E%84-%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80-%E9%87%91%E8%9E%8D/"/>
+    <category term="胡思乱想" scheme="https://carl-wang-cn.github.io/categories/%E8%83%A1%E6%80%9D%E4%B9%B1%E6%83%B3/"/>
     
     
   </entry>
@@ -193,37 +216,6 @@
     
     
     <category term="科普" scheme="https://carl-wang-cn.github.io/tags/%E7%A7%91%E6%99%AE/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>tcpdump-netstat</title>
-    <link href="https://carl-wang-cn.github.io/2021/08/16/tcpdump-netstat/"/>
-    <id>https://carl-wang-cn.github.io/2021/08/16/tcpdump-netstat/</id>
-    <published>2021-08-16T01:22:08.000Z</published>
-    <updated>2022-08-01T14:11:17.214Z</updated>
-    
-    
-    <summary type="html">&lt;h2 id=&quot;tcpdump&quot;&gt;&lt;a href=&quot;#tcpdump&quot; class=&quot;headerlink&quot; title=&quot;tcpdump&quot;&gt;&lt;/a&gt;tcpdump&lt;/h2&gt;&lt;p&gt;底层基于libpcap，一个可移植的网络传输层C/C++库&lt;/p&gt;
-&lt;p&gt;tcpdump 不加任何参数，默认监听一个默认网卡（eth0网卡），抓取经过该端口的所有的数据包 ^C停止，会显示抓了多少个包&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;c 10 限制只抓10个包&lt;/li&gt;
-&lt;li&gt;w filename 输出到文件，tcpdump保存的数据包文件格式，是被大部分主流抓包软件所兼容的&lt;/li&gt;
-&lt;li&gt;r filename 读取之前保存到文件的数据包&lt;/li&gt;
-&lt;li&gt;D 显示系统当前的网卡列表&lt;/li&gt;
-&lt;li&gt;i eth0 指定只抓取eth0网卡的流量&lt;/li&gt;
-&lt;li&gt;v -vv 显示抓到的流量的详细信息，v越多越详细&lt;/li&gt;
-&lt;li&gt;n 源地址和目的地址用ip显示，不反解为域名&lt;/li&gt;
-&lt;/ul&gt;</summary>
-    
-    
-    
-    <category term="SRE" scheme="https://carl-wang-cn.github.io/categories/SRE/"/>
-    
-    
-    <category term="tcpdump" scheme="https://carl-wang-cn.github.io/tags/tcpdump/"/>
-    
-    <category term="netstat" scheme="https://carl-wang-cn.github.io/tags/netstat/"/>
     
   </entry>
   

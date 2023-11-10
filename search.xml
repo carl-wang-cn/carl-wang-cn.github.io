@@ -174,122 +174,62 @@
       </tags>
   </entry>
   <entry>
-    <title>awk怎么写?</title>
-    <url>/2020/01/16/2020-01-16-awk/</url>
-    <content><![CDATA[<p>本篇文章主要是参考左耳朵耗子前辈的博文整理而来, 作为自己学习备忘之用.</p>
-<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>awk是一个强大的文本分析工具, 相对于grep的查找, sed的编辑, awk在其对数据分析并生成报告时, 显得尤为强大. 简单来说awk就是把文件逐行的读入, 以空格为默认分隔符将每行切片, 切开的部分再进行各种分析处理.</p>
-<p>awk有3个不同版本: awk, nawk和gawk, 未作特别说明, 一般指gawk, gawk是AWK的GNU版本.</p>
-<p>awk其名称得自于它的创始人Alfred Aho, Peter Weinberger和Brian Kernighan姓氏的首个字母. 实际上 AWK 的确拥有自己的语言: AWK 程序设计语言, 三位创建者已将它正式定义为”样式扫描和处理语言”. 它允许您创建简短的程序, 这些程序读取输入文件, 为数据排序, 处理数据, 对输入执行计算以及生成报表, 还有无数其他的功能.</p>
-<a id="more"></a>
-
-<h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">awk <span class="string">&#x27;pattern + &#123;action&#125;&#x27;</span> &#123;filenames&#125;</span><br></pre></td></tr></table></figure>
-<p>尽管操作可能会很复杂, 但语法总是这样, 其中 pattern 表示 AWK 在数据中查找的内容, 而 action 是在找到匹配内容时所执行的一系列命令.花括号（{}）不需要在程序中始终出现, 但它们用于根据特定的模式对一系列指令进行分组. pattern就是要表示的正则表达式, 用斜杠括起来.</p>
-<p>awk语言的最基本功能是在文件或者字符串中基于指定规则浏览和抽取信息, awk抽取信息后, 才能进行其他文本操作.完整的awk脚本通常用来格式化文本文件中的信息.<br>通常, awk是以文件的一行为处理单位的.awk每接收文件的一行, 然后执行相应的命令, 来处理文本.</p>
-<h3 id="调用awk有三种方式调用awk"><a href="#调用awk有三种方式调用awk" class="headerlink" title="调用awk有三种方式调用awk"></a>调用awk有三种方式调用awk</h3><ol>
-<li>命令行方式awk [-F  field-separator]  ‘commands’  input-file(s)其中, commands 是真正awk命令, [-F域分隔符]是可选的. input-file(s) 是待处理的文件.在awk中, 文件的每一行中, 由域分隔符分开的每一项称为一个域.通常, 在不指名-F域分隔符的情况下, 默认的域分隔符是空格.</li>
-<li>shell脚本方式将所有的awk命令插入一个文件, 并使awk程序可执行, 然后awk命令解释器作为脚本的首行, 以便通过键入脚本名称来调用.相当于shell脚本首行的：#!/bin/sh可以换成：#!/bin/awk</li>
-<li>将所有的awk命令插入一个单独文件, 然后调用：awk -f awk-script-file input-file(s)其中, -f选项加载awk-script-file中的awk脚本, input-file(s)跟上面的是一样的.</li>
-</ol>
-<h4 id="入门实例"><a href="#入门实例" class="headerlink" title="入门实例"></a>入门实例</h4><p>假设last -n 5的输出如下</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ last -n 5 &lt;==仅取出前五行</span><br><span class="line">root     pts/1   192.168.1.100  Tue Feb 10 11:21   still logged <span class="keyword">in</span></span><br><span class="line">root     pts/1   192.168.1.100  Tue Feb 10 00:46 - 02:28  (01:41)</span><br><span class="line">root     pts/1   192.168.1.100  Mon Feb  9 11:41 - 18:30  (06:48)</span><br><span class="line">dmtsai   pts/1   192.168.1.100  Mon Feb  9 11:41 - 11:41  (00:00)</span><br><span class="line">root     tty1                   Fri Sep  5 14:09 - 14:10  (00:01)</span><br></pre></td></tr></table></figure>
-<p>如果只是显示最近登录的5个帐号</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ last -n 5 | awk  <span class="string">&#x27;&#123;print $1&#125;&#x27;</span>  -- 必须是单引号<span class="string">&#x27; &#x27;</span>,<span class="string">&quot; &quot;</span>不生效的</span><br><span class="line">root</span><br><span class="line">root</span><br><span class="line">root</span><br><span class="line">dmtsai</span><br><span class="line">root</span><br></pre></td></tr></table></figure>
-<p>awk工作流程是这样的：读入有’\n’换行符分割的一条记录, 然后将记录按指定的域分隔符划分域, 填充域, $0则表示所有域, $1表示第一个域, $n表示第n个域. 默认域分隔符是”空白键” 或 “[tab]键”, 所以$1表示登录用户, $3表示登录用户ip,以此类推.<br>字符串匹配的示例：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ awk <span class="string">&#x27;$6 ~ /FIN/ || NR==1 &#123;print NR,$4,$5,$6&#125;&#x27;</span> OFS=<span class="string">&quot;\t&quot;</span> netstat.txt</span><br><span class="line">1       Local-Address   Foreign-Address State</span><br><span class="line">6       coolshell.cn:80 61.140.101.185:37538    FIN_WAIT2</span><br><span class="line">9       coolshell.cn:80 116.234.127.77:11502    FIN_WAIT2</span><br><span class="line">13      coolshell.cn:80 124.152.181.209:26825   FIN_WAIT1</span><br><span class="line">18      coolshell.cn:80 117.136.20.85:50025     FIN_WAIT2</span><br><span class="line"></span><br><span class="line">$ awk <span class="string">&#x27;$6 ~ /WAIT/ || NR==1 &#123;print NR,$4,$5,$6&#125;&#x27;</span> OFS=<span class="string">&quot;\t&quot;</span> netstat.txt</span><br><span class="line">1       Local-Address   Foreign-Address State</span><br><span class="line">5       coolshell.cn:80 124.205.5.146:18245     TIME_WAIT</span><br><span class="line">6       coolshell.cn:80 61.140.101.185:37538    FIN_WAIT2</span><br><span class="line">9       coolshell.cn:80 116.234.127.77:11502    FIN_WAIT2</span><br><span class="line">11      coolshell.cn:80 183.60.215.36:36970     TIME_WAIT</span><br><span class="line">13      coolshell.cn:80 124.152.181.209:26825   FIN_WAIT1</span><br><span class="line">15      coolshell.cn:80 183.60.212.163:51082    TIME_WAIT</span><br><span class="line">18      coolshell.cn:80 117.136.20.85:50025     FIN_WAIT2</span><br></pre></td></tr></table></figure>
-<p>上面的第一个示例匹配FIN状态,  第二个示例匹配WAIT字样的状态.其实 ~ 表示模式开始./ /中是模式.其实就是一个正则表达式的匹配.<br>可以使用 “/FIN|TIME/“ 来匹配 FIN 或者 TIME :</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ awk <span class="string">&#x27;$6 ~ /FIN|TIME/ || NR==1 &#123;print NR,$4,$5,$6&#125;&#x27;</span> OFS=<span class="string">&quot;\t&quot;</span> netstat.txt</span><br><span class="line">1       Local-Address   Foreign-Address State</span><br><span class="line">5       coolshell.cn:80 124.205.5.146:18245     TIME_WAIT</span><br><span class="line">6       coolshell.cn:80 61.140.101.185:37538    FIN_WAIT2</span><br><span class="line">9       coolshell.cn:80 116.234.127.77:11502    FIN_WAIT2</span><br><span class="line">11      coolshell.cn:80 183.60.215.36:36970     TIME_WAIT</span><br><span class="line">13      coolshell.cn:80 124.152.181.209:26825   FIN_WAIT1</span><br><span class="line">15      coolshell.cn:80 183.60.212.163:51082    TIME_WAIT</span><br><span class="line">18      coolshell.cn:80 117.136.20.85:50025     FIN_WAIT2</span><br></pre></td></tr></table></figure>
-<p>再来看看模式取反的例子：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ awk <span class="string">&#x27;$6 !~ /WAIT/ || NR==1 &#123;print NR,$4,$5,$6&#125;&#x27;</span> OFS=<span class="string">&quot;\t&quot;</span> netstat.txt</span><br><span class="line">1       Local-Address   Foreign-Address State</span><br><span class="line">2       0.0.0.0:3306    0.0.0.0:*       LISTEN</span><br><span class="line">3       0.0.0.0:80      0.0.0.0:*       LISTEN</span><br><span class="line">4       127.0.0.1:9000  0.0.0.0:*       LISTEN</span><br><span class="line">7       coolshell.cn:80 110.194.134.189:1032    ESTABLISHED</span><br><span class="line">8       coolshell.cn:80 123.169.124.111:49809   ESTABLISHED</span><br><span class="line">10      coolshell.cn:80 123.169.124.111:49829   ESTABLISHED</span><br><span class="line">12      coolshell.cn:80 61.148.242.38:30901     ESTABLISHED</span><br><span class="line">14      coolshell.cn:80 110.194.134.189:4796    ESTABLISHED</span><br><span class="line">16      coolshell.cn:80 208.115.113.92:50601    LAST_ACK</span><br><span class="line">17      coolshell.cn:80 123.169.124.111:49840   ESTABLISHED</span><br><span class="line">19      :::22   :::*    LISTEN</span><br></pre></td></tr></table></figure>
-<p>或是：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">awk <span class="string">&#x27;!/WAIT/&#x27;</span> netstat.txt</span><br></pre></td></tr></table></figure>
-<p>如果只是显示/etc/passwd的账户</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cat /etc/passwd |awk  -F <span class="string">&#x27;:&#x27;</span>  <span class="string">&#x27;&#123;print $1&#125;&#x27;</span></span><br><span class="line">rootdaemonbinsys</span><br></pre></td></tr></table></figure>
-<p>这种是awk+action的示例, 每行都会执行action {print $1}.</p>
-<p>-F指定域分隔符为’:’.<br>如果只是显示/etc/passwd的账户和账户对应的shell,而账户与shell之间以tab键分割</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cat /etc/passwd |awk  -F <span class="string">&#x27;:&#x27;</span>  <span class="string">&#x27;&#123;print $1&quot;\t&quot;$7&#125;&#x27;</span></span><br><span class="line">root    /bin/bash</span><br><span class="line">daemon  /bin/sh</span><br><span class="line">bin     /bin/sh</span><br><span class="line">sys     /bin/sh</span><br></pre></td></tr></table></figure>
-<p>如果只是显示/etc/passwd的账户和账户对应的shell, 而账户与shell之间以逗号分割, 而且在所有行添加列名name, shell, 在最后一行添加”blue,/bin/nosh”.</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cat /etc/passwd |awk  -F <span class="string">&#x27;:&#x27;</span>  <span class="string">&#x27;BEGIN &#123;print &quot;name,shell&quot;&#125;  &#123;print $1&quot;,&quot;$7&#125; END &#123;print &quot;blue,/bin/nosh&quot;&#125;&#x27;</span></span><br><span class="line">name,shell</span><br><span class="line">root,/bin/bash</span><br><span class="line">daemon,/bin/sh</span><br><span class="line">bin,/bin/sh</span><br><span class="line">sys,/bin/sh</span><br><span class="line">....</span><br><span class="line">blue,/bin/nosh</span><br></pre></td></tr></table></figure>
-<p>awk工作流程是这样的：先执行BEGIN, 然后读取文件, 读入有/n换行符分割的一条记录, 然后将记录按指定的域分隔符划分域, 填充域, $0则表示所有域,$1表示第一个域,$n表示第n个域,随后开始执行模式所对应的动作action.接着开始读入第二条记录······直到所有的记录都读完, 最后执行END操作.<br>搜索/etc/passwd有root关键字的所有行</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ awk -F: <span class="string">&#x27;/root/&#x27;</span> /etc/passwd</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br></pre></td></tr></table></figure>
-<p>这种是pattern的使用示例, 匹配了pattern(这里是root)的行才会执行action(没有指定action, 默认输出每行的内容).<br>搜索支持正则, 例如找root开头的: awk -F: ‘/^root/‘ /etc/passwd<br>搜索/etc/passwd有root关键字的所有行, 并显示对应的shell</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ awk -F: <span class="string">&#x27;/root/ &#123;print $7&#125;&#x27;</span> /etc/passwd</span><br><span class="line">/bin/bash</span><br></pre></td></tr></table></figure>
-<p>这里指定了action{print $7}<br>awk内置变量awk有许多内置变量用来设置环境信息, 这些变量可以被改变, 下面给出了最常用的一些变量.</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ARGC               命令行参数个数</span><br><span class="line">ARGV               命令行参数排列</span><br><span class="line">ENVIRON            支持队列中系统环境变量的使用</span><br><span class="line">FILENAME           awk浏览的文件名</span><br><span class="line">FNR                浏览文件的记录数</span><br><span class="line">FS                 设置输入域分隔符, 等价于命令行 -F选项</span><br><span class="line">NF                 浏览记录的域的个数</span><br><span class="line">NR                 已读的记录数</span><br><span class="line">OFS                输出域分隔符   默认空格</span><br><span class="line">ORS                输出记录分隔符 默认换行符</span><br><span class="line">RS                 控制记录分隔符 默认换行符</span><br><span class="line">此外,<span class="variable">$0</span>变量是指整条记录.<span class="variable">$1</span>表示当前行的第一个域,<span class="variable">$2</span>表示当前行的第二个域,......以此类推.</span><br></pre></td></tr></table></figure>
-<p>统计/etc/passwd:文件名, 每行的行号, 每行的列数, 对应的完整行内容:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ awk  -F <span class="string">&#x27;:&#x27;</span>  <span class="string">&#x27;&#123;print &quot;filename:&quot; FILENAME &quot;,linenumber:&quot; NR &quot;,columns:&quot; NF &quot;,linecontent:&quot;$0&#125;&#x27;</span> /etc/passwd</span><br><span class="line">filename:/etc/passwd,linenumber:1,columns:7,linecontent:root:x:0:0:root:/root:/bin/bash</span><br><span class="line">filename:/etc/passwd,linenumber:2,columns:7,linecontent:daemon:x:1:1:daemon:/usr/sbin:/bin/sh</span><br><span class="line">filename:/etc/passwd,linenumber:3,columns:7,linecontent:bin:x:2:2:bin:/bin:/bin/sh</span><br><span class="line">filename:/etc/passwd,linenumber:4,columns:7,linecontent:sys:x:3:3:sys:/dev:/bin/sh</span><br></pre></td></tr></table></figure>
-<p>使用printf替代print,可以让代码更加简洁, 易读</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">awk  -F <span class="string">&#x27;:&#x27;</span>  <span class="string">&#x27;&#123;printf(&quot;filename:%10s,linenumber:%s,columns:%s,linecontent:%s\n&quot;,FILENAME,NR,NF,$0)&#125;&#x27;</span> /etc/passwd</span><br></pre></td></tr></table></figure>
-<h4 id="print和printf"><a href="#print和printf" class="headerlink" title="print和printf"></a>print和printf</h4><p>awk中同时提供了print和printf两种打印输出的函数.</p>
-<p>其中print函数的参数可以是变量, 数值或者字符串. 字符串必须用双引号引用, 参数用逗号分隔. 如果没有逗号, 参数就串联在一起而无法区分. 这里, 逗号的作用与输出文件的分隔符的作用是一样的, 只是后者是空格而已.<br>printf函数, 其用法和c语言中printf基本相似, 可以格式化字符串, 输出复杂时, printf更加好用, 代码更易懂.</p>
-<h3 id="awk编程"><a href="#awk编程" class="headerlink" title="awk编程"></a>awk编程</h3><h4 id="变量和赋值"><a href="#变量和赋值" class="headerlink" title="变量和赋值"></a>变量和赋值</h4><p>除了awk的内置变量, awk还可以自定义变量.</p>
-<p>下面统计/etc/passwd的账户人数</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">awk <span class="string">&#x27;&#123;count++;print $0;&#125; END&#123;print &quot;user count is &quot;, count&#125;&#x27;</span> /etc/passwd</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">......</span><br><span class="line">user count is  40</span><br></pre></td></tr></table></figure>
-<p>count是自定义变量. 之前的action{}里都是只有一个print, 其实print只是一个语句, 而action{}可以有多个语句, 以;号隔开.<br>这里没有初始化count, 虽然默认是0, 但是妥当的做法还是初始化为0:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">awk <span class="string">&#x27;BEGIN &#123;count=0;print &quot;[start]user count is &quot;, count&#125; &#123;count=count+1;print $0;&#125; END&#123;print &quot;[end]user count is &quot;, count&#125;&#x27;</span> /etc/passwd</span><br><span class="line">[start]user count is  0</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">...</span><br><span class="line">[end]user count is  40</span><br></pre></td></tr></table></figure>
-<p>统计某个文件夹下的文件占用的字节数</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -l |awk <span class="string">&#x27;BEGIN &#123;size=0;&#125; &#123;size=size+$5;&#125; END&#123;print &quot;[end]size is &quot;, size&#125;&#x27;</span></span><br><span class="line">[end]size is  8657198</span><br></pre></td></tr></table></figure>
-<p>如果以M为单位显示:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -l |awk <span class="string">&#x27;BEGIN &#123;size=0;&#125; &#123;size=size+$5;&#125; END&#123;print &quot;[end]size is &quot;, size/1024/1024,&quot;M&quot;&#125;&#x27;</span></span><br><span class="line">[end]size is  8.25889 M</span><br></pre></td></tr></table></figure>
-<p>注意, 统计不包括文件夹的子目录.</p>
-<h4 id="条件语句"><a href="#条件语句" class="headerlink" title="条件语句"></a>条件语句</h4><p>awk中的条件语句是从C语言中借鉴来的, 见如下声明方式：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (expression)</span><br><span class="line">&#123;</span><br><span class="line">    statement;</span><br><span class="line">    statement;</span><br><span class="line">    ... ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (expression)</span><br><span class="line">&#123;</span><br><span class="line">    statement;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    statement2;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (expression)</span><br><span class="line">&#123;</span><br><span class="line">    statement1;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (expression1)</span><br><span class="line">&#123;</span><br><span class="line">    statement2;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    statement3;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>统计某个文件夹下的文件占用的字节数,过滤4096大小的文件(一般都是文件夹):</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -l |awk <span class="string">&#x27;BEGIN &#123;size=0;print &quot;[start]size is &quot;, size&#125; &#123;if($5!=4096)&#123;size=size+$5;&#125;&#125; END&#123;print &quot;[end]size is &quot;, size/1024/1024,&quot;M&quot;&#125;&#x27;</span></span><br><span class="line">[end]size is  8.22339 M</span><br></pre></td></tr></table></figure>
-<p>统计下面的命令计算所有的C文件, CPP文件和H文件的文件大小总和.</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ls -l  *.cpp *.c *.h | awk <span class="string">&#x27;&#123;sum+=$5&#125; END &#123;print sum&#125;&#x27;</span></span><br><span class="line">2511401</span><br></pre></td></tr></table></figure>
-<p>我们再来看一个统计各个connection状态的用法：（我们可以看到一些编程的影子了, 大家都是程序员我就不解释了）</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ awk <span class="string">&#x27;NR!=1&#123;a[$6]++;&#125; END &#123;for (i in a) print i &quot;, &quot; a[i];&#125;&#x27;</span> netstat.txt</span><br><span class="line">TIME_WAIT, 3</span><br><span class="line">FIN_WAIT1, 1</span><br><span class="line">ESTABLISHED, 6</span><br><span class="line">FIN_WAIT2, 3</span><br><span class="line">LAST_ACK, 1</span><br><span class="line">LISTEN, 4</span><br></pre></td></tr></table></figure>
-<p>再来看看统计每个用户的进程的占了多少内存（注：sum的RSS那一列）</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ps aux | awk <span class="string">&#x27;NR!=1&#123;a[$1]+=$6;&#125; END &#123; for(i in a) print i &quot;, &quot; a[i]&quot;KB&quot;;&#125;&#x27;</span></span><br><span class="line">dbus, 540KB</span><br><span class="line">mysql, 99928KB</span><br><span class="line">www, 3264924KB</span><br><span class="line">root, 63644KB</span><br><span class="line">hchen, 6020KB</span><br></pre></td></tr></table></figure>
-<p>环境变量即然说到了脚本, 我们来看看怎么和环境变量交互：（使用-v参数和ENVIRON, 使用ENVIRON的环境变量需要export）</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt; x=5</span><br><span class="line"></span><br><span class="line">&gt; y=10</span><br><span class="line">&gt; <span class="built_in">export</span> y</span><br><span class="line"></span><br><span class="line">&gt; <span class="built_in">echo</span> <span class="variable">$x</span> <span class="variable">$y</span></span><br><span class="line">5 10</span><br><span class="line"></span><br><span class="line">$ awk -v val=<span class="variable">$x</span> <span class="string">&#x27;&#123;print $1, $2, $3, $4+val, $5+ENVIRON[&quot;y&quot;]&#125;&#x27;</span> OFS=<span class="string">&quot;\t&quot;</span> score.txt</span><br><span class="line">Marry   2143    78      89      87</span><br><span class="line">Jack    2321    66      83      55</span><br><span class="line">Tom     2122    48      82      81</span><br><span class="line">Mike    2537    87      102     105</span><br><span class="line">Bob     2415    40      62      72</span><br></pre></td></tr></table></figure>
-<h4 id="循环语句"><a href="#循环语句" class="headerlink" title="循环语句"></a>循环语句</h4><p>awk中的循环语句同样借鉴于C语言, 支持while, do/while, for, break, continue, 这些关键字的语义和C语言中的语义完全相同.</p>
-<p>数组</p>
-<p>  因为awk中数组的下标可以是数字和字母, 数组的下标通常被称为关键字(key). 值和关键字都存储在内部的一张针对key/value应用hash的表格里.由于hash不是顺序存储, 因此在显示数组内容时会发现, 它们并不是按照你预料的顺序显示出来的. 数组和变量一样, 都是在使用时自动创建的, awk也同样会自动判断其存储的是数字还是字符串.一般而言, awk中的数组用来从记录中收集信息, 可以用于计算总和, 统计单词以及跟踪模板被匹配的次数等等.</p>
-<p>显示/etc/passwd的账户</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 这里使用for循环遍历数组</span></span><br><span class="line"></span><br><span class="line">awk -F <span class="string">&#x27;:&#x27;</span> <span class="string">&#x27;BEGIN &#123;count=0;&#125; &#123;name[count] = $1;count++;&#125;; END&#123;for (i = 0; i &lt; NR; i++) print i, name[i]&#125;&#x27;</span> /etc/passwd</span><br><span class="line">0 root</span><br><span class="line">1 daemon</span><br><span class="line">2 bin</span><br><span class="line">3 sys</span><br><span class="line">4 sync</span><br><span class="line">5 games</span><br><span class="line">......</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>awk</tag>
-        <tag>通用技巧</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>grep命令使用技巧</title>
-    <url>/2020/01/16/2020-01-16-grep/</url>
-    <content><![CDATA[<p>grep [选项] pattern [文件名]</p>
-<p>命令中的选项为：</p>
+    <title>find命令使用技巧</title>
+    <url>/2020/01/16/2020-01-16-find/</url>
+    <content><![CDATA[<p><code>find &lt; path &gt; &lt; expression &gt; &lt; cmd &gt;</code></p>
 <ul>
-<li>-? 同时显示匹配行上下的？行，如：<code>grep -2 pattern filename</code> 同时显示匹配行的上下2行。</li>
-<li>-A ? 显示匹配行和后面的?行, 如: <code>grep -A 2 pattern filename</code></li>
-<li>-B ? 显示匹配行和前面的?行</li>
-<li>-b，–byte-offset 打印匹配行前面打印该行所在的块号码。</li>
-<li>-c,–count 只打印匹配的行数，不显示匹配的内容。</li>
-<li>-f File，–file=File 从文件中提取模板。空文件中包含0个模板，所以什么都不匹配。</li>
-<li>-h，–no-filename 当搜索多个文件时，不显示匹配文件名前缀。</li>
-<li>-i，–ignore-case 忽略大小写差别。</li>
-<li>-q，–quiet 取消显示，只返回退出状态。0则表示找到了匹配的行。</li>
-<li>-l，–files-with-matches 打印匹配模板的文件清单。</li>
-<li>-L，–files-without-match 打印不匹配模板的文件清单。</li>
-<li>-n，–line-number 在匹配的行前面打印行号。</li>
-<li>-s，–silent 不显示关于不存在或者无法读取文件的错误信息。</li>
-<li>-v，–revert-match 反检索，只显示不匹配的行。</li>
-<li>-w，–word-regexp 如果被&lt;和&gt;引用，就把表达式做为一个单词搜索。</li>
-<li>-V，–version 显示软件版本信息。</li>
+<li>path： 所要搜索的目录及其所有子目录。默认为当前目录。</li>
+<li>expression： 所要搜索的文件的特征。</li>
+<li>cmd： 对搜索结果进行特定的处理。</li>
 </ul>
+<p>如果什么参数也不加，find默认搜索当前目录及其子目录，并且不过滤任何结果（也就是返回所有文件），将它们全都显示在屏幕上。</p>
+<h4 id="find命令常用选项及实例"><a href="#find命令常用选项及实例" class="headerlink" title="find命令常用选项及实例"></a>find命令常用选项及实例</h4><ul>
+<li><p>-name 按照文件名查找文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /dir -name filename  在/dir目录及其子目录下面查找名字为filename的文件</span><br><span class="line">find . -name <span class="string">&quot;*.c&quot;</span> 在当前目录及其子目录（用“.”表示）中查找任何扩展名为“c”的文件</span><br></pre></td></tr></table></figure>
 <a id="more"></a>
-
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -l | grep <span class="string">&#x27;^a&#x27;</span> 通过管道过滤ls -l输出的内容，只显示以a开头的行。</span><br><span class="line">grep <span class="string">&#x27;test&#x27;</span> d* 显示所有以d开头的文件中包含<span class="built_in">test</span>的行。</span><br><span class="line">grep <span class="string">&#x27;test&#x27;</span> aa bb cc 显示在aa，bb，cc文件中匹配<span class="built_in">test</span>的行。</span><br><span class="line">grep <span class="string">&#x27;[a-z]&#x27;</span> aa 显示所有包含每个字符串至少有5个连续小写字符的字符串的行。</span><br><span class="line">grep <span class="string">&#x27;w(es)t.*&#x27;</span> aa 如果west被匹配，则es就被存储到内存中，并标记为1，然后搜索任意个字符(.*)，这些字符后面紧跟着另外一个es()，找到就显示该行。如果用egrep或grep -E，就不用<span class="string">&quot;&quot;</span>号进行转义，直接写成<span class="string">&#x27;w(es)t.*&#x27;</span>就可以了。</span><br><span class="line">grep -i pattern files ：不区分大小写地搜索。默认情况区分大小写</span><br><span class="line">grep -l pattern files ：只列出匹配的文件名，</span><br><span class="line">grep -L pattern files ：列出不匹配的文件名，</span><br><span class="line">grep -w pattern files ：只匹配整个单词，而不是字符串的一部分(如匹配‘magic’，而不是‘magical’)，</span><br><span class="line">grep -C number pattern files ：匹配的上下文分别显示[number]行，</span><br><span class="line">grep pattern1 | pattern2 files ：显示匹配 pattern1 或 pattern2 的行，</span><br><span class="line">grep pattern1 files | grep pattern2 ：显示既匹配 pattern1 又匹配 pattern2 的行。</span><br></pre></td></tr></table></figure>
-<p>pattern为所要匹配的字符串，可使用下列模式</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">. 匹配任意一个字符</span><br><span class="line">* 匹配0 个或多个*前的字符</span><br><span class="line">^ 匹配行开头</span><br><span class="line">$ 匹配行结尾</span><br><span class="line">[] 匹配[ ]中的任意一个字符，[]中可用 - 表示范围，</span><br><span class="line">例如[a-z]表示字母a 至z 中的任意一个</span><br><span class="line">\ 转意字符</span><br></pre></td></tr></table></figure>]]></content>
+</li>
+<li><p>-perm 按照文件权限来查找文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -perm 755 –<span class="built_in">print</span> 在当前目录下查找文件权限位为755的文件，即文件属主可以读、写、执行，其他用户可以读、执行的文件</span><br></pre></td></tr></table></figure></li>
+<li><p>-prune 使用这一选项可以使find命令不在当前指定的目录中查找，如果同时使用-depth选项，那么-prune将被find命令忽略。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /apps -path <span class="string">&quot;/apps/bin&quot;</span> -prune -o –<span class="built_in">print</span> 在/apps目录下查找文件，但不希望在/apps/bin目录下查找</span><br><span class="line">find /usr/sam -path <span class="string">&quot;/usr/sam/dir1&quot;</span> -prune -o –<span class="built_in">print</span> 在/usr/sam目录下查找不在dir1子目录之内的所有文件</span><br></pre></td></tr></table></figure></li>
+<li><p>-depth：在查找文件时，首先查找当前目录中的文件，然后再在其子目录中查找。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / -name <span class="string">&quot;CON.FILE&quot;</span> -depth –<span class="built_in">print</span> 它将首先匹配所有的文件然后再进入子目录中查找</span><br></pre></td></tr></table></figure></li>
+<li><p>-user 按照文件属主来查找文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find ~ -user sam –<span class="built_in">print</span> 在<span class="variable">$HOME</span>目录中查找文件属主为sam的文件</span><br></pre></td></tr></table></figure></li>
+<li><p>-group 按照文件所属的组来查找文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /apps -group gem –<span class="built_in">print</span> 在/apps目录下查找属于gem用户组的文件</span><br></pre></td></tr></table></figure></li>
+<li><p>-mtime -n +n 按照文件的更改时间来查找文件， -n表示文件更改时间距现在n天以内，+n表示文件更改时间距现在n天以前。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / -mtime -5 –<span class="built_in">print</span> 在系统根目录下查找更改时间在5日以内的文件</span><br><span class="line">find /var/adm -mtime +3 –<span class="built_in">print</span> 在/var/adm目录下查找更改时间在3日以前的文件</span><br></pre></td></tr></table></figure></li>
+<li><p>-nogroup 查找无有效所属组的文件，即该文件所属的组在/etc/groups中不存在。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / –nogroup -<span class="built_in">print</span></span><br></pre></td></tr></table></figure></li>
+<li><p>-nouser 查找无有效属主的文件，即该文件的属主在/etc/passwd中不存在。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /home -nouser –<span class="built_in">print</span></span><br></pre></td></tr></table></figure></li>
+<li><p>-newer file1 ! file2 查找更改时间比文件file1新但比文件file2旧的文件。</p>
+</li>
+<li><p>-type 查找某一类型的文件，<br>诸如：<br>b - 块设备文件。<br>d - 目录。<br>c - 字符设备文件。<br>p - 管道文件。<br>l - 符号链接文件。<br>f - 普通文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /etc -<span class="built_in">type</span> d –<span class="built_in">print</span> 在/etc目录下查找所有的目录</span><br><span class="line">find . ! -<span class="built_in">type</span> d –<span class="built_in">print</span> 在当前目录下查找除目录以外的所有类型的文件</span><br><span class="line">find /etc -<span class="built_in">type</span> l –<span class="built_in">print</span> 在/etc目录下查找所有的符号链接文件</span><br></pre></td></tr></table></figure></li>
+<li><p>-size n[c] 查找文件长度为n块的文件，带有c时表示文件长度以字节计。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -size +1000000c –<span class="built_in">print</span> 在当前目录下查找文件长度大于1 M字节的文件</span><br><span class="line">find /home/apache -size 100c –<span class="built_in">print</span> 在/home/apache目录下查找文件长度恰好为100字节的文件</span><br><span class="line">find . -size +10 –<span class="built_in">print</span> 在当前目录下查找长度超过10块的文件（一块等于512字节）</span><br></pre></td></tr></table></figure></li>
+<li><p>-mount：在查找文件时不跨越文件系统mount点。<br><code>find . -name “*.XC” -mount –print 从当前目录开始查找位于本文件系统中文件名以XC结尾的文件（不进入其他文件系统）</code></p>
+</li>
+<li><p>-follow：如果find命令遇到符号链接文件，就跟踪至链接所指向的文件</p>
+</li>
+<li><p>-exec，find命令对匹配的文件执行该参数所给出的shell命令。相应命令的形式为’command’ {} ;，注意{}和;之间的空格</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt; find ./ -size 0 -<span class="built_in">exec</span> rm &#123;&#125; \; 删除文件大小为零的文件</span><br><span class="line">&gt; rm -i `find ./ -size 0`</span><br><span class="line">&gt; find ./ -size 0 | xargs rm -f &amp;</span><br></pre></td></tr></table></figure>
+<p>为了用ls -l命令列出所匹配到的文件，可以把ls -l命令放在find命令的-exec选项中：<br><code>$ find . -type f -exec ls -l &#123;&#125; \;</code><br>在/logs目录中查找更改时间在5日以前的文件并删除它们：<br><code>find /logs -type f -mtime +5 -exec rm &#123;&#125; \;</code></p>
+</li>
+<li><p>-ok，和-exec的作用相同，只不过以一种更为安全的模式来执行该参数所给出的shell命令，在执行每一个命令之前，都会给出提示，让用户来确定是否执行。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -name <span class="string">&quot;*.conf&quot;</span>  -mtime +5 -ok rm &#123;  &#125; \; 在当前目录中查找所有文件名以.LOG结尾、更改时间在5日以上的文件，并删除它们，只不  过在删除之前先给出提示</span><br></pre></td></tr></table></figure>
+<p>说明： 如果你要寻找一个档案的话，那么使用 find 会是一个不错的主意。不过，由于 find 在寻找数据的时候相当的耗硬盘，所以没事情不要使用 find 啦！有更棒的指令可以取代呦，那就是 whereis 与 locate 咯~</p>
+</li>
+</ul>
+<h4 id="一些常用命令"><a href="#一些常用命令" class="headerlink" title="一些常用命令"></a>一些常用命令</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1. find . -<span class="built_in">type</span> f -<span class="built_in">exec</span> ls -l &#123;&#125; \;</span><br><span class="line">查找当前路径下的所有普通文件，并把它们列出来。</span><br><span class="line">2. find logs -<span class="built_in">type</span> f -mtime +5 -<span class="built_in">exec</span> rm &#123;&#125; \;</span><br><span class="line">删除logs目录下更新时间为5日以上的文件。</span><br><span class="line">3.find . -name <span class="string">&quot;*.log&quot;</span> -mtime +5 -ok rm &#123;&#125; \;</span><br><span class="line">删除当前路径下以。<span class="built_in">log</span>结尾的五日以上的文件，删除之前要确认。</span><br><span class="line">4. find ~ -<span class="built_in">type</span> f -perm 4755 -<span class="built_in">print</span></span><br><span class="line">查找<span class="variable">$HOME</span>目录下suid位被设置，文件属性为755的文件打印出来。</span><br><span class="line">说明： find在有点系统中会一次性得到将匹配到的文件都传给<span class="built_in">exec</span>，但是有的系统对<span class="built_in">exec</span>的命令长度做限制，就会报：”参数列太长“，这就需要使用xargs。xargs是部分取传来的文件。</span><br><span class="line">5. find / -<span class="built_in">type</span> f -<span class="built_in">print</span> |xargs file</span><br><span class="line">xargs测试文件分类</span><br><span class="line">6. find . -name <span class="string">&quot;core*&quot;</span> -<span class="built_in">print</span>|xargs <span class="built_in">echo</span> <span class="string">&quot; &quot;</span>&gt;/tmp/core.log</span><br><span class="line">将core文件信息查询结果报存到core。<span class="built_in">log</span>日志。</span><br><span class="line">7. find / -<span class="built_in">type</span> f -<span class="built_in">print</span> | xargs chmod o -w</span><br><span class="line">8. find . -name * -<span class="built_in">print</span> |xargs grep <span class="string">&quot;DBO&quot;</span></span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>技术</category>
       </categories>
       <tags>
+        <tag>find</tag>
         <tag>通用技巧</tag>
-        <tag>grep</tag>
       </tags>
   </entry>
   <entry>
@@ -345,65 +285,6 @@
       <tags>
         <tag>通用技巧</tag>
         <tag>shell</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>find命令使用技巧</title>
-    <url>/2020/01/16/2020-01-16-find/</url>
-    <content><![CDATA[<p><code>find &lt; path &gt; &lt; expression &gt; &lt; cmd &gt;</code></p>
-<ul>
-<li>path： 所要搜索的目录及其所有子目录。默认为当前目录。</li>
-<li>expression： 所要搜索的文件的特征。</li>
-<li>cmd： 对搜索结果进行特定的处理。</li>
-</ul>
-<p>如果什么参数也不加，find默认搜索当前目录及其子目录，并且不过滤任何结果（也就是返回所有文件），将它们全都显示在屏幕上。</p>
-<h4 id="find命令常用选项及实例"><a href="#find命令常用选项及实例" class="headerlink" title="find命令常用选项及实例"></a>find命令常用选项及实例</h4><ul>
-<li><p>-name 按照文件名查找文件。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /dir -name filename  在/dir目录及其子目录下面查找名字为filename的文件</span><br><span class="line">find . -name <span class="string">&quot;*.c&quot;</span> 在当前目录及其子目录（用“.”表示）中查找任何扩展名为“c”的文件</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-</li>
-<li><p>-perm 按照文件权限来查找文件。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -perm 755 –<span class="built_in">print</span> 在当前目录下查找文件权限位为755的文件，即文件属主可以读、写、执行，其他用户可以读、执行的文件</span><br></pre></td></tr></table></figure></li>
-<li><p>-prune 使用这一选项可以使find命令不在当前指定的目录中查找，如果同时使用-depth选项，那么-prune将被find命令忽略。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /apps -path <span class="string">&quot;/apps/bin&quot;</span> -prune -o –<span class="built_in">print</span> 在/apps目录下查找文件，但不希望在/apps/bin目录下查找</span><br><span class="line">find /usr/sam -path <span class="string">&quot;/usr/sam/dir1&quot;</span> -prune -o –<span class="built_in">print</span> 在/usr/sam目录下查找不在dir1子目录之内的所有文件</span><br></pre></td></tr></table></figure></li>
-<li><p>-depth：在查找文件时，首先查找当前目录中的文件，然后再在其子目录中查找。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / -name <span class="string">&quot;CON.FILE&quot;</span> -depth –<span class="built_in">print</span> 它将首先匹配所有的文件然后再进入子目录中查找</span><br></pre></td></tr></table></figure></li>
-<li><p>-user 按照文件属主来查找文件。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find ~ -user sam –<span class="built_in">print</span> 在<span class="variable">$HOME</span>目录中查找文件属主为sam的文件</span><br></pre></td></tr></table></figure></li>
-<li><p>-group 按照文件所属的组来查找文件。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /apps -group gem –<span class="built_in">print</span> 在/apps目录下查找属于gem用户组的文件</span><br></pre></td></tr></table></figure></li>
-<li><p>-mtime -n +n 按照文件的更改时间来查找文件， -n表示文件更改时间距现在n天以内，+n表示文件更改时间距现在n天以前。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / -mtime -5 –<span class="built_in">print</span> 在系统根目录下查找更改时间在5日以内的文件</span><br><span class="line">find /var/adm -mtime +3 –<span class="built_in">print</span> 在/var/adm目录下查找更改时间在3日以前的文件</span><br></pre></td></tr></table></figure></li>
-<li><p>-nogroup 查找无有效所属组的文件，即该文件所属的组在/etc/groups中不存在。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / –nogroup -<span class="built_in">print</span></span><br></pre></td></tr></table></figure></li>
-<li><p>-nouser 查找无有效属主的文件，即该文件的属主在/etc/passwd中不存在。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /home -nouser –<span class="built_in">print</span></span><br></pre></td></tr></table></figure></li>
-<li><p>-newer file1 ! file2 查找更改时间比文件file1新但比文件file2旧的文件。</p>
-</li>
-<li><p>-type 查找某一类型的文件，<br>诸如：<br>b - 块设备文件。<br>d - 目录。<br>c - 字符设备文件。<br>p - 管道文件。<br>l - 符号链接文件。<br>f - 普通文件。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /etc -<span class="built_in">type</span> d –<span class="built_in">print</span> 在/etc目录下查找所有的目录</span><br><span class="line">find . ! -<span class="built_in">type</span> d –<span class="built_in">print</span> 在当前目录下查找除目录以外的所有类型的文件</span><br><span class="line">find /etc -<span class="built_in">type</span> l –<span class="built_in">print</span> 在/etc目录下查找所有的符号链接文件</span><br></pre></td></tr></table></figure></li>
-<li><p>-size n[c] 查找文件长度为n块的文件，带有c时表示文件长度以字节计。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -size +1000000c –<span class="built_in">print</span> 在当前目录下查找文件长度大于1 M字节的文件</span><br><span class="line">find /home/apache -size 100c –<span class="built_in">print</span> 在/home/apache目录下查找文件长度恰好为100字节的文件</span><br><span class="line">find . -size +10 –<span class="built_in">print</span> 在当前目录下查找长度超过10块的文件（一块等于512字节）</span><br></pre></td></tr></table></figure></li>
-<li><p>-mount：在查找文件时不跨越文件系统mount点。<br><code>find . -name “*.XC” -mount –print 从当前目录开始查找位于本文件系统中文件名以XC结尾的文件（不进入其他文件系统）</code></p>
-</li>
-<li><p>-follow：如果find命令遇到符号链接文件，就跟踪至链接所指向的文件</p>
-</li>
-<li><p>-exec，find命令对匹配的文件执行该参数所给出的shell命令。相应命令的形式为’command’ {} ;，注意{}和;之间的空格</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt; find ./ -size 0 -<span class="built_in">exec</span> rm &#123;&#125; \; 删除文件大小为零的文件</span><br><span class="line">&gt; rm -i `find ./ -size 0`</span><br><span class="line">&gt; find ./ -size 0 | xargs rm -f &amp;</span><br></pre></td></tr></table></figure>
-<p>为了用ls -l命令列出所匹配到的文件，可以把ls -l命令放在find命令的-exec选项中：<br><code>$ find . -type f -exec ls -l &#123;&#125; \;</code><br>在/logs目录中查找更改时间在5日以前的文件并删除它们：<br><code>find /logs -type f -mtime +5 -exec rm &#123;&#125; \;</code></p>
-</li>
-<li><p>-ok，和-exec的作用相同，只不过以一种更为安全的模式来执行该参数所给出的shell命令，在执行每一个命令之前，都会给出提示，让用户来确定是否执行。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -name <span class="string">&quot;*.conf&quot;</span>  -mtime +5 -ok rm &#123;  &#125; \; 在当前目录中查找所有文件名以.LOG结尾、更改时间在5日以上的文件，并删除它们，只不  过在删除之前先给出提示</span><br></pre></td></tr></table></figure>
-<p>说明： 如果你要寻找一个档案的话，那么使用 find 会是一个不错的主意。不过，由于 find 在寻找数据的时候相当的耗硬盘，所以没事情不要使用 find 啦！有更棒的指令可以取代呦，那就是 whereis 与 locate 咯~</p>
-</li>
-</ul>
-<h4 id="一些常用命令"><a href="#一些常用命令" class="headerlink" title="一些常用命令"></a>一些常用命令</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1. find . -<span class="built_in">type</span> f -<span class="built_in">exec</span> ls -l &#123;&#125; \;</span><br><span class="line">查找当前路径下的所有普通文件，并把它们列出来。</span><br><span class="line">2. find logs -<span class="built_in">type</span> f -mtime +5 -<span class="built_in">exec</span> rm &#123;&#125; \;</span><br><span class="line">删除logs目录下更新时间为5日以上的文件。</span><br><span class="line">3.find . -name <span class="string">&quot;*.log&quot;</span> -mtime +5 -ok rm &#123;&#125; \;</span><br><span class="line">删除当前路径下以。<span class="built_in">log</span>结尾的五日以上的文件，删除之前要确认。</span><br><span class="line">4. find ~ -<span class="built_in">type</span> f -perm 4755 -<span class="built_in">print</span></span><br><span class="line">查找<span class="variable">$HOME</span>目录下suid位被设置，文件属性为755的文件打印出来。</span><br><span class="line">说明： find在有点系统中会一次性得到将匹配到的文件都传给<span class="built_in">exec</span>，但是有的系统对<span class="built_in">exec</span>的命令长度做限制，就会报：”参数列太长“，这就需要使用xargs。xargs是部分取传来的文件。</span><br><span class="line">5. find / -<span class="built_in">type</span> f -<span class="built_in">print</span> |xargs file</span><br><span class="line">xargs测试文件分类</span><br><span class="line">6. find . -name <span class="string">&quot;core*&quot;</span> -<span class="built_in">print</span>|xargs <span class="built_in">echo</span> <span class="string">&quot; &quot;</span>&gt;/tmp/core.log</span><br><span class="line">将core文件信息查询结果报存到core。<span class="built_in">log</span>日志。</span><br><span class="line">7. find / -<span class="built_in">type</span> f -<span class="built_in">print</span> | xargs chmod o -w</span><br><span class="line">8. find . -name * -<span class="built_in">print</span> |xargs grep <span class="string">&quot;DBO&quot;</span></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>通用技巧</tag>
-        <tag>find</tag>
       </tags>
   </entry>
   <entry>
@@ -670,6 +551,125 @@
       </tags>
   </entry>
   <entry>
+    <title>grep命令使用技巧</title>
+    <url>/2020/01/16/2020-01-16-grep/</url>
+    <content><![CDATA[<p>grep [选项] pattern [文件名]</p>
+<p>命令中的选项为：</p>
+<ul>
+<li>-? 同时显示匹配行上下的？行，如：<code>grep -2 pattern filename</code> 同时显示匹配行的上下2行。</li>
+<li>-A ? 显示匹配行和后面的?行, 如: <code>grep -A 2 pattern filename</code></li>
+<li>-B ? 显示匹配行和前面的?行</li>
+<li>-b，–byte-offset 打印匹配行前面打印该行所在的块号码。</li>
+<li>-c,–count 只打印匹配的行数，不显示匹配的内容。</li>
+<li>-f File，–file=File 从文件中提取模板。空文件中包含0个模板，所以什么都不匹配。</li>
+<li>-h，–no-filename 当搜索多个文件时，不显示匹配文件名前缀。</li>
+<li>-i，–ignore-case 忽略大小写差别。</li>
+<li>-q，–quiet 取消显示，只返回退出状态。0则表示找到了匹配的行。</li>
+<li>-l，–files-with-matches 打印匹配模板的文件清单。</li>
+<li>-L，–files-without-match 打印不匹配模板的文件清单。</li>
+<li>-n，–line-number 在匹配的行前面打印行号。</li>
+<li>-s，–silent 不显示关于不存在或者无法读取文件的错误信息。</li>
+<li>-v，–revert-match 反检索，只显示不匹配的行。</li>
+<li>-w，–word-regexp 如果被&lt;和&gt;引用，就把表达式做为一个单词搜索。</li>
+<li>-V，–version 显示软件版本信息。</li>
+</ul>
+<a id="more"></a>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -l | grep <span class="string">&#x27;^a&#x27;</span> 通过管道过滤ls -l输出的内容，只显示以a开头的行。</span><br><span class="line">grep <span class="string">&#x27;test&#x27;</span> d* 显示所有以d开头的文件中包含<span class="built_in">test</span>的行。</span><br><span class="line">grep <span class="string">&#x27;test&#x27;</span> aa bb cc 显示在aa，bb，cc文件中匹配<span class="built_in">test</span>的行。</span><br><span class="line">grep <span class="string">&#x27;[a-z]&#x27;</span> aa 显示所有包含每个字符串至少有5个连续小写字符的字符串的行。</span><br><span class="line">grep <span class="string">&#x27;w(es)t.*&#x27;</span> aa 如果west被匹配，则es就被存储到内存中，并标记为1，然后搜索任意个字符(.*)，这些字符后面紧跟着另外一个es()，找到就显示该行。如果用egrep或grep -E，就不用<span class="string">&quot;&quot;</span>号进行转义，直接写成<span class="string">&#x27;w(es)t.*&#x27;</span>就可以了。</span><br><span class="line">grep -i pattern files ：不区分大小写地搜索。默认情况区分大小写</span><br><span class="line">grep -l pattern files ：只列出匹配的文件名，</span><br><span class="line">grep -L pattern files ：列出不匹配的文件名，</span><br><span class="line">grep -w pattern files ：只匹配整个单词，而不是字符串的一部分(如匹配‘magic’，而不是‘magical’)，</span><br><span class="line">grep -C number pattern files ：匹配的上下文分别显示[number]行，</span><br><span class="line">grep pattern1 | pattern2 files ：显示匹配 pattern1 或 pattern2 的行，</span><br><span class="line">grep pattern1 files | grep pattern2 ：显示既匹配 pattern1 又匹配 pattern2 的行。</span><br></pre></td></tr></table></figure>
+<p>pattern为所要匹配的字符串，可使用下列模式</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">. 匹配任意一个字符</span><br><span class="line">* 匹配0 个或多个*前的字符</span><br><span class="line">^ 匹配行开头</span><br><span class="line">$ 匹配行结尾</span><br><span class="line">[] 匹配[ ]中的任意一个字符，[]中可用 - 表示范围，</span><br><span class="line">例如[a-z]表示字母a 至z 中的任意一个</span><br><span class="line">\ 转意字符</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>通用技巧</tag>
+        <tag>grep</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>awk怎么写?</title>
+    <url>/2020/01/16/2020-01-16-awk/</url>
+    <content><![CDATA[<p>本篇文章主要是参考左耳朵耗子前辈的博文整理而来, 作为自己学习备忘之用.</p>
+<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>awk是一个强大的文本分析工具, 相对于grep的查找, sed的编辑, awk在其对数据分析并生成报告时, 显得尤为强大. 简单来说awk就是把文件逐行的读入, 以空格为默认分隔符将每行切片, 切开的部分再进行各种分析处理.</p>
+<p>awk有3个不同版本: awk, nawk和gawk, 未作特别说明, 一般指gawk, gawk是AWK的GNU版本.</p>
+<p>awk其名称得自于它的创始人Alfred Aho, Peter Weinberger和Brian Kernighan姓氏的首个字母. 实际上 AWK 的确拥有自己的语言: AWK 程序设计语言, 三位创建者已将它正式定义为”样式扫描和处理语言”. 它允许您创建简短的程序, 这些程序读取输入文件, 为数据排序, 处理数据, 对输入执行计算以及生成报表, 还有无数其他的功能.</p>
+<a id="more"></a>
+
+<h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">awk <span class="string">&#x27;pattern + &#123;action&#125;&#x27;</span> &#123;filenames&#125;</span><br></pre></td></tr></table></figure>
+<p>尽管操作可能会很复杂, 但语法总是这样, 其中 pattern 表示 AWK 在数据中查找的内容, 而 action 是在找到匹配内容时所执行的一系列命令.花括号（{}）不需要在程序中始终出现, 但它们用于根据特定的模式对一系列指令进行分组. pattern就是要表示的正则表达式, 用斜杠括起来.</p>
+<p>awk语言的最基本功能是在文件或者字符串中基于指定规则浏览和抽取信息, awk抽取信息后, 才能进行其他文本操作.完整的awk脚本通常用来格式化文本文件中的信息.<br>通常, awk是以文件的一行为处理单位的.awk每接收文件的一行, 然后执行相应的命令, 来处理文本.</p>
+<h3 id="调用awk有三种方式调用awk"><a href="#调用awk有三种方式调用awk" class="headerlink" title="调用awk有三种方式调用awk"></a>调用awk有三种方式调用awk</h3><ol>
+<li>命令行方式awk [-F  field-separator]  ‘commands’  input-file(s)其中, commands 是真正awk命令, [-F域分隔符]是可选的. input-file(s) 是待处理的文件.在awk中, 文件的每一行中, 由域分隔符分开的每一项称为一个域.通常, 在不指名-F域分隔符的情况下, 默认的域分隔符是空格.</li>
+<li>shell脚本方式将所有的awk命令插入一个文件, 并使awk程序可执行, 然后awk命令解释器作为脚本的首行, 以便通过键入脚本名称来调用.相当于shell脚本首行的：#!/bin/sh可以换成：#!/bin/awk</li>
+<li>将所有的awk命令插入一个单独文件, 然后调用：awk -f awk-script-file input-file(s)其中, -f选项加载awk-script-file中的awk脚本, input-file(s)跟上面的是一样的.</li>
+</ol>
+<h4 id="入门实例"><a href="#入门实例" class="headerlink" title="入门实例"></a>入门实例</h4><p>假设last -n 5的输出如下</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ last -n 5 &lt;==仅取出前五行</span><br><span class="line">root     pts/1   192.168.1.100  Tue Feb 10 11:21   still logged <span class="keyword">in</span></span><br><span class="line">root     pts/1   192.168.1.100  Tue Feb 10 00:46 - 02:28  (01:41)</span><br><span class="line">root     pts/1   192.168.1.100  Mon Feb  9 11:41 - 18:30  (06:48)</span><br><span class="line">dmtsai   pts/1   192.168.1.100  Mon Feb  9 11:41 - 11:41  (00:00)</span><br><span class="line">root     tty1                   Fri Sep  5 14:09 - 14:10  (00:01)</span><br></pre></td></tr></table></figure>
+<p>如果只是显示最近登录的5个帐号</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ last -n 5 | awk  <span class="string">&#x27;&#123;print $1&#125;&#x27;</span>  -- 必须是单引号<span class="string">&#x27; &#x27;</span>,<span class="string">&quot; &quot;</span>不生效的</span><br><span class="line">root</span><br><span class="line">root</span><br><span class="line">root</span><br><span class="line">dmtsai</span><br><span class="line">root</span><br></pre></td></tr></table></figure>
+<p>awk工作流程是这样的：读入有’\n’换行符分割的一条记录, 然后将记录按指定的域分隔符划分域, 填充域, $0则表示所有域, $1表示第一个域, $n表示第n个域. 默认域分隔符是”空白键” 或 “[tab]键”, 所以$1表示登录用户, $3表示登录用户ip,以此类推.<br>字符串匹配的示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ awk <span class="string">&#x27;$6 ~ /FIN/ || NR==1 &#123;print NR,$4,$5,$6&#125;&#x27;</span> OFS=<span class="string">&quot;\t&quot;</span> netstat.txt</span><br><span class="line">1       Local-Address   Foreign-Address State</span><br><span class="line">6       coolshell.cn:80 61.140.101.185:37538    FIN_WAIT2</span><br><span class="line">9       coolshell.cn:80 116.234.127.77:11502    FIN_WAIT2</span><br><span class="line">13      coolshell.cn:80 124.152.181.209:26825   FIN_WAIT1</span><br><span class="line">18      coolshell.cn:80 117.136.20.85:50025     FIN_WAIT2</span><br><span class="line"></span><br><span class="line">$ awk <span class="string">&#x27;$6 ~ /WAIT/ || NR==1 &#123;print NR,$4,$5,$6&#125;&#x27;</span> OFS=<span class="string">&quot;\t&quot;</span> netstat.txt</span><br><span class="line">1       Local-Address   Foreign-Address State</span><br><span class="line">5       coolshell.cn:80 124.205.5.146:18245     TIME_WAIT</span><br><span class="line">6       coolshell.cn:80 61.140.101.185:37538    FIN_WAIT2</span><br><span class="line">9       coolshell.cn:80 116.234.127.77:11502    FIN_WAIT2</span><br><span class="line">11      coolshell.cn:80 183.60.215.36:36970     TIME_WAIT</span><br><span class="line">13      coolshell.cn:80 124.152.181.209:26825   FIN_WAIT1</span><br><span class="line">15      coolshell.cn:80 183.60.212.163:51082    TIME_WAIT</span><br><span class="line">18      coolshell.cn:80 117.136.20.85:50025     FIN_WAIT2</span><br></pre></td></tr></table></figure>
+<p>上面的第一个示例匹配FIN状态,  第二个示例匹配WAIT字样的状态.其实 ~ 表示模式开始./ /中是模式.其实就是一个正则表达式的匹配.<br>可以使用 “/FIN|TIME/“ 来匹配 FIN 或者 TIME :</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ awk <span class="string">&#x27;$6 ~ /FIN|TIME/ || NR==1 &#123;print NR,$4,$5,$6&#125;&#x27;</span> OFS=<span class="string">&quot;\t&quot;</span> netstat.txt</span><br><span class="line">1       Local-Address   Foreign-Address State</span><br><span class="line">5       coolshell.cn:80 124.205.5.146:18245     TIME_WAIT</span><br><span class="line">6       coolshell.cn:80 61.140.101.185:37538    FIN_WAIT2</span><br><span class="line">9       coolshell.cn:80 116.234.127.77:11502    FIN_WAIT2</span><br><span class="line">11      coolshell.cn:80 183.60.215.36:36970     TIME_WAIT</span><br><span class="line">13      coolshell.cn:80 124.152.181.209:26825   FIN_WAIT1</span><br><span class="line">15      coolshell.cn:80 183.60.212.163:51082    TIME_WAIT</span><br><span class="line">18      coolshell.cn:80 117.136.20.85:50025     FIN_WAIT2</span><br></pre></td></tr></table></figure>
+<p>再来看看模式取反的例子：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ awk <span class="string">&#x27;$6 !~ /WAIT/ || NR==1 &#123;print NR,$4,$5,$6&#125;&#x27;</span> OFS=<span class="string">&quot;\t&quot;</span> netstat.txt</span><br><span class="line">1       Local-Address   Foreign-Address State</span><br><span class="line">2       0.0.0.0:3306    0.0.0.0:*       LISTEN</span><br><span class="line">3       0.0.0.0:80      0.0.0.0:*       LISTEN</span><br><span class="line">4       127.0.0.1:9000  0.0.0.0:*       LISTEN</span><br><span class="line">7       coolshell.cn:80 110.194.134.189:1032    ESTABLISHED</span><br><span class="line">8       coolshell.cn:80 123.169.124.111:49809   ESTABLISHED</span><br><span class="line">10      coolshell.cn:80 123.169.124.111:49829   ESTABLISHED</span><br><span class="line">12      coolshell.cn:80 61.148.242.38:30901     ESTABLISHED</span><br><span class="line">14      coolshell.cn:80 110.194.134.189:4796    ESTABLISHED</span><br><span class="line">16      coolshell.cn:80 208.115.113.92:50601    LAST_ACK</span><br><span class="line">17      coolshell.cn:80 123.169.124.111:49840   ESTABLISHED</span><br><span class="line">19      :::22   :::*    LISTEN</span><br></pre></td></tr></table></figure>
+<p>或是：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">awk <span class="string">&#x27;!/WAIT/&#x27;</span> netstat.txt</span><br></pre></td></tr></table></figure>
+<p>如果只是显示/etc/passwd的账户</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cat /etc/passwd |awk  -F <span class="string">&#x27;:&#x27;</span>  <span class="string">&#x27;&#123;print $1&#125;&#x27;</span></span><br><span class="line">rootdaemonbinsys</span><br></pre></td></tr></table></figure>
+<p>这种是awk+action的示例, 每行都会执行action {print $1}.</p>
+<p>-F指定域分隔符为’:’.<br>如果只是显示/etc/passwd的账户和账户对应的shell,而账户与shell之间以tab键分割</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cat /etc/passwd |awk  -F <span class="string">&#x27;:&#x27;</span>  <span class="string">&#x27;&#123;print $1&quot;\t&quot;$7&#125;&#x27;</span></span><br><span class="line">root    /bin/bash</span><br><span class="line">daemon  /bin/sh</span><br><span class="line">bin     /bin/sh</span><br><span class="line">sys     /bin/sh</span><br></pre></td></tr></table></figure>
+<p>如果只是显示/etc/passwd的账户和账户对应的shell, 而账户与shell之间以逗号分割, 而且在所有行添加列名name, shell, 在最后一行添加”blue,/bin/nosh”.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cat /etc/passwd |awk  -F <span class="string">&#x27;:&#x27;</span>  <span class="string">&#x27;BEGIN &#123;print &quot;name,shell&quot;&#125;  &#123;print $1&quot;,&quot;$7&#125; END &#123;print &quot;blue,/bin/nosh&quot;&#125;&#x27;</span></span><br><span class="line">name,shell</span><br><span class="line">root,/bin/bash</span><br><span class="line">daemon,/bin/sh</span><br><span class="line">bin,/bin/sh</span><br><span class="line">sys,/bin/sh</span><br><span class="line">....</span><br><span class="line">blue,/bin/nosh</span><br></pre></td></tr></table></figure>
+<p>awk工作流程是这样的：先执行BEGIN, 然后读取文件, 读入有/n换行符分割的一条记录, 然后将记录按指定的域分隔符划分域, 填充域, $0则表示所有域,$1表示第一个域,$n表示第n个域,随后开始执行模式所对应的动作action.接着开始读入第二条记录······直到所有的记录都读完, 最后执行END操作.<br>搜索/etc/passwd有root关键字的所有行</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ awk -F: <span class="string">&#x27;/root/&#x27;</span> /etc/passwd</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br></pre></td></tr></table></figure>
+<p>这种是pattern的使用示例, 匹配了pattern(这里是root)的行才会执行action(没有指定action, 默认输出每行的内容).<br>搜索支持正则, 例如找root开头的: awk -F: ‘/^root/‘ /etc/passwd<br>搜索/etc/passwd有root关键字的所有行, 并显示对应的shell</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ awk -F: <span class="string">&#x27;/root/ &#123;print $7&#125;&#x27;</span> /etc/passwd</span><br><span class="line">/bin/bash</span><br></pre></td></tr></table></figure>
+<p>这里指定了action{print $7}<br>awk内置变量awk有许多内置变量用来设置环境信息, 这些变量可以被改变, 下面给出了最常用的一些变量.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ARGC               命令行参数个数</span><br><span class="line">ARGV               命令行参数排列</span><br><span class="line">ENVIRON            支持队列中系统环境变量的使用</span><br><span class="line">FILENAME           awk浏览的文件名</span><br><span class="line">FNR                浏览文件的记录数</span><br><span class="line">FS                 设置输入域分隔符, 等价于命令行 -F选项</span><br><span class="line">NF                 浏览记录的域的个数</span><br><span class="line">NR                 已读的记录数</span><br><span class="line">OFS                输出域分隔符   默认空格</span><br><span class="line">ORS                输出记录分隔符 默认换行符</span><br><span class="line">RS                 控制记录分隔符 默认换行符</span><br><span class="line">此外,<span class="variable">$0</span>变量是指整条记录.<span class="variable">$1</span>表示当前行的第一个域,<span class="variable">$2</span>表示当前行的第二个域,......以此类推.</span><br></pre></td></tr></table></figure>
+<p>统计/etc/passwd:文件名, 每行的行号, 每行的列数, 对应的完整行内容:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ awk  -F <span class="string">&#x27;:&#x27;</span>  <span class="string">&#x27;&#123;print &quot;filename:&quot; FILENAME &quot;,linenumber:&quot; NR &quot;,columns:&quot; NF &quot;,linecontent:&quot;$0&#125;&#x27;</span> /etc/passwd</span><br><span class="line">filename:/etc/passwd,linenumber:1,columns:7,linecontent:root:x:0:0:root:/root:/bin/bash</span><br><span class="line">filename:/etc/passwd,linenumber:2,columns:7,linecontent:daemon:x:1:1:daemon:/usr/sbin:/bin/sh</span><br><span class="line">filename:/etc/passwd,linenumber:3,columns:7,linecontent:bin:x:2:2:bin:/bin:/bin/sh</span><br><span class="line">filename:/etc/passwd,linenumber:4,columns:7,linecontent:sys:x:3:3:sys:/dev:/bin/sh</span><br></pre></td></tr></table></figure>
+<p>使用printf替代print,可以让代码更加简洁, 易读</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">awk  -F <span class="string">&#x27;:&#x27;</span>  <span class="string">&#x27;&#123;printf(&quot;filename:%10s,linenumber:%s,columns:%s,linecontent:%s\n&quot;,FILENAME,NR,NF,$0)&#125;&#x27;</span> /etc/passwd</span><br></pre></td></tr></table></figure>
+<h4 id="print和printf"><a href="#print和printf" class="headerlink" title="print和printf"></a>print和printf</h4><p>awk中同时提供了print和printf两种打印输出的函数.</p>
+<p>其中print函数的参数可以是变量, 数值或者字符串. 字符串必须用双引号引用, 参数用逗号分隔. 如果没有逗号, 参数就串联在一起而无法区分. 这里, 逗号的作用与输出文件的分隔符的作用是一样的, 只是后者是空格而已.<br>printf函数, 其用法和c语言中printf基本相似, 可以格式化字符串, 输出复杂时, printf更加好用, 代码更易懂.</p>
+<h3 id="awk编程"><a href="#awk编程" class="headerlink" title="awk编程"></a>awk编程</h3><h4 id="变量和赋值"><a href="#变量和赋值" class="headerlink" title="变量和赋值"></a>变量和赋值</h4><p>除了awk的内置变量, awk还可以自定义变量.</p>
+<p>下面统计/etc/passwd的账户人数</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">awk <span class="string">&#x27;&#123;count++;print $0;&#125; END&#123;print &quot;user count is &quot;, count&#125;&#x27;</span> /etc/passwd</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">......</span><br><span class="line">user count is  40</span><br></pre></td></tr></table></figure>
+<p>count是自定义变量. 之前的action{}里都是只有一个print, 其实print只是一个语句, 而action{}可以有多个语句, 以;号隔开.<br>这里没有初始化count, 虽然默认是0, 但是妥当的做法还是初始化为0:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">awk <span class="string">&#x27;BEGIN &#123;count=0;print &quot;[start]user count is &quot;, count&#125; &#123;count=count+1;print $0;&#125; END&#123;print &quot;[end]user count is &quot;, count&#125;&#x27;</span> /etc/passwd</span><br><span class="line">[start]user count is  0</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">...</span><br><span class="line">[end]user count is  40</span><br></pre></td></tr></table></figure>
+<p>统计某个文件夹下的文件占用的字节数</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -l |awk <span class="string">&#x27;BEGIN &#123;size=0;&#125; &#123;size=size+$5;&#125; END&#123;print &quot;[end]size is &quot;, size&#125;&#x27;</span></span><br><span class="line">[end]size is  8657198</span><br></pre></td></tr></table></figure>
+<p>如果以M为单位显示:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -l |awk <span class="string">&#x27;BEGIN &#123;size=0;&#125; &#123;size=size+$5;&#125; END&#123;print &quot;[end]size is &quot;, size/1024/1024,&quot;M&quot;&#125;&#x27;</span></span><br><span class="line">[end]size is  8.25889 M</span><br></pre></td></tr></table></figure>
+<p>注意, 统计不包括文件夹的子目录.</p>
+<h4 id="条件语句"><a href="#条件语句" class="headerlink" title="条件语句"></a>条件语句</h4><p>awk中的条件语句是从C语言中借鉴来的, 见如下声明方式：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (expression)</span><br><span class="line">&#123;</span><br><span class="line">    statement;</span><br><span class="line">    statement;</span><br><span class="line">    ... ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (expression)</span><br><span class="line">&#123;</span><br><span class="line">    statement;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    statement2;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (expression)</span><br><span class="line">&#123;</span><br><span class="line">    statement1;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (expression1)</span><br><span class="line">&#123;</span><br><span class="line">    statement2;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    statement3;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>统计某个文件夹下的文件占用的字节数,过滤4096大小的文件(一般都是文件夹):</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -l |awk <span class="string">&#x27;BEGIN &#123;size=0;print &quot;[start]size is &quot;, size&#125; &#123;if($5!=4096)&#123;size=size+$5;&#125;&#125; END&#123;print &quot;[end]size is &quot;, size/1024/1024,&quot;M&quot;&#125;&#x27;</span></span><br><span class="line">[end]size is  8.22339 M</span><br></pre></td></tr></table></figure>
+<p>统计下面的命令计算所有的C文件, CPP文件和H文件的文件大小总和.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ls -l  *.cpp *.c *.h | awk <span class="string">&#x27;&#123;sum+=$5&#125; END &#123;print sum&#125;&#x27;</span></span><br><span class="line">2511401</span><br></pre></td></tr></table></figure>
+<p>我们再来看一个统计各个connection状态的用法：（我们可以看到一些编程的影子了, 大家都是程序员我就不解释了）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ awk <span class="string">&#x27;NR!=1&#123;a[$6]++;&#125; END &#123;for (i in a) print i &quot;, &quot; a[i];&#125;&#x27;</span> netstat.txt</span><br><span class="line">TIME_WAIT, 3</span><br><span class="line">FIN_WAIT1, 1</span><br><span class="line">ESTABLISHED, 6</span><br><span class="line">FIN_WAIT2, 3</span><br><span class="line">LAST_ACK, 1</span><br><span class="line">LISTEN, 4</span><br></pre></td></tr></table></figure>
+<p>再来看看统计每个用户的进程的占了多少内存（注：sum的RSS那一列）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ps aux | awk <span class="string">&#x27;NR!=1&#123;a[$1]+=$6;&#125; END &#123; for(i in a) print i &quot;, &quot; a[i]&quot;KB&quot;;&#125;&#x27;</span></span><br><span class="line">dbus, 540KB</span><br><span class="line">mysql, 99928KB</span><br><span class="line">www, 3264924KB</span><br><span class="line">root, 63644KB</span><br><span class="line">hchen, 6020KB</span><br></pre></td></tr></table></figure>
+<p>环境变量即然说到了脚本, 我们来看看怎么和环境变量交互：（使用-v参数和ENVIRON, 使用ENVIRON的环境变量需要export）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt; x=5</span><br><span class="line"></span><br><span class="line">&gt; y=10</span><br><span class="line">&gt; <span class="built_in">export</span> y</span><br><span class="line"></span><br><span class="line">&gt; <span class="built_in">echo</span> <span class="variable">$x</span> <span class="variable">$y</span></span><br><span class="line">5 10</span><br><span class="line"></span><br><span class="line">$ awk -v val=<span class="variable">$x</span> <span class="string">&#x27;&#123;print $1, $2, $3, $4+val, $5+ENVIRON[&quot;y&quot;]&#125;&#x27;</span> OFS=<span class="string">&quot;\t&quot;</span> score.txt</span><br><span class="line">Marry   2143    78      89      87</span><br><span class="line">Jack    2321    66      83      55</span><br><span class="line">Tom     2122    48      82      81</span><br><span class="line">Mike    2537    87      102     105</span><br><span class="line">Bob     2415    40      62      72</span><br></pre></td></tr></table></figure>
+<h4 id="循环语句"><a href="#循环语句" class="headerlink" title="循环语句"></a>循环语句</h4><p>awk中的循环语句同样借鉴于C语言, 支持while, do/while, for, break, continue, 这些关键字的语义和C语言中的语义完全相同.</p>
+<p>数组</p>
+<p>  因为awk中数组的下标可以是数字和字母, 数组的下标通常被称为关键字(key). 值和关键字都存储在内部的一张针对key/value应用hash的表格里.由于hash不是顺序存储, 因此在显示数组内容时会发现, 它们并不是按照你预料的顺序显示出来的. 数组和变量一样, 都是在使用时自动创建的, awk也同样会自动判断其存储的是数字还是字符串.一般而言, awk中的数组用来从记录中收集信息, 可以用于计算总和, 统计单词以及跟踪模板被匹配的次数等等.</p>
+<p>显示/etc/passwd的账户</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 这里使用for循环遍历数组</span></span><br><span class="line"></span><br><span class="line">awk -F <span class="string">&#x27;:&#x27;</span> <span class="string">&#x27;BEGIN &#123;count=0;&#125; &#123;name[count] = $1;count++;&#125;; END&#123;for (i = 0; i &lt; NR; i++) print i, name[i]&#125;&#x27;</span> /etc/passwd</span><br><span class="line">0 root</span><br><span class="line">1 daemon</span><br><span class="line">2 bin</span><br><span class="line">3 sys</span><br><span class="line">4 sync</span><br><span class="line">5 games</span><br><span class="line">......</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>通用技巧</tag>
+        <tag>awk</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>gdb常用技巧</title>
     <url>/2020/01/29/2020-01-28-gdb-use/</url>
     <content><![CDATA[<h4 id="3种启用gdb的方法"><a href="#3种启用gdb的方法" class="headerlink" title="3种启用gdb的方法"></a>3种启用gdb的方法</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1.gdb &lt;program&gt;</span><br><span class="line">2.gdb &lt;program&gt; core</span><br><span class="line">3.gdb &lt;program&gt; &lt;PID&gt;</span><br></pre></td></tr></table></figure>
@@ -814,6 +814,27 @@
       </tags>
   </entry>
   <entry>
+    <title>免密登录远程linux机器</title>
+    <url>/2020/02/01/2020-02-01-ssh-remote-linux/</url>
+    <content><![CDATA[<h3 id="为什么选择证书登陆？"><a href="#为什么选择证书登陆？" class="headerlink" title="为什么选择证书登陆？"></a>为什么选择证书登陆？</h3><p>Mac下原生及主流的ssh终端工具大多不具备保存ssh登陆密码的功能, 通过证书登陆的方式，就可以实现原生终端工具Terminal或第三方明星终端iTerm免密码登录远程系统，并且比单纯的密码验证登陆方式提高了安全性。</p>
+<a id="more"></a>
+
+<h3 id="配置过程（以下操作都在终端命令行下运行）"><a href="#配置过程（以下操作都在终端命令行下运行）" class="headerlink" title="配置过程（以下操作都在终端命令行下运行）"></a>配置过程（以下操作都在终端命令行下运行）</h3><ol>
+<li>进入系统的ssh证书目录 cd ~/.ssh/</li>
+<li>建立证书文件 ssh-keygen -t rsa 提示输入，直接回车即可。</li>
+<li>输入 ls 命令查看当前目录会发现新生成的一对秘钥文件分别是：<br>公钥：id_rsa.pub<br>私钥：id_rsa</li>
+<li>登陆到远程服务器，进入.ssh目录 cd ~/.ssh<br>将上面生成的公钥文件的内容copy进 authorized_keys 文件中</li>
+<li>在Mac终端下执行登陆命令 ssh username@server<br>即可免密码登录到远程服务器</li>
+</ol>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>ssh</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>进程间通信-fcntl记录上锁</title>
     <url>/2020/02/01/2020-02-01-ipc-fcntl/</url>
     <content><![CDATA[<p>这是读写锁的一种扩展类型，可用于有亲缘关系或<strong>无亲缘关系</strong>的<strong>进程</strong>之间共享某个文件的读写。这些锁用于不同进程间的上锁，而不是用于同一进程中不同线程间的上锁。</p>
@@ -855,27 +876,6 @@
       <tags>
         <tag>ipc</tag>
         <tag>多进程</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>免密登录远程linux机器</title>
-    <url>/2020/02/01/2020-02-01-ssh-remote-linux/</url>
-    <content><![CDATA[<h3 id="为什么选择证书登陆？"><a href="#为什么选择证书登陆？" class="headerlink" title="为什么选择证书登陆？"></a>为什么选择证书登陆？</h3><p>Mac下原生及主流的ssh终端工具大多不具备保存ssh登陆密码的功能, 通过证书登陆的方式，就可以实现原生终端工具Terminal或第三方明星终端iTerm免密码登录远程系统，并且比单纯的密码验证登陆方式提高了安全性。</p>
-<a id="more"></a>
-
-<h3 id="配置过程（以下操作都在终端命令行下运行）"><a href="#配置过程（以下操作都在终端命令行下运行）" class="headerlink" title="配置过程（以下操作都在终端命令行下运行）"></a>配置过程（以下操作都在终端命令行下运行）</h3><ol>
-<li>进入系统的ssh证书目录 cd ~/.ssh/</li>
-<li>建立证书文件 ssh-keygen -t rsa 提示输入，直接回车即可。</li>
-<li>输入 ls 命令查看当前目录会发现新生成的一对秘钥文件分别是：<br>公钥：id_rsa.pub<br>私钥：id_rsa</li>
-<li>登陆到远程服务器，进入.ssh目录 cd ~/.ssh<br>将上面生成的公钥文件的内容copy进 authorized_keys 文件中</li>
-<li>在Mac终端下执行登陆命令 ssh username@server<br>即可免密码登录到远程服务器</li>
-</ol>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>ssh</tag>
       </tags>
   </entry>
   <entry>
@@ -1465,24 +1465,6 @@
       </tags>
   </entry>
   <entry>
-    <title>proto buffer MergeFrom的坑</title>
-    <url>/2020/03/17/2020-03-17-donot-use-pb-mergefrom/</url>
-    <content><![CDATA[<p>pb好用, 性能虽然比不上二进制, 不过也比json在大多数情况下还是好很多. 尤其是字段的向前向后兼容, 这一点应该也是大多数同学选用pb的原因. 然后终于<strong>掉进坑</strong>了, 严重得影响了一次线上服务.<br>整理测试程序的时候发现, python的官方指南压根就没提MergeFrom这个接口, 看起来是专门用来坑c++的兄弟的啊</p>
-<a id="more"></a>
-
-<p>下面给个例子来说明</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># mergefrom_trap.proto</span></span><br><span class="line">package mergefrom_trap;</span><br><span class="line">message Person</span><br><span class="line">&#123;</span><br><span class="line">required string name = 1;</span><br><span class="line">required int32 age = 2;</span><br><span class="line">// optional int32 new1 = 3;</span><br><span class="line">// optional int32 new2 = 4[default = 0];</span><br><span class="line">&#125;</span><br><span class="line">message AddressBook</span><br><span class="line">&#123;</span><br><span class="line">required string host_name = 1;</span><br><span class="line">repeated Person person = 2;</span><br><span class="line">// optional int32 new3 = 3;</span><br><span class="line">// optional int32 new4 = 4[default = 0];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h5 id="1-先用没有new1-4字段的proto-编译出c-的bin文件"><a href="#1-先用没有new1-4字段的proto-编译出c-的bin文件" class="headerlink" title="1. 先用没有new1-4字段的proto, 编译出c++的bin文件"></a>1. 先用没有new1-4字段的proto, 编译出c++的bin文件</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[carl pb_mergefrom_trap]$ protoc -I=./ --cpp_out=./ mergefrom_trap.proto</span><br><span class="line">[carl pb_mergefrom_trap]$ g++ read_new_write_old.cpp mergefrom_trap.pb.cc -lprotobuf -o read_new_write_old.bin</span><br></pre></td></tr></table></figure>
-<h5 id="2-然后添家new1-4字段-生成-mergefrom-trap-pb2-py"><a href="#2-然后添家new1-4字段-生成-mergefrom-trap-pb2-py" class="headerlink" title="2. 然后添家new1-4字段, 生成 mergefrom_trap_pb2.py"></a>2. 然后添家new1-4字段, 生成 mergefrom_trap_pb2.py</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[carl pb_mergefrom_trap]$ protoc -I=./ --python_out=./ mergefrom_trap.proto</span><br></pre></td></tr></table></figure>
-<h5 id="3-用write-new-py程序创建一个address-book对象并写入文件-输出结果如下"><a href="#3-用write-new-py程序创建一个address-book对象并写入文件-输出结果如下" class="headerlink" title="3. 用write_new.py程序创建一个address_book对象并写入文件, 输出结果如下:"></a>3. 用write_new.py程序创建一个address_book对象并写入文件, 输出结果如下:</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[carl pb_mergefrom_trap]$ python write_new.py addressbook</span><br><span class="line">address_book: host_name: <span class="string">&quot;carl&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 30</span><br><span class="line">new1: 1</span><br><span class="line">new2: 2</span><br><span class="line">&#125;</span><br><span class="line">new3: 3</span><br><span class="line">new4: 4</span><br></pre></td></tr></table></figure>
-<h5 id="4-执行上面c-的bin文件"><a href="#4-执行上面c-的bin文件" class="headerlink" title="4. 执行上面c++的bin文件"></a>4. 执行上面c++的bin文件</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[carl pb_mergefrom_trap]$ ./read_new_write_old.bin addressbook</span><br><span class="line">book: host_name: <span class="string">&quot;carl&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 30</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_update_mergefrom&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_update_mergefrom&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_update_mergefrom&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_update_mergefrom&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_update_mergefrom&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br></pre></td></tr></table></figure>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>由上测试结果可以看出, 一个使用了旧proto的c++程序, 在调用mergefrom的时候, 那2个unknown的字段不是覆盖回原来已有的字段上, 而是<strong>新增</strong>了. 连续调用几次, 这个是指数级增长的. 这会导致serialize出来的bin文件大小指数级增长, 然后会影响到进程, 在Parse和Serialize的时候, 函数调用会阻塞几十秒甚至几分钟, 网络流量也会剧增, 这对一个生产服务器可以说是致命的, 血淋淋的教训啊.<br>以上文件托管在<br><a href="https://github.com/carl-wang-cn/demo/tree/master/testcode/pb_mergefrom_trap">github/demo/tree/master/testcode/pb_mergefrom_trap</a></p>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-  </entry>
-  <entry>
     <title>记录一次因为redis aof rewrite重写导致的运维事故</title>
     <url>/2020/03/17/2020-03-17-redis-aof-disaster/</url>
     <content><![CDATA[<h2 id="事情起因"><a href="#事情起因" class="headerlink" title="事情起因"></a>事情起因</h2><p>redis master 所在物理机A, 物理内存16G, aof rewrite 被触发时, aof文件已达12G, redis的默认配置触发了后台的rewrite进程, 内存占用达到了50%, 已严重影响到redis的正常访问. 而此时距离美股交易开盘只剩1小时.</p>
@@ -1617,6 +1599,24 @@
       </categories>
   </entry>
   <entry>
+    <title>proto buffer MergeFrom的坑</title>
+    <url>/2020/03/17/2020-03-17-donot-use-pb-mergefrom/</url>
+    <content><![CDATA[<p>pb好用, 性能虽然比不上二进制, 不过也比json在大多数情况下还是好很多. 尤其是字段的向前向后兼容, 这一点应该也是大多数同学选用pb的原因. 然后终于<strong>掉进坑</strong>了, 严重得影响了一次线上服务.<br>整理测试程序的时候发现, python的官方指南压根就没提MergeFrom这个接口, 看起来是专门用来坑c++的兄弟的啊</p>
+<a id="more"></a>
+
+<p>下面给个例子来说明</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># mergefrom_trap.proto</span></span><br><span class="line">package mergefrom_trap;</span><br><span class="line">message Person</span><br><span class="line">&#123;</span><br><span class="line">required string name = 1;</span><br><span class="line">required int32 age = 2;</span><br><span class="line">// optional int32 new1 = 3;</span><br><span class="line">// optional int32 new2 = 4[default = 0];</span><br><span class="line">&#125;</span><br><span class="line">message AddressBook</span><br><span class="line">&#123;</span><br><span class="line">required string host_name = 1;</span><br><span class="line">repeated Person person = 2;</span><br><span class="line">// optional int32 new3 = 3;</span><br><span class="line">// optional int32 new4 = 4[default = 0];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="1-先用没有new1-4字段的proto-编译出c-的bin文件"><a href="#1-先用没有new1-4字段的proto-编译出c-的bin文件" class="headerlink" title="1. 先用没有new1-4字段的proto, 编译出c++的bin文件"></a>1. 先用没有new1-4字段的proto, 编译出c++的bin文件</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[carl pb_mergefrom_trap]$ protoc -I=./ --cpp_out=./ mergefrom_trap.proto</span><br><span class="line">[carl pb_mergefrom_trap]$ g++ read_new_write_old.cpp mergefrom_trap.pb.cc -lprotobuf -o read_new_write_old.bin</span><br></pre></td></tr></table></figure>
+<h5 id="2-然后添家new1-4字段-生成-mergefrom-trap-pb2-py"><a href="#2-然后添家new1-4字段-生成-mergefrom-trap-pb2-py" class="headerlink" title="2. 然后添家new1-4字段, 生成 mergefrom_trap_pb2.py"></a>2. 然后添家new1-4字段, 生成 mergefrom_trap_pb2.py</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[carl pb_mergefrom_trap]$ protoc -I=./ --python_out=./ mergefrom_trap.proto</span><br></pre></td></tr></table></figure>
+<h5 id="3-用write-new-py程序创建一个address-book对象并写入文件-输出结果如下"><a href="#3-用write-new-py程序创建一个address-book对象并写入文件-输出结果如下" class="headerlink" title="3. 用write_new.py程序创建一个address_book对象并写入文件, 输出结果如下:"></a>3. 用write_new.py程序创建一个address_book对象并写入文件, 输出结果如下:</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[carl pb_mergefrom_trap]$ python write_new.py addressbook</span><br><span class="line">address_book: host_name: <span class="string">&quot;carl&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 30</span><br><span class="line">new1: 1</span><br><span class="line">new2: 2</span><br><span class="line">&#125;</span><br><span class="line">new3: 3</span><br><span class="line">new4: 4</span><br></pre></td></tr></table></figure>
+<h5 id="4-执行上面c-的bin文件"><a href="#4-执行上面c-的bin文件" class="headerlink" title="4. 执行上面c++的bin文件"></a>4. 执行上面c++的bin文件</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[carl pb_mergefrom_trap]$ ./read_new_write_old.bin addressbook</span><br><span class="line">book: host_name: <span class="string">&quot;carl&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 30</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_update_mergefrom&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_update_mergefrom&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_update_mergefrom&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_update_mergefrom&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_update_mergefrom&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br></pre></td></tr></table></figure>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>由上测试结果可以看出, 一个使用了旧proto的c++程序, 在调用mergefrom的时候, 那2个unknown的字段不是覆盖回原来已有的字段上, 而是<strong>新增</strong>了. 连续调用几次, 这个是指数级增长的. 这会导致serialize出来的bin文件大小指数级增长, 然后会影响到进程, 在Parse和Serialize的时候, 函数调用会阻塞几十秒甚至几分钟, 网络流量也会剧增, 这对一个生产服务器可以说是致命的, 血淋淋的教训啊.<br>以上文件托管在<br><a href="https://github.com/carl-wang-cn/demo/tree/master/testcode/pb_mergefrom_trap">github/demo/tree/master/testcode/pb_mergefrom_trap</a></p>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+  </entry>
+  <entry>
     <title>我被收了ADR费</title>
     <url>/2021/02/19/adr-vs-ads/</url>
     <content><![CDATA[<p><strong>今天发现因为持有JD被收了ADR费，但是JD不是美国上市的吗？跟TCEHY（腾讯ADR）有什么区别？</strong></p>
@@ -1695,28 +1695,6 @@
       <categories>
         <category>team</category>
       </categories>
-  </entry>
-  <entry>
-    <title>对确定性，你怎么理解？</title>
-    <url>/2023/02/14/certainty/</url>
-    <content><![CDATA[<h1 id="对确定性，你怎么理解？"><a href="#对确定性，你怎么理解？" class="headerlink" title="对确定性，你怎么理解？"></a>对确定性，你怎么理解？</h1><p>如果你100%确定未来1周某股票会拉升50%，那么你会毫不犹豫加满杠杆，把能借到的钱全都借来，满仓等涨发财。但是如果这个确定性只有75%呢，你会怎么做？恐怕不加杠杆，只是把手头的现金全部买入都会犹豫半天吧。</p>
-<a id="more"></a>
-
-<p>如果社会的某个政策会维持10年不变，或者这个政策在10年内会有不断调整甚至掉头，假设你是个企业家，<strong>针对这两种不确定性，你会分别怎么做</strong>？你会押上身家性命去在这个行业做一家企业吗？（先不说创业是九死一生的事情）如果你是个VC，针对这两种确定性，你又会怎么去做投资？你会去重金投资这个赛道吗？</p>
-<p>然而，我们当今的社会，我们所处的行业，我们要遵守的行业规条，我们面对的营商环境甚至生活环境，<strong>统统都不是100%确定不变的</strong>。所有的东西，都是活在概率论这个逻辑的下面，这也是澳门菠菜行业赖以生存的底层规律。我们唯一可以100%确定的，就是不确定性的存在，我们必须学着去<strong>在各种不确定中去寻找一些概率高的确定性</strong>，再去做出一些应对的行为。</p>
-<p>那我们又能把哪些事情当成是确定性来对待呢？</p>
-<p>在服务器领域，那么服务器是<strong>一定会</strong>有概率发生断电，坏硬盘，断网等各种稀奇古怪的故障的，今天不发生，明天不发生，过几天总是会发生的，这就是不确定性中的确定性，它<strong>确定会发生，不确定的只是发生的时间</strong>。那么针对这类事情，我们就可以根据故障成本做一些提前的预案设计。</p>
-<p>厨房家电使用上，有多少人经历过忘关火烧干锅的情况，我不信有任何人是故意干这事的，一定是因为种种原因忘了还开着火了。那么怎么解决呢，用有定时控制的厨具（先不要考虑这类厨具也有概率出故障），这样你就算忘了，它也会自己关。家电厂家帮我们想好了各种危险场景，防干烧功能基本是标配了。作为一名IT从业者，定时这种功能，我也更倾向于机械旋钮的，因为我相信所有的程序都会有bug的，不要信程序员说的“我写的代码没bug”，他都是瞎扯。</p>
-<p>我们再往大了说，我们国人对于买房这件事，贷款30年，这是对未来30年内，家庭收入的稳定性和增长性的确定性的前提下才敢做的决定，我们得确认在未来30年，每个月都有钱还给银行。如果对未来的确定性丢失了，没有信心自己的收入会一直稳定甚至增长，那么我认为没几个人敢真的去给自己背上几十年的贷款的，起码我不敢，你敢吗？</p>
-<p>3年大yi，太多的出行需求被压抑，不论是旅游还是公务，不敢出去的原因，我仔细思考过，于我来讲就是2点，一点是那个xx码在不同的地方不互认，没有一个全国统一的标准给出来；第二点就是下面的执行层各种加码高层的政策，以及早上晚上的政策规定可能会变化，让到达出行目的地可能发生的事情充满了不确定性。如果这两点能解决，根本就不存在什么不敢出去。只要有确定性的要求和处理方式，都是可以提前准备好的，就像大家去深圳的各个政府机关办事一样，网上提前查出来要准备的材料，带齐了，按照预订的时间到达，办理时间和结果基本都是可预期的，这就是确定性，也是深圳速度和效率的体现。</p>
-<p>当下时间，你的信心恢复了吗？你思考清楚了你即将面对的确定性和不确定性了吗？</p>
-]]></content>
-      <categories>
-        <category>胡思乱想</category>
-      </categories>
-      <tags>
-        <tag>概率论</tag>
-      </tags>
   </entry>
   <entry>
     <title>系统日志实践</title>
@@ -1942,33 +1920,6 @@
 ]]></content>
       <categories>
         <category>金融</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>ssh终端证书方式登录远程linux系统</title>
-    <url>/2020/12/28/ssh-without-passwd/</url>
-    <content><![CDATA[<h3 id="为什么选择证书登陆？"><a href="#为什么选择证书登陆？" class="headerlink" title="为什么选择证书登陆？"></a>为什么选择证书登陆？</h3><p>Mac下原生及主流的ssh终端工具大多不具备保存ssh登陆密码的功能, 通过证书登陆的方式，就可以实现原生终端工具Terminal或第三方明星终端iTerm免密码登录远程系统，并且比单纯的密码验证登陆方式提高了安全性。</p>
-<a id="more"></a>
-
-<h3 id="配置过程（以下操作都在终端命令行下运行）"><a href="#配置过程（以下操作都在终端命令行下运行）" class="headerlink" title="配置过程（以下操作都在终端命令行下运行）"></a>配置过程（以下操作都在终端命令行下运行）</h3><ol>
-<li><p>进入系统的ssh证书目录 cd ~/.ssh/</p>
-</li>
-<li><p>建立证书文件 ssh-keygen -t rsa 提示输入，直接回车即可。</p>
-</li>
-<li><p>输入 ls 命令查看当前目录会发现新生成的一对秘钥文件分别是：</p>
-<p> 公钥：id_rsa.pub</p>
-<p> 私钥：id_rsa</p>
-</li>
-<li><p>登陆到远程服务器，进入.ssh目录 cd ~/.ssh</p>
-<p> 将上面生成的公钥文件的内容copy进 authorized_keys 文件中</p>
-</li>
-<li><p>在Mac终端下执行登陆命令 ssh username@server</p>
-<p> 即可免密码登录到远程服务器</p>
-</li>
-</ol>
-]]></content>
-      <categories>
-        <category>技术</category>
       </categories>
   </entry>
   <entry>
@@ -2332,44 +2283,30 @@
       </categories>
   </entry>
   <entry>
-    <title>绩效考核聊2块钱</title>
-    <url>/2022/08/23/talk-kpi/</url>
-    <content><![CDATA[<p>以下都是我个人的真实想法，不一定对，但我现在认为是对的。我努力朝着这个方向做，但是阻力不少。可能是有一些我认知达不到导致的见识浅薄，但是目前还没有人说服我哪里认知不对！希望有人能指出我以下写的不对的地方，让我少走点弯路，让团队少付出一些代价来获得更多的成长。</p>
-<p>我们定绩效的目的是啥？</p>
-<p>第一，肯定为了达成公司的整体目标，然后把员工的目标和公司的目标对齐；<br>第二，是通过绩效管理来实现目标，完成业绩，而不是为了逼走员工。</p>
+    <title>ssh终端证书方式登录远程linux系统</title>
+    <url>/2020/12/28/ssh-without-passwd/</url>
+    <content><![CDATA[<h3 id="为什么选择证书登陆？"><a href="#为什么选择证书登陆？" class="headerlink" title="为什么选择证书登陆？"></a>为什么选择证书登陆？</h3><p>Mac下原生及主流的ssh终端工具大多不具备保存ssh登陆密码的功能, 通过证书登陆的方式，就可以实现原生终端工具Terminal或第三方明星终端iTerm免密码登录远程系统，并且比单纯的密码验证登陆方式提高了安全性。</p>
 <a id="more"></a>
 
-<h2 id="那绩效目标如何定好，以及绩效考核如何做好，就有很多需要考虑的点"><a href="#那绩效目标如何定好，以及绩效考核如何做好，就有很多需要考虑的点" class="headerlink" title="那绩效目标如何定好，以及绩效考核如何做好，就有很多需要考虑的点"></a>那绩效目标如何定好，以及绩效考核如何做好，就有很多需要考虑的点</h2><ul>
-<li>目标和结果是否合理？</li>
-<li>激励有没有做到位？<ul>
-<li>有没有向奋斗者倾斜？</li>
-<li>有没有让雷锋吃亏？</li>
-<li>抑或是吃的大锅饭，大家干得好、干得差都是一个样子？</li>
-</ul>
+<h3 id="配置过程（以下操作都在终端命令行下运行）"><a href="#配置过程（以下操作都在终端命令行下运行）" class="headerlink" title="配置过程（以下操作都在终端命令行下运行）"></a>配置过程（以下操作都在终端命令行下运行）</h3><ol>
+<li><p>进入系统的ssh证书目录 cd ~/.ssh/</p>
 </li>
-</ul>
-<h3 id="那绩效考核怎么才算做得好呢？"><a href="#那绩效考核怎么才算做得好呢？" class="headerlink" title="那绩效考核怎么才算做得好呢？"></a>那绩效考核怎么才算做得好呢？</h3><p>我认为就很简单一句话，<strong>让优秀的同事得到正向激励，让差劲的同事得到负向激励甚至淘汰，最终让团队不断地正向循环，更加优秀。</strong></p>
-<p>我们围绕绩效考核做的所有的事情，都应该是促使团队不断地迭代到更优秀的状态，最起码也应该不向更差的方向迭代，维持好当下的水准。有任何影响团队士气，导致团队退步的行为，都应该是需要反思的！团队如果氛围不好，战斗力长期低下，那么有问题的一定是leader，绝不可能是团队。反过来，团队战斗力高企，各种攻城略地，并不一定是leader的功劳，例如创业初期的富途，是叶子哥把大家凝聚到一起，大家都相信这个事情能成，那个阶段的团队，leader有没有可能都没那么重要，大家都会斗志昂扬。</p>
-<h3 id="团队在不同的阶段，想要变得更好，需要鼓励的行为是不同"><a href="#团队在不同的阶段，想要变得更好，需要鼓励的行为是不同" class="headerlink" title="团队在不同的阶段，想要变得更好，需要鼓励的行为是不同"></a>团队在不同的阶段，想要变得更好，需要鼓励的行为是不同</h3><p>这个可能是最不容易被大家理解的，也是很容易因为这个原因导致有很多优秀的同事觉得自己做得很好却只拿到了普通考核。</p>
-<p>例如，一些难点攻坚，搞定了就迈过一个大台阶继续高速前进，搞不定就卡着，这个时候就需要鼓励那种能够沉下心研究钻研的行为；团队新人较多，需要老同事积极传导团队文化，帮助新同事更快融入团队，那么这个时候团队鼓励的就是传道的精神；团队同事多个大项目并行，人力不足，那这个时候更需要关注的就是能否闭环带好一个项目。</p>
-<blockquote>
-<p>这几个例子可能不太恰当，希望朋友们能领会到我想表达的意思</p>
-</blockquote>
-<p>到这里为止，我相信大家应该基本还是有共识的，那么接下来可能就是一些可能有争议的话题了。</p>
-<p>考核也许是管理的一种手段或方法，曾经有位上级说，管理是无情/残酷的。对于这个观点，我目前的认知还是不能认同，我们可以说无情在某些时候或场景下能达到管理的目的，有一些管理行为可能看起来是残酷的，但不能说管理是无情的。有情有义，尊重人性，才是这个社会长期向前发展的基调。</p>
-<p>还有位上级说，我们无法做到绝对的公平，但是我们尽量做到程序公平，有一个很好的办法就是要有比例，每个团队有比例，比例的意思是：假设10个人，1个优秀，4个良好，1-2个差评（该比例举例用，不要对号到自己团队的实际情况）。乍一听，好像没啥问题啊，但是我认为经不起推敲。</p>
-<p>假设A团队是个很优秀的团队，B团队是个很一般的团队或者因为某些原因没有发挥出已有能量的团队，单看一段时间的成果和表现，如果AB团队对比，A的末位齐平B的中位的，如果还要求A和B都保持上面说的比例，是不是很不公平？古人都说，不患贫患不均，如果按照这种逻辑考核AB两个团队，那么A接下来会有2种演进方向，一种是继续努力，然后优秀的人离职去找愿意肯定自己的地方；一种是适当摆烂，以前用120%的精力做事，现在用80%，省下来的40%用来提高自己或者娱乐，间接后果也是，被人挖走或者主动离开。B团队也会觉得好像不发挥权力或者糊弄一下，也不会有啥后果，那就继续磨下去，到时效率低下，进而影响到其他团队。</p>
-<p>以上AB团队，改成2个人，在一个组里，就会很自然的绩效有所区分。那么为什么AB作为2个团队放在一个中心，做法就是另一番情况了呢？</p>
-<p><strong>又有人说了，公司发展好，同事们不会舍得离开的</strong>。对，这种说法没毛病，谁都希望跟着公司一起发展，早日实现财务自由，这叫看长期利益，可以适当牺牲短期利益。但是如果短期连考核都做不到公平公正，那么长期利益有何可期盼的呢，为什么会觉得长期会得到公平的对待呢，甚至为什么会觉得这样的团队会成就一家伟大的公司呢？<br>诚如优秀的公司和团队不缺对人才的吸引力，优秀的人也从来不缺好的offer。经历过招聘的leader都有这种体验，你面试了100个人，发了10个offer，接受offer的人可能只有5个，还有3个会报到前放鸽子。通常拿了我们offer的人，手上不会缺其他公司的offer，这种现象从大学毕业开始找工作开始就一直存在。大家都会拿多几个offer做下对比，对比下薪酬，公司文化，公司前景，所在行业景气度，甚至00后们已经开始在脉脉等app上反向背调公司了。</p>
-<p><strong>还有人说，现在大环境不好，同事们不敢轻易动的</strong>。说这种话的leader，我觉得你应该就地打报告立刻马上辞职。leader是带着团队成事的，不是让你驯兽的。另外，我们也要照照自己，自己是否有资格去评价别人。我们可以评价别人的前提是，对方要认可自己，我们不一定各方面都比对方做得好，但起码得有一个方面让对方认可甚至佩服。换位思考下，一个你自己不认可的人说你这做得不对，那做得不对，你内心肯定想的是“你踏马煞笔吧，你也配指点老子？” 国羽第一人林丹曾说“只有陶菲克有资格评价我”，陶菲克是印尼羽毛球国手，2004年雅典奥运会羽毛球男单冠军，号称“天下第一反手”，是林丹的羽坛王朝前的世界巅峰，举这个例子也只是为了说明前面那句，我们想评价别人，并且希望对方能听得进去，那么起码得先赢得对方的认可，而不是靠组织给我们的行政职位。</p>
-<p>也许有人说，反正员工也不知道我们咋考核的。我只能说你是个煞笔，以为别人都是傻子，眼睛都是看不见的？谁做的好谁做的差，哪个团队给力高效，哪个团队整天到处打太极玩办公室政治，大家都看的清清楚楚的。</p>
-<p><strong>还有人说，我跟团队面谈的时候，他接受了啊，没有异议啊</strong>。你还是个煞笔，那是人家懒得跟你讲，不说出来的问题难道就认为没问题吗？相反，这才是最大的问题，因为你的团队成员已经不信任你了，不愿意跟你说真话了，内心不知已跑过多少只草泥马了吧。我还很庆幸我的团队的同事还算愿意跟我去吐槽一些工作中的问题，如果哪一天大家不愿意跟我说了，那我真的觉得我作为一个小leader是失败的。</p>
-<p>通过”程序公平“尽可能做到公平，这个思路肯定是没问题的，程序起码避免一些个人感情上的偏好，也会有一些很明确的规则，会尽可能的做到公平，但是我们也需要多思考如何让这个程序不断地优化，真的变成一个”公平的程序“呢？</p>
-<p>最后，在想明白整个思路后，那最重要的是什么呢？言行要一致，不能说的非常好听，对事不对人，公平，促进团队往更好的方向发展，然后做出的事情都是往相反的方向激励团队，让好的人寒心，让差的人没有任何惩罚。</p>
-<p>希望大家能多给我提一些建议，避免我走进死胡同，谢谢<br>​</p>
+<li><p>建立证书文件 ssh-keygen -t rsa 提示输入，直接回车即可。</p>
+</li>
+<li><p>输入 ls 命令查看当前目录会发现新生成的一对秘钥文件分别是：</p>
+<p> 公钥：id_rsa.pub</p>
+<p> 私钥：id_rsa</p>
+</li>
+<li><p>登陆到远程服务器，进入.ssh目录 cd ~/.ssh</p>
+<p> 将上面生成的公钥文件的内容copy进 authorized_keys 文件中</p>
+</li>
+<li><p>在Mac终端下执行登陆命令 ssh username@server</p>
+<p> 即可免密码登录到远程服务器</p>
+</li>
+</ol>
 ]]></content>
       <categories>
-        <category>team</category>
+        <category>技术</category>
       </categories>
   </entry>
   <entry>
@@ -2430,7 +2367,7 @@
 <p>有权力的时候，可以更少阻力去尝试一些事情，成了当然效用巨大，但是失败了，成本也巨大，有的人就经常为了一些尝试一些理论，不计成本，或者他认为这个成本是别人帮他承担，甚至造成了一些伤害后，脚底抹油，这种行为最让人看不起。</p>
 <a id="more"></a>]]></content>
       <categories>
-        <category>架构/编程语言/金融</category>
+        <category>胡思乱想</category>
       </categories>
   </entry>
   <entry>
@@ -2447,6 +2384,47 @@
       <categories>
         <category>team</category>
       </categories>
+  </entry>
+  <entry>
+    <title>信任在团队中的重要性</title>
+    <url>/2023/04/07/why-u-need-believeness/</url>
+    <content><![CDATA[<p>我跟团队的每一个人都说过一句话，“没有信任基础的团队注定一事无成”，为什么要这么强调“信任”的重要性？</p>
+<p>信任需要维护，且极容易失去</p>
+<p>信用非常强大却非常脆弱，需要花很大的成本维护，如果不愿意花这个成本，只想着用朝令夕改来赚短线，那会死得非常快</p>
+<p>没有手机支付的时候，早餐摊顾客自己找零。有了手机支付后，顾客自己扫码支付。</p>
+<p>所有套路，都是一时的术，不可持续，诚实守信才是道</p>
+<a id="more"></a>
+
+<p>A和B两个团队，在工作上，需要长期协作，那么从这个团队刚开始接触开始，发展轨迹因为一些日常小事的发生，会走向截然不同的2种轨迹</p>
+]]></content>
+      <categories>
+        <category>管理</category>
+      </categories>
+      <tags>
+        <tag>管理</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>对确定性，你怎么理解？</title>
+    <url>/2023/02/14/certainty/</url>
+    <content><![CDATA[<h1 id="对确定性，你怎么理解？"><a href="#对确定性，你怎么理解？" class="headerlink" title="对确定性，你怎么理解？"></a>对确定性，你怎么理解？</h1><p>如果你100%确定未来1周某股票会拉升50%，那么你会毫不犹豫加满杠杆，把能借到的钱全都借来，满仓等涨发财。但是如果这个确定性只有75%呢，你会怎么做？恐怕不加杠杆，只是把手头的现金全部买入都会犹豫半天吧。</p>
+<a id="more"></a>
+
+<p>如果社会的某个政策会维持10年不变，或者这个政策在10年内会有不断调整甚至掉头，假设你是个企业家，<strong>针对这两种不确定性，你会分别怎么做</strong>？你会押上身家性命去在这个行业做一家企业吗？（先不说创业是九死一生的事情）如果你是个VC，针对这两种确定性，你又会怎么去做投资？你会去重金投资这个赛道吗？</p>
+<p>然而，我们当今的社会，我们所处的行业，我们要遵守的行业规条，我们面对的营商环境甚至生活环境，<strong>统统都不是100%确定不变的</strong>。所有的东西，都是活在概率论这个逻辑的下面，这也是澳门菠菜行业赖以生存的底层规律。我们唯一可以100%确定的，就是不确定性的存在，我们必须学着去<strong>在各种不确定中去寻找一些概率高的确定性</strong>，再去做出一些应对的行为。</p>
+<p>那我们又能把哪些事情当成是确定性来对待呢？</p>
+<p>在服务器领域，那么服务器是<strong>一定会</strong>有概率发生断电，坏硬盘，断网等各种稀奇古怪的故障的，今天不发生，明天不发生，过几天总是会发生的，这就是不确定性中的确定性，它<strong>确定会发生，不确定的只是发生的时间</strong>。那么针对这类事情，我们就可以根据故障成本做一些提前的预案设计。</p>
+<p>厨房家电使用上，有多少人经历过忘关火烧干锅的情况，我不信有任何人是故意干这事的，一定是因为种种原因忘了还开着火了。那么怎么解决呢，用有定时控制的厨具（先不要考虑这类厨具也有概率出故障），这样你就算忘了，它也会自己关。家电厂家帮我们想好了各种危险场景，防干烧功能基本是标配了。作为一名IT从业者，定时这种功能，我也更倾向于机械旋钮的，因为我相信所有的程序都会有bug的，不要信程序员说的“我写的代码没bug”，他都是瞎扯。</p>
+<p>我们再往大了说，我们国人对于买房这件事，贷款30年，这是对未来30年内，家庭收入的稳定性和增长性的确定性的前提下才敢做的决定，我们得确认在未来30年，每个月都有钱还给银行。如果对未来的确定性丢失了，没有信心自己的收入会一直稳定甚至增长，那么我认为没几个人敢真的去给自己背上几十年的贷款的，起码我不敢，你敢吗？</p>
+<p>3年大yi，太多的出行需求被压抑，不论是旅游还是公务，不敢出去的原因，我仔细思考过，于我来讲就是2点，一点是那个xx码在不同的地方不互认，没有一个全国统一的标准给出来；第二点就是下面的执行层各种加码高层的政策，以及早上晚上的政策规定可能会变化，让到达出行目的地可能发生的事情充满了不确定性。如果这两点能解决，根本就不存在什么不敢出去。只要有确定性的要求和处理方式，都是可以提前准备好的，就像大家去深圳的各个政府机关办事一样，网上提前查出来要准备的材料，带齐了，按照预订的时间到达，办理时间和结果基本都是可预期的，这就是确定性，也是深圳速度和效率的体现。</p>
+<p>当下时间，你的信心恢复了吗？你思考清楚了你即将面对的确定性和不确定性了吗？</p>
+]]></content>
+      <categories>
+        <category>胡思乱想</category>
+      </categories>
+      <tags>
+        <tag>概率论</tag>
+      </tags>
   </entry>
   <entry>
     <title>异地多活架构设计-概论</title>
@@ -2623,5 +2601,46 @@
         <tag>架构设计</tag>
         <tag>异地多活</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>绩效考核聊2块钱</title>
+    <url>/2022/08/23/talk-kpi/</url>
+    <content><![CDATA[<p>以下都是我个人的真实想法，不一定对，但我现在认为是对的。我努力朝着这个方向做，但是阻力不少。可能是有一些我认知达不到导致的见识浅薄，但是目前还没有人说服我哪里认知不对！希望有人能指出我以下写的不对的地方，让我少走点弯路，让团队少付出一些代价来获得更多的成长。</p>
+<p>我们定绩效的目的是啥？</p>
+<p>第一，肯定为了达成公司的整体目标，然后把员工的目标和公司的目标对齐；<br>第二，是通过绩效管理来实现目标，完成业绩，而不是为了逼走员工。</p>
+<a id="more"></a>
+
+<h2 id="那绩效目标如何定好，以及绩效考核如何做好，就有很多需要考虑的点"><a href="#那绩效目标如何定好，以及绩效考核如何做好，就有很多需要考虑的点" class="headerlink" title="那绩效目标如何定好，以及绩效考核如何做好，就有很多需要考虑的点"></a>那绩效目标如何定好，以及绩效考核如何做好，就有很多需要考虑的点</h2><ul>
+<li>目标和结果是否合理？</li>
+<li>激励有没有做到位？<ul>
+<li>有没有向奋斗者倾斜？</li>
+<li>有没有让雷锋吃亏？</li>
+<li>抑或是吃的大锅饭，大家干得好、干得差都是一个样子？</li>
+</ul>
+</li>
+</ul>
+<h3 id="那绩效考核怎么才算做得好呢？"><a href="#那绩效考核怎么才算做得好呢？" class="headerlink" title="那绩效考核怎么才算做得好呢？"></a>那绩效考核怎么才算做得好呢？</h3><p>我认为就很简单一句话，<strong>让优秀的同事得到正向激励，让差劲的同事得到负向激励甚至淘汰，最终让团队不断地正向循环，更加优秀。</strong></p>
+<p>我们围绕绩效考核做的所有的事情，都应该是促使团队不断地迭代到更优秀的状态，最起码也应该不向更差的方向迭代，维持好当下的水准。有任何影响团队士气，导致团队退步的行为，都应该是需要反思的！团队如果氛围不好，战斗力长期低下，那么有问题的一定是leader，绝不可能是团队。反过来，团队战斗力高企，各种攻城略地，并不一定是leader的功劳，例如创业初期的富途，是叶子哥把大家凝聚到一起，大家都相信这个事情能成，那个阶段的团队，leader有没有可能都没那么重要，大家都会斗志昂扬。</p>
+<h3 id="团队在不同的阶段，想要变得更好，需要鼓励的行为是不同"><a href="#团队在不同的阶段，想要变得更好，需要鼓励的行为是不同" class="headerlink" title="团队在不同的阶段，想要变得更好，需要鼓励的行为是不同"></a>团队在不同的阶段，想要变得更好，需要鼓励的行为是不同</h3><p>这个可能是最不容易被大家理解的，也是很容易因为这个原因导致有很多优秀的同事觉得自己做得很好却只拿到了普通考核。</p>
+<p>例如，一些难点攻坚，搞定了就迈过一个大台阶继续高速前进，搞不定就卡着，这个时候就需要鼓励那种能够沉下心研究钻研的行为；团队新人较多，需要老同事积极传导团队文化，帮助新同事更快融入团队，那么这个时候团队鼓励的就是传道的精神；团队同事多个大项目并行，人力不足，那这个时候更需要关注的就是能否闭环带好一个项目。</p>
+<blockquote>
+<p>这几个例子可能不太恰当，希望朋友们能领会到我想表达的意思</p>
+</blockquote>
+<p>到这里为止，我相信大家应该基本还是有共识的，那么接下来可能就是一些可能有争议的话题了。</p>
+<p>考核也许是管理的一种手段或方法，曾经有位上级说，管理是无情/残酷的。对于这个观点，我目前的认知还是不能认同，我们可以说无情在某些时候或场景下能达到管理的目的，有一些管理行为可能看起来是残酷的，但不能说管理是无情的。有情有义，尊重人性，才是这个社会长期向前发展的基调。</p>
+<p>还有位上级说，我们无法做到绝对的公平，但是我们尽量做到程序公平，有一个很好的办法就是要有比例，每个团队有比例，比例的意思是：假设10个人，1个优秀，4个良好，1-2个差评（该比例举例用，不要对号到自己团队的实际情况）。乍一听，好像没啥问题啊，但是我认为经不起推敲。</p>
+<p>假设A团队是个很优秀的团队，B团队是个很一般的团队或者因为某些原因没有发挥出已有能量的团队，单看一段时间的成果和表现，如果AB团队对比，A的末位齐平B的中位的，如果还要求A和B都保持上面说的比例，是不是很不公平？古人都说，不患贫患不均，如果按照这种逻辑考核AB两个团队，那么A接下来会有2种演进方向，一种是继续努力，然后优秀的人离职去找愿意肯定自己的地方；一种是适当摆烂，以前用120%的精力做事，现在用80%，省下来的40%用来提高自己或者娱乐，间接后果也是，被人挖走或者主动离开。B团队也会觉得好像不发挥权力或者糊弄一下，也不会有啥后果，那就继续磨下去，到时效率低下，进而影响到其他团队。</p>
+<p>以上AB团队，改成2个人，在一个组里，就会很自然的绩效有所区分。那么为什么AB作为2个团队放在一个中心，做法就是另一番情况了呢？</p>
+<p><strong>又有人说了，公司发展好，同事们不会舍得离开的</strong>。对，这种说法没毛病，谁都希望跟着公司一起发展，早日实现财务自由，这叫看长期利益，可以适当牺牲短期利益。但是如果短期连考核都做不到公平公正，那么长期利益有何可期盼的呢，为什么会觉得长期会得到公平的对待呢，甚至为什么会觉得这样的团队会成就一家伟大的公司呢？<br>诚如优秀的公司和团队不缺对人才的吸引力，优秀的人也从来不缺好的offer。经历过招聘的leader都有这种体验，你面试了100个人，发了10个offer，接受offer的人可能只有5个，还有3个会报到前放鸽子。通常拿了我们offer的人，手上不会缺其他公司的offer，这种现象从大学毕业开始找工作开始就一直存在。大家都会拿多几个offer做下对比，对比下薪酬，公司文化，公司前景，所在行业景气度，甚至00后们已经开始在脉脉等app上反向背调公司了。</p>
+<p><strong>还有人说，现在大环境不好，同事们不敢轻易动的</strong>。说这种话的leader，我觉得你应该就地打报告立刻马上辞职。leader是带着团队成事的，不是让你驯兽的。另外，我们也要照照自己，自己是否有资格去评价别人。我们可以评价别人的前提是，对方要认可自己，我们不一定各方面都比对方做得好，但起码得有一个方面让对方认可甚至佩服。换位思考下，一个你自己不认可的人说你这做得不对，那做得不对，你内心肯定想的是“你踏马煞笔吧，你也配指点老子？” 国羽第一人林丹曾说“只有陶菲克有资格评价我”，陶菲克是印尼羽毛球国手，2004年雅典奥运会羽毛球男单冠军，号称“天下第一反手”，是林丹的羽坛王朝前的世界巅峰，举这个例子也只是为了说明前面那句，我们想评价别人，并且希望对方能听得进去，那么起码得先赢得对方的认可，而不是靠组织给我们的行政职位。</p>
+<p>也许有人说，反正员工也不知道我们咋考核的。我只能说你是个煞笔，以为别人都是傻子，眼睛都是看不见的？谁做的好谁做的差，哪个团队给力高效，哪个团队整天到处打太极玩办公室政治，大家都看的清清楚楚的。</p>
+<p><strong>还有人说，我跟团队面谈的时候，他接受了啊，没有异议啊</strong>。你还是个煞笔，那是人家懒得跟你讲，不说出来的问题难道就认为没问题吗？相反，这才是最大的问题，因为你的团队成员已经不信任你了，不愿意跟你说真话了，内心不知已跑过多少只草泥马了吧。我还很庆幸我的团队的同事还算愿意跟我去吐槽一些工作中的问题，如果哪一天大家不愿意跟我说了，那我真的觉得我作为一个小leader是失败的。</p>
+<p>通过”程序公平“尽可能做到公平，这个思路肯定是没问题的，程序起码避免一些个人感情上的偏好，也会有一些很明确的规则，会尽可能的做到公平，但是我们也需要多思考如何让这个程序不断地优化，真的变成一个”公平的程序“呢？</p>
+<p>最后，在想明白整个思路后，那最重要的是什么呢？言行要一致，不能说的非常好听，对事不对人，公平，促进团队往更好的方向发展，然后做出的事情都是往相反的方向激励团队，让好的人寒心，让差的人没有任何惩罚。</p>
+<p>希望大家能多给我提一些建议，避免我走进死胡同，谢谢<br>​</p>
+]]></content>
+      <categories>
+        <category>team</category>
+      </categories>
   </entry>
 </search>
