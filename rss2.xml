@@ -15,8 +15,37 @@
     <atom:link href="https://carl-wang-cn.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>金融程序员</description>
-    <pubDate>Fri, 07 Apr 2023 07:24:26 GMT</pubDate>
+    <pubDate>Mon, 11 Dec 2023 03:45:16 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>团队梯度</title>
+      <link>https://carl-wang-cn.github.io/2023/12/11/team-gradient/</link>
+      <guid>https://carl-wang-cn.github.io/2023/12/11/team-gradient/</guid>
+      <pubDate>Mon, 11 Dec 2023 03:42:27 GMT</pubDate>
+      
+        
+        
+          
+          
+      <description>&lt;p&gt;曾经有一段时间，我希望团队每一个同事都出类拔萃，都是骨干。但是，在经历了一些事情，反复进行过一些思考后，我发现，这个希望是很美好的，但是要实现，是一个非常难的事情。每个人对自己的要求，对自己情绪的把控，对自己心态的调节，对自己提升的要求，很多方面，其实都是不同的，也许每个月</description>
+          
+        
+      
+      
+      
+      
+      <category domain="https://carl-wang-cn.github.io/categories/%E7%AE%A1%E7%90%86/">管理</category>
+      
+      
+      <category domain="https://carl-wang-cn.github.io/tags/%E8%AE%A4%E7%9F%A5/">认知</category>
+      
+      <category domain="https://carl-wang-cn.github.io/tags/%E5%9B%A2%E9%98%9F/">团队</category>
+      
+      
+      <comments>https://carl-wang-cn.github.io/2023/12/11/team-gradient/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>信任在团队中的重要性</title>
@@ -216,28 +245,6 @@
       
       
       <comments>https://carl-wang-cn.github.io/2022/01/22/Wash-Trading/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>四巫日</title>
-      <link>https://carl-wang-cn.github.io/2021/12/17/four-witching-days/</link>
-      <guid>https://carl-wang-cn.github.io/2021/12/17/four-witching-days/</guid>
-      <pubDate>Fri, 17 Dec 2021 11:22:34 GMT</pubDate>
-      
-      <description>&lt;p&gt;什么是美国金融市场“四巫日”&lt;/p&gt;
-&lt;p&gt;“四巫日”是美股每季度一次的金融衍生品到期日，分别发生在每年三、六、九、十二月的第三个星期五。&lt;/p&gt;</description>
-      
-      
-      
-      
-      <category domain="https://carl-wang-cn.github.io/categories/%E9%87%91%E8%9E%8D/">金融</category>
-      
-      
-      <category domain="https://carl-wang-cn.github.io/tags/%E7%A7%91%E6%99%AE/">科普</category>
-      
-      
-      <comments>https://carl-wang-cn.github.io/2021/12/17/four-witching-days/#disqus_thread</comments>
       
     </item>
     

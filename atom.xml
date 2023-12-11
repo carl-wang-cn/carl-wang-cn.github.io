@@ -6,7 +6,7 @@
   <link href="https://carl-wang-cn.github.io/atom.xml" rel="self"/>
   
   <link href="https://carl-wang-cn.github.io/"/>
-  <updated>2023-04-07T07:24:26.646Z</updated>
+  <updated>2023-12-11T03:45:16.071Z</updated>
   <id>https://carl-wang-cn.github.io/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>团队梯度</title>
+    <link href="https://carl-wang-cn.github.io/2023/12/11/team-gradient/"/>
+    <id>https://carl-wang-cn.github.io/2023/12/11/team-gradient/</id>
+    <published>2023-12-11T03:42:27.000Z</published>
+    <updated>2023-12-11T03:45:16.071Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;曾经有一段时间，我希望团队每一个同事都出类拔萃，都是骨干。但是，在经历了一些事情，反复进行过一些思考后，我发现，这个希望是很美好的，但是要实现，是一个非常难的事情。每个人对自己的要求，对自己情绪的把控，对自己心态的调节，对自己提升的要求，很多方面，其实都是不同的，也许每个月</summary>
+        
+      
+    
+    
+    
+    <category term="管理" scheme="https://carl-wang-cn.github.io/categories/%E7%AE%A1%E7%90%86/"/>
+    
+    
+    <category term="认知" scheme="https://carl-wang-cn.github.io/tags/%E8%AE%A4%E7%9F%A5/"/>
+    
+    <category term="团队" scheme="https://carl-wang-cn.github.io/tags/%E5%9B%A2%E9%98%9F/"/>
+    
+  </entry>
   
   <entry>
     <title>信任在团队中的重要性</title>
@@ -196,26 +223,6 @@
     
     <category term="金融知识分享" scheme="https://carl-wang-cn.github.io/categories/%E9%87%91%E8%9E%8D%E7%9F%A5%E8%AF%86%E5%88%86%E4%BA%AB/"/>
     
-    
-  </entry>
-  
-  <entry>
-    <title>四巫日</title>
-    <link href="https://carl-wang-cn.github.io/2021/12/17/four-witching-days/"/>
-    <id>https://carl-wang-cn.github.io/2021/12/17/four-witching-days/</id>
-    <published>2021-12-17T11:22:34.000Z</published>
-    <updated>2022-08-01T14:11:17.213Z</updated>
-    
-    
-    <summary type="html">&lt;p&gt;什么是美国金融市场“四巫日”&lt;/p&gt;
-&lt;p&gt;“四巫日”是美股每季度一次的金融衍生品到期日，分别发生在每年三、六、九、十二月的第三个星期五。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="金融" scheme="https://carl-wang-cn.github.io/categories/%E9%87%91%E8%9E%8D/"/>
-    
-    
-    <category term="科普" scheme="https://carl-wang-cn.github.io/tags/%E7%A7%91%E6%99%AE/"/>
     
   </entry>
   
