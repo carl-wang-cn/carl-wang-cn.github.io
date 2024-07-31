@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/ais.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"carl-wang-cn.github.io","root":"/","images":"/images","scheme":"Mist","version":"8.2.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+<meta name="description" content="What Is a Hard-To-Borrow List?A hard-to-borrow list is an inventory record used by brokerages to indicate what stocks are difficult to borrow for short sale transactions. A brokerage firm’s hard-to-bo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hard-to-borrow list 股市卖空--难借股票列表">
+<meta property="og:url" content="https://carl-wang-cn.github.io/2020/05/15/hard-to-borrow-sell-short/index.html">
+<meta property="og:site_name" content="carl的修行">
+<meta property="og:description" content="What Is a Hard-To-Borrow List?A hard-to-borrow list is an inventory record used by brokerages to indicate what stocks are difficult to borrow for short sale transactions. A brokerage firm’s hard-to-bo">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-05-15T04:17:01.000Z">
+<meta property="article:modified_time" content="2024-07-31T07:20:05.948Z">
+<meta property="article:author" content="carl">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://carl-wang-cn.github.io/2020/05/15/hard-to-borrow-sell-short/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>hard-to-borrow list 股市卖空--难借股票列表 | carl的修行</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="carl的修行" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="carl的修行" type="application/rss+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">carl的修行</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">坚持做正确的事情, 做时间的朋友</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+        <li class="menu-item menu-item-reading"><a href="/reading" rel="section"><i class="fa fa-book fa-fw"></i>reading</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#What-Is-a-Hard-To-Borrow-List"><span class="nav-number">1.</span> <span class="nav-text">What Is a Hard-To-Borrow List?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Understanding-the-Hard-To-Borrow-List"><span class="nav-number">2.</span> <span class="nav-text">Understanding the Hard-To-Borrow List</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hard-to-Borrow-List-and-Regulation"><span class="nav-number">3.</span> <span class="nav-text">Hard-to-Borrow List and Regulation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hard-to-Borrow-List-vs-Easy-to-Borrow-List"><span class="nav-number">4.</span> <span class="nav-text">Hard-to-Borrow List vs. Easy-to-Borrow List</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="carl"
+      src="/images/ais.jpg">
+  <p class="site-author-name" itemprop="name">carl</p>
+  <div class="site-description" itemprop="description">金融程序员</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+        
+          <span class="site-state-item-count">42</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags">
+          
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/carl-wang-cn" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;carl-wang-cn" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:carl.king.cn@gmail.com" title="E-Mail → mailto:carl.king.cn@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://carl-wang-cn.github.io/2020/05/15/hard-to-borrow-sell-short/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/ais.jpg">
+      <meta itemprop="name" content="carl">
+      <meta itemprop="description" content="金融程序员">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="carl的修行">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          hard-to-borrow list 股市卖空--难借股票列表
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-05-15 12:17:01" itemprop="dateCreated datePublished" datetime="2020-05-15T12:17:01+08:00">2020-05-15</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2024-07-31 15:20:05" itemprop="dateModified" datetime="2024-07-31T15:20:05+08:00">2024-07-31</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%87%91%E8%9E%8D/" itemprop="url" rel="index"><span itemprop="name">金融</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h3 id="What-Is-a-Hard-To-Borrow-List"><a href="#What-Is-a-Hard-To-Borrow-List" class="headerlink" title="What Is a Hard-To-Borrow List?"></a>What Is a Hard-To-Borrow List?</h3><p>A hard-to-borrow list is an inventory record used by brokerages to indicate what stocks are difficult to borrow for short sale transactions. A brokerage firm’s hard-to-borrow list provides an up-to-date catalog of stocks that cannot easily be borrowed for use as a short sale.</p>
+<span id="more"></span>
+
+<blockquote>
+<p>KEY TAKEAWAYS</p>
+<ul>
+<li>Short sellers rely on brokers to have stock shares available to borrow.</li>
+<li>If the broker has very few shares of a stock available, then that stock is placed on the hard-to-borrow list.</li>
+<li>Stocks on the hard-to-borrow list may not be allowed to short.</li>
+</ul>
+</blockquote>
+<p>hard-to-borrow list 首先就是券商要维护更新的一个股票列表， 然后看字面意思， 就是比较难借到，当然还有其他原因会导致某些股票出现在这个list上。我们举个例子，如果A股票90%的持仓都在公司创始股东手里，如果你是创始股东，肯定不希望把股票借给别人，让别人去卖空砸盘吧，这就导致了这个股票是hard-to-borrow的，其他导致某只股票出现在这个list上的原因，请继续往下读。</p>
+<blockquote>
+<p>几个关键点</p>
+<ul>
+<li>卖空者依靠券商借入股票.</li>
+<li>如果券商只有很少股票可以外借，那么该股票将被置于hard-to-borrow list中。</li>
+<li>HTB list上的股票除了卖空利息会很高，还有可能不允许卖空。</li>
+</ul>
+</blockquote>
+<h3 id="Understanding-the-Hard-To-Borrow-List"><a href="#Understanding-the-Hard-To-Borrow-List" class="headerlink" title="Understanding the Hard-To-Borrow List"></a>Understanding the Hard-To-Borrow List</h3><p>Short selling of stocks is built on the notion that an individual trader or investor, wanting to profit from a decrease of that stock’s price, is able to borrow shares of that stock from the broker. Brokerages have a variety of ways to provide access to shares that can be sold short, but regardless of their methods, the result is a finite number of shares available for shorting. Once the number of shares available has come close to running out, the broker will publish a notation of some kind on their platform. This alerts account holders that if they attempt to sell that security short, their trade order may be refused.</p>
+<p>In this way a security may be on the hard-to-borrow list because it is in short supply, but it may also be because of its high volatility or other reasons. To enter a short sale, a brokerage client must first borrow the shares from his or her broker. To provide the shares, the broker can use its own inventory or borrow from the margin account of another client or another brokerage firm.</p>
+<p>Investors who enter short sale transactions attempt to capture profits in a declining market. For example, an investor may think that shares in Apple are likely to drop in price. The investor can short sell the stock and, if the price falls as he or she anticipates, repurchase it back for a profit. If the stock rises, however, the investor loses money.</p>
+<p>股票卖空，是指个人交易者或者投资者，从券商借股票卖出，股票价格下跌时，他们获利。券商有很多方法可以提供可供借出卖空的股票，但是，数量总是<strong>有限</strong>的。一旦数量快用完了，那么券商要在平台上发个某种形式的提醒，提醒自己的客户，如果你试图卖空这些数量即将用完的股票，交易有被拒绝的可能。</p>
+<p>证券可能会因为难以供应而出现在hard-to-borrow list上，但也可能是由于其高波动性或其他原因。要进行卖空，客户必须首先从其交易券商那里借到股票。为了提供股票，券商可以从自有库存，从其客户的<strong>margin账户</strong>中，或者从另一个券商借来可以提供给你用来卖空的股票。</p>
+<p>进行卖空交易的投资者试图在下降的市场中获利。例如，投资者认为苹果股票的价格可能会下跌。投资者可以卖空股票，如果价格如预期那样下跌，再低价买回来就可以获利。但是，如果股票上涨，投资者就会亏损，而且这个亏损是无上限的，理论上股价涨上天，投资者就亏成煞笔。</p>
+<h3 id="Hard-to-Borrow-List-and-Regulation"><a href="#Hard-to-Borrow-List-and-Regulation" class="headerlink" title="Hard-to-Borrow List and Regulation"></a>Hard-to-Borrow List and Regulation</h3><p>Brokerage firms update their hard-to-borrow lists daily. A broker must be able to provide or locate the shares to loan to their client before executing the client’s short sale transaction. Regulation SHO, which was implemented Jan. 3, 2005, has a “locate” condition that requires brokers to have a reasonable belief that the equity to be shorted can be borrowed and delivered to the short seller. The regulation is intended to prevent naked short selling, a practice where the investor places a short sale without holding the shares. (To learn more, see: The Truth About Naked Short Selling.)</p>
+<p>券商每天都会更新其Hart-To-Borrow List。在执行客户的卖空交易之前，券商必须能够provide或locate(就是你当前没有，但是你要知道哪里有）要借给客户的股票。 2005年1月3日实施的SHO监管条例，明确了一个“locate”条件，要求券商有合理的理由确信被卖空的equity（不限于股票啦）可以借到并交付给卖空者。该监管条例旨在防止裸卖空，指投资者在不持有股票或者不确认可以借到股票的情况下卖空。</p>
+<h3 id="Hard-to-Borrow-List-vs-Easy-to-Borrow-List"><a href="#Hard-to-Borrow-List-vs-Easy-to-Borrow-List" class="headerlink" title="Hard-to-Borrow List vs. Easy-to-Borrow List"></a>Hard-to-Borrow List vs. Easy-to-Borrow List</h3><p>The hard-to-borrow list is the opposite of the easy-to-borrow list, which is an inventory record of securities that are available for short sale transactions. In general, an investor can assume that securities not included on the hard-to-borrow list will be available for short selling. While a brokerage firm’s hard-to-borrow list is typically an internal list (and one that is not available to clients), the firm’s clients usually have access to the easy-to-borrow list.</p>
+<p>Brokerage clients may have to pay hard-to-borrow fees on certain short sales. Typically, the cost of borrowing stocks on the difficult-to-borrow list is higher than for stocks that are on the easy-to-borrow list. Large brokerage firms usually have a securities lending desk that helps source stocks that are difficult to borrow. A brokerage’s securities lending desk also lends securities to other firms.</p>
+<p>Easy-to-Borrow list，是指一份可卖空的证券记录表，Hard-to-Borrow list与ETB相反，一般来讲，投资者可以认为不在HTB列表上的证券都可以卖空。但是，通常券商的HTB列表是一个内部的数据（也就是客户不可见的），而ETB对客户通常是可见的。</p>
+<p>投资者可能需要为“难借”买单。通常，借HTB的股票比借ETB的股票的花费要更高。通常大的券商会有一个专门的证券借贷柜台，帮忙借那些难借的证券，也提供出借证券给别的券商的服务。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/03/17/2020-03-17-donot-use-pb-mergefrom/" rel="prev" title="proto buffer MergeFrom的坑">
+                  <i class="fa fa-chevron-left"></i> proto buffer MergeFrom的坑
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/05/28/When-issued/" rel="next" title="When issued 预发行交易">
+                  When issued 预发行交易 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">carl的修行--欢迎保留原文链接进行转载 :)</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0"
+  xmlns:atom="http://www.w3.org/2005/Atom"
+  xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>carl的修行</title>
+    <link>https://carl-wang-cn.github.io/</link>
+    
+    <image>
+      <url>https://carl-wang-cn.github.io/icon.png</url>
+      <title>carl的修行</title>
+      <link>https://carl-wang-cn.github.io/</link>
+    </image>
+    
+    <atom:link href="https://carl-wang-cn.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
+    
+    <description>金融程序员</description>
+    <pubDate>Wed, 31 Jul 2024 07:20:05 GMT</pubDate>
+    <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>团队梯度</title>
+      <link>https://carl-wang-cn.github.io/2023/12/11/team-gradient/</link>
+      <guid>https://carl-wang-cn.github.io/2023/12/11/team-gradient/</guid>
+      <pubDate>Mon, 11 Dec 2023 03:42:27 GMT</pubDate>
+      
+        
+        
+          
+          
+      <description>&lt;p&gt;曾经有一段时间，我希望团队每一个同事都出类拔萃，都是骨干。但是，在经历了一些事情，反复进行过一些思考后，我发现，这个希望是很美好的，但是要实现，是一个非常难的事情。每个人对自己的要求，对自己情绪的把控，对自己心态的调节，对自己提升的要求，很多方面，其实都是不同的，也许每个月</description>
+          
+        
+      
+      
+      
+      
+      <category domain="https://carl-wang-cn.github.io/categories/%E7%AE%A1%E7%90%86/">管理</category>
+      
+      
+      <category domain="https://carl-wang-cn.github.io/tags/%E8%AE%A4%E7%9F%A5/">认知</category>
+      
+      <category domain="https://carl-wang-cn.github.io/tags/%E5%9B%A2%E9%98%9F/">团队</category>
+      
+      
+      <comments>https://carl-wang-cn.github.io/2023/12/11/team-gradient/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>信任在团队中的重要性</title>
+      <link>https://carl-wang-cn.github.io/2023/04/07/why-u-need-believeness/</link>
+      <guid>https://carl-wang-cn.github.io/2023/04/07/why-u-need-believeness/</guid>
+      <pubDate>Fri, 07 Apr 2023 06:52:58 GMT</pubDate>
+      
+      <description>&lt;p&gt;我跟团队的每一个人都说过一句话，“没有信任基础的团队注定一事无成”，为什么要这么强调“信任”的重要性？&lt;/p&gt;
+&lt;p&gt;信任需要维护，且极容易失去&lt;/p&gt;
+&lt;p&gt;信用非常强大却非常脆弱，需要花很大的成本维护，如果不愿意花这个成本，只想着用朝令夕改来赚短线，那会死得非常快&lt;/p&gt;
+&lt;p&gt;没有手机支付的时候，早餐摊顾客自己找零。有了手机支付后，顾客自己扫码支付。&lt;/p&gt;
+&lt;p&gt;所有套路，都是一时的术，不可持续，诚实守信才是道&lt;/p&gt;</description>
+      
+      
+      
+      
+      <category domain="https://carl-wang-cn.github.io/categories/%E7%AE%A1%E7%90%86/">管理</category>
+      
+      
+      <category domain="https://carl-wang-cn.github.io/tags/%E7%AE%A1%E7%90%86/">管理</category>
+      
+      
+      <comments>https://carl-wang-cn.github.io/2023/04/07/why-u-need-believeness/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>对确定性，你怎么理解？</title>
+      <link>https://carl-wang-cn.github.io/2023/02/14/certainty/</link>
+      <guid>https://carl-wang-cn.github.io/2023/02/14/certainty/</guid>
+      <pubDate>Tue, 14 Feb 2023 06:14:22 GMT</pubDate>
+      
+      <description>&lt;h1 id=&quot;对确定性，你怎么理解？&quot;&gt;&lt;a href=&quot;#对确定性，你怎么理解？&quot; class=&quot;headerlink&quot; title=&quot;对确定性，你怎么理解？&quot;&gt;&lt;/a&gt;对确定性，你怎么理解？&lt;/h1&gt;&lt;p&gt;如果你100%确定未来1周某股票会拉升50%，那么你会毫不犹豫加满杠杆，把能借到的钱全都借来，满仓等涨发财。但是如果这个确定性只有75%呢，你会怎么做？恐怕不加杠杆，只是把手头的现金全部买入都会犹豫半天吧。&lt;/p&gt;</description>
+      
+      
+      
+      
+      <category domain="https://carl-wang-cn.github.io/categories/%E8%83%A1%E6%80%9D%E4%B9%B1%E6%83%B3/">胡思乱想</category>
+      
+      
+      <category domain="https://carl-wang-cn.github.io/tags/%E6%A6%82%E7%8E%87%E8%AE%BA/">概率论</category>
+      
+      
+      <comments>https://carl-wang-cn.github.io/2023/02/14/certainty/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>懂，但是如何做？</title>
+      <link>https://carl-wang-cn.github.io/2022/09/08/thinkvsdo/</link>
+      <guid>https://carl-wang-cn.github.io/2022/09/08/thinkvsdo/</guid>
+      <pubDate>Thu, 08 Sep 2022 05:28:42 GMT</pubDate>
+      
+      <description>&lt;p&gt;很多道理，懂的人很多，但是能否在行动上对齐，每个人的水平可就差得远了去了。&lt;/p&gt;
+&lt;p&gt;有权力的时候，可以更少阻力去尝试一些事情，成了当然效用巨大，但是失败了，成本也巨大，有的人就经常为了一些尝试一些理论，不计成本，或者他认为这个成本是别人帮他承担，甚至造成了一些伤害后，脚底抹油，这种行为最让人看不起。&lt;/p&gt;</description>
+      
+      
+      
+      
+      <category domain="https://carl-wang-cn.github.io/categories/%E8%83%A1%E6%80%9D%E4%B9%B1%E6%83%B3/">胡思乱想</category>
+      
+      
+      
+      <comments>https://carl-wang-cn.github.io/2022/09/08/thinkvsdo/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>绩效考核聊2块钱</title>
+      <link>https://carl-wang-cn.github.io/2022/08/23/talk-kpi/</link>
+      <guid>https://carl-wang-cn.github.io/2022/08/23/talk-kpi/</guid>
+      <pubDate>Tue, 23 Aug 2022 11:17:33 GMT</pubDate>
+      
+      <description>&lt;p&gt;以下都是我个人的真实想法，不一定对，但我现在认为是对的。我努力朝着这个方向做，但是阻力不少。可能是有一些我认知达不到导致的见识浅薄，但是目前还没有人说服我哪里认知不对！希望有人能指出我以下写的不对的地方，让我少走点弯路，让团队少付出一些代价来获得更多的成长。&lt;/p&gt;
+&lt;p&gt;我们定绩效的目的是啥？&lt;/p&gt;
+&lt;p&gt;第一，肯定为了达成公司的整体目标，然后把员工的目标和公司的目标对齐；&lt;br&gt;第二，是通过绩效管理来实现目标，完成业绩，而不是为了逼走员工。&lt;/p&gt;</description>
+      
+      
+      
+      
+      <category domain="https://carl-wang-cn.github.io/categories/team/">team</category>
+      
+      
+      
+      <comments>https://carl-wang-cn.github.io/2022/08/23/talk-kpi/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>一个leader要少对团队说“你这样是不对的”</title>
+      <link>https://carl-wang-cn.github.io/2022/08/20/what-a-leader/</link>
+      <guid>https://carl-wang-cn.github.io/2022/08/20/what-a-leader/</guid>
+      <pubDate>Sat, 20 Aug 2022 14:11:15 GMT</pubDate>
+      
+      <description>&lt;p&gt;有的leader，经常听团队汇报问题的时候，刚听了两句就打断说“你这样是不对的”，甚至连听完全部的耐心都没有。&lt;/p&gt;</description>
+      
+      
+      
+      
+      <category domain="https://carl-wang-cn.github.io/categories/team/">team</category>
+      
+      
+      
+      <comments>https://carl-wang-cn.github.io/2022/08/20/what-a-leader/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>一些优秀的文字</title>
+      <link>https://carl-wang-cn.github.io/2022/06/28/good-words-01-md/</link>
+      <guid>https://carl-wang-cn.github.io/2022/06/28/good-words-01-md/</guid>
+      <pubDate>Tue, 28 Jun 2022 06:46:13 GMT</pubDate>
+      
+      <description>&lt;p&gt;阅读的时候，记录了一些对自己触动很大，希望还能时长翻看的文字，也会随手记下几句闪过脑子的文字。&lt;/p&gt;</description>
+      
+      
+      
+      
+      <category domain="https://carl-wang-cn.github.io/categories/%E6%96%87%E5%AD%97/">文字</category>
+      
+      
+      
+      <comments>https://carl-wang-cn.github.io/2022/06/28/good-words-01-md/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>一个小leader应该关注些什么</title>
+      <link>https://carl-wang-cn.github.io/2022/05/26/better-leader/</link>
+      <guid>https://carl-wang-cn.github.io/2022/05/26/better-leader/</guid>
+      <pubDate>Thu, 26 May 2022 12:24:39 GMT</pubDate>
+      
+      <description>&lt;p&gt;就是单纯列一下我自己认为比较重要的几点&lt;/p&gt;</description>
+      
+      
+      
+      
+      <category domain="https://carl-wang-cn.github.io/categories/team/">team</category>
+      
+      
+      
+      <comments>https://carl-wang-cn.github.io/2022/05/26/better-leader/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>系统日志实践</title>
+      <link>https://carl-wang-cn.github.io/2022/01/24/better-sys-log/</link>
+      <guid>https://carl-wang-cn.github.io/2022/01/24/better-sys-log/</guid>
+      <pubDate>Mon, 24 Jan 2022 12:42:26 GMT</pubDate>
+      
+      <description>&lt;p&gt;日志是每个程序员，尤其是后台服务器程序员每天都要接触的东西，但是如何把实现一个好的日志，是有很多道道在里面的。&lt;/p&gt;
+&lt;h2 id=&quot;好的日志-vs-不好的日志&quot;&gt;&lt;a href=&quot;#好的日志-vs-不好的日志&quot; class=&quot;headerlink&quot; title=&quot;好的日志 vs 不好的日志&quot;&gt;&lt;/a&gt;好的日志 vs 不好的日志&lt;/h2&gt;&lt;p&gt;我们为什么要对日志这么一个看起来那么简单的事情专门进行总结呢？看看下面表格就知道了，一个系统，日志的好坏，基本上直接或间接地决定了我们这个系统的质量是什么鸟样。&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;好的日志&lt;/th&gt;
+&lt;th&gt;不好的日志&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;&lt;tr&gt;
+&lt;td&gt;可以帮助开发&lt;br&gt;了解线上系统的运行状态&lt;br&gt;快速准确定位线上问题&lt;br&gt;发现系统瓶颈&lt;br&gt;预警系统潜在风险&lt;br&gt;挖掘产品最大价值&lt;/td&gt;
+&lt;td&gt;让开发&lt;br&gt;对系统的运行状态一知半解，甚至一无所知&lt;br&gt;系统出现问题无法定位，或者需要花费巨大的时间和精力&lt;br&gt;无法发现系统瓶颈，不知优化从何做起&lt;br&gt;无法基于日志对系统运行过程中的错误和潜在风险进行监控和报警&lt;br&gt;对挖掘用户行为和提升产品价值毫无&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;</description>
+      
+      
+      
+      
+      <category domain="https://carl-wang-cn.github.io/categories/%E6%8A%80%E6%9C%AF/">技术</category>
+      
+      
+      <category domain="https://carl-wang-cn.github.io/tags/%E6%97%A5%E5%BF%97/">日志</category>
+      
+      
+      <comments>https://carl-wang-cn.github.io/2022/01/24/better-sys-log/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>Wash Trading</title>
+      <link>https://carl-wang-cn.github.io/2022/01/22/Wash-Trading/</link>
+      <guid>https://carl-wang-cn.github.io/2022/01/22/Wash-Trading/</guid>
+      <pubDate>Sat, 22 Jan 2022 08:38:54 GMT</pubDate>
+      
+      <description>&lt;p&gt;Wash Trading&lt;/p&gt;
+&lt;p&gt;Wash Trading是交易者买卖证券向市场提供误导性信息。Wash Trading可以由交易者和经纪人相互勾结来进行，也可以是一个投资者自己同时充当证券买方和卖方来进行。根据美国法律，Wash Trading是非法的。美国国税局禁止纳税人从其应纳税收入金额中扣除因为Wash Trading造成的损失。&lt;/p&gt;
+&lt;p&gt;在1936年通过《商品交易法》后，联邦政府就禁止进行Wash Trading，该法律对《谷物期货法》进行了修订，并要求所有商品交易都必须在受监管的交易所进行。在1930年代被禁止之前，Wash Trading是股票操纵者很喜欢的一个手段，去假装表示对某只股票有很大兴趣，进而试图提高股价，然后高价位的时候做空来收割韭菜们。&lt;/p&gt;
+&lt;p&gt;商品期货交易委员会（CFTC）也禁止券商从Wash Trading中获利，即使券商声称不知道交易者的意图。因此，券商必须对客户进行尽职调查，以确保他们出于共同受益所有权的目的购买公司的股份。&lt;/p&gt;
+&lt;p&gt;美国国税局（IRS）也有严格的禁止Wash Trading的规定，并要求纳税人不能从应纳税金额中扣除Wash Trading产生的损失。美国国税局将Wash Trading定义为购买证券后30天内出售并造成损失的交易。&lt;/p&gt;</description>
+      
+      
+      
+      
+      <category domain="https://carl-wang-cn.github.io/categories/%E9%87%91%E8%9E%8D%E7%9F%A5%E8%AF%86%E5%88%86%E4%BA%AB/">金融知识分享</category>
+      
+      
+      
+      <comments>https://carl-wang-cn.github.io/2022/01/22/Wash-Trading/#disqus_thread</comments>
+      
+    </item>
+    
+  </channel>
+</rss>

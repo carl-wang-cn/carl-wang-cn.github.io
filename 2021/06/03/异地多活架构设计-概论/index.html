@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/ais.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"carl-wang-cn.github.io","root":"/","images":"/images","scheme":"Mist","version":"8.2.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+<meta name="description" content="近期工作中要做一些系统的质量工作，那么多活肯定是一个避不开的事情，借此机会，系统梳理下异地多活的架构设计，为接下来的服务质量做一些准备。 0 预设本文预设读到的同学是对服务器开发领域有一定的认知的，对一些比较基础的认知类的东西，不会去做太多的科普。 1 几个概念解释 冷备：备份全量数据，平时不支撑业务需求，即不接受服务通信请求，只有在主机房出现故障的时候才会切换到备用机房，通常切换完成后提供的也是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="异地多活架构设计-概论">
+<meta property="og:url" content="https://carl-wang-cn.github.io/2021/06/03/%E5%BC%82%E5%9C%B0%E5%A4%9A%E6%B4%BB%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1-%E6%A6%82%E8%AE%BA/index.html">
+<meta property="og:site_name" content="carl的修行">
+<meta property="og:description" content="近期工作中要做一些系统的质量工作，那么多活肯定是一个避不开的事情，借此机会，系统梳理下异地多活的架构设计，为接下来的服务质量做一些准备。 0 预设本文预设读到的同学是对服务器开发领域有一定的认知的，对一些比较基础的认知类的东西，不会去做太多的科普。 1 几个概念解释 冷备：备份全量数据，平时不支撑业务需求，即不接受服务通信请求，只有在主机房出现故障的时候才会切换到备用机房，通常切换完成后提供的也是">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://image-bed-1257857175.cos.ap-guangzhou.myqcloud.com/%E5%BC%82%E5%9C%B0%E5%A4%9A%E6%B4%BB%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/one-city-multi-dc-01.svg">
+<meta property="og:image" content="https://image-bed-1257857175.cos.ap-guangzhou.myqcloud.com/%E5%BC%82%E5%9C%B0%E5%A4%9A%E6%B4%BB%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/one-city-multi-dc-02.svg">
+<meta property="og:image" content="https://image-bed-1257857175.cos.ap-guangzhou.myqcloud.com/%E5%BC%82%E5%9C%B0%E5%A4%9A%E6%B4%BB%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/one-city-multi-dc-03.svg">
+<meta property="article:published_time" content="2021-06-03T11:49:26.000Z">
+<meta property="article:modified_time" content="2024-07-31T07:20:05.946Z">
+<meta property="article:author" content="carl">
+<meta property="article:tag" content="架构设计">
+<meta property="article:tag" content="异地多活">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image-bed-1257857175.cos.ap-guangzhou.myqcloud.com/%E5%BC%82%E5%9C%B0%E5%A4%9A%E6%B4%BB%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/one-city-multi-dc-01.svg">
+
+
+<link rel="canonical" href="https://carl-wang-cn.github.io/2021/06/03/%E5%BC%82%E5%9C%B0%E5%A4%9A%E6%B4%BB%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1-%E6%A6%82%E8%AE%BA/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>异地多活架构设计-概论 | carl的修行</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="carl的修行" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="carl的修行" type="application/rss+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">carl的修行</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">坚持做正确的事情, 做时间的朋友</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+        <li class="menu-item menu-item-reading"><a href="/reading" rel="section"><i class="fa fa-book fa-fw"></i>reading</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0-%E9%A2%84%E8%AE%BE"><span class="nav-number">1.</span> <span class="nav-text">0 预设</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%87%A0%E4%B8%AA%E6%A6%82%E5%BF%B5%E8%A7%A3%E9%87%8A"><span class="nav-number">2.</span> <span class="nav-text">1 几个概念解释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%81%9A%E5%A4%9A%E6%B4%BB%E6%9E%B6%E6%9E%84"><span class="nav-number">3.</span> <span class="nav-text">2 为什么要做多活架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%B8%B8%E8%A7%81%E5%A4%9A%E6%9C%BA%E6%88%BF%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="nav-number">4.</span> <span class="nav-text">3 常见多机房架构设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E9%98%B6%E6%AE%B51%EF%BC%9A%E5%90%8C%E5%9F%8E%E5%8F%8C%E6%9C%BA%E6%88%BF-%E6%9C%8D%E5%8A%A1%E9%97%B4%E8%B0%83%E7%94%A8%E5%92%8C%E6%95%B0%E6%8D%AE%E8%AE%BF%E9%97%AE%E4%BC%9A%E6%9C%89%E8%B7%A8%E6%9C%BA%E6%88%BF%E6%B5%81%E9%87%8F"><span class="nav-number">4.1.</span> <span class="nav-text">3.1 阶段1：同城双机房: 服务间调用和数据访问会有跨机房流量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E9%98%B6%E6%AE%B52%EF%BC%9A%E5%8F%AA%E6%9C%89%E6%95%B0%E6%8D%AE%E8%AE%BF%E9%97%AE%E4%BC%9A%E8%B7%A8%E6%9C%BA%E6%88%BF"><span class="nav-number">4.2.</span> <span class="nav-text">3.2 阶段2：只有数据访问会跨机房</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-%E9%98%B6%E6%AE%B53%EF%BC%9A%E4%B8%A4%E5%9C%B0%E4%B8%89%E4%B8%AD%E5%BF%83"><span class="nav-number">4.3.</span> <span class="nav-text">3.3 阶段3：两地三中心</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E5%BC%82%E5%9C%B0%E5%A4%9A%E6%B4%BB%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="nav-number">5.</span> <span class="nav-text">4 异地多活架构设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-%E8%AE%BE%E8%AE%A1%E8%A6%81%E7%82%B9"><span class="nav-number">5.1.</span> <span class="nav-text">4.1 设计要点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-%E5%B8%B8%E8%A7%81%E8%AE%BE%E8%AE%A1%E8%AF%AF%E5%8C%BA"><span class="nav-number">5.2.</span> <span class="nav-text">4.2 常见设计误区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-%E5%BC%82%E5%9C%B0%E5%A4%9A%E6%B4%BB%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E8%A6%81%E8%A7%A3%E5%86%B3%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">5.3.</span> <span class="nav-text">4.3 异地多活架构设计要解决的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-%E6%AD%A3%E7%A1%AE%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF"><span class="nav-number">5.4.</span> <span class="nav-text">4.4 正确的设计思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-5-%E5%BC%82%E5%9C%B0%E5%A4%9A%E6%B4%BB%E6%9E%B6%E6%9E%84%E7%9A%84%E9%94%A6%E4%B8%8A%E6%B7%BB%E8%8A%B1%E2%80%93%E5%9C%B0%E5%9F%9F%E6%84%9F%E7%9F%A5%E7%9A%84%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1"><span class="nav-number">5.5.</span> <span class="nav-text">4.5 异地多活架构的锦上添花–地域感知的负载均衡</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-5-1-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E6%9C%89%E5%9C%B0%E5%9F%9F%E6%84%9F%E7%9F%A5%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1"><span class="nav-number">5.5.1.</span> <span class="nav-text">4.5.1 为什么要有地域感知负载均衡</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-5-2-%E5%9C%B0%E5%9F%9F%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E9%BB%98%E8%AE%A4%E4%BD%BF%E7%94%A8%E7%9A%84%E5%9C%B0%E5%9F%9F%E4%BC%98%E5%85%88%E7%AD%96%E7%95%A5"><span class="nav-number">5.5.2.</span> <span class="nav-text">4.5.2 地域负载均衡默认使用的地域优先策略</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E9%80%9A%E5%B8%B8%E7%9A%84%E5%BC%82%E5%9C%B0%E5%A4%9A%E6%B4%BB%E6%BC%94%E8%BF%9B"><span class="nav-number">6.</span> <span class="nav-text">5 通常的异地多活演进</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-%E6%BC%94%E8%BF%9B%E8%BF%87%E7%A8%8B"><span class="nav-number">6.1.</span> <span class="nav-text">5.1 演进过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93"><span class="nav-number">6.2.</span> <span class="nav-text">5.2 经验总结</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="carl"
+      src="/images/ais.jpg">
+  <p class="site-author-name" itemprop="name">carl</p>
+  <div class="site-description" itemprop="description">金融程序员</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+        
+          <span class="site-state-item-count">42</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags">
+          
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/carl-wang-cn" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;carl-wang-cn" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:carl.king.cn@gmail.com" title="E-Mail → mailto:carl.king.cn@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://carl-wang-cn.github.io/2021/06/03/%E5%BC%82%E5%9C%B0%E5%A4%9A%E6%B4%BB%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1-%E6%A6%82%E8%AE%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/ais.jpg">
+      <meta itemprop="name" content="carl">
+      <meta itemprop="description" content="金融程序员">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="carl的修行">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          异地多活架构设计-概论
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-06-03 19:49:26" itemprop="dateCreated datePublished" datetime="2021-06-03T19:49:26+08:00">2021-06-03</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2024-07-31 15:20:05" itemprop="dateModified" datetime="2024-07-31T15:20:05+08:00">2024-07-31</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>近期工作中要做一些系统的质量工作，那么多活肯定是一个避不开的事情，借此机会，系统梳理下异地多活的架构设计，为接下来的服务质量做一些准备。</p>
+<h2 id="0-预设"><a href="#0-预设" class="headerlink" title="0 预设"></a>0 预设</h2><p>本文预设读到的同学是对服务器开发领域有一定的认知的，对一些比较基础的认知类的东西，不会去做太多的科普。</p>
+<h2 id="1-几个概念解释"><a href="#1-几个概念解释" class="headerlink" title="1 几个概念解释"></a>1 几个概念解释</h2><ul>
+<li><p>冷备：备份全量数据，<strong>平时不支撑业务需求，即不接受服务通信请求</strong>，只有在主机房出现故障的时候才会切换到备用机房，通常切换完成后提供的也是<strong>有损服务</strong>。</p>
+<blockquote>
+<p>冷备的方案主要有下面几点问题:</p>
+<ol>
+<li>成本高，平常不跑业务，干晾着。</li>
+<li>因为平时不接收流量，真的出问题了，你敢把流量切过去吗？ 我反正还是有点怂的。</li>
+<li>接2，即使你敢切，切换到冷备系统，也不一定能成功把业务接管过来，说不定根本就跑不起来。</li>
+<li>接3，运气再好一点，冷备系统有能力接管，在接收流量后能马上正常提供服务。可能整个切换动作花费的时间也会比较长。</li>
+</ol>
+</blockquote>
+</li>
+<li><p>活：是相对于冷备而言的，在日常的业务中要有流量，做业务支撑。</p>
+</li>
+</ul>
+<span id="more"></span>
+
+<h2 id="2-为什么要做多活架构"><a href="#2-为什么要做多活架构" class="headerlink" title="2 为什么要做多活架构"></a>2 为什么要做多活架构</h2><p>服务是怎么一步步从单实例到异地多机房多活的呢？ 以下单纯从研发角度，不考虑跨国业务，也先不考虑数据同步的问题，简单推演以下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">A:服务部署好了，你可以发个请求试试</span><br><span class="line">B:biubiubiu，一切正常，不错。after a moment，啊，请求超时了。</span><br><span class="line">A:我查一下，啊，服务挂了，就部署了1个实例。**等我再部署几个一起收请求**，不全挂就行了。</span><br><span class="line">B:biubiubiu，一切正常，不错。after a moment，啊，请求又超时了。</span><br><span class="line">A:我查一下，卧槽，机器硬盘坏了，**我找多几台机器（同一个机房），每个机器都部署几个服务实例**，机器不全挂就行了。</span><br><span class="line">B:biubiubiu，一切正常，不错。after a moment，啊，请求又超时了。</span><br><span class="line">A:好羞愧啊，我去查一下，啊，机房停电了，我去**另一个机房**也部署下服务吧，总不能2个机房一起挂吧。</span><br><span class="line">B:biubiubiu，一切正常，不错。after a moment，啊，请求又超时了。</span><br><span class="line">A:卧槽，这几天珠三角下雨把**深圳和广州2个机房（距离太近）**都淹了，我在北京机房也部署个服务去。这样请求耗时一点，但是起码不会珠三角跟北京一起出问题吧。</span><br><span class="line">B:biubiubiu，一切正常，不错。after a moment，啊，请求又超时了。</span><br><span class="line">A:艹，深圳和广州的机房空调坏了，北京机房停电了，md认命吧，我们去买个彩票吧。</span><br><span class="line">B:原来后台做个数据的增删改查这么麻烦，还是我app挪按钮好一点。</span><br></pre></td></tr></table></figure>
+
+<p>现在基本都清楚为啥要做异地多活了吧。那么异地多活，除了解决以上问题，还能解决其他哪些问题呢？</p>
+<ul>
+<li>业务一致性、灾难恢复的诉求，不把鸡蛋放在一个篮子里， 避免由于一个集群或机房的不稳定导致业务出现问题。</li>
+<li>在系统扩展、容灾恢复、更新发布时做到数据无损，且服务持续可用</li>
+<li>有些业务应用可能是面向分布在全球的终端用户，那么为了减少服务之间的访问延时，这些业务应用服务就需要被部署在全球相应的地域； 与此同时，有些特定业务，由于它的特殊性，需要满足本地数据合规要求，也需要将这一些应用服务部署在对应的地域中。例如前段时间tiktok美国版的纠纷，就是川大统领要求美国人的数据必须放在美国。</li>
+</ul>
+<p>那么异地多活架构是不是就是万金油呢？没啥缺点吗？有的！</p>
+<ul>
+<li>只是极力减少服务不可用的概率，并无法完全杜绝。</li>
+<li>异地多活，架构设计上要考虑很多东西，<strong>系统复杂度指数级增加</strong>，需要平衡好系统设计复杂度跟服务可用率之间的取舍。<ul>
+<li>跨机房调用，服务延时问题</li>
+<li>用户数据多机房同步问题</li>
+<li>用户数据拆分到多机房的策略问题</li>
+<li>还有各种乱七八糟其他问题</li>
+</ul>
+</li>
+</ul>
+<h2 id="3-常见多机房架构设计"><a href="#3-常见多机房架构设计" class="headerlink" title="3 常见多机房架构设计"></a>3 常见多机房架构设计</h2><h3 id="3-1-阶段1：同城双机房-服务间调用和数据访问会有跨机房流量"><a href="#3-1-阶段1：同城双机房-服务间调用和数据访问会有跨机房流量" class="headerlink" title="3.1 阶段1：同城双机房: 服务间调用和数据访问会有跨机房流量"></a>3.1 阶段1：同城双机房: 服务间调用和数据访问会有跨机房流量</h3><p>设计要点</p>
+<ul>
+<li>关键在于<strong>搭建高速网络</strong>将两个机房连接起来，达到近似一个本地机房的效果。架构设计上可以将两个机房当作本地1个机房来设计<blockquote>
+<p>同城异区或邻近城市的两个机房距离一般就是几十千米，网络传输速度几乎和同一个机房相同，降低了系统设计的复杂度、成本。</p>
+</blockquote>
+</li>
+<li>服务在2个机房部署热备，数据库主备也部署到不同的机房。只是<strong>解决了机房容量不足的问题</strong></li>
+<li>会存在跨机房调用（包括跨机房rpc调用和跨机房db访问）<ol>
+<li>服务无状态，每一次RPC调用都有50%的概率跨机房。</li>
+<li>数据库主库只能位于一个机房，所以50%的数据库访问也是跨机房的。</li>
+</ol>
+</li>
+</ul>
+<p>同城跨机房专线访问的耗时在数毫秒级，图中用暗黄色线表示。如果微服务架构下的服务众多，每次完整的调用链有个几十次rpc调用，那么这部分的延迟加起来也很可观了。</p>
+<p><img src="https://image-bed-1257857175.cos.ap-guangzhou.myqcloud.com/%E5%BC%82%E5%9C%B0%E5%A4%9A%E6%B4%BB%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/one-city-multi-dc-01.svg" alt="服务间调用和数据访问有跨机房"></p>
+<p>注意，这个多机房是在同城的（同一个城市，或者临近的两个城市），地理位置很近。</p>
+<p>综合考虑系统设计复杂度，机房成本，故障发生概率，<strong>同城多机房架构是应对多机房级别故障最优架构</strong>。</p>
+<h3 id="3-2-阶段2：只有数据访问会跨机房"><a href="#3-2-阶段2：只有数据访问会跨机房" class="headerlink" title="3.2 阶段2：只有数据访问会跨机房"></a>3.2 阶段2：只有数据访问会跨机房</h3><p>依靠不同服务注册中心，将应用层逻辑隔离开。请求按照预设的负载均衡规则进入其中一个机房，接下来所有的请求调用都在这个机房内处理完。但是，由于数据库主库只在其中一边，所以这个阶段仍然没解决一半数据访问跨机房的问题。</p>
+<p><img src="https://image-bed-1257857175.cos.ap-guangzhou.myqcloud.com/%E5%BC%82%E5%9C%B0%E5%A4%9A%E6%B4%BB%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/one-city-multi-dc-02.svg" alt="只有数据访问跨机房"></p>
+<h3 id="3-3-阶段3：两地三中心"><a href="#3-3-阶段3：两地三中心" class="headerlink" title="3.3 阶段3：两地三中心"></a>3.3 阶段3：两地三中心</h3><p>在金融系统中广泛应用的容灾部署模式，性价比较高。</p>
+<p>这是当前看最主流的灾备方案，数据中心1和数据中心2在<strong>同城</strong>作为生产级的机房，当用户访问的时候随机访问到数据中心A或B。之所以随便访问，因为A和B会<strong>同步</strong>做数据复制，所以两边的数据是完全一样的。但是因为是同步复制的，所以只能在同城去做两个数据中心，否则太远的话同步复制的延时会太长。</p>
+<ul>
+<li>两个生产级的数据中心1和2，必须在同一个城市，或者在距离很近的另外一个城市，但是距离是有要求的.</li>
+<li>异地灾备机房距离数据库主节点距离过远，数据访问耗时过长</li>
+<li>异地灾备节点数据不是实时一致的（因为远），在同城的主备机房可用的情况下，都不会选择让异地备机房直接提供服务。</li>
+</ul>
+<p>其实这个异地机房就是最前面说的冷备，那么那些冷备机房的问题，它都有。</p>
+<ul>
+<li>当数据中心1和2出问题的时候，不敢流量切往异地的备份数据中心，敢切但用不起来，能用起来但切换时间久。</li>
+<li>异地备份中心因为不对外提供服务，所以整个资源会处于浪费状态，属于浪费了，成本比较高。</li>
+<li>在两地三中心中，数据是单点写，单点的压力会比较高。</li>
+</ul>
+<p><img src="https://image-bed-1257857175.cos.ap-guangzhou.myqcloud.com/%E5%BC%82%E5%9C%B0%E5%A4%9A%E6%B4%BB%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/one-city-multi-dc-03.svg" alt="常说的两地三中心架构"></p>
+<p>从以上来看，阶段1的方案是性价比最高的，阶段2次之，阶段3里的异地冷备，平时就是浪费，不差钱就搞一个，最主流的方案。</p>
+<h2 id="4-异地多活架构设计"><a href="#4-异地多活架构设计" class="headerlink" title="4 异地多活架构设计"></a>4 异地多活架构设计</h2><p>异地多活一般是指在不同城市建立独立的数据中心，此处的异地，要跟现有的机房位置<strong>相隔足够远</strong>，例如北京和上海。在其中一个城市或邻近城市出现极端灾难的时候，另一个距离很远的城市的机房仍然可用，从而实现服务的高可用。</p>
+<h3 id="4-1-设计要点"><a href="#4-1-设计要点" class="headerlink" title="4.1 设计要点"></a>4.1 设计要点</h3><p>异地多活架构有一些天生的<strong>缺陷</strong></p>
+<ul>
+<li>网络环境复杂，延迟不确定，大致 50ms -&gt; 1s</li>
+<li>距离远，搭建专用网络通道复杂度和成本高</li>
+<li>因为距离远，肯定会出现数据不一致，需要保证数据短时间不一致时能够提供服务</li>
+<li>要求数据高度一致的服务做异地多活要做单元化设计(会另外写一篇来讲单元化设计)</li>
+</ul>
+<p>异地多活模式适用于<strong>对数据一致性要求不高</strong>的场景，例如</p>
+<ul>
+<li>用户登录，数据不一致时重新登录即可。</li>
+<li>新闻网站，A用户看到的内容跟B用户看到的内容有一些延迟，没啥问题，尤其是现在看新闻基本都是千人千面基于算法推荐的，就更不容易产生用户体验的下降问题。</li>
+<li>微博网站，即使丢失一点微博或评论数据也影响不大。</li>
+</ul>
+<p>异地多活架构的实践，关键<strong>在于数据不一致的情况下，业务不受影响或者影响很小</strong>，这从逻辑的角度上来说其实是矛盾的。对数据一致性要求高的场景，异地多活也可以做，但是设计就要复杂一点，架构设计的主要目的就是为了解决这个矛盾。</p>
+<h3 id="4-2-常见设计误区"><a href="#4-2-常见设计误区" class="headerlink" title="4.2 常见设计误区"></a>4.2 常见设计误区</h3><ul>
+<li><strong>每个业务</strong>都想要异地多活</li>
+<li>想要做到 <strong>100%</strong> 可用，从99.99%到100%，要付出的代价很大很大的哦。<blockquote>
+<p>我们要忍受这一小部分用户或者业务上的损失，否则本来想为了保证最后的0.01%的可用性，做个完美方案，结果却发现99.99%也保不住了。</p>
+</blockquote>
+</li>
+<li>只使用存储系统自己的同步方案（例如使用MySQL的时候，只使用MySQL自身提供的主从同步），没有其他并行的数据同步方案。</li>
+<li>数据想要做到<strong>实时一致性</strong>（有的时候，最终一致性也是很好的方案。毕竟实时一致性跟最终一致性的复杂度也是不可同日而语的）。</li>
+</ul>
+<p>以上这些误区，都是因为想把系统做到<strong>完美</strong>，但是<strong>所有的设计其实都是有一定的取舍</strong>，有舍才有得，我们要的是最大性价比的方案，在系统设计复杂度和系统可用性两方面找到一个平衡。当然，这个平衡点，不同的业务会有很大区别，例如（微博和支付业务）。同一个业务，随着业务的发展，平衡点也可能需要不断地去调整。</p>
+<h3 id="4-3-异地多活架构设计要解决的问题"><a href="#4-3-异地多活架构设计要解决的问题" class="headerlink" title="4.3 异地多活架构设计要解决的问题"></a>4.3 异地多活架构设计要解决的问题</h3><ul>
+<li>跨机房接口调用慢导致的延时。(其实所有的问题，就是因为距离远，但是异地的初衷就是要距离远的)<blockquote>
+<p>根据业务做单元化，如交易单元，同一个业务的整个流程，尽量避免跨机房，这样来避免延时问题。（单元化另写一篇讲）</p>
+</blockquote>
+</li>
+<li>数据同步慢导致的数据实时一致性问题。</li>
+<li>单元化之后导致的数据写入路由一致性问题。</li>
+<li>不同单元之间的数据同步问题。</li>
+</ul>
+<h3 id="4-4-正确的设计思路"><a href="#4-4-正确的设计思路" class="headerlink" title="4.4 正确的设计思路"></a>4.4 正确的设计思路</h3><ul>
+<li><strong>只保证核心业务</strong>的异地多活</li>
+<li>核心数据做到<strong>最终一致性</strong>，<strong>不必须</strong>实时一致性，Best Effort即可，有以下一些方法<ul>
+<li>可以减少数据同步量，只同步核心数据</li>
+<li>搭建高速网络</li>
+</ul>
+</li>
+<li><strong>避免只使用存储系统的同步功能</strong>，可以将多种手段配合存储系统的同步来使用，甚至可以不采用存储系统的同步方案，改用自己的同步方案(不同方式，尽可能走不同的网络通道)<ul>
+<li>消息队列方式</li>
+<li>二次读取方式</li>
+<li>回源读取方式</li>
+<li>重新生成数据方式</li>
+</ul>
+</li>
+<li><strong>只保证绝大部分用户</strong>的异地多活</li>
+<li>很多业务的异地多活，是需要从业务的设计上去考虑</li>
+</ul>
+<h3 id="4-5-异地多活架构的锦上添花–地域感知的负载均衡"><a href="#4-5-异地多活架构的锦上添花–地域感知的负载均衡" class="headerlink" title="4.5 异地多活架构的锦上添花–地域感知的负载均衡"></a>4.5 异地多活架构的锦上添花–地域感知的负载均衡</h3><h4 id="4-5-1-为什么要有地域感知负载均衡"><a href="#4-5-1-为什么要有地域感知负载均衡" class="headerlink" title="4.5.1 为什么要有地域感知负载均衡"></a>4.5.1 为什么要有地域感知负载均衡</h4><ul>
+<li>在跨地域部署的多集群中，各地域可能会部署<strong>本地区定制化</strong>的服务，这些场景要求服务间的访问不能随机路由，需要优先（或只能）访问本地域服务。比如<ul>
+<li>不同地区的服务会有不同的显示语言或定制功能</li>
+<li>某些服务只在特定区域开放</li>
+</ul>
+</li>
+<li>用作容灾。在多地域架构中， 往往会有一个主集群， 拥有较为充足的服务资源， 而容灾地域的资源仅保证服务基本可用。因此我们要求正常情况下，请求能由主集群提供服务，流量不要地域间随机路由。</li>
+<li>除了以上场景，若2个异地对等集群，提供服务和持有资源完全相同， 我们也应该<strong>尽量满足本地域内闭环服务</strong>， 因为跨地域的服务访问往往会有较大的延迟，用户体验差，且可能会让容错性较差的系统出现服务雪崩的风险。</li>
+</ul>
+<h4 id="4-5-2-地域负载均衡默认使用的地域优先策略"><a href="#4-5-2-地域负载均衡默认使用的地域优先策略" class="headerlink" title="4.5.2 地域负载均衡默认使用的地域优先策略"></a>4.5.2 地域负载均衡默认使用的地域优先策略</h4><ul>
+<li>最高优先级：相同地域且相同区域</li>
+<li>第二优先级：相同地域但不同区域</li>
+<li>最低优先级：不同地域</li>
+</ul>
+<h2 id="5-通常的异地多活演进"><a href="#5-通常的异地多活演进" class="headerlink" title="5 通常的异地多活演进"></a>5 通常的异地多活演进</h2><h3 id="5-1-演进过程"><a href="#5-1-演进过程" class="headerlink" title="5.1 演进过程"></a>5.1 演进过程</h3><ol>
+<li>同城的双活。</li>
+<li>异地只读及冷备(类似两地三中心)</li>
+<li>异地多活。在异地多活之前，最重要是同城的“双活”，双活上打了一个引号，原因在于同城双活的情况下，其实整个模式是应用层是双活的，两边的业务都有，用户访问过去都会处理请求。但是存储层都是主备的，主在A机房，备在B机房，不会同时用，可以说是伪双活，不是真正意义上的双活。</li>
+</ol>
+<h3 id="5-2-经验总结"><a href="#5-2-经验总结" class="headerlink" title="5.2 经验总结"></a>5.2 经验总结</h3><ul>
+<li>服务调用延时问题<blockquote>
+<p>让操作全部在同一中心内完成，使用单元化设计<br>比如用户请求路由到某个数据中心后，在淘宝上浏览商品，搜索、下单、添加购物车等操作，还包括写数据库，都在其进入的那个数据中心中完成，而不需要跨数据中心</p>
+</blockquote>
+</li>
+<li>数据同步的延时问题<blockquote>
+<p>核心业务的数据，要做到全国范围1s内完成骨干网数据同步<br>这个也主要靠单元化设计来解决，把用户操作封闭在一个单元内完成，那个用户被sharding到的单元<br>自研数据同步中间件，补充数据库自有的数据同步途径。</p>
+</blockquote>
+</li>
+<li>部署规模<blockquote>
+<p>还是单元化设计，将关系紧密的一组业务单元化<br>流量很大的单元，通常流量会爆发性增长，这类单元，做异地部署，流量小的，就没有必要了。<br>例如，对淘宝来说，只异地部署跟买家交易相关的核心业务单元，让买家整个购物过程顺畅完成，卖家对一些体验的容忍度会比买家高很多。每家公司需要根据自己业务的关注点，做出合适的选择。<br>另外，在数据层自身支持跨机房服务之前，不建议部署超过两个的机房。因为异地两个机房，异地容灾的目的已经达成，且服务器规模足够大各种配套的设施也会比较健全，运维成本也相对可控。当扩展到三个点之后，新机房基础设施磨合、运维决策的成本等都会大幅增加</p>
+</blockquote>
+</li>
+<li>路由一致性<blockquote>
+<p>这是单元化设计后出现的问题。除了将关系紧密的一组业务单元化，还有另一个维度做单元化，就是根据用户做sharding，将不同的用户分流到不同的单元。<br>买家相关的数据在写的时候，一定是要写在他所属的那个单元里。要保障这个用户从进来一直到访问服务，访问数据库，全链路的路由规则都是完全一致的。如果说某个用户本来应该进A数据中心，但是却因为路由错误，进入了B数据中心，那看到的数据可能就是错的了。造成的结果，可能是用户看到的购买列表是空的，买的东西不见了，已付款的交易变成未付款，这都是不能接受的。</p>
+</blockquote>
+</li>
+<li>数据一致性<blockquote>
+<p>在任何时间点，必须确保单行的数据在一个地方写，绝对不能在多个地方写。</p>
+</blockquote>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" rel="tag"># 架构设计</a>
+              <a href="/tags/%E5%BC%82%E5%9C%B0%E5%A4%9A%E6%B4%BB/" rel="tag"># 异地多活</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/02/19/adr-vs-ads/" rel="prev" title="我被收了ADR费">
+                  <i class="fa fa-chevron-left"></i> 我被收了ADR费
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/08/16/tcpdump-netstat/" rel="next" title="tcpdump-netstat">
+                  tcpdump-netstat <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">carl的修行--欢迎保留原文链接进行转载 :)</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

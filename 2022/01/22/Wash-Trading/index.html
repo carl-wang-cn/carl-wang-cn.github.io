@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/ais.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"carl-wang-cn.github.io","root":"/","images":"/images","scheme":"Mist","version":"8.2.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+<meta name="description" content="Wash Trading Wash Trading是交易者买卖证券向市场提供误导性信息。Wash Trading可以由交易者和经纪人相互勾结来进行，也可以是一个投资者自己同时充当证券买方和卖方来进行。根据美国法律，Wash Trading是非法的。美国国税局禁止纳税人从其应纳税收入金额中扣除因为Wash Trading造成的损失。 在1936年通过《商品交易法》后，联邦政府就禁止进行Wash Tr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Wash Trading">
+<meta property="og:url" content="https://carl-wang-cn.github.io/2022/01/22/Wash-Trading/index.html">
+<meta property="og:site_name" content="carl的修行">
+<meta property="og:description" content="Wash Trading Wash Trading是交易者买卖证券向市场提供误导性信息。Wash Trading可以由交易者和经纪人相互勾结来进行，也可以是一个投资者自己同时充当证券买方和卖方来进行。根据美国法律，Wash Trading是非法的。美国国税局禁止纳税人从其应纳税收入金额中扣除因为Wash Trading造成的损失。 在1936年通过《商品交易法》后，联邦政府就禁止进行Wash Tr">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-01-22T08:38:54.000Z">
+<meta property="article:modified_time" content="2024-07-31T07:20:05.943Z">
+<meta property="article:author" content="carl">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://carl-wang-cn.github.io/2022/01/22/Wash-Trading/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>Wash Trading | carl的修行</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="carl的修行" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="carl的修行" type="application/rss+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">carl的修行</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">坚持做正确的事情, 做时间的朋友</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+        <li class="menu-item menu-item-reading"><a href="/reading" rel="section"><i class="fa fa-book fa-fw"></i>reading</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Wash-Trading-%E5%92%8C-%E9%AB%98%E9%A2%91%E4%BA%A4%E6%98%93"><span class="nav-number">1.</span> <span class="nav-text">Wash Trading 和 高频交易</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%92%E9%87%8D%E7%82%B9"><span class="nav-number">2.</span> <span class="nav-text">划重点</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="carl"
+      src="/images/ais.jpg">
+  <p class="site-author-name" itemprop="name">carl</p>
+  <div class="site-description" itemprop="description">金融程序员</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+        
+          <span class="site-state-item-count">42</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags">
+          
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/carl-wang-cn" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;carl-wang-cn" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:carl.king.cn@gmail.com" title="E-Mail → mailto:carl.king.cn@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://carl-wang-cn.github.io/2022/01/22/Wash-Trading/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/ais.jpg">
+      <meta itemprop="name" content="carl">
+      <meta itemprop="description" content="金融程序员">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="carl的修行">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Wash Trading
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-01-22 16:38:54" itemprop="dateCreated datePublished" datetime="2022-01-22T16:38:54+08:00">2022-01-22</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2024-07-31 15:20:05" itemprop="dateModified" datetime="2024-07-31T15:20:05+08:00">2024-07-31</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%87%91%E8%9E%8D%E7%9F%A5%E8%AF%86%E5%88%86%E4%BA%AB/" itemprop="url" rel="index"><span itemprop="name">金融知识分享</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>Wash Trading</p>
+<p>Wash Trading是交易者买卖证券向市场提供误导性信息。Wash Trading可以由交易者和经纪人相互勾结来进行，也可以是一个投资者自己同时充当证券买方和卖方来进行。根据美国法律，Wash Trading是非法的。美国国税局禁止纳税人从其应纳税收入金额中扣除因为Wash Trading造成的损失。</p>
+<p>在1936年通过《商品交易法》后，联邦政府就禁止进行Wash Trading，该法律对《谷物期货法》进行了修订，并要求所有商品交易都必须在受监管的交易所进行。在1930年代被禁止之前，Wash Trading是股票操纵者很喜欢的一个手段，去假装表示对某只股票有很大兴趣，进而试图提高股价，然后高价位的时候做空来收割韭菜们。</p>
+<p>商品期货交易委员会（CFTC）也禁止券商从Wash Trading中获利，即使券商声称不知道交易者的意图。因此，券商必须对客户进行尽职调查，以确保他们出于共同受益所有权的目的购买公司的股份。</p>
+<p>美国国税局（IRS）也有严格的禁止Wash Trading的规定，并要求纳税人不能从应纳税金额中扣除Wash Trading产生的损失。美国国税局将Wash Trading定义为购买证券后30天内出售并造成损失的交易。</p>
+<span id="more"></span>
+
+<h3 id="Wash-Trading-和-高频交易"><a href="#Wash-Trading-和-高频交易" class="headerlink" title="Wash Trading 和 高频交易"></a>Wash Trading 和 高频交易</h3><p>随着高频交易现象日益普遍，Wash Trading在2013年再次回到大家的视线内。高频交易是使用超高速计算机和高速Internet连接每秒执行数万笔交易。</p>
+<p>从2012年开始，当时的商品期货交易委员会专员 Bart Chilton 宣布，他打算调查违反Wash Trading法的高频交易行业，因为使用高频交易的公司很容易偷偷进行Wash Trading。</p>
+<p>2013年，美国证券交易委员会（SEC）指控Wedbush Securities，未能“对客户使用的交易平台保持直接和排他的控制权”，致使其一些高频交易者进行了Wash Trading和其他被禁止的操纵市场的行为。</p>
+<p>Wash Trading在加密货币交易中也起不少作用。根据区块链透明性研究所的研究，2018年加密货币交易所中，排名前25位的比特币交易对中约有80％是Wash Trading。</p>
+<h3 id="划重点"><a href="#划重点" class="headerlink" title="划重点"></a>划重点</h3><ul>
+<li>Wash Trading是一种非法交易，券商和交易者通过向市场提供误导性信息来串谋牟取暴利。</li>
+<li>高频交易公司和加密货币交易所使用Wash Trading来操纵价格。</li>
+<li>Wash Trading本质上是互相抵消且没有商业价值的交易。但是它们被用于各种交易情况。</li>
+</ul>
+<p>例如，LIBOR丑闻中，使用Wash Trading来偿还操纵日元的LIBOR提交面板的经纪人。根据英国金融当局的指控，瑞银交易员与一家经纪公司进行了9次Wash trading，产生了170,000英镑的费用，以奖励该公司在操纵伦敦银行同业拆借利率中的作用。</p>
+<p>Wash Trading还可以用于产生股票的假交易量，以催高其价格。假设交易者XYZ和经纪公司合谋快速买卖股票ABC。其他交易者如果注意到这个股票的交易量变化，就可能会将资金投入ABC以从其价格变动中获利。 XYZ然后做空股票，从而从其价格下跌中获利。</p>
+<p>英文原文： <a target="_blank" rel="noopener" href="https://www.investopedia.com/terms/w/washtrading.asp">https://www.investopedia.com/terms/w/washtrading.asp</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/12/17/four-witching-days/" rel="prev" title="四巫日">
+                  <i class="fa fa-chevron-left"></i> 四巫日
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/01/24/better-sys-log/" rel="next" title="系统日志实践">
+                  系统日志实践 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">carl的修行--欢迎保留原文链接进行转载 :)</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

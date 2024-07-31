@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/ais.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"carl-wang-cn.github.io","root":"/","images":"/images","scheme":"Mist","version":"8.2.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+<meta name="description" content="互斥锁互斥锁和条件变量总是可用来同步一个进程内的各个线程。但是如果一个互斥锁或条件变量是存放在多个进程间共享的某个内存区内，那么它还可以被用来同步这几个进程。 互斥锁指代相互排斥，用于保护临界区，以保证任何时刻只有一个线程&#x2F;进程在执行其中的代码。保护一个临界区的代码的通常轮廓大体如下：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多进程通信-互斥锁和条件变量">
+<meta property="og:url" content="https://carl-wang-cn.github.io/2020/02/07/2020-02-07-mutex-cond/index.html">
+<meta property="og:site_name" content="carl的修行">
+<meta property="og:description" content="互斥锁互斥锁和条件变量总是可用来同步一个进程内的各个线程。但是如果一个互斥锁或条件变量是存放在多个进程间共享的某个内存区内，那么它还可以被用来同步这几个进程。 互斥锁指代相互排斥，用于保护临界区，以保证任何时刻只有一个线程&#x2F;进程在执行其中的代码。保护一个临界区的代码的通常轮廓大体如下：">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-02-07T01:43:06.000Z">
+<meta property="article:modified_time" content="2024-07-31T07:20:05.949Z">
+<meta property="article:author" content="carl">
+<meta property="article:tag" content="ipc">
+<meta property="article:tag" content="多进程">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://carl-wang-cn.github.io/2020/02/07/2020-02-07-mutex-cond/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>多进程通信-互斥锁和条件变量 | carl的修行</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="carl的修行" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="carl的修行" type="application/rss+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">carl的修行</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">坚持做正确的事情, 做时间的朋友</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+        <li class="menu-item menu-item-reading"><a href="/reading" rel="section"><i class="fa fa-book fa-fw"></i>reading</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%92%E6%96%A5%E9%94%81"><span class="nav-number">1.</span> <span class="nav-text">互斥锁</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%92%E6%96%A5%E9%94%81%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">1.1.</span> <span class="nav-text">互斥锁的初始化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F"><span class="nav-number">2.</span> <span class="nav-text">条件变量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F%E7%9A%84%E5%AE%9A%E6%97%B6%E7%AD%89%E5%BE%85%E5%92%8C%E5%B9%BF%E6%92%AD"><span class="nav-number">2.1.</span> <span class="nav-text">条件变量的定时等待和广播</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%92%E6%96%A5%E9%94%81%E5%92%8C%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F%E7%9A%84%E5%B1%9E%E6%80%A7"><span class="nav-number">3.</span> <span class="nav-text">互斥锁和条件变量的属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%81%E6%9C%89%E9%94%81%E6%9C%9F%E9%97%B4%E8%BF%9B%E7%A8%8B%E7%BB%88%E6%AD%A2"><span class="nav-number">4.</span> <span class="nav-text">持有锁期间进程终止</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="carl"
+      src="/images/ais.jpg">
+  <p class="site-author-name" itemprop="name">carl</p>
+  <div class="site-description" itemprop="description">金融程序员</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+        
+          <span class="site-state-item-count">42</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags">
+          
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/carl-wang-cn" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;carl-wang-cn" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:carl.king.cn@gmail.com" title="E-Mail → mailto:carl.king.cn@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://carl-wang-cn.github.io/2020/02/07/2020-02-07-mutex-cond/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/ais.jpg">
+      <meta itemprop="name" content="carl">
+      <meta itemprop="description" content="金融程序员">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="carl的修行">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          多进程通信-互斥锁和条件变量
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-02-07 09:43:06" itemprop="dateCreated datePublished" datetime="2020-02-07T09:43:06+08:00">2020-02-07</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2024-07-31 15:20:05" itemprop="dateModified" datetime="2024-07-31T15:20:05+08:00">2024-07-31</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="互斥锁"><a href="#互斥锁" class="headerlink" title="互斥锁"></a>互斥锁</h2><p>互斥锁和条件变量总是可用来同步一个进程内的各个线程。但是如果一个互斥锁或条件变量是<br>存放在多个进程间共享的某个内存区内，那么它还可以被用来同步这几个进程。</p>
+<p>互斥锁指代相互排斥，用于保护临界区，以保证任何时刻<strong>只有一个线程&#x2F;进程</strong>在执行<br>其中的代码。保护一个临界区的代码的通常轮廓大体如下：</p>
+<span id="more"></span>
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">lock_the_mutex</span>(...)</span><br><span class="line">操作临界区</span><br><span class="line"><span class="built_in">unlock_the_mutex</span>(...)</span><br></pre></td></tr></table></figure>
+
+<h3 id="互斥锁的初始化"><a href="#互斥锁的初始化" class="headerlink" title="互斥锁的初始化"></a>互斥锁的初始化</h3><ol>
+<li>静态分配。 static pthread_mutex_t lock &#x3D; PTHREAD_MUTEX_INITIALIZER;</li>
+<li>动态分配。 在运行之时通过调用pthread_mutex_init函数来初始化。</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_mutex_lock</span><span class="params">(<span class="type">pthread_mutex_t</span> *mptr)</span></span>;  <span class="comment">// block</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_mutex_trylock</span><span class="params">(<span class="type">pthread_mutex_t</span> *mptr)</span></span>;  <span class="comment">// unblock</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_mutex_unlock</span><span class="params">(<span class="type">pthread_mutex_t</span> *mptr)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>，失败返回Exxx错误码</span><br><span class="line"></span><br><span class="line">如果尝试给一个已由另外某个线程锁住的互斥锁上锁，那么pthread_mutex_lock会阻塞到该</span><br><span class="line">互斥锁被解锁为止，pthread_mutex_trylock是对应的非阻塞函数，如果该互斥锁已锁住，</span><br><span class="line">它就返回一个EBUSY错误</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>互斥锁是协作性锁。<strong>由coder来保证</strong>操作临界区之前获取对应互斥锁。</p>
+<blockquote>
+<p>prodcons_mutex.c 使用互斥锁的producer-consumer示例</p>
+</blockquote>
+<h2 id="条件变量"><a href="#条件变量" class="headerlink" title="条件变量"></a>条件变量</h2><p>互斥锁用于上锁，条件变量用于等待.</p>
+<p>条件变量类型为：pthread_cond_t</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_cond_wait</span><span class="params">(<span class="type">pthread_cond_t</span> *cptr, <span class="type">pthread_mutex_t</span> *mptr)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_cond_signal</span><span class="params">(<span class="type">pthread_cond_t</span> *cptr)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>，失败返回Exxx错误码</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>每个条件变量总是有一个互斥锁与之关联</p>
+<p>pthread_cond_wait <strong>会原子地</strong>执行2个动作</p>
+<ol>
+<li>给互斥锁mptr解锁</li>
+<li>把调用线程投入睡眠，直到另外某个线程就本条件变量调用pthread_cond_signal, pthread_cond_wait返回前重新给mptr上锁</li>
+</ol>
+<p><strong>给条件变量发送信号的代码：</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span></span><br><span class="line">&#123;     </span><br><span class="line">    <span class="type">pthread_mutex_t</span> mutex;     </span><br><span class="line">    <span class="type">pthread_cond_t</span>  cond;     </span><br><span class="line">    <span class="comment">// vars</span></span><br><span class="line">&#125; var = &#123;PTHREAD_MUTEX_INITIALIZER, PTHREAD_COND_INITIALIZER, ...&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">pthread_mutex_lock</span>(&amp;var.mutex);</span><br><span class="line">设置条件为真</span><br><span class="line"><span class="built_in">pthread_cond_signal</span>(&amp;var.cond);</span><br><span class="line"><span class="built_in">pthread_mutex_unlock</span>(&amp;var.mutex);</span><br><span class="line"></span><br><span class="line">调用pthread_cond_signal的线程不必是与之关联的互斥锁的当前属主。但是如果需要可预见的</span><br><span class="line">调度行为，那么调用pthread_cond_signal的线程必须锁住该互斥锁</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p><strong>测试条件并进入睡眠以等待该条件变为真的代码：</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">pthread_mutex_lock</span>(&amp;var.mutex);</span><br><span class="line"><span class="keyword">while</span> (条件为假)</span><br><span class="line">&#123;     </span><br><span class="line">    <span class="built_in">pthread_cond_wait</span>(&amp;var.cond, &amp;var.mutex);</span><br><span class="line">&#125;</span><br><span class="line">修改条件</span><br><span class="line"><span class="built_in">pthread_mutex_unlock</span>(&amp;var.mutex);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>prodcons_mutex_cond.c 使用条件变量的producer-consumer示例</p>
+</blockquote>
+<h3 id="条件变量的定时等待和广播"><a href="#条件变量的定时等待和广播" class="headerlink" title="条件变量的定时等待和广播"></a>条件变量的定时等待和广播</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_cond_broadcast</span><span class="params">(<span class="type">pthread_cond_t</span> *cptr)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_cond_timewait</span><span class="params">(<span class="type">pthread_cond_t</span> *cptr, <span class="type">pthread_mutex_t</span> *mptr, <span class="type">const</span> <span class="keyword">struct</span> timespec *abstime)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>，失败返回Exxx错误码</span><br><span class="line"></span><br><span class="line">pthread_cond_timewait 超时返回ETIMEOUT错误</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">timespec</span></span><br><span class="line">&#123;     </span><br><span class="line">    <span class="type">time_t</span> tv_sec;  <span class="comment">// seconds     </span></span><br><span class="line">    <span class="type">long</span>   tv_nsec; <span class="comment">// nanosecondes</span></span><br><span class="line">&#125;;</span><br><span class="line">abstime是UTC时间，而不是时间差</span><br></pre></td></tr></table></figure>
+
+<h2 id="互斥锁和条件变量的属性"><a href="#互斥锁和条件变量的属性" class="headerlink" title="互斥锁和条件变量的属性"></a>互斥锁和条件变量的属性</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_mutex_init</span><span class="params">(<span class="type">pthread_mutex_t</span> *mptr, <span class="type">const</span> <span class="type">pthread_mutexattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_mutex_destory</span><span class="params">(<span class="type">pthread_mutex_t</span> *mptr)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_cond_init</span><span class="params">(<span class="type">pthread_cond_t</span> *cptr, <span class="type">const</span> <span class="type">pthread_condattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_cond_destroy</span><span class="params">(<span class="type">pthread_cond_t</span> *cptr)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_mutexattr_init</span><span class="params">(<span class="type">pthread_mutexattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_mutexattr_destroy</span><span class="params">(<span class="type">pthread_mutexattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_condattr_init</span><span class="params">(<span class="type">pthread_condattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_condattr_destroy</span><span class="params">(<span class="type">pthread_condattr_t</span> *attr)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>，失败返回Exxx错误码</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>一旦某个互斥锁属性对象或者某个条件变量属性对象已被初始化，就通过调用不同函数启用或<br>禁止特定的特性。例如，指定互斥锁或条件变量在不同进程间共享，而不是只在单个进程内的<br>不同线程间共享</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_mutexattr_getpshared</span><span class="params">(<span class="type">const</span> <span class="type">pthread_mutexattr_t</span> *ptr, <span class="type">int</span> *valptr)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_mutexattr_setpshared</span><span class="params">(<span class="type">const</span> <span class="type">pthread_mutexattr_t</span> *ptr, <span class="type">int</span> val)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_condattr_getpshared</span><span class="params">(<span class="type">const</span> <span class="type">pthread_condattr_t</span> *ptr, <span class="type">int</span> *valptr)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_condattr_setpshared</span><span class="params">(<span class="type">const</span> <span class="type">pthread_condattr_t</span> *ptr, <span class="type">int</span> val)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>，失败返回Exxx错误码</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这个特性只在&lt;unistd.h&gt;中定义了**_POSIX_THREAD_PROCESS_SHARED**时才得以支持，下面给<br>出初始化一个互斥锁以便它能在进程间共享的示例：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">pthread_mutex_t</span> *mptr;  <span class="comment">// 这个互斥锁要存放在**某块共享内存**中</span></span><br><span class="line"><span class="type">pthread_mutexattr_t</span> mattr;</span><br><span class="line"></span><br><span class="line">mptr = <span class="comment">// some value that points to shared </span></span><br><span class="line"><span class="built_in">memorypthread_mutexattr_init</span>(&amp;mattr);  <span class="comment">// 初始化属性</span></span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> _POSIX_THREAD_PROCESS_SHARED         </span></span><br><span class="line">    <span class="built_in">pthread_mutexattr_setpshared</span>(&amp;mattr, PTHREAD_PROCESS_SHARED);  <span class="comment">// 设置特定属性</span></span><br><span class="line"><span class="meta">#<span class="keyword">else</span>     </span></span><br><span class="line">    <span class="meta">#<span class="keyword">error</span> this implementation does not support _POSIX_THREAD_PROCESS_SHARED</span></span><br><span class="line"><span class="built_in">pthread_mutex_init</span>(mptr, &amp;mattr); <span class="comment">// 初始化锁</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="持有锁期间进程终止"><a href="#持有锁期间进程终止" class="headerlink" title="持有锁期间进程终止"></a>持有锁期间进程终止</h2><ul>
+<li>没有办法让系统在进程终止时自动释放所持有的锁。</li>
+<li>进程终止时，内核总是自动清理的唯一同步锁类型是：fcntl记录锁 </li>
+<li>在使用System V信号量时，应用程序可以选择进程终止时内核是否自动清理某个信号量锁。 </li>
+<li>线程可以注册一个在自己被另一线程取消时要执行的清理处理程序</li>
+</ul>
+<blockquote>
+<p>文中代码托管在: <a target="_blank" rel="noopener" href="https://github.com/carl-wang-cn/demo/tree/master/ipc">https://github.com/carl-wang-cn/demo/tree/master/ipc</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/ipc/" rel="tag"># ipc</a>
+              <a href="/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B/" rel="tag"># 多进程</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/02/05/2020-02-05-mmap/" rel="prev" title="进程间通信-共享内存">
+                  <i class="fa fa-chevron-left"></i> 进程间通信-共享内存
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/02/07/2020-02-07-ipc-pipe/" rel="next" title="进程间通信-管道">
+                  进程间通信-管道 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">carl的修行--欢迎保留原文链接进行转载 :)</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

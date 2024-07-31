@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/ais.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"carl-wang-cn.github.io","root":"/","images":"/images","scheme":"Mist","version":"8.2.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+<meta name="description" content="变量命名规则 首字符必须为字母 中间不能有空格, 可以有下划线_ 不能使用标点符号 不能使用bash里的关键字  代码风格建议 全部用大写 下划线分隔 定义在文件的顶部">
+<meta property="og:type" content="article">
+<meta property="og:title" content="shell脚本必知必会">
+<meta property="og:url" content="https://carl-wang-cn.github.io/2020/01/16/2020-01-16-shell/index.html">
+<meta property="og:site_name" content="carl的修行">
+<meta property="og:description" content="变量命名规则 首字符必须为字母 中间不能有空格, 可以有下划线_ 不能使用标点符号 不能使用bash里的关键字  代码风格建议 全部用大写 下划线分隔 定义在文件的顶部">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-01-15T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-07-31T07:20:05.940Z">
+<meta property="article:author" content="carl">
+<meta property="article:tag" content="通用技巧">
+<meta property="article:tag" content="shell">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://carl-wang-cn.github.io/2020/01/16/2020-01-16-shell/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>shell脚本必知必会 | carl的修行</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="carl的修行" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="carl的修行" type="application/rss+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">carl的修行</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">坚持做正确的事情, 做时间的朋友</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+        <li class="menu-item menu-item-reading"><a href="/reading" rel="section"><i class="fa fa-book fa-fw"></i>reading</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%98%E9%87%8F%E5%91%BD%E5%90%8D"><span class="nav-number">1.</span> <span class="nav-text">变量命名</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%84%E5%88%99"><span class="nav-number">1.1.</span> <span class="nav-text">规则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E9%A3%8E%E6%A0%BC%E5%BB%BA%E8%AE%AE"><span class="nav-number">1.2.</span> <span class="nav-text">代码风格建议</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%98%E9%87%8F%E8%B5%8B%E5%80%BC"><span class="nav-number">2.</span> <span class="nav-text">变量赋值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%98%E9%87%8F%E4%BD%BF%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text">变量使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%85%E5%BB%BA%E5%8F%98%E9%87%8F"><span class="nav-number">3.1.</span> <span class="nav-text">内建变量</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AF%94%E8%BE%83%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">4.</span> <span class="nav-text">比较运算符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E6%AF%94%E8%BE%83%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">4.1.</span> <span class="nav-text">文件比较运算符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%AF%94%E8%BE%83%E8%BF%90%E7%AE%97%E7%AC%A6-%EF%BC%88%E8%AF%B7%E6%B3%A8%E6%84%8F%E5%BC%95%E5%8F%B7%E7%9A%84%E4%BD%BF%E7%94%A8-%E8%BF%99%E6%98%AF%E9%98%B2%E6%AD%A2%E7%A9%BA%E6%A0%BC%E6%89%B0%E4%B9%B1%E4%BB%A3%E7%A0%81%E7%9A%84%E5%A5%BD%E6%96%B9%E6%B3%95%EF%BC%89"><span class="nav-number">4.2.</span> <span class="nav-text">字符串比较运算符 （请注意引号的使用, 这是防止空格扰乱代码的好方法）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%97%E6%9C%AF%E6%AF%94%E8%BE%83%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">4.3.</span> <span class="nav-text">算术比较运算符</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E6%9E%84%E8%AF%AD%E5%8F%A5"><span class="nav-number">5.</span> <span class="nav-text">结构语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0"><span class="nav-number">6.</span> <span class="nav-text">函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7"><span class="nav-number">7.</span> <span class="nav-text">实用技巧</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="carl"
+      src="/images/ais.jpg">
+  <p class="site-author-name" itemprop="name">carl</p>
+  <div class="site-description" itemprop="description">金融程序员</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+        
+          <span class="site-state-item-count">42</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags">
+          
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/carl-wang-cn" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;carl-wang-cn" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:carl.king.cn@gmail.com" title="E-Mail → mailto:carl.king.cn@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://carl-wang-cn.github.io/2020/01/16/2020-01-16-shell/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/ais.jpg">
+      <meta itemprop="name" content="carl">
+      <meta itemprop="description" content="金融程序员">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="carl的修行">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          shell脚本必知必会
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-01-16 00:00:00" itemprop="dateCreated datePublished" datetime="2020-01-16T00:00:00+08:00">2020-01-16</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2024-07-31 15:20:05" itemprop="dateModified" datetime="2024-07-31T15:20:05+08:00">2024-07-31</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h3 id="变量命名"><a href="#变量命名" class="headerlink" title="变量命名"></a>变量命名</h3><h4 id="规则"><a href="#规则" class="headerlink" title="规则"></a>规则</h4><ol>
+<li>首字符必须为字母</li>
+<li>中间不能有空格, 可以有下划线_</li>
+<li>不能使用标点符号</li>
+<li>不能使用bash里的关键字</li>
+</ol>
+<h4 id="代码风格建议"><a href="#代码风格建议" class="headerlink" title="代码风格建议"></a>代码风格建议</h4><ul>
+<li>全部用大写</li>
+<li>下划线分隔</li>
+<li>定义在文件的顶部</li>
+</ul>
+<span id="more"></span>
+
+<h3 id="变量赋值"><a href="#变量赋值" class="headerlink" title="变量赋值"></a>变量赋值</h3><p>变量名&#x3D;值,  （注意, &#x3D; 两边不能有空格）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">var=1</span><br><span class="line">var=<span class="variable">$var</span>+1</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$var</span>+1</span><br><span class="line"><span class="comment"># 输出为1+1, 而不是2</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 可以用如下方法使其输出为2</span></span><br><span class="line"><span class="built_in">let</span> <span class="string">&quot;var+=1&quot;</span></span><br><span class="line"><span class="comment">#var=$[$var+1]</span></span><br><span class="line"><span class="comment">#var=$(($var+1))</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$var</span></span><br><span class="line">或者</span><br><span class="line">var=1</span><br><span class="line">var= <span class="built_in">expr</span> <span class="variable">$var</span> + 1 <span class="comment">#（注意, + 两边的空格, 一定要有）</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">let</span>表示数学运算, <span class="built_in">expr</span>用于整数值运算, 每一项用空格隔开, $[]将中括号内的表达式作为数学运算先计算结果再输出.</span><br><span class="line">在bash中, 将数学运算结果赋给某个变量,  var=$[ operation ]</span><br><span class="line"></span><br><span class="line">变量自增, 自减</span><br><span class="line"><span class="built_in">let</span> var++  <span class="built_in">let</span> var--</span><br><span class="line"><span class="built_in">let</span> var+=2</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;10.2-2&quot;</span> | bc   -- 小数运算要用bc  $[]不支持小数</span><br></pre></td></tr></table></figure>
+
+<h3 id="变量使用"><a href="#变量使用" class="headerlink" title="变量使用"></a>变量使用</h3><p>$var ${var}<br>双引号“ “ 中可以用$var<br>单引号‘ ‘ 中不可以用$var</p>
+<p>$(cmd) 与 `cmd` 等效, 推荐用前者</p>
+<ul>
+<li>支持内嵌</li>
+<li>不用转义</li>
+<li>有些字体, 反引号和单引号很像, 让人看着很难受</li>
+</ul>
+<h4 id="内建变量"><a href="#内建变量" class="headerlink" title="内建变量"></a>内建变量</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- <span class="variable">$RANDOM</span>  随机数</span><br><span class="line">- 字段分隔符, IFS=$<span class="string">&#x27;n&#x27;</span></span><br><span class="line">- <span class="variable">$0</span> 程序名, <span class="variable">$1</span> … <span class="variable">$9</span> 是命令行参数, 多于9个命令行参数的话, 后面的需要<span class="variable">$&#123;10&#125;</span> <span class="variable">$&#123;11&#125;</span>这种格式</span><br><span class="line">- <span class="variable">$#</span> 表示传入的命令行参数的个数. 在&#123;&#125;中使用<span class="variable">$#</span>时, 要改用<span class="variable">$&#123;!#&#125;</span>.</span><br><span class="line">- $* 所有命令行参数当成一个单词存储</span><br><span class="line">- <span class="variable">$@</span> 所有命令行参数当成一个字符串中的多个单词</span><br><span class="line">- $$ 脚本的PID</span><br></pre></td></tr></table></figure>
+
+<h3 id="比较运算符"><a href="#比较运算符" class="headerlink" title="比较运算符"></a>比较运算符</h3><h4 id="文件比较运算符"><a href="#文件比较运算符" class="headerlink" title="文件比较运算符"></a>文件比较运算符</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">-e filename                如果 filename 存在, 则为真               [ -e /var/log/syslog ]</span><br><span class="line">-d filename                如果 filename 为目录, 则为真             [ -d /tmp/mydir ]</span><br><span class="line">-f filename                如果 filename 为常规文件, 则为真          [ -f /usr/bin/grep ]</span><br><span class="line">-L filename                如果 filename 为符号链接, 则为真          [ -L /usr/bin/grep ]</span><br><span class="line">-r filename                如果 filename 可读, 则为真               [ -r /var/log/syslog ]</span><br><span class="line">-w filename                如果 filename 可写, 则为真               [ -w /var/mytmp.txt ]</span><br><span class="line">-x filename                如果 filename 可执行, 则为真             [ -L /usr/bin/grep ]</span><br><span class="line">! -e filename              如果 filename 不存在, 则为真               [ ! -e /var/log/syslog ]</span><br><span class="line">filename1 -nt filename2    如果 filename1 比 filename2 新, 则为真   [ /tmp/install/etc/services -nt /etc/services ]</span><br><span class="line">filename1 -ot filename2    如果 filename1 比 filename2 旧, 则为真   [ /boot/bzImage -ot <span class="built_in">arch</span>/i386/boot/bzImage ]</span><br></pre></td></tr></table></figure>
+
+<h4 id="字符串比较运算符-（请注意引号的使用-这是防止空格扰乱代码的好方法）"><a href="#字符串比较运算符-（请注意引号的使用-这是防止空格扰乱代码的好方法）" class="headerlink" title="字符串比较运算符 （请注意引号的使用, 这是防止空格扰乱代码的好方法）"></a>字符串比较运算符 （请注意引号的使用, 这是防止空格扰乱代码的好方法）</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-z string               如果 string 长度为零, 则为真            [ -z <span class="string">&quot;<span class="variable">$myvar</span>&quot;</span> ]</span><br><span class="line">-n string               如果 string 长度非零, 则为真            [ -n <span class="string">&quot;<span class="variable">$myvar</span>&quot;</span> ]</span><br><span class="line">string1 = string2       如果 string1 与 string2 相同, 则为真    [ <span class="string">&quot;<span class="variable">$myvar</span>&quot;</span> = <span class="string">&quot;one two three&quot;</span> ]</span><br><span class="line">string1 != string2      如果 string1 与 string2 不同, 则为真    [ <span class="string">&quot;<span class="variable">$myvar</span>&quot;</span> != <span class="string">&quot;one two three&quot;</span> ]</span><br></pre></td></tr></table></figure>
+
+<h4 id="算术比较运算符"><a href="#算术比较运算符" class="headerlink" title="算术比较运算符"></a>算术比较运算符</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">num1 -eq num2       等于            [ 3 -eq <span class="variable">$mynum</span> ]</span><br><span class="line">num1 -ne num2       不等于          [ 3 -ne <span class="variable">$mynum</span> ]</span><br><span class="line">num1 -lt num2       小于            [ 3 -lt <span class="variable">$mynum</span> ]</span><br><span class="line">num1 -le num2       小于或等于      [ 3 -le <span class="variable">$mynum</span> ]</span><br><span class="line">num1 -gt num2       大于            [ 3 -gt <span class="variable">$mynum</span> ]</span><br><span class="line">num1 -ge num2       大于或等于      [ 3 -ge <span class="variable">$mynum</span> ]</span><br></pre></td></tr></table></figure>
+
+<h3 id="结构语句"><a href="#结构语句" class="headerlink" title="结构语句"></a>结构语句</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="built_in">command</span></span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">    commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> command1 &amp;&amp; command2</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">    commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">command</span>; <span class="keyword">then</span>  <span class="comment">#如果then与if在同一行, if command后要加&#x27;;&#x27;</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">command</span></span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> command1</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">elif</span> command2</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 不推荐</span></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">test</span> condition</span><br><span class="line"><span class="keyword">if</span> [ condition ] 注意[]与condition之间的空格, &gt; &lt; 需要转义</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 不推荐</span></span><br><span class="line"><span class="keyword">if</span> ((expression)) &gt; &lt; 不需要转义</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 推荐用 [[ ]] 的形式</span></span><br><span class="line"><span class="comment"># 1. 避免转义问题</span></span><br><span class="line"><span class="comment"># 2. 有新功能, 包括但不限于以下</span></span><br><span class="line"><span class="comment">#    - ||: 逻辑or</span></span><br><span class="line"><span class="comment">#    - &amp;&amp;: 逻辑and</span></span><br><span class="line"><span class="comment">#    - &lt;: 字符串比较(不需要转义)</span></span><br><span class="line"><span class="comment">#    - ==: 通配符字符串比较</span></span><br><span class="line"><span class="comment">#    - =~: 正则表达式字符串比较</span></span><br><span class="line"><span class="keyword">if</span> [[ condition ]]  可以用正则表达式</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">t=<span class="string">&quot;abc123&quot;</span></span><br><span class="line"></span><br><span class="line">[[ <span class="string">&quot;<span class="variable">$t</span>&quot;</span> == abc* ]]         <span class="comment">#true</span></span><br><span class="line">[[ <span class="string">&quot;<span class="variable">$t</span>&quot;</span> == <span class="string">&quot;abc*&quot;</span> ]]       <span class="comment"># false</span></span><br><span class="line">[[ <span class="string">&quot;<span class="variable">$t</span>&quot;</span> =~ [abc]+[123]+ ]] <span class="comment"># true</span></span><br><span class="line">[[ <span class="string">&quot;<span class="variable">$t</span>&quot;</span> =~ <span class="string">&quot;abc*&quot;</span> ]]       <span class="comment"># false</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">case</span> variable <span class="keyword">in</span></span><br><span class="line">pattern1 | pattern2)</span><br><span class="line">    commands1</span><br><span class="line">    ;;</span><br><span class="line">pattern3)</span><br><span class="line">    commands2::</span><br><span class="line">    ;;</span><br><span class="line">*)</span><br><span class="line">    default commands</span><br><span class="line">    ;;</span><br><span class="line"><span class="keyword">esac</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> var <span class="keyword">in</span> list</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="built_in">test</span> <span class="built_in">command</span></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">     other commands</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">until</span> <span class="built_in">test</span> <span class="built_in">command</span></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">     other commands</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">break</span> n (default 1) 跳出n层循环</span><br><span class="line"><span class="built_in">continue</span> n (default 1) 继续n级循环</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> var <span class="keyword">in</span> list</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    commands</span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h3><p>语法</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[ <span class="keyword">function</span> ] funname [()]</span><br><span class="line">&#123;</span><br><span class="line">    action;</span><br><span class="line">    [<span class="built_in">return</span> int;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<ol>
+<li>可以带function fun()  定义, 也可以直接fun() 定义, 不带任何参数.</li>
+<li>参数返回, 可以显式return返回, return后跟数值n(0-255)；如果不加, 将以最后一条命令运行结果, 作为返回值.</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将所有的错误信息导向STDERR</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">err</span></span>() &#123;</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;[<span class="subst">$(date +&#x27;%Y-%m-%dT%H:%M:%S%z&#x27;)</span>]: <span class="variable">$@</span>&quot;</span> &gt;&amp;2</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> ! do_something; <span class="keyword">then</span></span><br><span class="line">    err <span class="string">&quot;Unable to do_something&quot;</span></span><br><span class="line">    <span class="built_in">exit</span> <span class="string">&quot;<span class="variable">$&#123;E_DID_NOTHING&#125;</span>”</span></span><br><span class="line"><span class="string">fi</span></span><br><span class="line"><span class="string"></span></span><br></pre></td></tr></table></figure>
+
+<p>注意事项</p>
+<ol>
+<li>必须在调用函数地方之前, 声明函数, shell脚本是逐行运行. 不会像其它语言一样先预编译. 一次必须在使用函数前先声明函数.</li>
+<li>total&#x3D;$(func 3 2);  </li>
+<li>函数返回值, 只能通过$? 系统变量获得, 直接通过&#x3D;获得是空值</li>
+<li>如果需要传出其它类型函数值, 可以在函数调用之前, 定义变量（这个就是全局变量）. 在函数内部就可以直接修改, 然后在执行函数就可以读出修改过的值</li>
+<li>如果需要定义自己变量, 可以在函数中定义, local 变量&#x3D;值, 这时变量就是内部变量, 它的修改, 不会影响函数外部相同变量的值.</li>
+</ol>
+<h3 id="实用技巧"><a href="#实用技巧" class="headerlink" title="实用技巧"></a>实用技巧</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#! /bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在默认情况下，遇到不存在的变量，会忽略并继续执行，而这往往不符合预期，加入该选项，可以避免恶果扩大，终止脚本的执行。</span></span><br><span class="line"><span class="built_in">set</span> -o nounset</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在默认情况下，遇到执行出错，会跳过并继续执行，而这往往不符合预期，加入该选项，可以避免恶果扩大，终止脚本的执行</span></span><br><span class="line"><span class="built_in">set</span> -o errexit</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">log</span></span>() &#123;</span><br><span class="line">    <span class="built_in">local</span> prefix=<span class="string">&quot;[<span class="subst">$(date +%Y/%m/%d\ %H:%M:%S)</span>]:&quot;</span></span><br><span class="line">    <span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$_DEBUG</span>&quot;</span> == <span class="string">&quot;true&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$&#123;prefix&#125;</span> <span class="variable">$@</span>&quot;</span> &gt;&amp;2</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">log</span> <span class="string">&quot;INFO&quot;</span> <span class="string">&quot;a message&quot;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%80%9A%E7%94%A8%E6%8A%80%E5%B7%A7/" rel="tag"># 通用技巧</a>
+              <a href="/tags/shell/" rel="tag"># shell</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/01/16/2020-01-16-xargs/" rel="prev" title="xargs命令使用技巧">
+                  <i class="fa fa-chevron-left"></i> xargs命令使用技巧
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/01/16/2020-01-16-grep/" rel="next" title="grep命令使用技巧">
+                  grep命令使用技巧 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">carl的修行--欢迎保留原文链接进行转载 :)</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

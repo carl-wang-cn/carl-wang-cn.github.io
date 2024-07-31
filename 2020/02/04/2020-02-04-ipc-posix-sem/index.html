@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/ais.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"carl-wang-cn.github.io","root":"/","images":"/images","scheme":"Mist","version":"8.2.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+<meta name="description" content="信号量是一种用于提供不同进程间或一个给定进程的不同线程间同步手段的原语。 Posix有名信号量： 使用Posix IPC名字标识，可用于进程或线程间的同步。 Posix基于内存的信号量： 存放在共享内存中，可用于进程或线程间的同步。 System V信号量： 在内核中维护，可用于进程或线程间的同步。  信号量的值是随内核持续的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="进程间通信-Posix信号量">
+<meta property="og:url" content="https://carl-wang-cn.github.io/2020/02/04/2020-02-04-ipc-posix-sem/index.html">
+<meta property="og:site_name" content="carl的修行">
+<meta property="og:description" content="信号量是一种用于提供不同进程间或一个给定进程的不同线程间同步手段的原语。 Posix有名信号量： 使用Posix IPC名字标识，可用于进程或线程间的同步。 Posix基于内存的信号量： 存放在共享内存中，可用于进程或线程间的同步。 System V信号量： 在内核中维护，可用于进程或线程间的同步。  信号量的值是随内核持续的">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-02-04T00:27:10.000Z">
+<meta property="article:modified_time" content="2024-07-31T07:20:05.944Z">
+<meta property="article:author" content="carl">
+<meta property="article:tag" content="ipc">
+<meta property="article:tag" content="多进程">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://carl-wang-cn.github.io/2020/02/04/2020-02-04-ipc-posix-sem/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>进程间通信-Posix信号量 | carl的修行</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="carl的修行" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="carl的修行" type="application/rss+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">carl的修行</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">坚持做正确的事情, 做时间的朋友</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+        <li class="menu-item menu-item-reading"><a href="/reading" rel="section"><i class="fa fa-book fa-fw"></i>reading</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BF%A1%E5%8F%B7%E9%87%8F%E6%98%AF%E4%B8%80%E7%A7%8D%E7%94%A8%E4%BA%8E%E6%8F%90%E4%BE%9B%E4%B8%8D%E5%90%8C%E8%BF%9B%E7%A8%8B%E9%97%B4%E6%88%96%E4%B8%80%E4%B8%AA%E7%BB%99%E5%AE%9A%E8%BF%9B%E7%A8%8B%E7%9A%84%E4%B8%8D%E5%90%8C%E7%BA%BF%E7%A8%8B%E9%97%B4%E5%90%8C%E6%AD%A5%E6%89%8B%E6%AE%B5%E7%9A%84%E5%8E%9F%E8%AF%AD%E3%80%82"><span class="nav-number">1.</span> <span class="nav-text">信号量是一种用于提供不同进程间或一个给定进程的不同线程间同步手段的原语。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E8%BF%9B%E7%A8%8B%E5%8F%AF%E4%BB%A5%E5%9C%A8%E6%9F%90%E4%B8%AA%E6%9F%90%E4%B8%AA%E4%BF%A1%E5%8F%B7%E9%87%8F%E4%B8%8A%E6%89%A7%E8%A1%8C%E7%9A%84%E4%B8%89%E7%A7%8D%E6%93%8D%E4%BD%9C"><span class="nav-number">2.</span> <span class="nav-text">一个进程可以在某个某个信号量上执行的三种操作</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BF%A1%E5%8F%B7%E9%87%8F%E3%80%81%E4%BA%92%E6%96%A5%E9%94%81%E3%80%81%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F%E7%9A%84%E5%B7%AE%E5%BC%82"><span class="nav-number">3.</span> <span class="nav-text">信号量、互斥锁、条件变量的差异</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Posix%E4%BF%A1%E5%8F%B7%E9%87%8FAPI"><span class="nav-number">4.</span> <span class="nav-text">Posix信号量API</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="carl"
+      src="/images/ais.jpg">
+  <p class="site-author-name" itemprop="name">carl</p>
+  <div class="site-description" itemprop="description">金融程序员</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+        
+          <span class="site-state-item-count">42</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags">
+          
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/carl-wang-cn" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;carl-wang-cn" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:carl.king.cn@gmail.com" title="E-Mail → mailto:carl.king.cn@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://carl-wang-cn.github.io/2020/02/04/2020-02-04-ipc-posix-sem/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/ais.jpg">
+      <meta itemprop="name" content="carl">
+      <meta itemprop="description" content="金融程序员">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="carl的修行">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          进程间通信-Posix信号量
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-02-04 08:27:10" itemprop="dateCreated datePublished" datetime="2020-02-04T08:27:10+08:00">2020-02-04</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2024-07-31 15:20:05" itemprop="dateModified" datetime="2024-07-31T15:20:05+08:00">2024-07-31</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h5 id="信号量是一种用于提供不同进程间或一个给定进程的不同线程间同步手段的原语。"><a href="#信号量是一种用于提供不同进程间或一个给定进程的不同线程间同步手段的原语。" class="headerlink" title="信号量是一种用于提供不同进程间或一个给定进程的不同线程间同步手段的原语。"></a>信号量是一种用于提供不同进程间或一个给定进程的不同线程间同步手段的原语。</h5><ul>
+<li>Posix有名信号量： 使用Posix IPC名字标识，可用于进程或线程间的同步。</li>
+<li>Posix基于内存的信号量： 存放在共享内存中，可用于进程或线程间的同步。</li>
+<li>System V信号量： 在内核中维护，可用于进程或线程间的同步。</li>
+</ul>
+<p><strong>信号量的值是随内核持续的</strong></p>
+<span id="more"></span>
+
+<hr>
+<h5 id="一个进程可以在某个某个信号量上执行的三种操作"><a href="#一个进程可以在某个某个信号量上执行的三种操作" class="headerlink" title="一个进程可以在某个某个信号量上执行的三种操作"></a>一个进程可以在某个某个信号量上执行的三种操作</h5><ol>
+<li>create一个信号量。这还要求调用者指定初始值，对于二值信号量来说，它通常是1，但也可以是0.</li>
+<li>wait一个信号量。该操作会测试这个信号量的值，如果其值&lt;&#x3D;0，那就等待（阻塞），一旦其值变为&gt;0，就将它减1.</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (semaphore_value &lt;= <span class="number">0</span>)</span><br><span class="line">    ; <span class="comment">// wait; block the thread or process</span></span><br><span class="line">semaphore--;</span><br><span class="line"><span class="comment">// now we have the semaphore</span></span><br></pre></td></tr></table></figure>
+<p><strong>注意：</strong>while语句中测试该信号量的值和其后将它减1（如果该值大于0），这两个步骤必须是原子的</p>
+<ol>
+<li>post一个信号量。该操作将信号量的值加1，<code>semaphore_value++</code></li>
+</ol>
+<h5 id="信号量、互斥锁、条件变量的差异"><a href="#信号量、互斥锁、条件变量的差异" class="headerlink" title="信号量、互斥锁、条件变量的差异"></a>信号量、互斥锁、条件变量的差异</h5><ol>
+<li>互斥锁必须总是由给它上锁的线程解锁，信号量的post却不必由执行过它的wait操作的同一线程执行。</li>
+<li>互斥锁要么被锁住，要么被解开（二值状态，类似于二值信号量）。</li>
+<li>既然信号量有一个与之关联的状态（它的计数值），那么信号量的post操作总是被记住。然而当向一个条件变量发送信号时，如果没有线程等待在该条件变量上，那么该信号将丢失。</li>
+<li>当持有某个<strong>信号量</strong>的进程没有释放它就终止时，<strong>内核并不给该信号量解锁</strong>。而当持有某个<strong>记录锁</strong>的进程没有释放它就终止时，<strong>内核自动地释放它</strong></li>
+<li>在各种各样的同步技巧（互斥锁、条件变量、读写锁、信号量）中，能够从信号处理程序中安全调用的唯一函数是<code>sem_post</code></li>
+</ol>
+<p><strong>每种同步方式都有各自的适用场景。互斥锁是为上锁而优化的，条件变量是为等待而优化的，信号量既可用于上锁，也可用于等待，因而可能导致更多的开销和更高的复杂性</strong></p>
+<hr>
+<h5 id="Posix信号量API"><a href="#Posix信号量API" class="headerlink" title="Posix信号量API"></a>Posix信号量API</h5><p><code>sem_open</code>创建一个新的有名信号量或打开一个已存在的有名信号量。有名信号量总是既可用于线程间的同步，又可用于进程间的同步</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;semaphore.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">sem_t</span> *<span class="title">sem_open</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *name, <span class="type">int</span> oflag, ... <span class="comment">/*mode_t mode, usigned int value*/</span>)</span></span></span><br><span class="line"><span class="function">                    返回：成功返回指向信号量的指针，出错返回SEM_FAILED</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>oflag可以为0、O_CREAT或O_CREAT|O_EXCL。如果指定了O_CREAT标志，那么后面两个参数是需要的：<ul>
+<li>mode指定权限位，</li>
+<li>value指定信号量初始值。二值信号量为1，计数信号量则往往 &gt;1</li>
+</ul>
+</li>
+<li>oflag为O_CREAT时，如果信号量尚未存在，就创建，如果已存在，就打开</li>
+<li>oflag为O_CREAT|O_EXCL时，如果信号量已存在，出错</li>
+</ul>
+<hr>
+<p>使用<code>sem_open</code>打开的有名信号量，使用<code>sem_close</code>将其关闭</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;semaphore.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">sem_close</span><span class="params">(<span class="type">sem_t</span> *sem)</span></span>;</span><br><span class="line">                    返回：成功返回<span class="number">0</span>，出错返回<span class="number">-1</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>一个进程终止时，内核还对其上仍然打开着的所有有名信号量自动执行这样的信号量关闭操作（不论是自愿终止还是非自愿终止）</li>
+<li>关闭一个信号量并没有将它从系统中删除。Posix有名信号量至少是随内核持续的：即使当前没有进程打开着某个信号量，它的值仍然保持。</li>
+</ul>
+<hr>
+<p>有名信号量使用<code>sem_unlink</code>从系统中删除</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;semaphore.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">sem_unlink</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *name)</span></span>;</span><br><span class="line">                    返回：成功返回<span class="number">0</span>，出错返回<span class="number">-1</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>每个信号量有几个引用计数器记录当前的打开次数，sem_unlink类似于文件I&#x2F;O的unlink函数：当引用计数还是大于0时，name就能从文件系统删除，然而其信号量的析构却要等到最后一个sem_close发生时为止。</p>
+<hr>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;semaphore.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">sem_wait</span><span class="params">(<span class="type">sem_t</span> *sem)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">sem_trywait</span><span class="params">(<span class="type">sem_t</span> *sem)</span></span>;</span><br><span class="line">                    返回：成功返回<span class="number">0</span>，出错返回<span class="number">-1</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>sem_wait测试所指定信号量的值，如果大于0，将它减1并返回。如果等于0，调用线程就被sleep，直到该值变为大于0，这时再将它减1，函数随后返回。 <strong>测试并减1必须是原子</strong>的</li>
+<li>sem_trywait与sem_wait类似，不同之处在于，如果所指定的信号量值已经是0，调用线程不会被sleep，函数立即返回，返回EAGAIN错误</li>
+<li>如果调用被某个信号中断，sem_wait可能过早地返回，返回错误为EINTR。</li>
+</ul>
+<hr>
+<p>当一个线程使用完某个信号量时，应该调用<code>sem_post</code>，把所指定的信号量的值加1，然后唤醒正在等待该信号量值变为正数的任意线程。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;semaphore.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">sem_post</span><span class="params">(<span class="type">sem_t</span> *sem)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">sem_getvalue</span><span class="params">(<span class="type">sem_t</span> *sem, <span class="type">int</span> *valp)</span></span>;</span><br><span class="line">                    返回：成功返回<span class="number">0</span>，出错返回<span class="number">-1</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>sem_getvalue</code>在由<code>valp</code>指向的整数中返回所指定信号量的当前值。如果该信号量当前已上锁，那么返回0或某个负数（该负数的绝对值表示等待该信号量解锁的线程数）</li>
+</ul>
+<hr>
+<p>#####示例程序</p>
+<p>优于Posix有名信号量至少具有随内核的持续性，因此我们可以<strong>跨多个程序</strong>操纵它们。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── makefile</span><br><span class="line">├── producer_consumer</span><br><span class="line">│   ├── makefile</span><br><span class="line">│   ├── producer_consumer01.c</span><br><span class="line">│   └── producer_consumer02.c</span><br><span class="line">├── README.md</span><br><span class="line">├── semcreate.c</span><br><span class="line">├── semgetvalue.c</span><br><span class="line">├── sempost.c</span><br><span class="line">├── semunlink.c</span><br><span class="line">└── semwait.c</span><br></pre></td></tr></table></figure>
+
+<p>以上semxxx.c是几个用来操纵信号量的小程序，我们的演示过程如下，演示环境为ubuntu 14.04lts 版本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">carl@localhost:~/demo/ipc/posix_semaphore$ ./semcreate <span class="built_in">test</span></span><br><span class="line">carl@localhost:~/demo/ipc/posix_semaphore$ ./semgetvalue <span class="built_in">test</span></span><br><span class="line">value = 1</span><br><span class="line">carl@localhost:~/demo/ipc/posix_semaphore$ ./semwait <span class="built_in">test</span></span><br><span class="line">pid 2952 has semaphore, value = 0</span><br><span class="line">^C</span><br><span class="line">carl@localhost:~/demo/ipc/posix_semaphore$ ./semgetvalue <span class="built_in">test</span></span><br><span class="line">value = 0     <span class="comment"># 仍然为0</span></span><br><span class="line">carl@localhost:~/demo/ipc/posix_semaphore$ ./semwait <span class="built_in">test</span> &amp;</span><br><span class="line">[1] 2955</span><br><span class="line">carl@localhost:~/demo/ipc/posix_semaphore$ ./semgetvalue <span class="built_in">test</span></span><br><span class="line">value = 0     <span class="comment"># 本实现不使用负值来表示当前等待该信号量的进程/线程数</span></span><br><span class="line">carl@localhost:~/demo/ipc/posix_semaphore$ ./semwait <span class="built_in">test</span> &amp;</span><br><span class="line">[2] 2957</span><br><span class="line">carl@localhost:~/demo/ipc/posix_semaphore$ ./semgetvalue <span class="built_in">test</span></span><br><span class="line">value = 0</span><br><span class="line">carl@localhost:~/demo/ipc/posix_semaphore$ ./sempost <span class="built_in">test</span></span><br><span class="line">pid 2955 has semaphore, value = 0</span><br><span class="line">value = 0      <span class="comment"># 看起来等待着的进程优于挂出信号量的进程运行</span></span><br><span class="line">carl@localhost:~/demo/ipc/posix_semaphore$ ./sempost <span class="built_in">test</span></span><br><span class="line">pid 2957 has semaphore, value = 0</span><br><span class="line">value = 0</span><br></pre></td></tr></table></figure>
+
+<p>producer_consumer01.c使用Posix有名信号量，演示了生产者-消费者问题。</p>
+<hr>
+<p><strong>基于内存的信号量</strong></p>
+<p>以上讲述的都是Posix有名信号量，这些信号量由一个name参数标识，它通常指代文件系统中的某个文件。彼此无亲缘关系的不同进程需使用信号量时，通常使用有名信号量。<br>Posix也提供基于内存的信号量，由应用程序分配信号量的内存空间，然后由系统初始化它们的值。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;semphore.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">sem_init</span><span class="params">(<span class="type">sem_t</span> *sem, <span class="type">int</span> shared, <span class="type">unsigned</span> <span class="type">int</span> value)</span></span>;</span><br><span class="line">            <span class="keyword">return</span>: <span class="number">0</span> on success, <span class="number">-1</span> on error</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="built_in">sem_destroy</span>(<span class="type">sem_t</span> *sem);</span><br><span class="line">            <span class="keyword">return</span>: <span class="number">0</span> on success, <span class="number">-1</span> on error</span><br></pre></td></tr></table></figure>
+
+<p>基于内存的信号量是由<code>sem_init</code>初始化的。</p>
+<ul>
+<li>sem参数指向应用<strong>应用程序必须分配</strong>的sem_t变量。</li>
+<li>shared&#x3D;&#x3D;0，待初始化的信号量是在统一进程的各个线程间共享<br>shared!&#x3D;0，待初始化的信号量是在不同进程间共享。该信号量必须存放在某种类型的共享内存区中，而即将使用它的所有进程都要能访问该共享内存区。</li>
+<li>value参数，是该信号量的初始值</li>
+</ul>
+<p><strong>attention</strong></p>
+<p>对于一个给定的信号量，必须小心保证只调用<code>semm_init</code>一次。对一个已初始化过的信号量调用<code>sem_init</code>，结果是未定义的。</p>
+<p>基于内存的信号量至少具有随进程的持续性，然而它们真正的持续性却取决于存放信号量的内存区的类型。只要含有某个内存信号量的内存区保持有效，该信号量就一直存在。</p>
+<ul>
+<li>如果某个基于内存的信号量是由单个进程内的各个线程共享的，那么该信号量具有随进程的持续性，当该进程终止时它也消失。</li>
+<li>如果某个基于内存的信号量是在不同进程间共享的，那么该信号量必须存放在共享内存区中，因而只要该共享内存区仍然存在，该信号量也就继续存在</li>
+</ul>
+<blockquote>
+<p>服务器可以创建一个共享内存区，在该共享内存区中初始化一个Posix基于内存的信号量，然后终止。一段时间后，一个或多个客户可打开该共享内存区，访问存放在其中的基于内存的信号量。</p>
+</blockquote>
+<p>producer_consumer02.c使用Posix基于内存的信号量，演示了生产者-消费者问题。</p>
+<blockquote>
+<p>文中代码托管在: <a target="_blank" rel="noopener" href="https://github.com/carl-wang-cn/demo/tree/master/ipc">https://github.com/carl-wang-cn/demo/tree/master/ipc</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/ipc/" rel="tag"># ipc</a>
+              <a href="/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B/" rel="tag"># 多进程</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/02/04/2020-02-04-ipc-read-write-lock/" rel="prev" title="进程间通信-读写锁">
+                  <i class="fa fa-chevron-left"></i> 进程间通信-读写锁
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/02/05/2020-02-05-mmap/" rel="next" title="进程间通信-共享内存">
+                  进程间通信-共享内存 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">carl的修行--欢迎保留原文链接进行转载 :)</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

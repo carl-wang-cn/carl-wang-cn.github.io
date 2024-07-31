@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/ais.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"carl-wang-cn.github.io","root":"/","images":"/images","scheme":"Mist","version":"8.2.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+<meta name="description" content="背景管道符 | + xargs, 用于把上游输出转换为下游参数输入。 例如 ls *.bak | xargs rm -f 问题：xargs默认把输入作为参数放到命令的最后，但是很多命令需要自己定位参数的位置，比如拷贝命令cp {上游结果} destFolder解决方法：xargs -I &lt;参数指示符&gt;， 然后用这个参数指示符定位参数插入的位置,  ls *.bak | xargs -I">
+<meta property="og:type" content="article">
+<meta property="og:title" content="xargs命令使用技巧">
+<meta property="og:url" content="https://carl-wang-cn.github.io/2020/01/16/2020-01-16-xargs/index.html">
+<meta property="og:site_name" content="carl的修行">
+<meta property="og:description" content="背景管道符 | + xargs, 用于把上游输出转换为下游参数输入。 例如 ls *.bak | xargs rm -f 问题：xargs默认把输入作为参数放到命令的最后，但是很多命令需要自己定位参数的位置，比如拷贝命令cp {上游结果} destFolder解决方法：xargs -I &lt;参数指示符&gt;， 然后用这个参数指示符定位参数插入的位置,  ls *.bak | xargs -I">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-01-15T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-07-31T07:20:05.948Z">
+<meta property="article:author" content="carl">
+<meta property="article:tag" content="通用技巧">
+<meta property="article:tag" content="xargs">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://carl-wang-cn.github.io/2020/01/16/2020-01-16-xargs/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>xargs命令使用技巧 | carl的修行</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="carl的修行" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="carl的修行" type="application/rss+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">carl的修行</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">坚持做正确的事情, 做时间的朋友</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+        <li class="menu-item menu-item-reading"><a href="/reading" rel="section"><i class="fa fa-book fa-fw"></i>reading</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%83%8C%E6%99%AF"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">2.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%89%E9%A1%B9%E8%A7%A3%E9%87%8A"><span class="nav-number">2.1.</span> <span class="nav-text">选项解释</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="carl"
+      src="/images/ais.jpg">
+  <p class="site-author-name" itemprop="name">carl</p>
+  <div class="site-description" itemprop="description">金融程序员</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+        
+          <span class="site-state-item-count">42</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags">
+          
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/carl-wang-cn" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;carl-wang-cn" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:carl.king.cn@gmail.com" title="E-Mail → mailto:carl.king.cn@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://carl-wang-cn.github.io/2020/01/16/2020-01-16-xargs/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/ais.jpg">
+      <meta itemprop="name" content="carl">
+      <meta itemprop="description" content="金融程序员">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="carl的修行">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          xargs命令使用技巧
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-01-16 00:00:00" itemprop="dateCreated datePublished" datetime="2020-01-16T00:00:00+08:00">2020-01-16</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2024-07-31 15:20:05" itemprop="dateModified" datetime="2024-07-31T15:20:05+08:00">2024-07-31</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>管道符 | + xargs, 用于把上游输出转换为下游参数输入。</p>
+<p>例如 <code>ls *.bak | xargs rm -f</code></p>
+<p>问题：<br>xargs默认把输入作为参数放到命令的最后，但是很多命令需要自己定位参数的位置，比如拷贝命令cp {上游结果} destFolder<br>解决方法：<br>xargs -I &lt;参数指示符&gt;， 然后用这个参数指示符定位参数插入的位置, </p>
+<p><code>ls *.bak | xargs -I % cp % /tmp/test</code></p>
+<p>注释：这里使用%作为指示符，第一个%可以理解为声明，第二个%可以理解为调用。你也可以用其他字符，比如 <code>ls *.bak | xargs -I &#123;&#125; cp &#123;&#125; /tmp/test</code></p>
+<span id="more"></span>
+
+<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>之所以要用到xargs这个命令，关键是由于很多命令不支持|管道来传递参数，而日常工作中又有这个需要，所以就有了xargs命令，例如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">find /sbin -perm +700 | <span class="built_in">ls</span> -l       这个命令是错误的</span><br><span class="line">find /sbin -perm +700 | xargs <span class="built_in">ls</span> -l   这样才是正确的</span><br></pre></td></tr></table></figure>
+
+<p>xargs 可以读入 stdin 的资料，并且以空白字符或断行字符作为分隔，将 stdin 的资料分隔成为 arguments 。 因为是以空白字符作为分隔，所以，如果有一些文件名或者是其他意义的名词内含有空白字符的时候， xargs 可能就会误判了～</p>
+<h4 id="选项解释"><a href="#选项解释" class="headerlink" title="选项解释"></a>选项解释</h4><ul>
+<li><p>-0 当sdtin含有特殊字符时候，将其当成一般字符，像&#x2F; ‘ 空格等</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@localhost:~/test#<span class="built_in">echo</span> <span class="string">&quot;//&quot;</span>|xargs  <span class="built_in">echo</span></span><br><span class="line">root@localhost:~/test#<span class="built_in">echo</span> <span class="string">&quot;//&quot;</span>|xargs -0 <span class="built_in">echo</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>-a file 从文件中读入作为sdtin</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@localhost:~/test#<span class="built_in">cat</span> <span class="built_in">test</span></span><br><span class="line"><span class="comment">#!/bin/sh</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;hello world/n&quot;</span></span><br><span class="line">root@localhost:~/test#xargs -a <span class="built_in">test</span> <span class="built_in">echo</span></span><br><span class="line"><span class="comment">#!/bin/sh echo hello world/n</span></span><br><span class="line">root@localhost:~/test#</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>-e flag ，注意有的时候可能会是-E，flag必须是一个以空格分隔的标志，当xargs分析到含有flag这个标志的时候就停止。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@localhost:~/test#<span class="built_in">cat</span> txt</span><br><span class="line">/bin tao shou kun</span><br><span class="line">root@localhost:~/test#<span class="built_in">cat</span> txt|xargs -E <span class="string">&#x27;shou&#x27;</span> <span class="built_in">echo</span></span><br><span class="line">/bin tao</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>-p 当每次执行一个argument的时候询问一次用户。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@localhost:~/test#<span class="built_in">cat</span> txt|xargs -p <span class="built_in">echo</span></span><br><span class="line"><span class="built_in">echo</span> /bin tao shou kun ff ?...y</span><br><span class="line">/bin tao shou kun ff</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>-n num 后面加次数，表示命令在执行的时候一次用的argument的个数，默认是用所有的</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">root@localhost:~/test#<span class="built_in">cat</span> txt|xargs -n 1 <span class="built_in">echo</span></span><br><span class="line">/bin</span><br><span class="line">tao</span><br><span class="line">shou</span><br><span class="line">kun</span><br><span class="line">root@localhost:~/test3#<span class="built_in">cat</span> txt|xargs  <span class="built_in">echo</span></span><br><span class="line">/bin tao shou kun</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>-t 表示先打印命令，然后再执行。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@localhost:~/test#<span class="built_in">cat</span> txt|xargs -t <span class="built_in">echo</span></span><br><span class="line"><span class="built_in">echo</span> /bin tao shou kun</span><br><span class="line">/bin tao shou kun</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>-i 或者是-I，这得看linux支持了，将xargs的每项名称，一般是一行一行赋值给{}，可以用{}代替。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="built_in">ls</span> | xargs -t -i <span class="built_in">mv</span> &#123;&#125; &#123;&#125;.bak</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>-r no-run-if-empty 当xargs的输入为空的时候则停止xargs，不用再去执行了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@localhost:~/test#<span class="built_in">echo</span> <span class="string">&quot;&quot;</span>|xargs -t -r  <span class="built_in">mv</span></span><br><span class="line">root@localhost:~/test#</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>-s num 命令行的最大字符数，指的是xargs后面那个命令的最大命令行字符数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">root@localhost:~/test#<span class="built_in">cat</span> <span class="built_in">test</span> |xargs -i -x  -s 14 <span class="built_in">echo</span> <span class="string">&quot;&#123;&#125;&quot;</span></span><br><span class="line">exp1</span><br><span class="line">exp5</span><br><span class="line">file</span><br><span class="line">xargs: argument line too long</span><br><span class="line">linux-2</span><br><span class="line">root@localhost:~/test#</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>-L num Use at most max-lines nonblank input lines per command line.-s是含有空格的。</p>
+</li>
+<li><p>-l  同-L</p>
+</li>
+<li><p>-d delim 分隔符，默认的xargs分隔符是回车，argument的分隔符是空格，这里修改的是xargs的分隔符</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">root@localhost:~/test#<span class="built_in">cat</span> txt |xargs -i -p <span class="built_in">echo</span> &#123;&#125;</span><br><span class="line"><span class="built_in">echo</span> /bin tao shou kun ?...y</span><br><span class="line">root@localhost:~/test#<span class="built_in">cat</span> txt |xargs -i -p -d <span class="string">&quot; &quot;</span> <span class="built_in">echo</span> &#123;&#125;</span><br><span class="line"><span class="built_in">echo</span> /bin ?...y</span><br><span class="line"><span class="built_in">echo</span> tao ?.../bin</span><br><span class="line">y</span><br><span class="line"><span class="built_in">echo</span> shou ?...tao</span><br><span class="line">再如：</span><br><span class="line">root@localhost:~/test#<span class="built_in">cat</span> <span class="built_in">test</span> |xargs -i -p -d <span class="string">&quot; &quot;</span> <span class="built_in">echo</span> &#123;&#125;</span><br><span class="line"><span class="built_in">echo</span> exp1</span><br><span class="line">exp5</span><br><span class="line">file</span><br><span class="line">linux-2</span><br><span class="line">ngis_post</span><br><span class="line">tao</span><br><span class="line"><span class="built_in">test</span></span><br><span class="line">txt</span><br><span class="line">xen-3</span><br><span class="line">?...y</span><br><span class="line">root@localhost:~/test#<span class="built_in">cat</span> <span class="built_in">test</span> |xargs -i -p <span class="built_in">echo</span> &#123;&#125;</span><br><span class="line"><span class="built_in">echo</span> exp1 ?...y</span><br><span class="line"><span class="built_in">echo</span> exp5 ?...exp1</span><br><span class="line">y</span><br><span class="line"><span class="built_in">echo</span> file ?...exp5</span><br><span class="line">y</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>-x exit的意思，主要是配合-s使用。</p>
+</li>
+<li><p>-P 修改最大的进程数，默认是1，为0时候为as many as it can</p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%80%9A%E7%94%A8%E6%8A%80%E5%B7%A7/" rel="tag"># 通用技巧</a>
+              <a href="/tags/xargs/" rel="tag"># xargs</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/01/16/2020-01-16-shell/" rel="next" title="shell脚本必知必会">
+                  shell脚本必知必会 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">carl的修行--欢迎保留原文链接进行转载 :)</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
