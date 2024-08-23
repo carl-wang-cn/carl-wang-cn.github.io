@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>从运营事故中成长</title>
+    <url>/2020/01/16/2020-01-16-accident_learn/</url>
+    <content><![CDATA[<h3 id="发布环节"><a href="#发布环节" class="headerlink" title="发布环节"></a>发布环节</h3><p>在经过一段时间的积累后, 会形成一套完善的发布流程, 此时, 在发布前能让自己提高的空间会越来越有限</p>
+<h3 id="发生运营事故后要怎么做"><a href="#发生运营事故后要怎么做" class="headerlink" title="发生运营事故后要怎么做"></a>发生运营事故后要怎么做</h3><ol>
+<li>不是单纯地处理完问题就完事, 然后就阿弥托福以后不会再发生.</li>
+<li>将每次运营事故都当成一次宝贵的学习机会, 仔细检讨为什么会发生该事故, 是什么问题导致的, 从根本上找出原因, 并找到解决方案, 不要再次发生类似的错误.</li>
+<li>事故报告的改进措施, 不能简单的从思想层面去检讨, 下一顿决心就完事了, 事故报告也不是写完发给大家看一眼, 就完事了. 改进措施是必须要能够转化为工作量的实在的事情, 可以是1个周, 一个月, 一个季度, 但是一定要能够量化, 要能够实施, 并且认真地执行完成</li>
+<li>要经常翻看以往的运营事故报告, 从前人的事故中成长, 这样才能避免不同的人去犯类似的错误.</li>
+</ol>
+]]></content>
+      <categories>
+        <category>意识</category>
+      </categories>
+      <tags>
+        <tag>运营事故</tag>
+        <tag>通识</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>awk怎么写?</title>
     <url>/2020/01/16/2020-01-16-awk/</url>
     <content><![CDATA[<p>本篇文章主要是参考左耳朵耗子前辈的博文整理而来, 作为自己学习备忘之用.</p>
@@ -107,198 +126,6 @@
       <tags>
         <tag>awk</tag>
         <tag>通用技巧</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>从运营事故中成长</title>
-    <url>/2020/01/16/2020-01-16-accident_learn/</url>
-    <content><![CDATA[<h3 id="发布环节"><a href="#发布环节" class="headerlink" title="发布环节"></a>发布环节</h3><p>在经过一段时间的积累后, 会形成一套完善的发布流程, 此时, 在发布前能让自己提高的空间会越来越有限</p>
-<h3 id="发生运营事故后要怎么做"><a href="#发生运营事故后要怎么做" class="headerlink" title="发生运营事故后要怎么做"></a>发生运营事故后要怎么做</h3><ol>
-<li>不是单纯地处理完问题就完事, 然后就阿弥托福以后不会再发生.</li>
-<li>将每次运营事故都当成一次宝贵的学习机会, 仔细检讨为什么会发生该事故, 是什么问题导致的, 从根本上找出原因, 并找到解决方案, 不要再次发生类似的错误.</li>
-<li>事故报告的改进措施, 不能简单的从思想层面去检讨, 下一顿决心就完事了, 事故报告也不是写完发给大家看一眼, 就完事了. 改进措施是必须要能够转化为工作量的实在的事情, 可以是1个周, 一个月, 一个季度, 但是一定要能够量化, 要能够实施, 并且认真地执行完成</li>
-<li>要经常翻看以往的运营事故报告, 从前人的事故中成长, 这样才能避免不同的人去犯类似的错误.</li>
-</ol>
-]]></content>
-      <categories>
-        <category>意识</category>
-      </categories>
-      <tags>
-        <tag>运营事故</tag>
-        <tag>通识</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>grep命令使用技巧</title>
-    <url>/2020/01/16/2020-01-16-grep/</url>
-    <content><![CDATA[<p>grep [选项] pattern [文件名]</p>
-<p>命令中的选项为：</p>
-<ul>
-<li>-? 同时显示匹配行上下的？行，如：<code>grep -2 pattern filename</code> 同时显示匹配行的上下2行。</li>
-<li>-A ? 显示匹配行和后面的?行, 如: <code>grep -A 2 pattern filename</code></li>
-<li>-B ? 显示匹配行和前面的?行</li>
-<li>-b，–byte-offset 打印匹配行前面打印该行所在的块号码。</li>
-<li>-c,–count 只打印匹配的行数，不显示匹配的内容。</li>
-<li>-f File，–file&#x3D;File 从文件中提取模板。空文件中包含0个模板，所以什么都不匹配。</li>
-<li>-h，–no-filename 当搜索多个文件时，不显示匹配文件名前缀。</li>
-<li>-i，–ignore-case 忽略大小写差别。</li>
-<li>-q，–quiet 取消显示，只返回退出状态。0则表示找到了匹配的行。</li>
-<li>-l，–files-with-matches 打印匹配模板的文件清单。</li>
-<li>-L，–files-without-match 打印不匹配模板的文件清单。</li>
-<li>-n，–line-number 在匹配的行前面打印行号。</li>
-<li>-s，–silent 不显示关于不存在或者无法读取文件的错误信息。</li>
-<li>-v，–revert-match 反检索，只显示不匹配的行。</li>
-<li>-w，–word-regexp 如果被&lt;和&gt;引用，就把表达式做为一个单词搜索。</li>
-<li>-V，–version 显示软件版本信息。</li>
-</ul>
-<span id="more"></span>
-
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">ls</span> -l | grep <span class="string">&#x27;^a&#x27;</span> 通过管道过滤<span class="built_in">ls</span> -l输出的内容，只显示以a开头的行。</span><br><span class="line">grep <span class="string">&#x27;test&#x27;</span> d* 显示所有以d开头的文件中包含<span class="built_in">test</span>的行。</span><br><span class="line">grep <span class="string">&#x27;test&#x27;</span> aa bb cc 显示在aa，bb，cc文件中匹配<span class="built_in">test</span>的行。</span><br><span class="line">grep <span class="string">&#x27;[a-z]&#x27;</span> aa 显示所有包含每个字符串至少有5个连续小写字符的字符串的行。</span><br><span class="line">grep <span class="string">&#x27;w(es)t.*&#x27;</span> aa 如果west被匹配，则es就被存储到内存中，并标记为1，然后搜索任意个字符(.*)，这些字符后面紧跟着另外一个es()，找到就显示该行。如果用egrep或grep -E，就不用<span class="string">&quot;&quot;</span>号进行转义，直接写成<span class="string">&#x27;w(es)t.*&#x27;</span>就可以了。</span><br><span class="line">grep -i pattern files ：不区分大小写地搜索。默认情况区分大小写</span><br><span class="line">grep -l pattern files ：只列出匹配的文件名，</span><br><span class="line">grep -L pattern files ：列出不匹配的文件名，</span><br><span class="line">grep -w pattern files ：只匹配整个单词，而不是字符串的一部分(如匹配‘magic’，而不是‘magical’)，</span><br><span class="line">grep -C number pattern files ：匹配的上下文分别显示[number]行，</span><br><span class="line">grep pattern1 | pattern2 files ：显示匹配 pattern1 或 pattern2 的行，</span><br><span class="line">grep pattern1 files | grep pattern2 ：显示既匹配 pattern1 又匹配 pattern2 的行。</span><br></pre></td></tr></table></figure>
-
-<p>pattern为所要匹配的字符串，可使用下列模式</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">. 匹配任意一个字符</span><br><span class="line">* 匹配0 个或多个*前的字符</span><br><span class="line">^ 匹配行开头</span><br><span class="line">$ 匹配行结尾</span><br><span class="line">[] 匹配[ ]中的任意一个字符，[]中可用 - 表示范围，</span><br><span class="line">例如[a-z]表示字母a 至z 中的任意一个</span><br><span class="line">\ 转意字符</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>通用技巧</tag>
-        <tag>grep</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>shell脚本必知必会</title>
-    <url>/2020/01/16/2020-01-16-shell/</url>
-    <content><![CDATA[<h3 id="变量命名"><a href="#变量命名" class="headerlink" title="变量命名"></a>变量命名</h3><h4 id="规则"><a href="#规则" class="headerlink" title="规则"></a>规则</h4><ol>
-<li>首字符必须为字母</li>
-<li>中间不能有空格, 可以有下划线_</li>
-<li>不能使用标点符号</li>
-<li>不能使用bash里的关键字</li>
-</ol>
-<h4 id="代码风格建议"><a href="#代码风格建议" class="headerlink" title="代码风格建议"></a>代码风格建议</h4><ul>
-<li>全部用大写</li>
-<li>下划线分隔</li>
-<li>定义在文件的顶部</li>
-</ul>
-<span id="more"></span>
-
-<h3 id="变量赋值"><a href="#变量赋值" class="headerlink" title="变量赋值"></a>变量赋值</h3><p>变量名&#x3D;值,  （注意, &#x3D; 两边不能有空格）</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">var=1</span><br><span class="line">var=<span class="variable">$var</span>+1</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$var</span>+1</span><br><span class="line"><span class="comment"># 输出为1+1, 而不是2</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 可以用如下方法使其输出为2</span></span><br><span class="line"><span class="built_in">let</span> <span class="string">&quot;var+=1&quot;</span></span><br><span class="line"><span class="comment">#var=$[$var+1]</span></span><br><span class="line"><span class="comment">#var=$(($var+1))</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$var</span></span><br><span class="line">或者</span><br><span class="line">var=1</span><br><span class="line">var= <span class="built_in">expr</span> <span class="variable">$var</span> + 1 <span class="comment">#（注意, + 两边的空格, 一定要有）</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">let</span>表示数学运算, <span class="built_in">expr</span>用于整数值运算, 每一项用空格隔开, $[]将中括号内的表达式作为数学运算先计算结果再输出.</span><br><span class="line">在bash中, 将数学运算结果赋给某个变量,  var=$[ operation ]</span><br><span class="line"></span><br><span class="line">变量自增, 自减</span><br><span class="line"><span class="built_in">let</span> var++  <span class="built_in">let</span> var--</span><br><span class="line"><span class="built_in">let</span> var+=2</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;10.2-2&quot;</span> | bc   -- 小数运算要用bc  $[]不支持小数</span><br></pre></td></tr></table></figure>
-
-<h3 id="变量使用"><a href="#变量使用" class="headerlink" title="变量使用"></a>变量使用</h3><p>$var ${var}<br>双引号“ “ 中可以用$var<br>单引号‘ ‘ 中不可以用$var</p>
-<p>$(cmd) 与 `cmd` 等效, 推荐用前者</p>
-<ul>
-<li>支持内嵌</li>
-<li>不用转义</li>
-<li>有些字体, 反引号和单引号很像, 让人看着很难受</li>
-</ul>
-<h4 id="内建变量"><a href="#内建变量" class="headerlink" title="内建变量"></a>内建变量</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">- <span class="variable">$RANDOM</span>  随机数</span><br><span class="line">- 字段分隔符, IFS=$<span class="string">&#x27;n&#x27;</span></span><br><span class="line">- <span class="variable">$0</span> 程序名, <span class="variable">$1</span> … <span class="variable">$9</span> 是命令行参数, 多于9个命令行参数的话, 后面的需要<span class="variable">$&#123;10&#125;</span> <span class="variable">$&#123;11&#125;</span>这种格式</span><br><span class="line">- <span class="variable">$#</span> 表示传入的命令行参数的个数. 在&#123;&#125;中使用<span class="variable">$#</span>时, 要改用<span class="variable">$&#123;!#&#125;</span>.</span><br><span class="line">- $* 所有命令行参数当成一个单词存储</span><br><span class="line">- <span class="variable">$@</span> 所有命令行参数当成一个字符串中的多个单词</span><br><span class="line">- $$ 脚本的PID</span><br></pre></td></tr></table></figure>
-
-<h3 id="比较运算符"><a href="#比较运算符" class="headerlink" title="比较运算符"></a>比较运算符</h3><h4 id="文件比较运算符"><a href="#文件比较运算符" class="headerlink" title="文件比较运算符"></a>文件比较运算符</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-e filename                如果 filename 存在, 则为真               [ -e /var/log/syslog ]</span><br><span class="line">-d filename                如果 filename 为目录, 则为真             [ -d /tmp/mydir ]</span><br><span class="line">-f filename                如果 filename 为常规文件, 则为真          [ -f /usr/bin/grep ]</span><br><span class="line">-L filename                如果 filename 为符号链接, 则为真          [ -L /usr/bin/grep ]</span><br><span class="line">-r filename                如果 filename 可读, 则为真               [ -r /var/log/syslog ]</span><br><span class="line">-w filename                如果 filename 可写, 则为真               [ -w /var/mytmp.txt ]</span><br><span class="line">-x filename                如果 filename 可执行, 则为真             [ -L /usr/bin/grep ]</span><br><span class="line">! -e filename              如果 filename 不存在, 则为真               [ ! -e /var/log/syslog ]</span><br><span class="line">filename1 -nt filename2    如果 filename1 比 filename2 新, 则为真   [ /tmp/install/etc/services -nt /etc/services ]</span><br><span class="line">filename1 -ot filename2    如果 filename1 比 filename2 旧, 则为真   [ /boot/bzImage -ot <span class="built_in">arch</span>/i386/boot/bzImage ]</span><br></pre></td></tr></table></figure>
-
-<h4 id="字符串比较运算符-（请注意引号的使用-这是防止空格扰乱代码的好方法）"><a href="#字符串比较运算符-（请注意引号的使用-这是防止空格扰乱代码的好方法）" class="headerlink" title="字符串比较运算符 （请注意引号的使用, 这是防止空格扰乱代码的好方法）"></a>字符串比较运算符 （请注意引号的使用, 这是防止空格扰乱代码的好方法）</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-z string               如果 string 长度为零, 则为真            [ -z <span class="string">&quot;<span class="variable">$myvar</span>&quot;</span> ]</span><br><span class="line">-n string               如果 string 长度非零, 则为真            [ -n <span class="string">&quot;<span class="variable">$myvar</span>&quot;</span> ]</span><br><span class="line">string1 = string2       如果 string1 与 string2 相同, 则为真    [ <span class="string">&quot;<span class="variable">$myvar</span>&quot;</span> = <span class="string">&quot;one two three&quot;</span> ]</span><br><span class="line">string1 != string2      如果 string1 与 string2 不同, 则为真    [ <span class="string">&quot;<span class="variable">$myvar</span>&quot;</span> != <span class="string">&quot;one two three&quot;</span> ]</span><br></pre></td></tr></table></figure>
-
-<h4 id="算术比较运算符"><a href="#算术比较运算符" class="headerlink" title="算术比较运算符"></a>算术比较运算符</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">num1 -eq num2       等于            [ 3 -eq <span class="variable">$mynum</span> ]</span><br><span class="line">num1 -ne num2       不等于          [ 3 -ne <span class="variable">$mynum</span> ]</span><br><span class="line">num1 -lt num2       小于            [ 3 -lt <span class="variable">$mynum</span> ]</span><br><span class="line">num1 -le num2       小于或等于      [ 3 -le <span class="variable">$mynum</span> ]</span><br><span class="line">num1 -gt num2       大于            [ 3 -gt <span class="variable">$mynum</span> ]</span><br><span class="line">num1 -ge num2       大于或等于      [ 3 -ge <span class="variable">$mynum</span> ]</span><br></pre></td></tr></table></figure>
-
-<h3 id="结构语句"><a href="#结构语句" class="headerlink" title="结构语句"></a>结构语句</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="built_in">command</span></span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">    commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> command1 &amp;&amp; command2</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">    commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">command</span>; <span class="keyword">then</span>  <span class="comment">#如果then与if在同一行, if command后要加&#x27;;&#x27;</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">command</span></span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> command1</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">elif</span> command2</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 不推荐</span></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">test</span> condition</span><br><span class="line"><span class="keyword">if</span> [ condition ] 注意[]与condition之间的空格, &gt; &lt; 需要转义</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 不推荐</span></span><br><span class="line"><span class="keyword">if</span> ((expression)) &gt; &lt; 不需要转义</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 推荐用 [[ ]] 的形式</span></span><br><span class="line"><span class="comment"># 1. 避免转义问题</span></span><br><span class="line"><span class="comment"># 2. 有新功能, 包括但不限于以下</span></span><br><span class="line"><span class="comment">#    - ||: 逻辑or</span></span><br><span class="line"><span class="comment">#    - &amp;&amp;: 逻辑and</span></span><br><span class="line"><span class="comment">#    - &lt;: 字符串比较(不需要转义)</span></span><br><span class="line"><span class="comment">#    - ==: 通配符字符串比较</span></span><br><span class="line"><span class="comment">#    - =~: 正则表达式字符串比较</span></span><br><span class="line"><span class="keyword">if</span> [[ condition ]]  可以用正则表达式</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">t=<span class="string">&quot;abc123&quot;</span></span><br><span class="line"></span><br><span class="line">[[ <span class="string">&quot;<span class="variable">$t</span>&quot;</span> == abc* ]]         <span class="comment">#true</span></span><br><span class="line">[[ <span class="string">&quot;<span class="variable">$t</span>&quot;</span> == <span class="string">&quot;abc*&quot;</span> ]]       <span class="comment"># false</span></span><br><span class="line">[[ <span class="string">&quot;<span class="variable">$t</span>&quot;</span> =~ [abc]+[123]+ ]] <span class="comment"># true</span></span><br><span class="line">[[ <span class="string">&quot;<span class="variable">$t</span>&quot;</span> =~ <span class="string">&quot;abc*&quot;</span> ]]       <span class="comment"># false</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">case</span> variable <span class="keyword">in</span></span><br><span class="line">pattern1 | pattern2)</span><br><span class="line">    commands1</span><br><span class="line">    ;;</span><br><span class="line">pattern3)</span><br><span class="line">    commands2::</span><br><span class="line">    ;;</span><br><span class="line">*)</span><br><span class="line">    default commands</span><br><span class="line">    ;;</span><br><span class="line"><span class="keyword">esac</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> var <span class="keyword">in</span> list</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="built_in">test</span> <span class="built_in">command</span></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">     other commands</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">until</span> <span class="built_in">test</span> <span class="built_in">command</span></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">     other commands</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">break</span> n (default 1) 跳出n层循环</span><br><span class="line"><span class="built_in">continue</span> n (default 1) 继续n级循环</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> var <span class="keyword">in</span> list</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    commands</span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h3><p>语法</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[ <span class="keyword">function</span> ] funname [()]</span><br><span class="line">&#123;</span><br><span class="line">    action;</span><br><span class="line">    [<span class="built_in">return</span> int;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>说明：</p>
-<ol>
-<li>可以带function fun()  定义, 也可以直接fun() 定义, 不带任何参数.</li>
-<li>参数返回, 可以显式return返回, return后跟数值n(0-255)；如果不加, 将以最后一条命令运行结果, 作为返回值.</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 将所有的错误信息导向STDERR</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">err</span></span>() &#123;</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;[<span class="subst">$(date +&#x27;%Y-%m-%dT%H:%M:%S%z&#x27;)</span>]: <span class="variable">$@</span>&quot;</span> &gt;&amp;2</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> ! do_something; <span class="keyword">then</span></span><br><span class="line">    err <span class="string">&quot;Unable to do_something&quot;</span></span><br><span class="line">    <span class="built_in">exit</span> <span class="string">&quot;<span class="variable">$&#123;E_DID_NOTHING&#125;</span>”</span></span><br><span class="line"><span class="string">fi</span></span><br><span class="line"><span class="string"></span></span><br></pre></td></tr></table></figure>
-
-<p>注意事项</p>
-<ol>
-<li>必须在调用函数地方之前, 声明函数, shell脚本是逐行运行. 不会像其它语言一样先预编译. 一次必须在使用函数前先声明函数.</li>
-<li>total&#x3D;$(func 3 2);  </li>
-<li>函数返回值, 只能通过$? 系统变量获得, 直接通过&#x3D;获得是空值</li>
-<li>如果需要传出其它类型函数值, 可以在函数调用之前, 定义变量（这个就是全局变量）. 在函数内部就可以直接修改, 然后在执行函数就可以读出修改过的值</li>
-<li>如果需要定义自己变量, 可以在函数中定义, local 变量&#x3D;值, 这时变量就是内部变量, 它的修改, 不会影响函数外部相同变量的值.</li>
-</ol>
-<h3 id="实用技巧"><a href="#实用技巧" class="headerlink" title="实用技巧"></a>实用技巧</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#! /bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在默认情况下，遇到不存在的变量，会忽略并继续执行，而这往往不符合预期，加入该选项，可以避免恶果扩大，终止脚本的执行。</span></span><br><span class="line"><span class="built_in">set</span> -o nounset</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在默认情况下，遇到执行出错，会跳过并继续执行，而这往往不符合预期，加入该选项，可以避免恶果扩大，终止脚本的执行</span></span><br><span class="line"><span class="built_in">set</span> -o errexit</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">log</span></span>() &#123;</span><br><span class="line">    <span class="built_in">local</span> prefix=<span class="string">&quot;[<span class="subst">$(date +%Y/%m/%d\ %H:%M:%S)</span>]:&quot;</span></span><br><span class="line">    <span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$_DEBUG</span>&quot;</span> == <span class="string">&quot;true&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$&#123;prefix&#125;</span> <span class="variable">$@</span>&quot;</span> &gt;&amp;2</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">log</span> <span class="string">&quot;INFO&quot;</span> <span class="string">&quot;a message&quot;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>通用技巧</tag>
-        <tag>shell</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>find命令使用技巧</title>
-    <url>/2020/01/16/2020-01-16-find/</url>
-    <content><![CDATA[<p><code>find &lt; path &gt; &lt; expression &gt; &lt; cmd &gt;</code></p>
-<ul>
-<li>path： 所要搜索的目录及其所有子目录。默认为当前目录。</li>
-<li>expression： 所要搜索的文件的特征。</li>
-<li>cmd： 对搜索结果进行特定的处理。</li>
-</ul>
-<p>如果什么参数也不加，find默认搜索当前目录及其子目录，并且不过滤任何结果（也就是返回所有文件），将它们全都显示在屏幕上。</p>
-<h4 id="find命令常用选项及实例"><a href="#find命令常用选项及实例" class="headerlink" title="find命令常用选项及实例"></a>find命令常用选项及实例</h4><ul>
-<li><p>-name 按照文件名查找文件。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /dir -name filename  在/dir目录及其子目录下面查找名字为filename的文件</span><br><span class="line">find . -name <span class="string">&quot;*.c&quot;</span> 在当前目录及其子目录（用“.”表示）中查找任何扩展名为“c”的文件</span><br></pre></td></tr></table></figure></li>
-</ul>
-<span id="more"></span>
-
-<ul>
-<li><p>-perm 按照文件权限来查找文件。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -perm 755 –<span class="built_in">print</span> 在当前目录下查找文件权限位为755的文件，即文件属主可以读、写、执行，其他用户可以读、执行的文件</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>-prune 使用这一选项可以使find命令不在当前指定的目录中查找，如果同时使用-depth选项，那么-prune将被find命令忽略。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /apps -path <span class="string">&quot;/apps/bin&quot;</span> -prune -o –<span class="built_in">print</span> 在/apps目录下查找文件，但不希望在/apps/bin目录下查找</span><br><span class="line">find /usr/sam -path <span class="string">&quot;/usr/sam/dir1&quot;</span> -prune -o –<span class="built_in">print</span> 在/usr/sam目录下查找不在dir1子目录之内的所有文件</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>-depth：在查找文件时，首先查找当前目录中的文件，然后再在其子目录中查找。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / -name <span class="string">&quot;CON.FILE&quot;</span> -depth –<span class="built_in">print</span> 它将首先匹配所有的文件然后再进入子目录中查找</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>-user 按照文件属主来查找文件。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find ~ -user sam –<span class="built_in">print</span> 在<span class="variable">$HOME</span>目录中查找文件属主为sam的文件</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>-group 按照文件所属的组来查找文件。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /apps -group gem –<span class="built_in">print</span> 在/apps目录下查找属于gem用户组的文件</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>-mtime -n +n 按照文件的更改时间来查找文件， -n表示文件更改时间距现在n天以内，+n表示文件更改时间距现在n天以前。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / -mtime -5 –<span class="built_in">print</span> 在系统根目录下查找更改时间在5日以内的文件</span><br><span class="line">find /var/adm -mtime +3 –<span class="built_in">print</span> 在/var/adm目录下查找更改时间在3日以前的文件</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>-nogroup 查找无有效所属组的文件，即该文件所属的组在&#x2F;etc&#x2F;groups中不存在。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / –nogroup -<span class="built_in">print</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>-nouser 查找无有效属主的文件，即该文件的属主在&#x2F;etc&#x2F;passwd中不存在。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /home -nouser –<span class="built_in">print</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>-newer file1 ! file2 查找更改时间比文件file1新但比文件file2旧的文件。</p>
-</li>
-<li><p>-type 查找某一类型的文件，<br>诸如：<br>b - 块设备文件。<br>d - 目录。<br>c - 字符设备文件。<br>p - 管道文件。<br>l - 符号链接文件。<br>f - 普通文件。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /etc -<span class="built_in">type</span> d –<span class="built_in">print</span> 在/etc目录下查找所有的目录</span><br><span class="line">find . ! -<span class="built_in">type</span> d –<span class="built_in">print</span> 在当前目录下查找除目录以外的所有类型的文件</span><br><span class="line">find /etc -<span class="built_in">type</span> l –<span class="built_in">print</span> 在/etc目录下查找所有的符号链接文件</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>-size n[c] 查找文件长度为n块的文件，带有c时表示文件长度以字节计。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -size +1000000c –<span class="built_in">print</span> 在当前目录下查找文件长度大于1 M字节的文件</span><br><span class="line">find /home/apache -size 100c –<span class="built_in">print</span> 在/home/apache目录下查找文件长度恰好为100字节的文件</span><br><span class="line">find . -size +10 –<span class="built_in">print</span> 在当前目录下查找长度超过10块的文件（一块等于512字节）</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>-mount：在查找文件时不跨越文件系统mount点。<br><code>find . -name “*.XC” -mount –print 从当前目录开始查找位于本文件系统中文件名以XC结尾的文件（不进入其他文件系统）</code></p>
-</li>
-<li><p>-follow：如果find命令遇到符号链接文件，就跟踪至链接所指向的文件</p>
-</li>
-<li><p>-exec，find命令对匹配的文件执行该参数所给出的shell命令。相应命令的形式为’command’ {} ;，注意{}和;之间的空格</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt; find ./ -size 0 -<span class="built_in">exec</span> <span class="built_in">rm</span> &#123;&#125; \; 删除文件大小为零的文件</span><br><span class="line">&gt; <span class="built_in">rm</span> -i `find ./ -size 0`</span><br><span class="line">&gt; find ./ -size 0 | xargs <span class="built_in">rm</span> -f &amp;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<p>为了用ls -l命令列出所匹配到的文件，可以把ls -l命令放在find命令的-exec选项中：<br><code>$ find . -type f -exec ls -l &#123;&#125; \;</code><br>在&#x2F;logs目录中查找更改时间在5日以前的文件并删除它们：<br><code>find /logs -type f -mtime +5 -exec rm &#123;&#125; \;</code></p>
-<ul>
-<li><p>-ok，和-exec的作用相同，只不过以一种更为安全的模式来执行该参数所给出的shell命令，在执行每一个命令之前，都会给出提示，让用户来确定是否执行。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -name <span class="string">&quot;*.conf&quot;</span>  -mtime +5 -ok <span class="built_in">rm</span> &#123;  &#125; \; 在当前目录中查找所有文件名以.LOG结尾、更改时间在5日以上的文件，并删除它们，只不  过在删除之前先给出提示</span><br></pre></td></tr></table></figure></li>
-</ul>
-<p>说明： 如果你要寻找一个档案的话，那么使用 find 会是一个不错的主意。不过，由于 find 在寻找数据的时候相当的耗硬盘，所以没事情不要使用 find 啦！有更棒的指令可以取代呦，那就是 whereis 与 locate 咯~</p>
-<h4 id="一些常用命令"><a href="#一些常用命令" class="headerlink" title="一些常用命令"></a>一些常用命令</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1. find . -<span class="built_in">type</span> f -<span class="built_in">exec</span> <span class="built_in">ls</span> -l &#123;&#125; \;</span><br><span class="line">查找当前路径下的所有普通文件，并把它们列出来。</span><br><span class="line">2. find logs -<span class="built_in">type</span> f -mtime +5 -<span class="built_in">exec</span> <span class="built_in">rm</span> &#123;&#125; \;</span><br><span class="line">删除logs目录下更新时间为5日以上的文件。</span><br><span class="line">3.find . -name <span class="string">&quot;*.log&quot;</span> -mtime +5 -ok <span class="built_in">rm</span> &#123;&#125; \;</span><br><span class="line">删除当前路径下以。<span class="built_in">log</span>结尾的五日以上的文件，删除之前要确认。</span><br><span class="line">4. find ~ -<span class="built_in">type</span> f -perm 4755 -<span class="built_in">print</span></span><br><span class="line">查找<span class="variable">$HOME</span>目录下suid位被设置，文件属性为755的文件打印出来。</span><br><span class="line">说明： find在有点系统中会一次性得到将匹配到的文件都传给<span class="built_in">exec</span>，但是有的系统对<span class="built_in">exec</span>的命令长度做限制，就会报：”参数列太长“，这就需要使用xargs。xargs是部分取传来的文件。</span><br><span class="line">5. find / -<span class="built_in">type</span> f -<span class="built_in">print</span> |xargs file</span><br><span class="line">xargs测试文件分类</span><br><span class="line">6. find . -name <span class="string">&quot;core*&quot;</span> -<span class="built_in">print</span>|xargs <span class="built_in">echo</span> <span class="string">&quot; &quot;</span>&gt;/tmp/core.log</span><br><span class="line">将core文件信息查询结果报存到core。<span class="built_in">log</span>日志。</span><br><span class="line">7. find / -<span class="built_in">type</span> f -<span class="built_in">print</span> | xargs <span class="built_in">chmod</span> o -w</span><br><span class="line">8. find . -name * -<span class="built_in">print</span> |xargs grep <span class="string">&quot;DBO&quot;</span></span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>通用技巧</tag>
-        <tag>find</tag>
       </tags>
   </entry>
   <entry>
@@ -463,6 +290,179 @@
       <tags>
         <tag>cmake</tag>
         <tag>编译</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>find命令使用技巧</title>
+    <url>/2020/01/16/2020-01-16-find/</url>
+    <content><![CDATA[<p><code>find &lt; path &gt; &lt; expression &gt; &lt; cmd &gt;</code></p>
+<ul>
+<li>path： 所要搜索的目录及其所有子目录。默认为当前目录。</li>
+<li>expression： 所要搜索的文件的特征。</li>
+<li>cmd： 对搜索结果进行特定的处理。</li>
+</ul>
+<p>如果什么参数也不加，find默认搜索当前目录及其子目录，并且不过滤任何结果（也就是返回所有文件），将它们全都显示在屏幕上。</p>
+<h4 id="find命令常用选项及实例"><a href="#find命令常用选项及实例" class="headerlink" title="find命令常用选项及实例"></a>find命令常用选项及实例</h4><ul>
+<li><p>-name 按照文件名查找文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /dir -name filename  在/dir目录及其子目录下面查找名字为filename的文件</span><br><span class="line">find . -name <span class="string">&quot;*.c&quot;</span> 在当前目录及其子目录（用“.”表示）中查找任何扩展名为“c”的文件</span><br></pre></td></tr></table></figure></li>
+</ul>
+<span id="more"></span>
+
+<ul>
+<li><p>-perm 按照文件权限来查找文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -perm 755 –<span class="built_in">print</span> 在当前目录下查找文件权限位为755的文件，即文件属主可以读、写、执行，其他用户可以读、执行的文件</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>-prune 使用这一选项可以使find命令不在当前指定的目录中查找，如果同时使用-depth选项，那么-prune将被find命令忽略。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /apps -path <span class="string">&quot;/apps/bin&quot;</span> -prune -o –<span class="built_in">print</span> 在/apps目录下查找文件，但不希望在/apps/bin目录下查找</span><br><span class="line">find /usr/sam -path <span class="string">&quot;/usr/sam/dir1&quot;</span> -prune -o –<span class="built_in">print</span> 在/usr/sam目录下查找不在dir1子目录之内的所有文件</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>-depth：在查找文件时，首先查找当前目录中的文件，然后再在其子目录中查找。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / -name <span class="string">&quot;CON.FILE&quot;</span> -depth –<span class="built_in">print</span> 它将首先匹配所有的文件然后再进入子目录中查找</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>-user 按照文件属主来查找文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find ~ -user sam –<span class="built_in">print</span> 在<span class="variable">$HOME</span>目录中查找文件属主为sam的文件</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>-group 按照文件所属的组来查找文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /apps -group gem –<span class="built_in">print</span> 在/apps目录下查找属于gem用户组的文件</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>-mtime -n +n 按照文件的更改时间来查找文件， -n表示文件更改时间距现在n天以内，+n表示文件更改时间距现在n天以前。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / -mtime -5 –<span class="built_in">print</span> 在系统根目录下查找更改时间在5日以内的文件</span><br><span class="line">find /var/adm -mtime +3 –<span class="built_in">print</span> 在/var/adm目录下查找更改时间在3日以前的文件</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>-nogroup 查找无有效所属组的文件，即该文件所属的组在&#x2F;etc&#x2F;groups中不存在。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / –nogroup -<span class="built_in">print</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>-nouser 查找无有效属主的文件，即该文件的属主在&#x2F;etc&#x2F;passwd中不存在。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /home -nouser –<span class="built_in">print</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>-newer file1 ! file2 查找更改时间比文件file1新但比文件file2旧的文件。</p>
+</li>
+<li><p>-type 查找某一类型的文件，<br>诸如：<br>b - 块设备文件。<br>d - 目录。<br>c - 字符设备文件。<br>p - 管道文件。<br>l - 符号链接文件。<br>f - 普通文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /etc -<span class="built_in">type</span> d –<span class="built_in">print</span> 在/etc目录下查找所有的目录</span><br><span class="line">find . ! -<span class="built_in">type</span> d –<span class="built_in">print</span> 在当前目录下查找除目录以外的所有类型的文件</span><br><span class="line">find /etc -<span class="built_in">type</span> l –<span class="built_in">print</span> 在/etc目录下查找所有的符号链接文件</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>-size n[c] 查找文件长度为n块的文件，带有c时表示文件长度以字节计。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -size +1000000c –<span class="built_in">print</span> 在当前目录下查找文件长度大于1 M字节的文件</span><br><span class="line">find /home/apache -size 100c –<span class="built_in">print</span> 在/home/apache目录下查找文件长度恰好为100字节的文件</span><br><span class="line">find . -size +10 –<span class="built_in">print</span> 在当前目录下查找长度超过10块的文件（一块等于512字节）</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>-mount：在查找文件时不跨越文件系统mount点。<br><code>find . -name “*.XC” -mount –print 从当前目录开始查找位于本文件系统中文件名以XC结尾的文件（不进入其他文件系统）</code></p>
+</li>
+<li><p>-follow：如果find命令遇到符号链接文件，就跟踪至链接所指向的文件</p>
+</li>
+<li><p>-exec，find命令对匹配的文件执行该参数所给出的shell命令。相应命令的形式为’command’ {} ;，注意{}和;之间的空格</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt; find ./ -size 0 -<span class="built_in">exec</span> <span class="built_in">rm</span> &#123;&#125; \; 删除文件大小为零的文件</span><br><span class="line">&gt; <span class="built_in">rm</span> -i `find ./ -size 0`</span><br><span class="line">&gt; find ./ -size 0 | xargs <span class="built_in">rm</span> -f &amp;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>为了用ls -l命令列出所匹配到的文件，可以把ls -l命令放在find命令的-exec选项中：<br><code>$ find . -type f -exec ls -l &#123;&#125; \;</code><br>在&#x2F;logs目录中查找更改时间在5日以前的文件并删除它们：<br><code>find /logs -type f -mtime +5 -exec rm &#123;&#125; \;</code></p>
+<ul>
+<li><p>-ok，和-exec的作用相同，只不过以一种更为安全的模式来执行该参数所给出的shell命令，在执行每一个命令之前，都会给出提示，让用户来确定是否执行。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -name <span class="string">&quot;*.conf&quot;</span>  -mtime +5 -ok <span class="built_in">rm</span> &#123;  &#125; \; 在当前目录中查找所有文件名以.LOG结尾、更改时间在5日以上的文件，并删除它们，只不  过在删除之前先给出提示</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>说明： 如果你要寻找一个档案的话，那么使用 find 会是一个不错的主意。不过，由于 find 在寻找数据的时候相当的耗硬盘，所以没事情不要使用 find 啦！有更棒的指令可以取代呦，那就是 whereis 与 locate 咯~</p>
+<h4 id="一些常用命令"><a href="#一些常用命令" class="headerlink" title="一些常用命令"></a>一些常用命令</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1. find . -<span class="built_in">type</span> f -<span class="built_in">exec</span> <span class="built_in">ls</span> -l &#123;&#125; \;</span><br><span class="line">查找当前路径下的所有普通文件，并把它们列出来。</span><br><span class="line">2. find logs -<span class="built_in">type</span> f -mtime +5 -<span class="built_in">exec</span> <span class="built_in">rm</span> &#123;&#125; \;</span><br><span class="line">删除logs目录下更新时间为5日以上的文件。</span><br><span class="line">3.find . -name <span class="string">&quot;*.log&quot;</span> -mtime +5 -ok <span class="built_in">rm</span> &#123;&#125; \;</span><br><span class="line">删除当前路径下以。<span class="built_in">log</span>结尾的五日以上的文件，删除之前要确认。</span><br><span class="line">4. find ~ -<span class="built_in">type</span> f -perm 4755 -<span class="built_in">print</span></span><br><span class="line">查找<span class="variable">$HOME</span>目录下suid位被设置，文件属性为755的文件打印出来。</span><br><span class="line">说明： find在有点系统中会一次性得到将匹配到的文件都传给<span class="built_in">exec</span>，但是有的系统对<span class="built_in">exec</span>的命令长度做限制，就会报：”参数列太长“，这就需要使用xargs。xargs是部分取传来的文件。</span><br><span class="line">5. find / -<span class="built_in">type</span> f -<span class="built_in">print</span> |xargs file</span><br><span class="line">xargs测试文件分类</span><br><span class="line">6. find . -name <span class="string">&quot;core*&quot;</span> -<span class="built_in">print</span>|xargs <span class="built_in">echo</span> <span class="string">&quot; &quot;</span>&gt;/tmp/core.log</span><br><span class="line">将core文件信息查询结果报存到core。<span class="built_in">log</span>日志。</span><br><span class="line">7. find / -<span class="built_in">type</span> f -<span class="built_in">print</span> | xargs <span class="built_in">chmod</span> o -w</span><br><span class="line">8. find . -name * -<span class="built_in">print</span> |xargs grep <span class="string">&quot;DBO&quot;</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>通用技巧</tag>
+        <tag>find</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>grep命令使用技巧</title>
+    <url>/2020/01/16/2020-01-16-grep/</url>
+    <content><![CDATA[<p>grep [选项] pattern [文件名]</p>
+<p>命令中的选项为：</p>
+<ul>
+<li>-? 同时显示匹配行上下的？行，如：<code>grep -2 pattern filename</code> 同时显示匹配行的上下2行。</li>
+<li>-A ? 显示匹配行和后面的?行, 如: <code>grep -A 2 pattern filename</code></li>
+<li>-B ? 显示匹配行和前面的?行</li>
+<li>-b，–byte-offset 打印匹配行前面打印该行所在的块号码。</li>
+<li>-c,–count 只打印匹配的行数，不显示匹配的内容。</li>
+<li>-f File，–file&#x3D;File 从文件中提取模板。空文件中包含0个模板，所以什么都不匹配。</li>
+<li>-h，–no-filename 当搜索多个文件时，不显示匹配文件名前缀。</li>
+<li>-i，–ignore-case 忽略大小写差别。</li>
+<li>-q，–quiet 取消显示，只返回退出状态。0则表示找到了匹配的行。</li>
+<li>-l，–files-with-matches 打印匹配模板的文件清单。</li>
+<li>-L，–files-without-match 打印不匹配模板的文件清单。</li>
+<li>-n，–line-number 在匹配的行前面打印行号。</li>
+<li>-s，–silent 不显示关于不存在或者无法读取文件的错误信息。</li>
+<li>-v，–revert-match 反检索，只显示不匹配的行。</li>
+<li>-w，–word-regexp 如果被&lt;和&gt;引用，就把表达式做为一个单词搜索。</li>
+<li>-V，–version 显示软件版本信息。</li>
+</ul>
+<span id="more"></span>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">ls</span> -l | grep <span class="string">&#x27;^a&#x27;</span> 通过管道过滤<span class="built_in">ls</span> -l输出的内容，只显示以a开头的行。</span><br><span class="line">grep <span class="string">&#x27;test&#x27;</span> d* 显示所有以d开头的文件中包含<span class="built_in">test</span>的行。</span><br><span class="line">grep <span class="string">&#x27;test&#x27;</span> aa bb cc 显示在aa，bb，cc文件中匹配<span class="built_in">test</span>的行。</span><br><span class="line">grep <span class="string">&#x27;[a-z]&#x27;</span> aa 显示所有包含每个字符串至少有5个连续小写字符的字符串的行。</span><br><span class="line">grep <span class="string">&#x27;w(es)t.*&#x27;</span> aa 如果west被匹配，则es就被存储到内存中，并标记为1，然后搜索任意个字符(.*)，这些字符后面紧跟着另外一个es()，找到就显示该行。如果用egrep或grep -E，就不用<span class="string">&quot;&quot;</span>号进行转义，直接写成<span class="string">&#x27;w(es)t.*&#x27;</span>就可以了。</span><br><span class="line">grep -i pattern files ：不区分大小写地搜索。默认情况区分大小写</span><br><span class="line">grep -l pattern files ：只列出匹配的文件名，</span><br><span class="line">grep -L pattern files ：列出不匹配的文件名，</span><br><span class="line">grep -w pattern files ：只匹配整个单词，而不是字符串的一部分(如匹配‘magic’，而不是‘magical’)，</span><br><span class="line">grep -C number pattern files ：匹配的上下文分别显示[number]行，</span><br><span class="line">grep pattern1 | pattern2 files ：显示匹配 pattern1 或 pattern2 的行，</span><br><span class="line">grep pattern1 files | grep pattern2 ：显示既匹配 pattern1 又匹配 pattern2 的行。</span><br></pre></td></tr></table></figure>
+
+<p>pattern为所要匹配的字符串，可使用下列模式</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">. 匹配任意一个字符</span><br><span class="line">* 匹配0 个或多个*前的字符</span><br><span class="line">^ 匹配行开头</span><br><span class="line">$ 匹配行结尾</span><br><span class="line">[] 匹配[ ]中的任意一个字符，[]中可用 - 表示范围，</span><br><span class="line">例如[a-z]表示字母a 至z 中的任意一个</span><br><span class="line">\ 转意字符</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>通用技巧</tag>
+        <tag>grep</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>shell脚本必知必会</title>
+    <url>/2020/01/16/2020-01-16-shell/</url>
+    <content><![CDATA[<h3 id="变量命名"><a href="#变量命名" class="headerlink" title="变量命名"></a>变量命名</h3><h4 id="规则"><a href="#规则" class="headerlink" title="规则"></a>规则</h4><ol>
+<li>首字符必须为字母</li>
+<li>中间不能有空格, 可以有下划线_</li>
+<li>不能使用标点符号</li>
+<li>不能使用bash里的关键字</li>
+</ol>
+<h4 id="代码风格建议"><a href="#代码风格建议" class="headerlink" title="代码风格建议"></a>代码风格建议</h4><ul>
+<li>全部用大写</li>
+<li>下划线分隔</li>
+<li>定义在文件的顶部</li>
+</ul>
+<span id="more"></span>
+
+<h3 id="变量赋值"><a href="#变量赋值" class="headerlink" title="变量赋值"></a>变量赋值</h3><p>变量名&#x3D;值,  （注意, &#x3D; 两边不能有空格）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">var=1</span><br><span class="line">var=<span class="variable">$var</span>+1</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$var</span>+1</span><br><span class="line"><span class="comment"># 输出为1+1, 而不是2</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 可以用如下方法使其输出为2</span></span><br><span class="line"><span class="built_in">let</span> <span class="string">&quot;var+=1&quot;</span></span><br><span class="line"><span class="comment">#var=$[$var+1]</span></span><br><span class="line"><span class="comment">#var=$(($var+1))</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$var</span></span><br><span class="line">或者</span><br><span class="line">var=1</span><br><span class="line">var= <span class="built_in">expr</span> <span class="variable">$var</span> + 1 <span class="comment">#（注意, + 两边的空格, 一定要有）</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">let</span>表示数学运算, <span class="built_in">expr</span>用于整数值运算, 每一项用空格隔开, $[]将中括号内的表达式作为数学运算先计算结果再输出.</span><br><span class="line">在bash中, 将数学运算结果赋给某个变量,  var=$[ operation ]</span><br><span class="line"></span><br><span class="line">变量自增, 自减</span><br><span class="line"><span class="built_in">let</span> var++  <span class="built_in">let</span> var--</span><br><span class="line"><span class="built_in">let</span> var+=2</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;10.2-2&quot;</span> | bc   -- 小数运算要用bc  $[]不支持小数</span><br></pre></td></tr></table></figure>
+
+<h3 id="变量使用"><a href="#变量使用" class="headerlink" title="变量使用"></a>变量使用</h3><p>$var ${var}<br>双引号“ “ 中可以用$var<br>单引号‘ ‘ 中不可以用$var</p>
+<p>$(cmd) 与 `cmd` 等效, 推荐用前者</p>
+<ul>
+<li>支持内嵌</li>
+<li>不用转义</li>
+<li>有些字体, 反引号和单引号很像, 让人看着很难受</li>
+</ul>
+<h4 id="内建变量"><a href="#内建变量" class="headerlink" title="内建变量"></a>内建变量</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">- <span class="variable">$RANDOM</span>  随机数</span><br><span class="line">- 字段分隔符, IFS=$<span class="string">&#x27;n&#x27;</span></span><br><span class="line">- <span class="variable">$0</span> 程序名, <span class="variable">$1</span> … <span class="variable">$9</span> 是命令行参数, 多于9个命令行参数的话, 后面的需要<span class="variable">$&#123;10&#125;</span> <span class="variable">$&#123;11&#125;</span>这种格式</span><br><span class="line">- <span class="variable">$#</span> 表示传入的命令行参数的个数. 在&#123;&#125;中使用<span class="variable">$#</span>时, 要改用<span class="variable">$&#123;!#&#125;</span>.</span><br><span class="line">- $* 所有命令行参数当成一个单词存储</span><br><span class="line">- <span class="variable">$@</span> 所有命令行参数当成一个字符串中的多个单词</span><br><span class="line">- $$ 脚本的PID</span><br></pre></td></tr></table></figure>
+
+<h3 id="比较运算符"><a href="#比较运算符" class="headerlink" title="比较运算符"></a>比较运算符</h3><h4 id="文件比较运算符"><a href="#文件比较运算符" class="headerlink" title="文件比较运算符"></a>文件比较运算符</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-e filename                如果 filename 存在, 则为真               [ -e /var/log/syslog ]</span><br><span class="line">-d filename                如果 filename 为目录, 则为真             [ -d /tmp/mydir ]</span><br><span class="line">-f filename                如果 filename 为常规文件, 则为真          [ -f /usr/bin/grep ]</span><br><span class="line">-L filename                如果 filename 为符号链接, 则为真          [ -L /usr/bin/grep ]</span><br><span class="line">-r filename                如果 filename 可读, 则为真               [ -r /var/log/syslog ]</span><br><span class="line">-w filename                如果 filename 可写, 则为真               [ -w /var/mytmp.txt ]</span><br><span class="line">-x filename                如果 filename 可执行, 则为真             [ -L /usr/bin/grep ]</span><br><span class="line">! -e filename              如果 filename 不存在, 则为真               [ ! -e /var/log/syslog ]</span><br><span class="line">filename1 -nt filename2    如果 filename1 比 filename2 新, 则为真   [ /tmp/install/etc/services -nt /etc/services ]</span><br><span class="line">filename1 -ot filename2    如果 filename1 比 filename2 旧, 则为真   [ /boot/bzImage -ot <span class="built_in">arch</span>/i386/boot/bzImage ]</span><br></pre></td></tr></table></figure>
+
+<h4 id="字符串比较运算符-（请注意引号的使用-这是防止空格扰乱代码的好方法）"><a href="#字符串比较运算符-（请注意引号的使用-这是防止空格扰乱代码的好方法）" class="headerlink" title="字符串比较运算符 （请注意引号的使用, 这是防止空格扰乱代码的好方法）"></a>字符串比较运算符 （请注意引号的使用, 这是防止空格扰乱代码的好方法）</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-z string               如果 string 长度为零, 则为真            [ -z <span class="string">&quot;<span class="variable">$myvar</span>&quot;</span> ]</span><br><span class="line">-n string               如果 string 长度非零, 则为真            [ -n <span class="string">&quot;<span class="variable">$myvar</span>&quot;</span> ]</span><br><span class="line">string1 = string2       如果 string1 与 string2 相同, 则为真    [ <span class="string">&quot;<span class="variable">$myvar</span>&quot;</span> = <span class="string">&quot;one two three&quot;</span> ]</span><br><span class="line">string1 != string2      如果 string1 与 string2 不同, 则为真    [ <span class="string">&quot;<span class="variable">$myvar</span>&quot;</span> != <span class="string">&quot;one two three&quot;</span> ]</span><br></pre></td></tr></table></figure>
+
+<h4 id="算术比较运算符"><a href="#算术比较运算符" class="headerlink" title="算术比较运算符"></a>算术比较运算符</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">num1 -eq num2       等于            [ 3 -eq <span class="variable">$mynum</span> ]</span><br><span class="line">num1 -ne num2       不等于          [ 3 -ne <span class="variable">$mynum</span> ]</span><br><span class="line">num1 -lt num2       小于            [ 3 -lt <span class="variable">$mynum</span> ]</span><br><span class="line">num1 -le num2       小于或等于      [ 3 -le <span class="variable">$mynum</span> ]</span><br><span class="line">num1 -gt num2       大于            [ 3 -gt <span class="variable">$mynum</span> ]</span><br><span class="line">num1 -ge num2       大于或等于      [ 3 -ge <span class="variable">$mynum</span> ]</span><br></pre></td></tr></table></figure>
+
+<h3 id="结构语句"><a href="#结构语句" class="headerlink" title="结构语句"></a>结构语句</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="built_in">command</span></span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">    commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> command1 &amp;&amp; command2</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">    commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">command</span>; <span class="keyword">then</span>  <span class="comment">#如果then与if在同一行, if command后要加&#x27;;&#x27;</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">command</span></span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> command1</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">elif</span> command2</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 不推荐</span></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">test</span> condition</span><br><span class="line"><span class="keyword">if</span> [ condition ] 注意[]与condition之间的空格, &gt; &lt; 需要转义</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 不推荐</span></span><br><span class="line"><span class="keyword">if</span> ((expression)) &gt; &lt; 不需要转义</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 推荐用 [[ ]] 的形式</span></span><br><span class="line"><span class="comment"># 1. 避免转义问题</span></span><br><span class="line"><span class="comment"># 2. 有新功能, 包括但不限于以下</span></span><br><span class="line"><span class="comment">#    - ||: 逻辑or</span></span><br><span class="line"><span class="comment">#    - &amp;&amp;: 逻辑and</span></span><br><span class="line"><span class="comment">#    - &lt;: 字符串比较(不需要转义)</span></span><br><span class="line"><span class="comment">#    - ==: 通配符字符串比较</span></span><br><span class="line"><span class="comment">#    - =~: 正则表达式字符串比较</span></span><br><span class="line"><span class="keyword">if</span> [[ condition ]]  可以用正则表达式</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">t=<span class="string">&quot;abc123&quot;</span></span><br><span class="line"></span><br><span class="line">[[ <span class="string">&quot;<span class="variable">$t</span>&quot;</span> == abc* ]]         <span class="comment">#true</span></span><br><span class="line">[[ <span class="string">&quot;<span class="variable">$t</span>&quot;</span> == <span class="string">&quot;abc*&quot;</span> ]]       <span class="comment"># false</span></span><br><span class="line">[[ <span class="string">&quot;<span class="variable">$t</span>&quot;</span> =~ [abc]+[123]+ ]] <span class="comment"># true</span></span><br><span class="line">[[ <span class="string">&quot;<span class="variable">$t</span>&quot;</span> =~ <span class="string">&quot;abc*&quot;</span> ]]       <span class="comment"># false</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">case</span> variable <span class="keyword">in</span></span><br><span class="line">pattern1 | pattern2)</span><br><span class="line">    commands1</span><br><span class="line">    ;;</span><br><span class="line">pattern3)</span><br><span class="line">    commands2::</span><br><span class="line">    ;;</span><br><span class="line">*)</span><br><span class="line">    default commands</span><br><span class="line">    ;;</span><br><span class="line"><span class="keyword">esac</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> var <span class="keyword">in</span> list</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">     commands</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="built_in">test</span> <span class="built_in">command</span></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">     other commands</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">until</span> <span class="built_in">test</span> <span class="built_in">command</span></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">     other commands</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">break</span> n (default 1) 跳出n层循环</span><br><span class="line"><span class="built_in">continue</span> n (default 1) 继续n级循环</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> var <span class="keyword">in</span> list</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    commands</span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h3><p>语法</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[ <span class="keyword">function</span> ] funname [()]</span><br><span class="line">&#123;</span><br><span class="line">    action;</span><br><span class="line">    [<span class="built_in">return</span> int;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<ol>
+<li>可以带function fun()  定义, 也可以直接fun() 定义, 不带任何参数.</li>
+<li>参数返回, 可以显式return返回, return后跟数值n(0-255)；如果不加, 将以最后一条命令运行结果, 作为返回值.</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 将所有的错误信息导向STDERR</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">err</span></span>() &#123;</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;[<span class="subst">$(date +&#x27;%Y-%m-%dT%H:%M:%S%z&#x27;)</span>]: <span class="variable">$@</span>&quot;</span> &gt;&amp;2</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> ! do_something; <span class="keyword">then</span></span><br><span class="line">    err <span class="string">&quot;Unable to do_something&quot;</span></span><br><span class="line">    <span class="built_in">exit</span> <span class="string">&quot;<span class="variable">$&#123;E_DID_NOTHING&#125;</span>”</span></span><br><span class="line"><span class="string">fi</span></span><br><span class="line"><span class="string"></span></span><br></pre></td></tr></table></figure>
+
+<p>注意事项</p>
+<ol>
+<li>必须在调用函数地方之前, 声明函数, shell脚本是逐行运行. 不会像其它语言一样先预编译. 一次必须在使用函数前先声明函数.</li>
+<li>total&#x3D;$(func 3 2);  </li>
+<li>函数返回值, 只能通过$? 系统变量获得, 直接通过&#x3D;获得是空值</li>
+<li>如果需要传出其它类型函数值, 可以在函数调用之前, 定义变量（这个就是全局变量）. 在函数内部就可以直接修改, 然后在执行函数就可以读出修改过的值</li>
+<li>如果需要定义自己变量, 可以在函数中定义, local 变量&#x3D;值, 这时变量就是内部变量, 它的修改, 不会影响函数外部相同变量的值.</li>
+</ol>
+<h3 id="实用技巧"><a href="#实用技巧" class="headerlink" title="实用技巧"></a>实用技巧</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#! /bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在默认情况下，遇到不存在的变量，会忽略并继续执行，而这往往不符合预期，加入该选项，可以避免恶果扩大，终止脚本的执行。</span></span><br><span class="line"><span class="built_in">set</span> -o nounset</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在默认情况下，遇到执行出错，会跳过并继续执行，而这往往不符合预期，加入该选项，可以避免恶果扩大，终止脚本的执行</span></span><br><span class="line"><span class="built_in">set</span> -o errexit</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">log</span></span>() &#123;</span><br><span class="line">    <span class="built_in">local</span> prefix=<span class="string">&quot;[<span class="subst">$(date +%Y/%m/%d\ %H:%M:%S)</span>]:&quot;</span></span><br><span class="line">    <span class="keyword">if</span> [[ <span class="string">&quot;<span class="variable">$_DEBUG</span>&quot;</span> == <span class="string">&quot;true&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$&#123;prefix&#125;</span> <span class="variable">$@</span>&quot;</span> &gt;&amp;2</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">log</span> <span class="string">&quot;INFO&quot;</span> <span class="string">&quot;a message&quot;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>通用技巧</tag>
+        <tag>shell</tag>
       </tags>
   </entry>
   <entry>
@@ -786,24 +786,108 @@
       </tags>
   </entry>
   <entry>
-    <title>免密登录远程linux机器</title>
-    <url>/2020/02/01/2020-02-01-ssh-remote-linux/</url>
-    <content><![CDATA[<h3 id="为什么选择证书登陆？"><a href="#为什么选择证书登陆？" class="headerlink" title="为什么选择证书登陆？"></a>为什么选择证书登陆？</h3><p>Mac下原生及主流的ssh终端工具大多不具备保存ssh登陆密码的功能, 通过证书登陆的方式，就可以实现原生终端工具Terminal或第三方明星终端iTerm免密码登录远程系统，并且比单纯的密码验证登陆方式提高了安全性。</p>
+    <title>如何写好一封Email</title>
+    <url>/2020/01/29/2020-01-29-write-good-email/</url>
+    <content><![CDATA[<h3 id="接收人"><a href="#接收人" class="headerlink" title="接收人"></a>接收人</h3><ol>
+<li><p>收件人</p>
+<blockquote>
+<p>事件接棒人, 是需要对事件做出响应及跟进的人, 如果需要老板处理, 那么收件人就加上老板, 而不是抄送</p>
+</blockquote>
+</li>
+<li><p>抄送人</p>
+<blockquote>
+<p>事件知会人, 只需要知道邮件的内容就可以了, 不必要一定做出响应或去跟进</p>
+</blockquote>
+</li>
+</ol>
 <span id="more"></span>
 
-<h3 id="配置过程（以下操作都在终端命令行下运行）"><a href="#配置过程（以下操作都在终端命令行下运行）" class="headerlink" title="配置过程（以下操作都在终端命令行下运行）"></a>配置过程（以下操作都在终端命令行下运行）</h3><ol>
-<li>进入系统的ssh证书目录 cd ~&#x2F;.ssh&#x2F;</li>
-<li>建立证书文件 ssh-keygen -t rsa 提示输入，直接回车即可。</li>
-<li>输入 ls 命令查看当前目录会发现新生成的一对秘钥文件分别是：<br>公钥：id_rsa.pub<br>私钥：id_rsa</li>
-<li>登陆到远程服务器，进入.ssh目录 cd ~&#x2F;.ssh<br>将上面生成的公钥文件的内容copy进 authorized_keys 文件中</li>
-<li>在Mac终端下执行登陆命令 ssh username@server<br>即可免密码登录到远程服务器</li>
+<h3 id="称呼及问候语"><a href="#称呼及问候语" class="headerlink" title="称呼及问候语"></a>称呼及问候语</h3><p>写上称呼是一种礼貌的象征, 尤其写对外邮件的时候, 是必要项.</p>
+<blockquote>
+<ul>
+<li>Dear LastName, 比较正式的场合</li>
+<li>Hi FirstName, 朋友之间比较随意的场合</li>
+<li>Dear FirstName, 如果你不知道用什么, 就用这个</li>
+</ul>
+</blockquote>
+<h3 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h3><ul>
+<li><strong>直奔主题, 言简意赅</strong>, 以下给几个例子来展示如何直奔主题</li>
+</ul>
+<blockquote>
+<ol>
+<li>I’m working on an article about xxx for yyy publication, and wondered if you had a few minutes to answer the following 3 questions.<br>我正在写一篇要交给yyy出版社的文章, 不知道您是否有时间回答下下面3个问题呢?</li>
 </ol>
+</blockquote>
+<blockquote>
+<ol start="2">
+<li>Could you supply me with a quote for the following project?<br>可否对下面的设计项目进行引证?</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol start="3">
+<li>I’d like to discuss the revisions with you. Would Tuesday at 2pm be a good time?<br>我想和你谈谈修订的事情, 这周二下午2点您有空吗?</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol start="4">
+<li>I’ve attached the documents you requested at our meeting yesterday.<br>昨天会议上您要求的文件已附上, 请查收.</li>
+</ol>
+</blockquote>
+<ul>
+<li><p>如果有问题需要提出, 或者需要重点突出的内容, 那么将其放到 <strong>开头</strong>. 如果问题放到最后, 收信人可能都不会留意到, 或者不会意识到你在等他的回复.</p>
+</li>
+<li><p>如果是咨询邮件, 或者说明什么产品, 那么将问题(或特性)一点点的 <strong>编号</strong> 列出来.</p>
+</li>
+</ul>
+<h3 id="常用英文邮件术语"><a href="#常用英文邮件术语" class="headerlink" title="常用英文邮件术语"></a>常用英文邮件术语</h3><ol>
+<li><p>To inform 提供信息</p>
+<blockquote>
+<p>The sender of the email wants to tell the receiver about something such as a new show coming to London. It might contain a link to the theatre. Generally speaking no reply is necessary. It can be a group email sent to a circle of friends, <strong>for example.</strong></p>
+<p>Dear all,</p>
+<p>Hope you are all well. Just to let you know that The China National Peking Opera is coming to London at the end of November to perform classical Peking Opera and the show will only be on for 3 days, so grab your tickets soon. Here is the link xxx</p>
+</blockquote>
+</li>
+<li><p>To inquire 询问</p>
+<blockquote>
+<p>The sender needs some information and is expecting a reply.</p>
+<p>Dear Sir&#x2F;Madam,</p>
+<p>I am writing to inquire about the rules regarding children travelling alone. For instance, can a 15 year old child travel on Air China alone? What should we do if there is not an adult to accompany the child?</p>
+<p>I look forward to your advice.</p>
+</blockquote>
+</li>
+<li><p>To request 请求</p>
+<blockquote>
+<p>The sender is asking for permission to do something, such as an permission to leave 5 days for a trip.<br>I’m writing to see whether it is possible for me to leave 5 days from next Monday for a trip with my family.</p>
+<p>Dear xxx</p>
+<p>I would be very grateful if you could consider my request.<br>Thanks.</p>
+<p>Carl</p>
+</blockquote>
+</li>
+<li><p>Stay in touch 保持联系</p>
+<blockquote>
+<p>I’m writing to say hello for the purpose to maintain social connections, friendship, and perhaps future collaboration.</p>
+<p>Hi xxx,</p>
+<p>How are you doing in your new job? It should be perfect, for you are a superman.<br>I’m also busy these two months and have not played any sports these days.</p>
+<p>Let me know when you will be free, so we can have a game and a drink.</p>
+<p>Best<br>Carl</p>
+</blockquote>
+</li>
+</ol>
+<h3 id="校对拼写错误"><a href="#校对拼写错误" class="headerlink" title="校对拼写错误"></a>校对拼写错误</h3><p>很重要, 一定不能有错别字</p>
+<h3 id="邮件签名"><a href="#邮件签名" class="headerlink" title="邮件签名"></a>邮件签名</h3><p>写清楚</p>
+<ul>
+<li>你是谁</li>
+<li>你来自哪里</li>
+<li>你是做什么的</li>
+<li>你的联系方式(电话, 工作地址)</li>
+<li>其他(例如你的社交网络账号, 最新宣传博客等), 此条不适用与公司对公邮件</li>
+</ul>
 ]]></content>
       <categories>
-        <category>技术</category>
+        <category>职业素养</category>
       </categories>
       <tags>
-        <tag>ssh</tag>
+        <tag>Email</tag>
       </tags>
   </entry>
   <entry>
@@ -849,6 +933,27 @@
       <tags>
         <tag>ipc</tag>
         <tag>多进程</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>免密登录远程linux机器</title>
+    <url>/2020/02/01/2020-02-01-ssh-remote-linux/</url>
+    <content><![CDATA[<h3 id="为什么选择证书登陆？"><a href="#为什么选择证书登陆？" class="headerlink" title="为什么选择证书登陆？"></a>为什么选择证书登陆？</h3><p>Mac下原生及主流的ssh终端工具大多不具备保存ssh登陆密码的功能, 通过证书登陆的方式，就可以实现原生终端工具Terminal或第三方明星终端iTerm免密码登录远程系统，并且比单纯的密码验证登陆方式提高了安全性。</p>
+<span id="more"></span>
+
+<h3 id="配置过程（以下操作都在终端命令行下运行）"><a href="#配置过程（以下操作都在终端命令行下运行）" class="headerlink" title="配置过程（以下操作都在终端命令行下运行）"></a>配置过程（以下操作都在终端命令行下运行）</h3><ol>
+<li>进入系统的ssh证书目录 cd ~&#x2F;.ssh&#x2F;</li>
+<li>建立证书文件 ssh-keygen -t rsa 提示输入，直接回车即可。</li>
+<li>输入 ls 命令查看当前目录会发现新生成的一对秘钥文件分别是：<br>公钥：id_rsa.pub<br>私钥：id_rsa</li>
+<li>登陆到远程服务器，进入.ssh目录 cd ~&#x2F;.ssh<br>将上面生成的公钥文件的内容copy进 authorized_keys 文件中</li>
+<li>在Mac终端下执行登陆命令 ssh username@server<br>即可免密码登录到远程服务器</li>
+</ol>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>ssh</tag>
       </tags>
   </entry>
   <entry>
@@ -1123,73 +1228,6 @@
       </tags>
   </entry>
   <entry>
-    <title>多进程通信-互斥锁和条件变量</title>
-    <url>/2020/02/07/2020-02-07-mutex-cond/</url>
-    <content><![CDATA[<h2 id="互斥锁"><a href="#互斥锁" class="headerlink" title="互斥锁"></a>互斥锁</h2><p>互斥锁和条件变量总是可用来同步一个进程内的各个线程。但是如果一个互斥锁或条件变量是<br>存放在多个进程间共享的某个内存区内，那么它还可以被用来同步这几个进程。</p>
-<p>互斥锁指代相互排斥，用于保护临界区，以保证任何时刻<strong>只有一个线程&#x2F;进程</strong>在执行<br>其中的代码。保护一个临界区的代码的通常轮廓大体如下：</p>
-<span id="more"></span>
-
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">lock_the_mutex</span>(...)</span><br><span class="line">操作临界区</span><br><span class="line"><span class="built_in">unlock_the_mutex</span>(...)</span><br></pre></td></tr></table></figure>
-
-<h3 id="互斥锁的初始化"><a href="#互斥锁的初始化" class="headerlink" title="互斥锁的初始化"></a>互斥锁的初始化</h3><ol>
-<li>静态分配。 static pthread_mutex_t lock &#x3D; PTHREAD_MUTEX_INITIALIZER;</li>
-<li>动态分配。 在运行之时通过调用pthread_mutex_init函数来初始化。</li>
-</ol>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_mutex_lock</span><span class="params">(<span class="type">pthread_mutex_t</span> *mptr)</span></span>;  <span class="comment">// block</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_mutex_trylock</span><span class="params">(<span class="type">pthread_mutex_t</span> *mptr)</span></span>;  <span class="comment">// unblock</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_mutex_unlock</span><span class="params">(<span class="type">pthread_mutex_t</span> *mptr)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>，失败返回Exxx错误码</span><br><span class="line"></span><br><span class="line">如果尝试给一个已由另外某个线程锁住的互斥锁上锁，那么pthread_mutex_lock会阻塞到该</span><br><span class="line">互斥锁被解锁为止，pthread_mutex_trylock是对应的非阻塞函数，如果该互斥锁已锁住，</span><br><span class="line">它就返回一个EBUSY错误</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>互斥锁是协作性锁。<strong>由coder来保证</strong>操作临界区之前获取对应互斥锁。</p>
-<blockquote>
-<p>prodcons_mutex.c 使用互斥锁的producer-consumer示例</p>
-</blockquote>
-<h2 id="条件变量"><a href="#条件变量" class="headerlink" title="条件变量"></a>条件变量</h2><p>互斥锁用于上锁，条件变量用于等待.</p>
-<p>条件变量类型为：pthread_cond_t</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_cond_wait</span><span class="params">(<span class="type">pthread_cond_t</span> *cptr, <span class="type">pthread_mutex_t</span> *mptr)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_cond_signal</span><span class="params">(<span class="type">pthread_cond_t</span> *cptr)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>，失败返回Exxx错误码</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>每个条件变量总是有一个互斥锁与之关联</p>
-<p>pthread_cond_wait <strong>会原子地</strong>执行2个动作</p>
-<ol>
-<li>给互斥锁mptr解锁</li>
-<li>把调用线程投入睡眠，直到另外某个线程就本条件变量调用pthread_cond_signal, pthread_cond_wait返回前重新给mptr上锁</li>
-</ol>
-<p><strong>给条件变量发送信号的代码：</strong></p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span></span><br><span class="line">&#123;     </span><br><span class="line">    <span class="type">pthread_mutex_t</span> mutex;     </span><br><span class="line">    <span class="type">pthread_cond_t</span>  cond;     </span><br><span class="line">    <span class="comment">// vars</span></span><br><span class="line">&#125; var = &#123;PTHREAD_MUTEX_INITIALIZER, PTHREAD_COND_INITIALIZER, ...&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">pthread_mutex_lock</span>(&amp;var.mutex);</span><br><span class="line">设置条件为真</span><br><span class="line"><span class="built_in">pthread_cond_signal</span>(&amp;var.cond);</span><br><span class="line"><span class="built_in">pthread_mutex_unlock</span>(&amp;var.mutex);</span><br><span class="line"></span><br><span class="line">调用pthread_cond_signal的线程不必是与之关联的互斥锁的当前属主。但是如果需要可预见的</span><br><span class="line">调度行为，那么调用pthread_cond_signal的线程必须锁住该互斥锁</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-<p><strong>测试条件并进入睡眠以等待该条件变为真的代码：</strong></p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">pthread_mutex_lock</span>(&amp;var.mutex);</span><br><span class="line"><span class="keyword">while</span> (条件为假)</span><br><span class="line">&#123;     </span><br><span class="line">    <span class="built_in">pthread_cond_wait</span>(&amp;var.cond, &amp;var.mutex);</span><br><span class="line">&#125;</span><br><span class="line">修改条件</span><br><span class="line"><span class="built_in">pthread_mutex_unlock</span>(&amp;var.mutex);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>prodcons_mutex_cond.c 使用条件变量的producer-consumer示例</p>
-</blockquote>
-<h3 id="条件变量的定时等待和广播"><a href="#条件变量的定时等待和广播" class="headerlink" title="条件变量的定时等待和广播"></a>条件变量的定时等待和广播</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_cond_broadcast</span><span class="params">(<span class="type">pthread_cond_t</span> *cptr)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_cond_timewait</span><span class="params">(<span class="type">pthread_cond_t</span> *cptr, <span class="type">pthread_mutex_t</span> *mptr, <span class="type">const</span> <span class="keyword">struct</span> timespec *abstime)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>，失败返回Exxx错误码</span><br><span class="line"></span><br><span class="line">pthread_cond_timewait 超时返回ETIMEOUT错误</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">timespec</span></span><br><span class="line">&#123;     </span><br><span class="line">    <span class="type">time_t</span> tv_sec;  <span class="comment">// seconds     </span></span><br><span class="line">    <span class="type">long</span>   tv_nsec; <span class="comment">// nanosecondes</span></span><br><span class="line">&#125;;</span><br><span class="line">abstime是UTC时间，而不是时间差</span><br></pre></td></tr></table></figure>
-
-<h2 id="互斥锁和条件变量的属性"><a href="#互斥锁和条件变量的属性" class="headerlink" title="互斥锁和条件变量的属性"></a>互斥锁和条件变量的属性</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_mutex_init</span><span class="params">(<span class="type">pthread_mutex_t</span> *mptr, <span class="type">const</span> <span class="type">pthread_mutexattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_mutex_destory</span><span class="params">(<span class="type">pthread_mutex_t</span> *mptr)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_cond_init</span><span class="params">(<span class="type">pthread_cond_t</span> *cptr, <span class="type">const</span> <span class="type">pthread_condattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_cond_destroy</span><span class="params">(<span class="type">pthread_cond_t</span> *cptr)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_mutexattr_init</span><span class="params">(<span class="type">pthread_mutexattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_mutexattr_destroy</span><span class="params">(<span class="type">pthread_mutexattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_condattr_init</span><span class="params">(<span class="type">pthread_condattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_condattr_destroy</span><span class="params">(<span class="type">pthread_condattr_t</span> *attr)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>，失败返回Exxx错误码</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>一旦某个互斥锁属性对象或者某个条件变量属性对象已被初始化，就通过调用不同函数启用或<br>禁止特定的特性。例如，指定互斥锁或条件变量在不同进程间共享，而不是只在单个进程内的<br>不同线程间共享</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_mutexattr_getpshared</span><span class="params">(<span class="type">const</span> <span class="type">pthread_mutexattr_t</span> *ptr, <span class="type">int</span> *valptr)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_mutexattr_setpshared</span><span class="params">(<span class="type">const</span> <span class="type">pthread_mutexattr_t</span> *ptr, <span class="type">int</span> val)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_condattr_getpshared</span><span class="params">(<span class="type">const</span> <span class="type">pthread_condattr_t</span> *ptr, <span class="type">int</span> *valptr)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_condattr_setpshared</span><span class="params">(<span class="type">const</span> <span class="type">pthread_condattr_t</span> *ptr, <span class="type">int</span> val)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>，失败返回Exxx错误码</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>这个特性只在&lt;unistd.h&gt;中定义了**_POSIX_THREAD_PROCESS_SHARED**时才得以支持，下面给<br>出初始化一个互斥锁以便它能在进程间共享的示例：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="type">pthread_mutex_t</span> *mptr;  <span class="comment">// 这个互斥锁要存放在**某块共享内存**中</span></span><br><span class="line"><span class="type">pthread_mutexattr_t</span> mattr;</span><br><span class="line"></span><br><span class="line">mptr = <span class="comment">// some value that points to shared </span></span><br><span class="line"><span class="built_in">memorypthread_mutexattr_init</span>(&amp;mattr);  <span class="comment">// 初始化属性</span></span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> _POSIX_THREAD_PROCESS_SHARED         </span></span><br><span class="line">    <span class="built_in">pthread_mutexattr_setpshared</span>(&amp;mattr, PTHREAD_PROCESS_SHARED);  <span class="comment">// 设置特定属性</span></span><br><span class="line"><span class="meta">#<span class="keyword">else</span>     </span></span><br><span class="line">    <span class="meta">#<span class="keyword">error</span> this implementation does not support _POSIX_THREAD_PROCESS_SHARED</span></span><br><span class="line"><span class="built_in">pthread_mutex_init</span>(mptr, &amp;mattr); <span class="comment">// 初始化锁</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="持有锁期间进程终止"><a href="#持有锁期间进程终止" class="headerlink" title="持有锁期间进程终止"></a>持有锁期间进程终止</h2><ul>
-<li>没有办法让系统在进程终止时自动释放所持有的锁。</li>
-<li>进程终止时，内核总是自动清理的唯一同步锁类型是：fcntl记录锁 </li>
-<li>在使用System V信号量时，应用程序可以选择进程终止时内核是否自动清理某个信号量锁。 </li>
-<li>线程可以注册一个在自己被另一线程取消时要执行的清理处理程序</li>
-</ul>
-<blockquote>
-<p>文中代码托管在: <a href="https://github.com/carl-wang-cn/demo/tree/master/ipc">https://github.com/carl-wang-cn/demo/tree/master/ipc</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>ipc</tag>
-        <tag>多进程</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>多进程通信-消息队列</title>
     <url>/2020/02/08/2020-02-07-ipc-posix-msg-queue/</url>
     <content><![CDATA[<h3 id="基本特性"><a href="#基本特性" class="headerlink" title="基本特性"></a>基本特性</h3><hr>
@@ -1447,27 +1485,71 @@
       </tags>
   </entry>
   <entry>
-    <title>proto buffer MergeFrom的坑</title>
-    <url>/2020/03/17/2020-03-17-donot-use-pb-mergefrom/</url>
-    <content><![CDATA[<p>pb好用, 性能虽然比不上二进制, 不过也比json在大多数情况下还是好很多. 尤其是字段的向前向后兼容, 这一点应该也是大多数同学选用pb的原因. 然后终于<strong>掉进坑</strong>了, 严重得影响了一次线上服务.<br>整理测试程序的时候发现, python的官方指南压根就没提MergeFrom这个接口, 看起来是专门用来坑c++的兄弟的啊</p>
+    <title>多进程通信-互斥锁和条件变量</title>
+    <url>/2020/02/07/2020-02-07-mutex-cond/</url>
+    <content><![CDATA[<h2 id="互斥锁"><a href="#互斥锁" class="headerlink" title="互斥锁"></a>互斥锁</h2><p>互斥锁和条件变量总是可用来同步一个进程内的各个线程。但是如果一个互斥锁或条件变量是<br>存放在多个进程间共享的某个内存区内，那么它还可以被用来同步这几个进程。</p>
+<p>互斥锁指代相互排斥，用于保护临界区，以保证任何时刻<strong>只有一个线程&#x2F;进程</strong>在执行<br>其中的代码。保护一个临界区的代码的通常轮廓大体如下：</p>
 <span id="more"></span>
 
-<p>下面给个例子来说明</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># mergefrom_trap.proto</span></span><br><span class="line">package mergefrom_trap;</span><br><span class="line">message Person</span><br><span class="line">&#123;</span><br><span class="line">required string name = 1;</span><br><span class="line">required int32 age = 2;</span><br><span class="line">// optional int32 new1 = 3;</span><br><span class="line">// optional int32 new2 = 4[default = 0];</span><br><span class="line">&#125;</span><br><span class="line">message AddressBook</span><br><span class="line">&#123;</span><br><span class="line">required string host_name = 1;</span><br><span class="line">repeated Person person = 2;</span><br><span class="line">// optional int32 new3 = 3;</span><br><span class="line">// optional int32 new4 = 4[default = 0];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">lock_the_mutex</span>(...)</span><br><span class="line">操作临界区</span><br><span class="line"><span class="built_in">unlock_the_mutex</span>(...)</span><br></pre></td></tr></table></figure>
 
-<h5 id="1-先用没有new1-4字段的proto-编译出c-的bin文件"><a href="#1-先用没有new1-4字段的proto-编译出c-的bin文件" class="headerlink" title="1. 先用没有new1-4字段的proto, 编译出c++的bin文件"></a>1. 先用没有new1-4字段的proto, 编译出c++的bin文件</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[carl pb_mergefrom_trap]$ protoc -I=./ --cpp_out=./ mergefrom_trap.proto</span><br><span class="line">[carl pb_mergefrom_trap]$ g++ read_new_write_old.cpp mergefrom_trap.pb.cc -lprotobuf -o read_new_write_old.bin</span><br></pre></td></tr></table></figure>
+<h3 id="互斥锁的初始化"><a href="#互斥锁的初始化" class="headerlink" title="互斥锁的初始化"></a>互斥锁的初始化</h3><ol>
+<li>静态分配。 static pthread_mutex_t lock &#x3D; PTHREAD_MUTEX_INITIALIZER;</li>
+<li>动态分配。 在运行之时通过调用pthread_mutex_init函数来初始化。</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_mutex_lock</span><span class="params">(<span class="type">pthread_mutex_t</span> *mptr)</span></span>;  <span class="comment">// block</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_mutex_trylock</span><span class="params">(<span class="type">pthread_mutex_t</span> *mptr)</span></span>;  <span class="comment">// unblock</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_mutex_unlock</span><span class="params">(<span class="type">pthread_mutex_t</span> *mptr)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>，失败返回Exxx错误码</span><br><span class="line"></span><br><span class="line">如果尝试给一个已由另外某个线程锁住的互斥锁上锁，那么pthread_mutex_lock会阻塞到该</span><br><span class="line">互斥锁被解锁为止，pthread_mutex_trylock是对应的非阻塞函数，如果该互斥锁已锁住，</span><br><span class="line">它就返回一个EBUSY错误</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<h5 id="2-然后添家new1-4字段-生成-mergefrom-trap-pb2-py"><a href="#2-然后添家new1-4字段-生成-mergefrom-trap-pb2-py" class="headerlink" title="2. 然后添家new1-4字段, 生成 mergefrom_trap_pb2.py"></a>2. 然后添家new1-4字段, 生成 mergefrom_trap_pb2.py</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[carl pb_mergefrom_trap]$ protoc -I=./ --python_out=./ mergefrom_trap.proto</span><br></pre></td></tr></table></figure>
+<p>互斥锁是协作性锁。<strong>由coder来保证</strong>操作临界区之前获取对应互斥锁。</p>
+<blockquote>
+<p>prodcons_mutex.c 使用互斥锁的producer-consumer示例</p>
+</blockquote>
+<h2 id="条件变量"><a href="#条件变量" class="headerlink" title="条件变量"></a>条件变量</h2><p>互斥锁用于上锁，条件变量用于等待.</p>
+<p>条件变量类型为：pthread_cond_t</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_cond_wait</span><span class="params">(<span class="type">pthread_cond_t</span> *cptr, <span class="type">pthread_mutex_t</span> *mptr)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_cond_signal</span><span class="params">(<span class="type">pthread_cond_t</span> *cptr)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>，失败返回Exxx错误码</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<h5 id="3-用write-new-py程序创建一个address-book对象并写入文件-输出结果如下"><a href="#3-用write-new-py程序创建一个address-book对象并写入文件-输出结果如下" class="headerlink" title="3. 用write_new.py程序创建一个address_book对象并写入文件, 输出结果如下:"></a>3. 用write_new.py程序创建一个address_book对象并写入文件, 输出结果如下:</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[carl pb_mergefrom_trap]$ python write_new.py addressbook</span><br><span class="line">address_book: host_name: <span class="string">&quot;carl&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 30</span><br><span class="line">new1: 1</span><br><span class="line">new2: 2</span><br><span class="line">&#125;</span><br><span class="line">new3: 3</span><br><span class="line">new4: 4</span><br></pre></td></tr></table></figure>
+<p>每个条件变量总是有一个互斥锁与之关联</p>
+<p>pthread_cond_wait <strong>会原子地</strong>执行2个动作</p>
+<ol>
+<li>给互斥锁mptr解锁</li>
+<li>把调用线程投入睡眠，直到另外某个线程就本条件变量调用pthread_cond_signal, pthread_cond_wait返回前重新给mptr上锁</li>
+</ol>
+<p><strong>给条件变量发送信号的代码：</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span></span><br><span class="line">&#123;     </span><br><span class="line">    <span class="type">pthread_mutex_t</span> mutex;     </span><br><span class="line">    <span class="type">pthread_cond_t</span>  cond;     </span><br><span class="line">    <span class="comment">// vars</span></span><br><span class="line">&#125; var = &#123;PTHREAD_MUTEX_INITIALIZER, PTHREAD_COND_INITIALIZER, ...&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">pthread_mutex_lock</span>(&amp;var.mutex);</span><br><span class="line">设置条件为真</span><br><span class="line"><span class="built_in">pthread_cond_signal</span>(&amp;var.cond);</span><br><span class="line"><span class="built_in">pthread_mutex_unlock</span>(&amp;var.mutex);</span><br><span class="line"></span><br><span class="line">调用pthread_cond_signal的线程不必是与之关联的互斥锁的当前属主。但是如果需要可预见的</span><br><span class="line">调度行为，那么调用pthread_cond_signal的线程必须锁住该互斥锁</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<h5 id="4-执行上面c-的bin文件"><a href="#4-执行上面c-的bin文件" class="headerlink" title="4. 执行上面c++的bin文件"></a>4. 执行上面c++的bin文件</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[carl pb_mergefrom_trap]$ ./read_new_write_old.bin addressbook</span><br><span class="line">book: host_name: <span class="string">&quot;carl&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 30</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_update_mergefrom&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_update_mergefrom&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_update_mergefrom&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_update_mergefrom&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_update_mergefrom&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br></pre></td></tr></table></figure>
 
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>由上测试结果可以看出, 一个使用了旧proto的c++程序, 在调用mergefrom的时候, 那2个unknown的字段不是覆盖回原来已有的字段上, 而是<strong>新增</strong>了. 连续调用几次, 这个是指数级增长的. 这会导致serialize出来的bin文件大小指数级增长, 然后会影响到进程, 在Parse和Serialize的时候, 函数调用会阻塞几十秒甚至几分钟, 网络流量也会剧增, 这对一个生产服务器可以说是致命的, 血淋淋的教训啊.<br>以上文件托管在<br><a href="https://github.com/carl-wang-cn/demo/tree/master/testcode/pb_mergefrom_trap">github&#x2F;demo&#x2F;tree&#x2F;master&#x2F;testcode&#x2F;pb_mergefrom_trap</a></p>
+<p><strong>测试条件并进入睡眠以等待该条件变为真的代码：</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">pthread_mutex_lock</span>(&amp;var.mutex);</span><br><span class="line"><span class="keyword">while</span> (条件为假)</span><br><span class="line">&#123;     </span><br><span class="line">    <span class="built_in">pthread_cond_wait</span>(&amp;var.cond, &amp;var.mutex);</span><br><span class="line">&#125;</span><br><span class="line">修改条件</span><br><span class="line"><span class="built_in">pthread_mutex_unlock</span>(&amp;var.mutex);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>prodcons_mutex_cond.c 使用条件变量的producer-consumer示例</p>
+</blockquote>
+<h3 id="条件变量的定时等待和广播"><a href="#条件变量的定时等待和广播" class="headerlink" title="条件变量的定时等待和广播"></a>条件变量的定时等待和广播</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_cond_broadcast</span><span class="params">(<span class="type">pthread_cond_t</span> *cptr)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_cond_timewait</span><span class="params">(<span class="type">pthread_cond_t</span> *cptr, <span class="type">pthread_mutex_t</span> *mptr, <span class="type">const</span> <span class="keyword">struct</span> timespec *abstime)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>，失败返回Exxx错误码</span><br><span class="line"></span><br><span class="line">pthread_cond_timewait 超时返回ETIMEOUT错误</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">timespec</span></span><br><span class="line">&#123;     </span><br><span class="line">    <span class="type">time_t</span> tv_sec;  <span class="comment">// seconds     </span></span><br><span class="line">    <span class="type">long</span>   tv_nsec; <span class="comment">// nanosecondes</span></span><br><span class="line">&#125;;</span><br><span class="line">abstime是UTC时间，而不是时间差</span><br></pre></td></tr></table></figure>
+
+<h2 id="互斥锁和条件变量的属性"><a href="#互斥锁和条件变量的属性" class="headerlink" title="互斥锁和条件变量的属性"></a>互斥锁和条件变量的属性</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_mutex_init</span><span class="params">(<span class="type">pthread_mutex_t</span> *mptr, <span class="type">const</span> <span class="type">pthread_mutexattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_mutex_destory</span><span class="params">(<span class="type">pthread_mutex_t</span> *mptr)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_cond_init</span><span class="params">(<span class="type">pthread_cond_t</span> *cptr, <span class="type">const</span> <span class="type">pthread_condattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_cond_destroy</span><span class="params">(<span class="type">pthread_cond_t</span> *cptr)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_mutexattr_init</span><span class="params">(<span class="type">pthread_mutexattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_mutexattr_destroy</span><span class="params">(<span class="type">pthread_mutexattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_condattr_init</span><span class="params">(<span class="type">pthread_condattr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_condattr_destroy</span><span class="params">(<span class="type">pthread_condattr_t</span> *attr)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>，失败返回Exxx错误码</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>一旦某个互斥锁属性对象或者某个条件变量属性对象已被初始化，就通过调用不同函数启用或<br>禁止特定的特性。例如，指定互斥锁或条件变量在不同进程间共享，而不是只在单个进程内的<br>不同线程间共享</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_mutexattr_getpshared</span><span class="params">(<span class="type">const</span> <span class="type">pthread_mutexattr_t</span> *ptr, <span class="type">int</span> *valptr)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_mutexattr_setpshared</span><span class="params">(<span class="type">const</span> <span class="type">pthread_mutexattr_t</span> *ptr, <span class="type">int</span> val)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_condattr_getpshared</span><span class="params">(<span class="type">const</span> <span class="type">pthread_condattr_t</span> *ptr, <span class="type">int</span> *valptr)</span></span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">pthread_condattr_setpshared</span><span class="params">(<span class="type">const</span> <span class="type">pthread_condattr_t</span> *ptr, <span class="type">int</span> val)</span></span>;</span><br><span class="line">返回: 成功返回<span class="number">0</span>，失败返回Exxx错误码</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这个特性只在&lt;unistd.h&gt;中定义了**_POSIX_THREAD_PROCESS_SHARED**时才得以支持，下面给<br>出初始化一个互斥锁以便它能在进程间共享的示例：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="type">pthread_mutex_t</span> *mptr;  <span class="comment">// 这个互斥锁要存放在**某块共享内存**中</span></span><br><span class="line"><span class="type">pthread_mutexattr_t</span> mattr;</span><br><span class="line"></span><br><span class="line">mptr = <span class="comment">// some value that points to shared </span></span><br><span class="line"><span class="built_in">memorypthread_mutexattr_init</span>(&amp;mattr);  <span class="comment">// 初始化属性</span></span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> _POSIX_THREAD_PROCESS_SHARED         </span></span><br><span class="line">    <span class="built_in">pthread_mutexattr_setpshared</span>(&amp;mattr, PTHREAD_PROCESS_SHARED);  <span class="comment">// 设置特定属性</span></span><br><span class="line"><span class="meta">#<span class="keyword">else</span>     </span></span><br><span class="line">    <span class="meta">#<span class="keyword">error</span> this implementation does not support _POSIX_THREAD_PROCESS_SHARED</span></span><br><span class="line"><span class="built_in">pthread_mutex_init</span>(mptr, &amp;mattr); <span class="comment">// 初始化锁</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="持有锁期间进程终止"><a href="#持有锁期间进程终止" class="headerlink" title="持有锁期间进程终止"></a>持有锁期间进程终止</h2><ul>
+<li>没有办法让系统在进程终止时自动释放所持有的锁。</li>
+<li>进程终止时，内核总是自动清理的唯一同步锁类型是：fcntl记录锁 </li>
+<li>在使用System V信号量时，应用程序可以选择进程终止时内核是否自动清理某个信号量锁。 </li>
+<li>线程可以注册一个在自己被另一线程取消时要执行的清理处理程序</li>
+</ul>
+<blockquote>
+<p>文中代码托管在: <a href="https://github.com/carl-wang-cn/demo/tree/master/ipc">https://github.com/carl-wang-cn/demo/tree/master/ipc</a></p>
+</blockquote>
 ]]></content>
       <categories>
         <category>技术</category>
       </categories>
+      <tags>
+        <tag>ipc</tag>
+        <tag>多进程</tag>
+      </tags>
   </entry>
   <entry>
     <title>python的finally语句中使用return要慎重!!!</title>
@@ -1491,109 +1573,27 @@
       </tags>
   </entry>
   <entry>
-    <title>如何写好一封Email</title>
-    <url>/2020/01/29/2020-01-29-write-good-email/</url>
-    <content><![CDATA[<h3 id="接收人"><a href="#接收人" class="headerlink" title="接收人"></a>接收人</h3><ol>
-<li><p>收件人</p>
-<blockquote>
-<p>事件接棒人, 是需要对事件做出响应及跟进的人, 如果需要老板处理, 那么收件人就加上老板, 而不是抄送</p>
-</blockquote>
-</li>
-<li><p>抄送人</p>
-<blockquote>
-<p>事件知会人, 只需要知道邮件的内容就可以了, 不必要一定做出响应或去跟进</p>
-</blockquote>
-</li>
-</ol>
+    <title>proto buffer MergeFrom的坑</title>
+    <url>/2020/03/17/2020-03-17-donot-use-pb-mergefrom/</url>
+    <content><![CDATA[<p>pb好用, 性能虽然比不上二进制, 不过也比json在大多数情况下还是好很多. 尤其是字段的向前向后兼容, 这一点应该也是大多数同学选用pb的原因. 然后终于<strong>掉进坑</strong>了, 严重得影响了一次线上服务.<br>整理测试程序的时候发现, python的官方指南压根就没提MergeFrom这个接口, 看起来是专门用来坑c++的兄弟的啊</p>
 <span id="more"></span>
 
-<h3 id="称呼及问候语"><a href="#称呼及问候语" class="headerlink" title="称呼及问候语"></a>称呼及问候语</h3><p>写上称呼是一种礼貌的象征, 尤其写对外邮件的时候, 是必要项.</p>
-<blockquote>
-<ul>
-<li>Dear LastName, 比较正式的场合</li>
-<li>Hi FirstName, 朋友之间比较随意的场合</li>
-<li>Dear FirstName, 如果你不知道用什么, 就用这个</li>
-</ul>
-</blockquote>
-<h3 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h3><ul>
-<li><strong>直奔主题, 言简意赅</strong>, 以下给几个例子来展示如何直奔主题</li>
-</ul>
-<blockquote>
-<ol>
-<li>I’m working on an article about xxx for yyy publication, and wondered if you had a few minutes to answer the following 3 questions.<br>我正在写一篇要交给yyy出版社的文章, 不知道您是否有时间回答下下面3个问题呢?</li>
-</ol>
-</blockquote>
-<blockquote>
-<ol start="2">
-<li>Could you supply me with a quote for the following project?<br>可否对下面的设计项目进行引证?</li>
-</ol>
-</blockquote>
-<blockquote>
-<ol start="3">
-<li>I’d like to discuss the revisions with you. Would Tuesday at 2pm be a good time?<br>我想和你谈谈修订的事情, 这周二下午2点您有空吗?</li>
-</ol>
-</blockquote>
-<blockquote>
-<ol start="4">
-<li>I’ve attached the documents you requested at our meeting yesterday.<br>昨天会议上您要求的文件已附上, 请查收.</li>
-</ol>
-</blockquote>
-<ul>
-<li><p>如果有问题需要提出, 或者需要重点突出的内容, 那么将其放到 <strong>开头</strong>. 如果问题放到最后, 收信人可能都不会留意到, 或者不会意识到你在等他的回复.</p>
-</li>
-<li><p>如果是咨询邮件, 或者说明什么产品, 那么将问题(或特性)一点点的 <strong>编号</strong> 列出来.</p>
-</li>
-</ul>
-<h3 id="常用英文邮件术语"><a href="#常用英文邮件术语" class="headerlink" title="常用英文邮件术语"></a>常用英文邮件术语</h3><ol>
-<li><p>To inform 提供信息</p>
-<blockquote>
-<p>The sender of the email wants to tell the receiver about something such as a new show coming to London. It might contain a link to the theatre. Generally speaking no reply is necessary. It can be a group email sent to a circle of friends, <strong>for example.</strong></p>
-<p>Dear all,</p>
-<p>Hope you are all well. Just to let you know that The China National Peking Opera is coming to London at the end of November to perform classical Peking Opera and the show will only be on for 3 days, so grab your tickets soon. Here is the link xxx</p>
-</blockquote>
-</li>
-<li><p>To inquire 询问</p>
-<blockquote>
-<p>The sender needs some information and is expecting a reply.</p>
-<p>Dear Sir&#x2F;Madam,</p>
-<p>I am writing to inquire about the rules regarding children travelling alone. For instance, can a 15 year old child travel on Air China alone? What should we do if there is not an adult to accompany the child?</p>
-<p>I look forward to your advice.</p>
-</blockquote>
-</li>
-<li><p>To request 请求</p>
-<blockquote>
-<p>The sender is asking for permission to do something, such as an permission to leave 5 days for a trip.<br>I’m writing to see whether it is possible for me to leave 5 days from next Monday for a trip with my family.</p>
-<p>Dear xxx</p>
-<p>I would be very grateful if you could consider my request.<br>Thanks.</p>
-<p>Carl</p>
-</blockquote>
-</li>
-<li><p>Stay in touch 保持联系</p>
-<blockquote>
-<p>I’m writing to say hello for the purpose to maintain social connections, friendship, and perhaps future collaboration.</p>
-<p>Hi xxx,</p>
-<p>How are you doing in your new job? It should be perfect, for you are a superman.<br>I’m also busy these two months and have not played any sports these days.</p>
-<p>Let me know when you will be free, so we can have a game and a drink.</p>
-<p>Best<br>Carl</p>
-</blockquote>
-</li>
-</ol>
-<h3 id="校对拼写错误"><a href="#校对拼写错误" class="headerlink" title="校对拼写错误"></a>校对拼写错误</h3><p>很重要, 一定不能有错别字</p>
-<h3 id="邮件签名"><a href="#邮件签名" class="headerlink" title="邮件签名"></a>邮件签名</h3><p>写清楚</p>
-<ul>
-<li>你是谁</li>
-<li>你来自哪里</li>
-<li>你是做什么的</li>
-<li>你的联系方式(电话, 工作地址)</li>
-<li>其他(例如你的社交网络账号, 最新宣传博客等), 此条不适用与公司对公邮件</li>
-</ul>
+<p>下面给个例子来说明</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># mergefrom_trap.proto</span></span><br><span class="line">package mergefrom_trap;</span><br><span class="line">message Person</span><br><span class="line">&#123;</span><br><span class="line">required string name = 1;</span><br><span class="line">required int32 age = 2;</span><br><span class="line">// optional int32 new1 = 3;</span><br><span class="line">// optional int32 new2 = 4[default = 0];</span><br><span class="line">&#125;</span><br><span class="line">message AddressBook</span><br><span class="line">&#123;</span><br><span class="line">required string host_name = 1;</span><br><span class="line">repeated Person person = 2;</span><br><span class="line">// optional int32 new3 = 3;</span><br><span class="line">// optional int32 new4 = 4[default = 0];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="1-先用没有new1-4字段的proto-编译出c-的bin文件"><a href="#1-先用没有new1-4字段的proto-编译出c-的bin文件" class="headerlink" title="1. 先用没有new1-4字段的proto, 编译出c++的bin文件"></a>1. 先用没有new1-4字段的proto, 编译出c++的bin文件</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[carl pb_mergefrom_trap]$ protoc -I=./ --cpp_out=./ mergefrom_trap.proto</span><br><span class="line">[carl pb_mergefrom_trap]$ g++ read_new_write_old.cpp mergefrom_trap.pb.cc -lprotobuf -o read_new_write_old.bin</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-然后添家new1-4字段-生成-mergefrom-trap-pb2-py"><a href="#2-然后添家new1-4字段-生成-mergefrom-trap-pb2-py" class="headerlink" title="2. 然后添家new1-4字段, 生成 mergefrom_trap_pb2.py"></a>2. 然后添家new1-4字段, 生成 mergefrom_trap_pb2.py</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[carl pb_mergefrom_trap]$ protoc -I=./ --python_out=./ mergefrom_trap.proto</span><br></pre></td></tr></table></figure>
+
+<h5 id="3-用write-new-py程序创建一个address-book对象并写入文件-输出结果如下"><a href="#3-用write-new-py程序创建一个address-book对象并写入文件-输出结果如下" class="headerlink" title="3. 用write_new.py程序创建一个address_book对象并写入文件, 输出结果如下:"></a>3. 用write_new.py程序创建一个address_book对象并写入文件, 输出结果如下:</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[carl pb_mergefrom_trap]$ python write_new.py addressbook</span><br><span class="line">address_book: host_name: <span class="string">&quot;carl&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 30</span><br><span class="line">new1: 1</span><br><span class="line">new2: 2</span><br><span class="line">&#125;</span><br><span class="line">new3: 3</span><br><span class="line">new4: 4</span><br></pre></td></tr></table></figure>
+
+<h5 id="4-执行上面c-的bin文件"><a href="#4-执行上面c-的bin文件" class="headerlink" title="4. 执行上面c++的bin文件"></a>4. 执行上面c++的bin文件</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[carl pb_mergefrom_trap]$ ./read_new_write_old.bin addressbook</span><br><span class="line">book: host_name: <span class="string">&quot;carl&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 30</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">a big <span class="built_in">trap</span> is coming ....</span><br><span class="line">book: host_name: <span class="string">&quot;carl_copyfrom_update&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_update_mergefrom&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_update_mergefrom&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_update_mergefrom&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_update_mergefrom&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br><span class="line">book: host_name: <span class="string">&quot;carl_update_mergefrom&quot;</span></span><br><span class="line">person &#123;</span><br><span class="line">name: <span class="string">&quot;person1&quot;</span></span><br><span class="line">age: 100</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">3: 1</span><br><span class="line">4: 2</span><br><span class="line">&#125;</span><br><span class="line">3: 3</span><br><span class="line">4: 4</span><br></pre></td></tr></table></figure>
+
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>由上测试结果可以看出, 一个使用了旧proto的c++程序, 在调用mergefrom的时候, 那2个unknown的字段不是覆盖回原来已有的字段上, 而是<strong>新增</strong>了. 连续调用几次, 这个是指数级增长的. 这会导致serialize出来的bin文件大小指数级增长, 然后会影响到进程, 在Parse和Serialize的时候, 函数调用会阻塞几十秒甚至几分钟, 网络流量也会剧增, 这对一个生产服务器可以说是致命的, 血淋淋的教训啊.<br>以上文件托管在<br><a href="https://github.com/carl-wang-cn/demo/tree/master/testcode/pb_mergefrom_trap">github&#x2F;demo&#x2F;tree&#x2F;master&#x2F;testcode&#x2F;pb_mergefrom_trap</a></p>
 ]]></content>
       <categories>
-        <category>职业素养</category>
+        <category>技术</category>
       </categories>
-      <tags>
-        <tag>Email</tag>
-      </tags>
   </entry>
   <entry>
     <title>记录一次因为redis aof rewrite重写导致的运维事故</title>
@@ -1733,6 +1733,86 @@
       </categories>
   </entry>
   <entry>
+    <title>我被收了ADR费</title>
+    <url>/2021/02/19/adr-vs-ads/</url>
+    <content><![CDATA[<p><strong>今天发现因为持有JD被收了ADR费，但是JD不是美国上市的吗？跟TCEHY（腾讯ADR）有什么区别？</strong></p>
+<p>ADR: American Depositary Receipts</p>
+<p>ADS: American Depositary Shares</p>
+<p>从以上ADR和ADS的英文全写其实大概就能理解二者的区别了。</p>
+<span id="more"></span>
+
+<p>ADR，大多数非美国公司的股票都是通过ADR在美股市场交易的，ADR指的是整个发行过程。</p>
+<p>ADS，是以美元计价的非美国公司的实际股票，可在美国证券交易所购买，ADS指的是单独的股票。</p>
+<p>ADR是由美国存托银行发行的，投资者买了ADR，就获得了获取该ADR代表的具体非美国股票的权利，但实际上，对投资者来说，交易ADR其实挺方便的。</p>
+<p>ADR:ADS &#x3D; 1:n，n&gt;0，n可以小于1，也可以大于1。</p>
+<p>不知道你们用过大闸蟹礼券没有，其实很类似，那张大闸蟹兑换券你可以卖给别人，可以从别人那买；每张券可能只能换1只大闸蟹，也可能可以换5只大闸蟹；对于单纯想通过买卖兑换券来获取价差收益的人来说，兑换券相对于实际的大闸蟹可能还更方便好用。</p>
+<h2 id="JD跟TCEHY有啥区别呢？"><a href="#JD跟TCEHY有啥区别呢？" class="headerlink" title="JD跟TCEHY有啥区别呢？"></a>JD跟TCEHY有啥区别呢？</h2><p>JD是作为非美国公司在NASDAQ上市的。但是市场上交易的仍然是ADR。</p>
+<p>TCEHY，因为腾讯是在香港上市的，为了让投资者可以在美国市场上交易腾讯，腾讯就需要找一家有资质的美国机构（通常是某国际投行），将他的部分股票托管给该机构在香港的分支机构，然后这个机构会通知美国总部，收到了来自腾讯的股票，然后美国的机构总部就拿出相对应数量的ADR在美股市场中流通了。并且只要投资者持有ADR，在每个月固定的某个时间只要你当时持有ADR，就需要向该机构缴纳一定的费用。</p>
+<p>二者都是要被收ADR托管费的。</p>
+]]></content>
+      <categories>
+        <category>金融</category>
+      </categories>
+      <tags>
+        <tag>ADR</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>一个小leader应该关注些什么</title>
+    <url>/2022/05/26/better-leader/</url>
+    <content><![CDATA[<p>就是单纯列一下我自己认为比较重要的几点</p>
+<span id="more"></span>
+
+<ul>
+<li>明确团队todolist的轻重缓急，做好短期和中长期规划<ul>
+<li>永远要让团队知道下一步要做什么，定期同步团队未来目标<ul>
+<li>3-6个月的长期规划</li>
+<li>每个月的短期规划</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>合理的分配工作（同事能成长，事能做成，识别出优秀的同事）<ul>
+<li>要把人用好，而不是去改造。我们连自己都改变不了，凭什么去改变别人？</li>
+<li>要看到他人的长处和优点</li>
+<li>跟团队说清楚每一件事情的大背景。要讲清楚为什么要做，为什么要现在做，获取理解及认同，激发团队的动力，同时为每个任务选择能力匹配的授权对象</li>
+</ul>
+</li>
+<li>建设优秀的团队文化<ul>
+<li>信任，没有信任的团队注定一事无成</li>
+<li>坦诚，平等沟通 – leader能接受异见，组员敢说</li>
+<li>务实</li>
+<li>自驱</li>
+<li>维护团队荣誉，不做损害团队荣誉的事情</li>
+<li>团队内没有竞争，是共进退，不要变成对手，团队成绩不好，谁都好不了，也不会有更好的机会</li>
+</ul>
+</li>
+<li>维护团队的公平，按功劳分配，团队没有普惠</li>
+<li>明确哪些该授权，哪些不该授权</li>
+<li>制定务实的流程和规范，提高团队质量和效率</li>
+<li>员工被冤枉，工作不合理，要敢于发声</li>
+<li>带团队聚焦去解决问题，而不是应付领导</li>
+<li>解决问题找根本原因，而不是表明原因</li>
+<li>敢于去做一些有挑战的事情，不能总是做一些简单的事务性的事情</li>
+<li>敢决策，敢负责</li>
+<li>对过程负责，对结果也要负责</li>
+<li>对公司整体负责，而不是只对自己团队负责</li>
+<li>沟通辅导，培养新同事。</li>
+<li>保持好团队的健康度<ul>
+<li>淘汰机制</li>
+<li>团队梯队</li>
+<li>团队备份</li>
+<li>团队的持续成长</li>
+</ul>
+</li>
+<li>帮助跨团队协作沟通，尤其是协助同事去跟跨团队的leader沟通</li>
+</ul>
+]]></content>
+      <categories>
+        <category>team</category>
+      </categories>
+  </entry>
+  <entry>
     <title>系统日志实践</title>
     <url>/2022/01/24/better-sys-log/</url>
     <content><![CDATA[<p>日志是每个程序员，尤其是后台服务器程序员每天都要接触的东西，但是如何把实现一个好的日志，是有很多道道在里面的。</p>
@@ -1851,21 +1931,6 @@
       </tags>
   </entry>
   <entry>
-    <title>crontab示例</title>
-    <url>/2021/01/08/crontab-examples/</url>
-    <content><![CDATA[<p>crontab -e 编辑该用户的crontab， 不存在时新建<br>crontab -l 列出该用户的crontab<br>crontab -r 删除该用户的crontab<br>crontab -u<uid> 指定要设定crontab的用户名称</p>
-<span id="more"></span>
-
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">30 08 10 06 *     /path/to/script      <span class="comment"># 在6月10日上午8：30运行该脚本。 *表示一周的任何一天</span></span><br><span class="line">00 11,16 * * *    /path/to/script      <span class="comment"># 每天于11:00 16:00 各执行一次。</span></span><br><span class="line">00 09-18 * * *    /path/to/script      <span class="comment"># 每天9-18点的整点 各执行一次。</span></span><br><span class="line">00 09-18 * * 1-5  /path/to/script      <span class="comment"># 只在周一到周五的9-18点的整点各执行一次</span></span><br><span class="line">* * * * *         /path/to/script      <span class="comment"># 每分钟执行一次</span></span><br><span class="line">*/5 * * * *       /path/to/script      <span class="comment"># 每5分钟执行一次</span></span><br><span class="line">0-10/2 * * * *    /path/to/script      <span class="comment"># 在前10分钟的每2分钟</span></span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>crontab</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>对确定性，你怎么理解？</title>
     <url>/2023/02/14/certainty/</url>
     <content><![CDATA[<h1 id="对确定性，你怎么理解？"><a href="#对确定性，你怎么理解？" class="headerlink" title="对确定性，你怎么理解？"></a>对确定性，你怎么理解？</h1><p>如果你100%确定未来1周某股票会拉升50%，那么你会毫不犹豫加满杠杆，把能借到的钱全都借来，满仓等涨发财。但是如果这个确定性只有75%呢，你会怎么做？恐怕不加杠杆，只是把手头的现金全部买入都会犹豫半天吧。</p>
@@ -1888,84 +1953,38 @@
       </tags>
   </entry>
   <entry>
-    <title>我被收了ADR费</title>
-    <url>/2021/02/19/adr-vs-ads/</url>
-    <content><![CDATA[<p><strong>今天发现因为持有JD被收了ADR费，但是JD不是美国上市的吗？跟TCEHY（腾讯ADR）有什么区别？</strong></p>
-<p>ADR: American Depositary Receipts</p>
-<p>ADS: American Depositary Shares</p>
-<p>从以上ADR和ADS的英文全写其实大概就能理解二者的区别了。</p>
+    <title>crontab示例</title>
+    <url>/2021/01/08/crontab-examples/</url>
+    <content><![CDATA[<p>crontab -e 编辑该用户的crontab， 不存在时新建<br>crontab -l 列出该用户的crontab<br>crontab -r 删除该用户的crontab<br>crontab -u<uid> 指定要设定crontab的用户名称</p>
 <span id="more"></span>
 
-<p>ADR，大多数非美国公司的股票都是通过ADR在美股市场交易的，ADR指的是整个发行过程。</p>
-<p>ADS，是以美元计价的非美国公司的实际股票，可在美国证券交易所购买，ADS指的是单独的股票。</p>
-<p>ADR是由美国存托银行发行的，投资者买了ADR，就获得了获取该ADR代表的具体非美国股票的权利，但实际上，对投资者来说，交易ADR其实挺方便的。</p>
-<p>ADR:ADS &#x3D; 1:n，n&gt;0，n可以小于1，也可以大于1。</p>
-<p>不知道你们用过大闸蟹礼券没有，其实很类似，那张大闸蟹兑换券你可以卖给别人，可以从别人那买；每张券可能只能换1只大闸蟹，也可能可以换5只大闸蟹；对于单纯想通过买卖兑换券来获取价差收益的人来说，兑换券相对于实际的大闸蟹可能还更方便好用。</p>
-<h2 id="JD跟TCEHY有啥区别呢？"><a href="#JD跟TCEHY有啥区别呢？" class="headerlink" title="JD跟TCEHY有啥区别呢？"></a>JD跟TCEHY有啥区别呢？</h2><p>JD是作为非美国公司在NASDAQ上市的。但是市场上交易的仍然是ADR。</p>
-<p>TCEHY，因为腾讯是在香港上市的，为了让投资者可以在美国市场上交易腾讯，腾讯就需要找一家有资质的美国机构（通常是某国际投行），将他的部分股票托管给该机构在香港的分支机构，然后这个机构会通知美国总部，收到了来自腾讯的股票，然后美国的机构总部就拿出相对应数量的ADR在美股市场中流通了。并且只要投资者持有ADR，在每个月固定的某个时间只要你当时持有ADR，就需要向该机构缴纳一定的费用。</p>
-<p>二者都是要被收ADR托管费的。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">30 08 10 06 *     /path/to/script      <span class="comment"># 在6月10日上午8：30运行该脚本。 *表示一周的任何一天</span></span><br><span class="line">00 11,16 * * *    /path/to/script      <span class="comment"># 每天于11:00 16:00 各执行一次。</span></span><br><span class="line">00 09-18 * * *    /path/to/script      <span class="comment"># 每天9-18点的整点 各执行一次。</span></span><br><span class="line">00 09-18 * * 1-5  /path/to/script      <span class="comment"># 只在周一到周五的9-18点的整点各执行一次</span></span><br><span class="line">* * * * *         /path/to/script      <span class="comment"># 每分钟执行一次</span></span><br><span class="line">*/5 * * * *       /path/to/script      <span class="comment"># 每5分钟执行一次</span></span><br><span class="line">0-10/2 * * * *    /path/to/script      <span class="comment"># 在前10分钟的每2分钟</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>crontab</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>四巫日</title>
+    <url>/2021/12/17/four-witching-days/</url>
+    <content><![CDATA[<p>什么是美国金融市场“四巫日”</p>
+<p>“四巫日”是美股每季度一次的金融衍生品到期日，分别发生在每年三、六、九、十二月的第三个星期五。</p>
+<span id="more"></span>
+
+<p>当日，股指期货、股指期权、个股期货与个股期权同时到期。 当日最后一个交易小时为四巫小时（Quadruple Witching Hour），即纽约时间下午三至四点。在到期时段内，交易量急剧增加，市场波动幅度加剧。</p>
+<p>在“四巫日”的最后交易时段内，投资者急于平仓，导致交易量大幅增加。因此，“四巫日”通常伴随股票和衍生品价格的大幅波动。</p>
+<p>“四巫日”当天，股票、股指的期货和期权大量交易，有时，投资者平掉的仓位可以和新建仓位抵消，金融产品不会出现过度供给或过度需求。有时，投资者采取不同的投资策略，在市场上共同起作用，制造相应的股票买卖需求，从而从波动中获利。</p>
+<p>“四巫日”对股市的影响在当天开盘和收盘的时段最为明显，这也是通常期货和期权到期的时段。投资者在该时段内买卖股票，以履行期货期权持有人的义务。但对于长期投资者而言，“四巫日”的影响微乎其微。</p>
 ]]></content>
       <categories>
         <category>金融</category>
       </categories>
       <tags>
-        <tag>ADR</tag>
+        <tag>科普</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>一个小leader应该关注些什么</title>
-    <url>/2022/05/26/better-leader/</url>
-    <content><![CDATA[<p>就是单纯列一下我自己认为比较重要的几点</p>
-<span id="more"></span>
-
-<ul>
-<li>明确团队todolist的轻重缓急，做好短期和中长期规划<ul>
-<li>永远要让团队知道下一步要做什么，定期同步团队未来目标<ul>
-<li>3-6个月的长期规划</li>
-<li>每个月的短期规划</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>合理的分配工作（同事能成长，事能做成，识别出优秀的同事）<ul>
-<li>要把人用好，而不是去改造。我们连自己都改变不了，凭什么去改变别人？</li>
-<li>要看到他人的长处和优点</li>
-<li>跟团队说清楚每一件事情的大背景。要讲清楚为什么要做，为什么要现在做，获取理解及认同，激发团队的动力，同时为每个任务选择能力匹配的授权对象</li>
-</ul>
-</li>
-<li>建设优秀的团队文化<ul>
-<li>信任，没有信任的团队注定一事无成</li>
-<li>坦诚，平等沟通 – leader能接受异见，组员敢说</li>
-<li>务实</li>
-<li>自驱</li>
-<li>维护团队荣誉，不做损害团队荣誉的事情</li>
-<li>团队内没有竞争，是共进退，不要变成对手，团队成绩不好，谁都好不了，也不会有更好的机会</li>
-</ul>
-</li>
-<li>维护团队的公平，按功劳分配，团队没有普惠</li>
-<li>明确哪些该授权，哪些不该授权</li>
-<li>制定务实的流程和规范，提高团队质量和效率</li>
-<li>员工被冤枉，工作不合理，要敢于发声</li>
-<li>带团队聚焦去解决问题，而不是应付领导</li>
-<li>解决问题找根本原因，而不是表明原因</li>
-<li>敢于去做一些有挑战的事情，不能总是做一些简单的事务性的事情</li>
-<li>敢决策，敢负责</li>
-<li>对过程负责，对结果也要负责</li>
-<li>对公司整体负责，而不是只对自己团队负责</li>
-<li>沟通辅导，培养新同事。</li>
-<li>保持好团队的健康度<ul>
-<li>淘汰机制</li>
-<li>团队梯队</li>
-<li>团队备份</li>
-<li>团队的持续成长</li>
-</ul>
-</li>
-<li>帮助跨团队协作沟通，尤其是协助同事去跟跨团队的leader沟通</li>
-</ul>
-]]></content>
-      <categories>
-        <category>team</category>
-      </categories>
   </entry>
   <entry>
     <title>一些优秀的文字</title>
@@ -2003,23 +2022,44 @@
       </categories>
   </entry>
   <entry>
-    <title>四巫日</title>
-    <url>/2021/12/17/four-witching-days/</url>
-    <content><![CDATA[<p>什么是美国金融市场“四巫日”</p>
-<p>“四巫日”是美股每季度一次的金融衍生品到期日，分别发生在每年三、六、九、十二月的第三个星期五。</p>
+    <title>hard-to-borrow list 股市卖空--难借股票列表</title>
+    <url>/2020/05/15/hard-to-borrow-sell-short/</url>
+    <content><![CDATA[<h3 id="What-Is-a-Hard-To-Borrow-List"><a href="#What-Is-a-Hard-To-Borrow-List" class="headerlink" title="What Is a Hard-To-Borrow List?"></a>What Is a Hard-To-Borrow List?</h3><p>A hard-to-borrow list is an inventory record used by brokerages to indicate what stocks are difficult to borrow for short sale transactions. A brokerage firm’s hard-to-borrow list provides an up-to-date catalog of stocks that cannot easily be borrowed for use as a short sale.</p>
 <span id="more"></span>
 
-<p>当日，股指期货、股指期权、个股期货与个股期权同时到期。 当日最后一个交易小时为四巫小时（Quadruple Witching Hour），即纽约时间下午三至四点。在到期时段内，交易量急剧增加，市场波动幅度加剧。</p>
-<p>在“四巫日”的最后交易时段内，投资者急于平仓，导致交易量大幅增加。因此，“四巫日”通常伴随股票和衍生品价格的大幅波动。</p>
-<p>“四巫日”当天，股票、股指的期货和期权大量交易，有时，投资者平掉的仓位可以和新建仓位抵消，金融产品不会出现过度供给或过度需求。有时，投资者采取不同的投资策略，在市场上共同起作用，制造相应的股票买卖需求，从而从波动中获利。</p>
-<p>“四巫日”对股市的影响在当天开盘和收盘的时段最为明显，这也是通常期货和期权到期的时段。投资者在该时段内买卖股票，以履行期货期权持有人的义务。但对于长期投资者而言，“四巫日”的影响微乎其微。</p>
+<blockquote>
+<p>KEY TAKEAWAYS</p>
+<ul>
+<li>Short sellers rely on brokers to have stock shares available to borrow.</li>
+<li>If the broker has very few shares of a stock available, then that stock is placed on the hard-to-borrow list.</li>
+<li>Stocks on the hard-to-borrow list may not be allowed to short.</li>
+</ul>
+</blockquote>
+<p>hard-to-borrow list 首先就是券商要维护更新的一个股票列表， 然后看字面意思， 就是比较难借到，当然还有其他原因会导致某些股票出现在这个list上。我们举个例子，如果A股票90%的持仓都在公司创始股东手里，如果你是创始股东，肯定不希望把股票借给别人，让别人去卖空砸盘吧，这就导致了这个股票是hard-to-borrow的，其他导致某只股票出现在这个list上的原因，请继续往下读。</p>
+<blockquote>
+<p>几个关键点</p>
+<ul>
+<li>卖空者依靠券商借入股票.</li>
+<li>如果券商只有很少股票可以外借，那么该股票将被置于hard-to-borrow list中。</li>
+<li>HTB list上的股票除了卖空利息会很高，还有可能不允许卖空。</li>
+</ul>
+</blockquote>
+<h3 id="Understanding-the-Hard-To-Borrow-List"><a href="#Understanding-the-Hard-To-Borrow-List" class="headerlink" title="Understanding the Hard-To-Borrow List"></a>Understanding the Hard-To-Borrow List</h3><p>Short selling of stocks is built on the notion that an individual trader or investor, wanting to profit from a decrease of that stock’s price, is able to borrow shares of that stock from the broker. Brokerages have a variety of ways to provide access to shares that can be sold short, but regardless of their methods, the result is a finite number of shares available for shorting. Once the number of shares available has come close to running out, the broker will publish a notation of some kind on their platform. This alerts account holders that if they attempt to sell that security short, their trade order may be refused.</p>
+<p>In this way a security may be on the hard-to-borrow list because it is in short supply, but it may also be because of its high volatility or other reasons. To enter a short sale, a brokerage client must first borrow the shares from his or her broker. To provide the shares, the broker can use its own inventory or borrow from the margin account of another client or another brokerage firm.</p>
+<p>Investors who enter short sale transactions attempt to capture profits in a declining market. For example, an investor may think that shares in Apple are likely to drop in price. The investor can short sell the stock and, if the price falls as he or she anticipates, repurchase it back for a profit. If the stock rises, however, the investor loses money.</p>
+<p>股票卖空，是指个人交易者或者投资者，从券商借股票卖出，股票价格下跌时，他们获利。券商有很多方法可以提供可供借出卖空的股票，但是，数量总是<strong>有限</strong>的。一旦数量快用完了，那么券商要在平台上发个某种形式的提醒，提醒自己的客户，如果你试图卖空这些数量即将用完的股票，交易有被拒绝的可能。</p>
+<p>证券可能会因为难以供应而出现在hard-to-borrow list上，但也可能是由于其高波动性或其他原因。要进行卖空，客户必须首先从其交易券商那里借到股票。为了提供股票，券商可以从自有库存，从其客户的<strong>margin账户</strong>中，或者从另一个券商借来可以提供给你用来卖空的股票。</p>
+<p>进行卖空交易的投资者试图在下降的市场中获利。例如，投资者认为苹果股票的价格可能会下跌。投资者可以卖空股票，如果价格如预期那样下跌，再低价买回来就可以获利。但是，如果股票上涨，投资者就会亏损，而且这个亏损是无上限的，理论上股价涨上天，投资者就亏成煞笔。</p>
+<h3 id="Hard-to-Borrow-List-and-Regulation"><a href="#Hard-to-Borrow-List-and-Regulation" class="headerlink" title="Hard-to-Borrow List and Regulation"></a>Hard-to-Borrow List and Regulation</h3><p>Brokerage firms update their hard-to-borrow lists daily. A broker must be able to provide or locate the shares to loan to their client before executing the client’s short sale transaction. Regulation SHO, which was implemented Jan. 3, 2005, has a “locate” condition that requires brokers to have a reasonable belief that the equity to be shorted can be borrowed and delivered to the short seller. The regulation is intended to prevent naked short selling, a practice where the investor places a short sale without holding the shares. (To learn more, see: The Truth About Naked Short Selling.)</p>
+<p>券商每天都会更新其Hart-To-Borrow List。在执行客户的卖空交易之前，券商必须能够provide或locate(就是你当前没有，但是你要知道哪里有）要借给客户的股票。 2005年1月3日实施的SHO监管条例，明确了一个“locate”条件，要求券商有合理的理由确信被卖空的equity（不限于股票啦）可以借到并交付给卖空者。该监管条例旨在防止裸卖空，指投资者在不持有股票或者不确认可以借到股票的情况下卖空。</p>
+<h3 id="Hard-to-Borrow-List-vs-Easy-to-Borrow-List"><a href="#Hard-to-Borrow-List-vs-Easy-to-Borrow-List" class="headerlink" title="Hard-to-Borrow List vs. Easy-to-Borrow List"></a>Hard-to-Borrow List vs. Easy-to-Borrow List</h3><p>The hard-to-borrow list is the opposite of the easy-to-borrow list, which is an inventory record of securities that are available for short sale transactions. In general, an investor can assume that securities not included on the hard-to-borrow list will be available for short selling. While a brokerage firm’s hard-to-borrow list is typically an internal list (and one that is not available to clients), the firm’s clients usually have access to the easy-to-borrow list.</p>
+<p>Brokerage clients may have to pay hard-to-borrow fees on certain short sales. Typically, the cost of borrowing stocks on the difficult-to-borrow list is higher than for stocks that are on the easy-to-borrow list. Large brokerage firms usually have a securities lending desk that helps source stocks that are difficult to borrow. A brokerage’s securities lending desk also lends securities to other firms.</p>
+<p>Easy-to-Borrow list，是指一份可卖空的证券记录表，Hard-to-Borrow list与ETB相反，一般来讲，投资者可以认为不在HTB列表上的证券都可以卖空。但是，通常券商的HTB列表是一个内部的数据（也就是客户不可见的），而ETB对客户通常是可见的。</p>
+<p>投资者可能需要为“难借”买单。通常，借HTB的股票比借ETB的股票的花费要更高。通常大的券商会有一个专门的证券借贷柜台，帮忙借那些难借的证券，也提供出借证券给别的券商的服务。</p>
 ]]></content>
       <categories>
         <category>金融</category>
       </categories>
-      <tags>
-        <tag>科普</tag>
-      </tags>
   </entry>
   <entry>
     <title>我的MySQL速查手册</title>
@@ -2432,46 +2472,6 @@
       </categories>
   </entry>
   <entry>
-    <title>hard-to-borrow list 股市卖空--难借股票列表</title>
-    <url>/2020/05/15/hard-to-borrow-sell-short/</url>
-    <content><![CDATA[<h3 id="What-Is-a-Hard-To-Borrow-List"><a href="#What-Is-a-Hard-To-Borrow-List" class="headerlink" title="What Is a Hard-To-Borrow List?"></a>What Is a Hard-To-Borrow List?</h3><p>A hard-to-borrow list is an inventory record used by brokerages to indicate what stocks are difficult to borrow for short sale transactions. A brokerage firm’s hard-to-borrow list provides an up-to-date catalog of stocks that cannot easily be borrowed for use as a short sale.</p>
-<span id="more"></span>
-
-<blockquote>
-<p>KEY TAKEAWAYS</p>
-<ul>
-<li>Short sellers rely on brokers to have stock shares available to borrow.</li>
-<li>If the broker has very few shares of a stock available, then that stock is placed on the hard-to-borrow list.</li>
-<li>Stocks on the hard-to-borrow list may not be allowed to short.</li>
-</ul>
-</blockquote>
-<p>hard-to-borrow list 首先就是券商要维护更新的一个股票列表， 然后看字面意思， 就是比较难借到，当然还有其他原因会导致某些股票出现在这个list上。我们举个例子，如果A股票90%的持仓都在公司创始股东手里，如果你是创始股东，肯定不希望把股票借给别人，让别人去卖空砸盘吧，这就导致了这个股票是hard-to-borrow的，其他导致某只股票出现在这个list上的原因，请继续往下读。</p>
-<blockquote>
-<p>几个关键点</p>
-<ul>
-<li>卖空者依靠券商借入股票.</li>
-<li>如果券商只有很少股票可以外借，那么该股票将被置于hard-to-borrow list中。</li>
-<li>HTB list上的股票除了卖空利息会很高，还有可能不允许卖空。</li>
-</ul>
-</blockquote>
-<h3 id="Understanding-the-Hard-To-Borrow-List"><a href="#Understanding-the-Hard-To-Borrow-List" class="headerlink" title="Understanding the Hard-To-Borrow List"></a>Understanding the Hard-To-Borrow List</h3><p>Short selling of stocks is built on the notion that an individual trader or investor, wanting to profit from a decrease of that stock’s price, is able to borrow shares of that stock from the broker. Brokerages have a variety of ways to provide access to shares that can be sold short, but regardless of their methods, the result is a finite number of shares available for shorting. Once the number of shares available has come close to running out, the broker will publish a notation of some kind on their platform. This alerts account holders that if they attempt to sell that security short, their trade order may be refused.</p>
-<p>In this way a security may be on the hard-to-borrow list because it is in short supply, but it may also be because of its high volatility or other reasons. To enter a short sale, a brokerage client must first borrow the shares from his or her broker. To provide the shares, the broker can use its own inventory or borrow from the margin account of another client or another brokerage firm.</p>
-<p>Investors who enter short sale transactions attempt to capture profits in a declining market. For example, an investor may think that shares in Apple are likely to drop in price. The investor can short sell the stock and, if the price falls as he or she anticipates, repurchase it back for a profit. If the stock rises, however, the investor loses money.</p>
-<p>股票卖空，是指个人交易者或者投资者，从券商借股票卖出，股票价格下跌时，他们获利。券商有很多方法可以提供可供借出卖空的股票，但是，数量总是<strong>有限</strong>的。一旦数量快用完了，那么券商要在平台上发个某种形式的提醒，提醒自己的客户，如果你试图卖空这些数量即将用完的股票，交易有被拒绝的可能。</p>
-<p>证券可能会因为难以供应而出现在hard-to-borrow list上，但也可能是由于其高波动性或其他原因。要进行卖空，客户必须首先从其交易券商那里借到股票。为了提供股票，券商可以从自有库存，从其客户的<strong>margin账户</strong>中，或者从另一个券商借来可以提供给你用来卖空的股票。</p>
-<p>进行卖空交易的投资者试图在下降的市场中获利。例如，投资者认为苹果股票的价格可能会下跌。投资者可以卖空股票，如果价格如预期那样下跌，再低价买回来就可以获利。但是，如果股票上涨，投资者就会亏损，而且这个亏损是无上限的，理论上股价涨上天，投资者就亏成煞笔。</p>
-<h3 id="Hard-to-Borrow-List-and-Regulation"><a href="#Hard-to-Borrow-List-and-Regulation" class="headerlink" title="Hard-to-Borrow List and Regulation"></a>Hard-to-Borrow List and Regulation</h3><p>Brokerage firms update their hard-to-borrow lists daily. A broker must be able to provide or locate the shares to loan to their client before executing the client’s short sale transaction. Regulation SHO, which was implemented Jan. 3, 2005, has a “locate” condition that requires brokers to have a reasonable belief that the equity to be shorted can be borrowed and delivered to the short seller. The regulation is intended to prevent naked short selling, a practice where the investor places a short sale without holding the shares. (To learn more, see: The Truth About Naked Short Selling.)</p>
-<p>券商每天都会更新其Hart-To-Borrow List。在执行客户的卖空交易之前，券商必须能够provide或locate(就是你当前没有，但是你要知道哪里有）要借给客户的股票。 2005年1月3日实施的SHO监管条例，明确了一个“locate”条件，要求券商有合理的理由确信被卖空的equity（不限于股票啦）可以借到并交付给卖空者。该监管条例旨在防止裸卖空，指投资者在不持有股票或者不确认可以借到股票的情况下卖空。</p>
-<h3 id="Hard-to-Borrow-List-vs-Easy-to-Borrow-List"><a href="#Hard-to-Borrow-List-vs-Easy-to-Borrow-List" class="headerlink" title="Hard-to-Borrow List vs. Easy-to-Borrow List"></a>Hard-to-Borrow List vs. Easy-to-Borrow List</h3><p>The hard-to-borrow list is the opposite of the easy-to-borrow list, which is an inventory record of securities that are available for short sale transactions. In general, an investor can assume that securities not included on the hard-to-borrow list will be available for short selling. While a brokerage firm’s hard-to-borrow list is typically an internal list (and one that is not available to clients), the firm’s clients usually have access to the easy-to-borrow list.</p>
-<p>Brokerage clients may have to pay hard-to-borrow fees on certain short sales. Typically, the cost of borrowing stocks on the difficult-to-borrow list is higher than for stocks that are on the easy-to-borrow list. Large brokerage firms usually have a securities lending desk that helps source stocks that are difficult to borrow. A brokerage’s securities lending desk also lends securities to other firms.</p>
-<p>Easy-to-Borrow list，是指一份可卖空的证券记录表，Hard-to-Borrow list与ETB相反，一般来讲，投资者可以认为不在HTB列表上的证券都可以卖空。但是，通常券商的HTB列表是一个内部的数据（也就是客户不可见的），而ETB对客户通常是可见的。</p>
-<p>投资者可能需要为“难借”买单。通常，借HTB的股票比借ETB的股票的花费要更高。通常大的券商会有一个专门的证券借贷柜台，帮忙借那些难借的证券，也提供出借证券给别的券商的服务。</p>
-]]></content>
-      <categories>
-        <category>金融</category>
-      </categories>
-  </entry>
-  <entry>
     <title>ssh终端证书方式登录远程linux系统</title>
     <url>/2020/12/28/ssh-without-passwd/</url>
     <content><![CDATA[<h3 id="为什么选择证书登陆？"><a href="#为什么选择证书登陆？" class="headerlink" title="为什么选择证书登陆？"></a>为什么选择证书登陆？</h3><p>Mac下原生及主流的ssh终端工具大多不具备保存ssh登陆密码的功能, 通过证书登陆的方式，就可以实现原生终端工具Terminal或第三方明星终端iTerm免密码登录远程系统，并且比单纯的密码验证登陆方式提高了安全性。</p>
@@ -2606,6 +2606,16 @@
       </tags>
   </entry>
   <entry>
+    <title>懂，但是如何做？</title>
+    <url>/2022/09/08/thinkvsdo/</url>
+    <content><![CDATA[<p>很多道理，懂的人很多，但是能否在行动上对齐，每个人的水平可就差得远了去了。</p>
+<p>有权力的时候，可以更少阻力去尝试一些事情，成了当然效用巨大，但是失败了，成本也巨大，有的人就经常为了一些尝试一些理论，不计成本，或者他认为这个成本是别人帮他承担，甚至造成了一些伤害后，脚底抹油，这种行为最让人看不起。</p>
+<span id="more"></span>]]></content>
+      <categories>
+        <category>胡思乱想</category>
+      </categories>
+  </entry>
+  <entry>
     <title>一个leader要少对团队说“你这样是不对的”</title>
     <url>/2022/08/20/what-a-leader/</url>
     <content><![CDATA[<p>有的leader，经常听团队汇报问题的时候，刚听了两句就打断说“你这样是不对的”，甚至连听完全部的耐心都没有。</p>
@@ -2618,16 +2628,6 @@
 ]]></content>
       <categories>
         <category>team</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>懂，但是如何做？</title>
-    <url>/2022/09/08/thinkvsdo/</url>
-    <content><![CDATA[<p>很多道理，懂的人很多，但是能否在行动上对齐，每个人的水平可就差得远了去了。</p>
-<p>有权力的时候，可以更少阻力去尝试一些事情，成了当然效用巨大，但是失败了，成本也巨大，有的人就经常为了一些尝试一些理论，不计成本，或者他认为这个成本是别人帮他承担，甚至造成了一些伤害后，脚底抹油，这种行为最让人看不起。</p>
-<span id="more"></span>]]></content>
-      <categories>
-        <category>胡思乱想</category>
       </categories>
   </entry>
   <entry>

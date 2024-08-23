@@ -236,7 +236,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://carl-wang-cn.github.io/2020/01/16/2020-01-16-cmake/">
+    <link itemprop="mainEntityOfPage" href="https://carl-wang-cn.github.io/2020/01/16/2020-01-16-shell/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/ais.jpg">
@@ -249,7 +249,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/01/16/2020-01-16-cmake/" class="post-title-link" itemprop="url">cmake怎么写?</a>
+          <a href="/2020/01/16/2020-01-16-shell/" class="post-title-link" itemprop="url">shell脚本必知必会</a>
         </h2>
 
         <div class="post-meta-container">
@@ -289,24 +289,20 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h3 id="cmake中一些预定义变量"><a href="#cmake中一些预定义变量" class="headerlink" title="cmake中一些预定义变量"></a>cmake中一些预定义变量</h3><ul>
-<li>PROJECT_SOURCE_DIR 工程的根目录</li>
-<li>PROJECT_BINARY_DIR 运行cmake命令的目录,通常是${PROJECT_SOURCE_DIR}&#x2F;build</li>
-<li>CMAKE_INCLUDE_PATH 环境变量,非cmake变量</li>
-<li>CMAKE_LIBRARY_PATH 环境变量</li>
-<li>CMAKE_CURRENT_SOURCE_DIR 当前处理的CMakeLists.txt所在的路径</li>
-<li>CMAKE_CURRENT_BINARY_DIR target编译目录<br>使用ADD_SURDIRECTORY(src bin)可以更改此变量的值<br>SET(EXECUTABLE_OUTPUT_PATH &lt;新路径&gt;)并不会对此变量有影响,只是改变了最终目标文件的存储路径</li>
-<li>CMAKE_CURRENT_LIST_FILE 输出调用这个变量的CMakeLists.txt的完整路径</li>
-<li>CMAKE_CURRENT_LIST_LINE 输出这个变量所在的行</li>
-<li>CMAKE_MODULE_PATH 定义自己的cmake模块所在的路径<br>SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}&#x2F;cmake),然后可以用INCLUDE命令来调用自己的模块</li>
-<li>EXECUTABLE_OUTPUT_PATH 重新定义目标二进制可执行文件的存放位置</li>
-<li>LIBRARY_OUTPUT_PATH 重新定义目标链接库文件的存放位置</li>
-<li>PROJECT_NAME 返回通过PROJECT指令定义的项目名称</li>
-<li>CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS 用来控制IF ELSE语句的书写方式</li>
+          <h3 id="变量命名"><a href="#变量命名" class="headerlink" title="变量命名"></a>变量命名</h3><h4 id="规则"><a href="#规则" class="headerlink" title="规则"></a>规则</h4><ol>
+<li>首字符必须为字母</li>
+<li>中间不能有空格, 可以有下划线_</li>
+<li>不能使用标点符号</li>
+<li>不能使用bash里的关键字</li>
+</ol>
+<h4 id="代码风格建议"><a href="#代码风格建议" class="headerlink" title="代码风格建议"></a>代码风格建议</h4><ul>
+<li>全部用大写</li>
+<li>下划线分隔</li>
+<li>定义在文件的顶部</li>
 </ul>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/01/16/2020-01-16-cmake/#more" rel="contents">
+              <a class="btn" href="/2020/01/16/2020-01-16-shell/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
