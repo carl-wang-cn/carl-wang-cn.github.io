@@ -15,8 +15,27 @@
     <atom:link href="https://carl-wang-cn.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>金融程序员</description>
-    <pubDate>Wed, 18 Dec 2024 01:47:54 GMT</pubDate>
+    <pubDate>Thu, 02 Jan 2025 05:52:38 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>cost&amp;efficiency</title>
+      <link>https://carl-wang-cn.github.io/2025/01/02/cost-efficiency/</link>
+      <guid>https://carl-wang-cn.github.io/2025/01/02/cost-efficiency/</guid>
+      <pubDate>Thu, 02 Jan 2025 05:52:18 GMT</pubDate>
+      
+      <description>&lt;h1 id=&quot;降本增效，我的一点看法&quot;&gt;&lt;a href=&quot;#降本增效，我的一点看法&quot; class=&quot;headerlink&quot; title=&quot;降本增效，我的一点看法&quot;&gt;&lt;/a&gt;降本增效，我的一点看法&lt;/h1&gt;&lt;p&gt;&lt;strong&gt;降本增效&lt;/strong&gt;，基本是这两年一个快被说烂的词了，我自己也算是深陷其中很长一段时间。今天主要是想写下自己的理解，不一定对，不认同就划过，瞎哔哔我的，我会直接拉黑。&lt;/p&gt;</description>
+      
+      
+      
+      
+      <category domain="https://carl-wang-cn.github.io/categories/%E6%9E%B6%E6%9E%84-%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80-%E9%87%91%E8%9E%8D/">架构/编程语言/金融</category>
+      
+      
+      
+      <comments>https://carl-wang-cn.github.io/2025/01/02/cost-efficiency/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>SOP-How do you like?</title>
@@ -209,40 +228,6 @@
       
       
       <comments>https://carl-wang-cn.github.io/2022/05/26/better-leader/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>系统日志实践</title>
-      <link>https://carl-wang-cn.github.io/2022/01/24/better-sys-log/</link>
-      <guid>https://carl-wang-cn.github.io/2022/01/24/better-sys-log/</guid>
-      <pubDate>Mon, 24 Jan 2022 12:42:26 GMT</pubDate>
-      
-      <description>&lt;p&gt;日志是每个程序员，尤其是后台服务器程序员每天都要接触的东西，但是如何把实现一个好的日志，是有很多道道在里面的。&lt;/p&gt;
-&lt;h2 id=&quot;好的日志-vs-不好的日志&quot;&gt;&lt;a href=&quot;#好的日志-vs-不好的日志&quot; class=&quot;headerlink&quot; title=&quot;好的日志 vs 不好的日志&quot;&gt;&lt;/a&gt;好的日志 vs 不好的日志&lt;/h2&gt;&lt;p&gt;我们为什么要对日志这么一个看起来那么简单的事情专门进行总结呢？看看下面表格就知道了，一个系统，日志的好坏，基本上直接或间接地决定了我们这个系统的质量是什么鸟样。&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;好的日志&lt;/th&gt;
-&lt;th&gt;不好的日志&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;&lt;tr&gt;
-&lt;td&gt;可以帮助开发&lt;br&gt;了解线上系统的运行状态&lt;br&gt;快速准确定位线上问题&lt;br&gt;发现系统瓶颈&lt;br&gt;预警系统潜在风险&lt;br&gt;挖掘产品最大价值&lt;/td&gt;
-&lt;td&gt;让开发&lt;br&gt;对系统的运行状态一知半解，甚至一无所知&lt;br&gt;系统出现问题无法定位，或者需要花费巨大的时间和精力&lt;br&gt;无法发现系统瓶颈，不知优化从何做起&lt;br&gt;无法基于日志对系统运行过程中的错误和潜在风险进行监控和报警&lt;br&gt;对挖掘用户行为和提升产品价值毫无&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;&lt;/table&gt;</description>
-      
-      
-      
-      
-      <category domain="https://carl-wang-cn.github.io/categories/%E6%8A%80%E6%9C%AF/">技术</category>
-      
-      
-      <category domain="https://carl-wang-cn.github.io/tags/%E6%97%A5%E5%BF%97/">日志</category>
-      
-      
-      <comments>https://carl-wang-cn.github.io/2022/01/24/better-sys-log/#disqus_thread</comments>
       
     </item>
     
